@@ -79,6 +79,7 @@ if (!class_exists('CWG_Instock_Settings')) {
 			add_settings_field('cwginstock_remove_placeholder', __('Hide Country Placeholder', 'back-in-stock-notifier-for-woocommerce'), array($this, 'hide_placeholder'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
 
 			add_settings_field('cwginstock_visibility_guest', __('Hide Subscribe Form for Guests', 'back-in-stock-notifier-for-woocommerce'), array($this, 'hide_form_for_guest'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
+			add_settings_field('cwginstock_visibility_guest_message', __('Message to display when the subscribe form is hidden for non logged-in Users', 'back-in-stock-notifier-for-woocommerce'), array($this, 'hide_form_for_guest_msg'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
 			// since version 1.7
 			add_settings_field('cwginstock_visibility_member', __('Hide Subscribe Form for Members', 'back-in-stock-notifier-for-woocommerce'), array($this, 'hide_form_for_member'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
 
@@ -285,10 +286,19 @@ if (!class_exists('CWG_Instock_Settings')) {
 		public function hide_form_for_guest() {
 			$options = get_option('cwginstocksettings');
 			?>
-			<input type='checkbox' name='cwginstocksettings[hide_form_guests]' <?php isset($options['hide_form_guests']) ? checked($options['hide_form_guests'], 1) : ''; ?> value="1" />
+			<input type='checkbox' class='hide_form_guests' name='cwginstocksettings[hide_form_guests]' <?php isset($options['hide_form_guests']) ? checked($options['hide_form_guests'], 1) : ''; ?> value="1" />
 			<p><i>
 					<?php esc_html_e('Hide Subscribe Form for non logged-in Users', 'back-in-stock-notifier-for-woocommerce'); ?>
 				</i></p>
+			<?php
+		}
+
+		public function hide_form_for_guest_msg() {
+			$options = get_option('cwginstocksettings');
+			$hide_form_for_guest_msg = isset($options['hide_form_for_guest_msg']) ? $options['hide_form_for_guest_msg'] : '';
+			?>
+			<textarea class='hide_form_for_guest_msg' name="cwginstocksettings[hide_form_for_guest_msg]" style="width:350px;"><?php echo wp_kses_post($this->api->sanitize_textarea_field($hide_form_for_guest_msg)); ?></textarea>
+			<p><i><?php esc_html_e('Message to display when the subscribe form is hidden for non logged-in Users', 'back-in-stock-notifier-for-woocommerce'); ?></i></p>
 			<?php
 		}
 
@@ -758,7 +768,7 @@ if (!class_exists('CWG_Instock_Settings')) {
 			 *
 			 * @since 1.0.0
 			 */
-			$textarea_field = apply_filters('cwg_instock_textarea_fields', array('instock_mail_message', 'success_sub_message'));
+			$textarea_field = apply_filters('cwg_instock_textarea_fields', array('instock_mail_message', 'success_sub_message', 'hide_form_for_guest_msg'));
 			if (is_array($input) && !empty($input)) {
 				foreach ($input as $key => $value) {
 					if (!is_array($value)) {

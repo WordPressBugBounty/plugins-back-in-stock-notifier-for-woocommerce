@@ -1,4 +1,4 @@
-<section class="cwginstock-subscribe-form <?php esc_html_e( $variation_class ); ?>">
+<section class="cwginstock-subscribe-form <?php esc_html_e( $variation_class ); ?> <?php esc_html_e( $dynamic_wrapper_class ); ?>">
 	<div class="panel panel-primary cwginstock-panel-primary">
 		<div class="panel-heading cwginstock-panel-heading">
 			<h4 style="text-align: center;">

@@ -5,13 +5,13 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://codewoogeek.online/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 5.5.0
+ * Version: 5.5.2
  * Author: codewoogeek
  * Author URI: https://codewoogeek.online
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 9.2.3
+ * WC tested up to: 9.3.3
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      codewoogeek
  * @copyright   2024 CodeWooGeek, LLC
@@ -42,7 +42,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '5.5.0';
+		public $version = '5.5.2';
 
 		/**
 		 * Instance variable
@@ -197,6 +197,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 			wp_register_script('cwginstock_popup', CWGINSTOCK_PLUGINURL . 'assets/js/cwg-popup.min.js', array('jquery', 'jquery-blockui', 'sweetalert2'), $this->version, true);
 
 			wp_register_style('cwginstock_frontend_css', CWGINSTOCK_PLUGINURL . 'assets/css/frontend.min.css', array(), $this->version, false);
+			wp_register_style('cwginstock_frontend_guest', CWGINSTOCK_PLUGINURL . 'assets/css/guest.min.css', array(), $this->version, false);
 			wp_register_style('cwginstock_bootstrap', CWGINSTOCK_PLUGINURL . 'assets/css/bootstrap.min.css', array(), $this->version, false);
 			$get_option = get_option('cwginstocksettings');
 
@@ -274,6 +275,8 @@ if (!class_exists('CWG_Instock_Notifier')) {
 						wp_add_inline_style('cwginstock_frontend_css', $hide_badge_css);
 					}
 				}
+			} else {
+				wp_enqueue_style('cwginstock_frontend_guest');
 			}
 		}
 

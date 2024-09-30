@@ -3,9 +3,9 @@ Contributors: codewoogeek
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier/](https://codewoogeek.online/product-category/back-in-stock-notifier/)
 Requires at least: 4.7
-Tested up to: 6.6.1
+Tested up to: 6.6.2
 Requires PHP: 7.0
-Stable tag: 5.5.0
+Stable tag: 5.5.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -234,6 +234,17 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.5.2 2024-09-30 =
+* Tweak : Added support for HTML/Markdown in the "Hide Subscribe Form for Guests message" option.
+* Tweak : Tested with WooCommerce 9.3.3
+
+= 5.5.1 2024-09-25 =
+* New : Added a new setting "Hide Subscribe Form for Guests message" 
+* Tweak : Added dynamic class wrapper for subscriber form
+* Tweak : POT File updated
+* Tweak : Tested with WooCommerce 9.3.2
+* Tweak: Tested with WordPress 6.6.2
+
 = 5.5.0 2024-09-10 =
 * Tweak : Updated Webhook payload (only_product_name, product_link , product_image)
 * Tweak : Tested with WooCommerce 9.2.3
