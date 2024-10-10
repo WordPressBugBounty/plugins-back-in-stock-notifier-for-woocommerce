@@ -152,6 +152,30 @@ jQuery(
                 }
             }
             show_hide_guest_msg.init();
+            
+            var stop_sending_email_staging = {
+                init: function () {
+                    var ele = '.stop_sending_email_staging';
+                    stop_sending_email_staging.show_hide(ele);
+                    jQuery(document).on(
+                            'click',
+                            '.stop_sending_email_staging',
+                            function () {
+                                var element = this;
+                                stop_sending_email_staging.show_hide(element);
+                            }
+                    );
+
+                },
+                show_hide: function (element) {
+                    if (jQuery(element).is(':checked')) {
+                        jQuery('.staging_domains').parent().parent().show();
+                    } else {
+                        jQuery('.staging_domains').parent().parent().hide();
+                    }
+                }
+            }
+            stop_sending_email_staging.init();
 
             // show or hide placeholder
             var phone_number_placeholder = {

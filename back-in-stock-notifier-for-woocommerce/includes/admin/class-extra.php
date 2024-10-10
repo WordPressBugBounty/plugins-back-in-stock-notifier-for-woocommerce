@@ -68,9 +68,9 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 								<?php if ('' != $url) { ?>
 									<?php
 									if (1 == $i) {
-										$price_tag = '$30.00';
+										$price_tag = '$39.99';
 									} else {
-										$price_tag = '$10.00';
+										$price_tag = '$9.99';
 									}
 									?>
 									<span class="pricetag">
@@ -80,9 +80,9 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 
 										<?php
 										if (1 == $i) {
-											$text = 'Unlimited Sites for $30.00';
+											$text = 'Single Site for $39.99';
 										} else {
-											$text = 'Unlimited Sites for $10.00';
+											$text = 'Single Site for $9.99';
 										}
 										echo do_shortcode(get_submit_button($text));
 										?>
@@ -110,7 +110,7 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 				<p>- <strong>Regular Updates</strong>: Stay up-to-date with regular updates that keep your add-ons in sync with the
 					latest industry trends.</p>
 
-				<p>- <strong>Cost-Effective</strong>: These add-ons are available for an exclusive limited-time price of just $10.00
+				<p>- <strong>Cost-Effective</strong>: These add-ons are available for an exclusive limited-time price of just $9.99
 					each, providing incredible value.</p>
 
 				<p>- <strong>Unmatched Convenience</strong>: Say goodbye to recurring payments with our one-time fee structure.</p>
@@ -120,9 +120,6 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 
 				<p>- <strong>Flexible Options</strong>: Choose individual add-ons or opt for our bundle to tailor your experience to
 					your exact needs.</p>
-
-				<p>- <strong>Expand Your Potential</strong>: With unlimited site usage and enhanced functionality, these add-ons
-					empower you to achieve more with your Back In Stock Notifier.</p>
 
 
 				<div class="clear"></div>
