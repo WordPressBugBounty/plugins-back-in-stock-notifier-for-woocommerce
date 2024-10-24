@@ -12,7 +12,7 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		 * Summary of __construct
 		 */
 		public function __construct() {
-			add_action( 'cwginstock_register_settings', array( $this, 'add_settings_field' ), 996 );
+			add_action( 'cwginstock_register_settings', array( $this, 'add_settings_field' ), 180 );
 			add_filter( 'cwginstocknotifier_columns', array( $this, 'add_column' ), 999, 1 );
 			add_action( 'cwginstock_custom_columns', array( $this, 'manage_column' ), 10, 2 );
 			add_action( 'cwg_instock_after_email_field', array( $this, 'add_quantity_field' ), 6, 2 );
@@ -66,7 +66,7 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 			$options = get_option( 'cwginstocksettings' );
 			?>
 			<input type='text' class='quantity_field_placeholder' name='cwginstocksettings[quantity_field_placeholder]'
-				   value="<?php echo wp_kses_post( isset( $options['quantity_field_placeholder'] ) ? $options['quantity_field_placeholder'] : '' ); ?>" />
+				value="<?php echo wp_kses_post( isset( $options['quantity_field_placeholder'] ) ? $options['quantity_field_placeholder'] : '' ); ?>" />
 			<p><i>
 					<?php esc_html_e( 'Enter the placeholder for the quantity field that should be displayed in the front-end', 'back-in-stock-notifier-for-woocommerce' ); ?>
 				</i></p>
@@ -83,15 +83,15 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 			$option_value = isset( $options['empty_quantity_message'] ) ? $options['empty_quantity_message'] : __( 'Quantity cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
 			?>
 			<input type='text' style='width: 400px;' name='cwginstocksettings[empty_quantity_message]'
-				   value="<?php echo wp_kses_post( $this->api->sanitize_text_field( $option_value ) ); ?>" />
-				   <?php
+				value="<?php echo wp_kses_post( $this->api->sanitize_text_field( $option_value ) ); ?>" />
+			<?php
 		}
 
-			   /**
-				* Summary of quantity_field_optional
-				*
-				* @return void
-				*/
+		/**
+		 * Summary of quantity_field_optional
+		 *
+		 * @return void
+		 */
 		public function quantity_field_optional() {
 			$options = get_option( 'cwginstocksettings' );
 			?>
@@ -172,9 +172,9 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 				?>
 				<p>
 					<input type='number' class="add_quantity_field" name='cwginstocksettings[add_quantity_field]'
-						   style='margin: 0 auto;width: 100% !important;text-align: center;' min="1"
-						   placeholder="<?php echo do_shortcode( $placeholder ); ?>"
-						   value='<?php echo wp_kses_post( $quantity_data ); ?>' />
+						style='margin: 0 auto;width: 100% !important;text-align: center;' min="1"
+						placeholder="<?php echo do_shortcode( $placeholder ); ?>"
+						value='<?php echo wp_kses_post( $quantity_data ); ?>' />
 				</p>
 				<?php
 			}

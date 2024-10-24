@@ -141,9 +141,11 @@ div.cwg-section .cwg-addon-title {
 .wp-admin.wc-wp-version-gte-53 .select2-container--default .select2-results__option--highlighted[data-selected] {
 	background-color: #0073aa !important;
 }
-.cwg_stock_instock{
-	color:#0f834d;
+
+.cwg_stock_instock {
+	color: #0f834d;
 }
-.cwg_stock_outofstock{
-	color:#e2401c;
+
+.cwg_stock_outofstock {
+	color: #e2401c;
 }

@@ -8,7 +8,7 @@ if ( ! class_exists( 'CWG_Instock_Auto_Delete' ) ) {
 
 		public function __construct() {
 			register_activation_hook( CWGINSTOCK_FILE, array( $this, 'register_schedule' ) );
-			add_action( 'cwginstock_register_settings', array( $this, 'add_settings_field' ), 997 );
+			add_action( 'cwginstock_register_settings', array( $this, 'add_settings_field' ), 200 );
 			add_action( 'cwg_delete_subscribers', array( $this, 'generate_get_subscribers' ) );
 		}
 

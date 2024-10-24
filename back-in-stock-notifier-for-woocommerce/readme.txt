@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.6.2
 Requires PHP: 7.0
-Stable tag: 5.5.3
+Stable tag: 5.6.0
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -225,13 +225,32 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 == Screenshots ==
 1. Subscriber Lists Backend
-2. Back In Stock Notifier Backend Settings
-3. Subscriber Form Frontend
-4. Success Subscription Email
-5. Success Instock Mail
+2. Frontend Form Settings
+3. Visibility Settings
+4. Message Settings
+5. Mail Settings
+6. Background Process Engine Settings
+7. Bot Protection Settings
+8. Quantity Field Settings
+9. Auto Delete Settings
+10. I Agree checkbox Settings
+11. Estimate Stock Arrival Settings
+12. Troubleshoot Settings
+13. Estimate Stock Arrival List Backend
+14. Edit Estimate Stock Arrival Entry
+15. Subscribe Form Frontend with Estimate Stock Arrival Message
+16. Success Subscription Email
+17. Back In Stock Email
 
 
 == Changelog ==
+= 5.6.0 2024-10-25 =
+* New : Added a new setting "Estimate Stock Arrival"
+* New : Added a new setting "Disable Prefilled Data for Logged-in Users"
+* Tweak : Keep Subscribed Status option info in Status Page
+* Tweak : Requires Plugins WooCommerce added
+* Tweak : POT File Updated
+
 = 5.5.3 2024-10-10 =
 * New : Added a new setting "Enable Stop Sending Email from staging site environment"
 

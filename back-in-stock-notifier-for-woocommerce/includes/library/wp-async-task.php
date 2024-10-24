@@ -131,8 +131,8 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 					'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
 					'body' => $this->_body_data,
 					'headers' => array(
-							'cookie' => implode( '; ', $cookies ),
-						),
+						'cookie' => implode( '; ', $cookies ),
+					),
 				);
 
 				$url = admin_url( 'admin-post.php' );

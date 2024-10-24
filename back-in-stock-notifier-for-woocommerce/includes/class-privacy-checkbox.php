@@ -13,7 +13,7 @@ if ( ! class_exists( 'CWG_Instock_Privacy_Checkbox' ) ) {
 			$settings = get_option( 'cwginstock_iagree_settings' );
 			$is_enable = isset( $settings['enable_iagree'] ) ? $settings['enable_iagree'] : false;
 			// register settings
-			add_action( 'cwginstock_register_settings', array( $this, 'register_settings' ), 998 );
+			add_action( 'cwginstock_register_settings', array( $this, 'register_settings' ), 210 );
 			add_action( 'cwginstock_settings_default', array( $this, 'default_values' ) );
 			if ( $is_enable ) {
 				add_action( 'cwg_instock_after_email_field', array( $this, 'show_iagree_frontend' ), 20, 2 );

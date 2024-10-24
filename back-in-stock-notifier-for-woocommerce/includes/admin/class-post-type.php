@@ -545,20 +545,20 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				if ( 'cwginstocknotifier' == $type ) {
 					?>
 					<select class="wc-product-search"
-							data-placeholder="<?php esc_html_e( 'Filter by products', 'back-in-stock-notifier-for-woocommerce' ); ?>"
-							data-allow_clear="true" tabindex="-1" aria-hidden="true" name="cwg_filter_by_products[]" multiple="multiple"
-							style="width:250px;">
-								<?php
-								$current_v = isset( $_GET['cwg_filter_by_products'] ) ? wc_clean( $_GET['cwg_filter_by_products'] ) : array();
-								if ( is_array( $current_v ) && ! empty( $current_v ) ) {
-									foreach ( $current_v as $each_id ) {
-										$product = wc_get_product( $each_id );
-										if ( $product ) {
-											printf( '<option value="%s"%s>%s</option>', intval( $each_id ), ' selected="selected"', wp_kses_post( $product->get_formatted_name() ) );
-										}
-									}
+						data-placeholder="<?php esc_html_e( 'Filter by products', 'back-in-stock-notifier-for-woocommerce' ); ?>"
+						data-allow_clear="true" tabindex="-1" aria-hidden="true" name="cwg_filter_by_products[]" multiple="multiple"
+						style="width:250px;">
+						<?php
+						$current_v = isset( $_GET['cwg_filter_by_products'] ) ? wc_clean( $_GET['cwg_filter_by_products'] ) : array();
+						if ( is_array( $current_v ) && ! empty( $current_v ) ) {
+							foreach ( $current_v as $each_id ) {
+								$product = wc_get_product( $each_id );
+								if ( $product ) {
+									printf( '<option value="%s"%s>%s</option>', intval( $each_id ), ' selected="selected"', wp_kses_post( $product->get_formatted_name() ) );
 								}
-								?>
+							}
+						}
+						?>
 					</select>
 					<?php
 				}
@@ -831,7 +831,8 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 						);
 					}
 					$query->set( 'meta_query', $meta_query );
-				};
+				}
+				;
 			}
 		}
 
@@ -861,21 +862,24 @@ add_action(
 		$screen = get_current_screen();
 
 		// Only edit post screen:
-		if ( 'edit-cwginstocknotifier' === $screen->id ) {
+		if ( 'edit-cwginstocknotifier' === $screen->id || 'edit-cwginstock_arrival' === $screen->id ) {
 			// Before:
 			add_action(
 				'all_admin_notices',
 				function () {
-					?>
-			<div class="notice notice-info cwg_marketing_notice">
+				?>
+			<div class="notice notice-success cwg_marketing_notice">
 				<p>
-					<strong>Pay Once, Benefit Forever</strong>: All Add-ons Included, No Monthly Commitment - Just $30! <a
+					<strong>Pay Once, Benefit Forever</strong>: All Add-ons Included, No Monthly Commitment - Just $39! <a
 						href="https://codewoogeek.online/shop/back-in-stock-notifier/bundle-add-ons/" target="_blank"><strong>Buy
 							Now Bundle Add-ons!</strong></a>
 				</p>
+				<p>
+					Your financial backing allows us to keep innovating—support us today!
+				</p>
 			</div>
-					<?php
-				}
+			<?php
+			}
 			);
 		}
 	}

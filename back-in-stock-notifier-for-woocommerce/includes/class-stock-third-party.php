@@ -30,7 +30,7 @@ if ( ! class_exists( ' CWG_Instock_Third_Party_Support' ) ) {
 					$post_ids = '(' . implode( ',', $format ) . ')';
 					$select_Query = $wpdb->get_col(
 						$wpdb->prepare(
-						// phpcs:ignore
+							// phpcs:ignore
 							sprintf( "SELECT meta_value from $wpdb->postmeta where post_id IN %s and meta_key ='cwginstock_pid'", $post_ids ),
 							$get_posts
 						)

@@ -64,16 +64,16 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 
 		public function create_subscriber( WP_REST_Request $request ) {
 			/*
-			 * SAMPLE JSON REQUEST
-			 * {
-			 * "subscriber_name" : "subscriber name",
-			  "email" : "xxxxxxx@gmail.com",
-			  "product_id": "valid product id",
-			  "variation_id" : "valid variation id",
-			  "status" : "valid registered status",
-			  "subscriber_phone" : "+1 2015550123",
-			  "custom_quantity" : "3"
-			  } */
+							   * SAMPLE JSON REQUEST
+							   * {
+							   * "subscriber_name" : "subscriber name",
+								"email" : "xxxxxxx@gmail.com",
+								"product_id": "valid product id",
+								"variation_id" : "valid variation id",
+								"status" : "valid registered status",
+								"subscriber_phone" : "+1 2015550123",
+								"custom_quantity" : "3"
+								} */
 
 			$body = $request->get_body();
 			$body_decode_json = json_decode( $body, true );
@@ -208,17 +208,17 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 
 		public function update_subscriber( WP_REST_Request $request ) {
 			/*
-			 * SAMPLE JSON REQUEST
-			 * {
-			 * "ID": "",
-			  "subscriber_name" : "subscriber name",
-			  "email" : "xxxxxxx@gmail.com",
-			  "product_id": "valid product id",
-			  "variation_id" : "valid variation id",
-			  "status" : "valid registered status",
-			  "subscriber_phone" : "+1 2015550123",
-			  "custom_quantity" : "3"
-			  } */
+							   * SAMPLE JSON REQUEST
+							   * {
+							   * "ID": "",
+								"subscriber_name" : "subscriber name",
+								"email" : "xxxxxxx@gmail.com",
+								"product_id": "valid product id",
+								"variation_id" : "valid variation id",
+								"status" : "valid registered status",
+								"subscriber_phone" : "+1 2015550123",
+								"custom_quantity" : "3"
+								} */
 			$body = $request->get_body();
 			$body_decode_json = json_decode( $body, true );
 
@@ -288,7 +288,7 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 						$data = wp_delete_post( $request['id'], true );
 						return rest_ensure_response( array( 'msg' => '#' . $request['id'] . ' Deleted successfully' ) );
 					} else {
-												return new WP_Error( 'woocommerce_rest_cannot_view', __( 'You cannot delete data other than Subscribers', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => '404' ) );
+						return new WP_Error( 'woocommerce_rest_cannot_view', __( 'You cannot delete data other than Subscribers', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => '404' ) );
 					}
 				}
 			} else {
@@ -298,14 +298,14 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 
 		public function list_subscriber( WP_REST_Request $request ) {
 			/*
-			 * SAMPLE JSON REQUEST
-			  {
-			  "p_ids" : array('170','124'),
-			  "variation_ids" : array('111','1244'),
-			  "include": "true/false",
-			  "status" : array('cwg_subscribed','cwg_unsubscribed'),
-			  }
-			 */
+							   * SAMPLE JSON REQUEST
+								{
+								"p_ids" : array('170','124'),
+								"variation_ids" : array('111','1244'),
+								"include": "true/false",
+								"status" : array('cwg_subscribed','cwg_unsubscribed'),
+								}
+							   */
 			$body = $request->get_body();
 			$body_decode_json = json_decode( $body, true );
 			$status = isset( $body_decode_json['status'] ) ? $body_decode_json['status'] : 'any';

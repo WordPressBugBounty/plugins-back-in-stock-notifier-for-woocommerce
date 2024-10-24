@@ -67,6 +67,11 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 										'1' => __( 'Back In Stock Email::Enabled', 'back-in-stock-notfier-for-woocommerce' ),
 										'0' => __( 'Back in Stock Email::Disabled', 'back-in-stock-notifier-for-woocommerce' ),
 									),
+								'keep_status_subscribed' =>
+									array(
+										'1' => __( 'Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)::Enabled', 'back-in-stock-notfier-for-woocommerce' ),
+										'0' => __( 'Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)::Disabled', 'back-in-stock-notifier-for-woocommerce' ),
+									),
 							),
 						'inputfield' =>
 							array(
