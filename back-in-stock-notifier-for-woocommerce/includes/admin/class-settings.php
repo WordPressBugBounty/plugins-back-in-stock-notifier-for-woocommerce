@@ -657,7 +657,7 @@ if ( ! class_exists( 'CWG_Instock_Settings' ) ) {
                     in order to trigger instock email',
 						'back-in-stock-notifier-for-woocommerce'
 					)
-						?>
+					?>
 				</p>
 			</i>
 			<?php

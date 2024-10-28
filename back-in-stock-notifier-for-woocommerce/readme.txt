@@ -3,9 +3,9 @@ Contributors: codewoogeek
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier/](https://codewoogeek.online/product-category/back-in-stock-notifier/)
 Requires at least: 4.7
-Tested up to: 6.6.2
+Tested up to: 6.7
 Requires PHP: 7.0
-Stable tag: 5.6.0
+Stable tag: 5.6.1
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -244,6 +244,11 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.6.1 2024-10-28 =
+* New : Register Deactivation Hook to clear scheduled events
+* Tweak : Code Enhanced
+* Tweak : Tested with WordPress 6.7
+
 = 5.6.0 2024-10-25 =
 * New : Added a new setting "Estimate Stock Arrival"
 * New : Added a new setting "Disable Prefilled Data for Logged-in Users"

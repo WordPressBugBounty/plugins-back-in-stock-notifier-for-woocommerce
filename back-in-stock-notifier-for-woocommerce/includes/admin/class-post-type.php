@@ -867,7 +867,7 @@ add_action(
 			add_action(
 				'all_admin_notices',
 				function () {
-				?>
+					?>
 			<div class="notice notice-success cwg_marketing_notice">
 				<p>
 					<strong>Pay Once, Benefit Forever</strong>: All Add-ons Included, No Monthly Commitment - Just $39! <a
@@ -878,8 +878,8 @@ add_action(
 					Your financial backing allows us to keep innovating—support us today!
 				</p>
 			</div>
-			<?php
-			}
+					<?php
+				}
 			);
 		}
 	}
