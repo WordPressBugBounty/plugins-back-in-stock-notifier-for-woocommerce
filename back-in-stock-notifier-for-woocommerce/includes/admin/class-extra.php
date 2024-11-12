@@ -40,7 +40,8 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 						'Import CSV - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/import-csv/',
 						'Edit Subscribers - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/edit-subscribers/',
 						'PolyLang - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/polylang/',
-						'Twilio - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/twilio-sms/',
+						'Twilio SMS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/twilio-sms/',
+						'Klaviyo - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/klaviyo/',
 						'More Addons coming soon' => '',
 					)
 			);

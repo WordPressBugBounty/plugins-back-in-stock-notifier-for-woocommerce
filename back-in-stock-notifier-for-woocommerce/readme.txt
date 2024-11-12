@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 7.0
-Stable tag: 5.6.1
+Stable tag: 5.6.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -58,6 +58,8 @@ We designed this plugin to overcome this situation by sending emails in the back
         <li><strong>PREMIUM ADD-ON: Polylang</strong>.</li>
         <li><strong>PREMIUM ADD-ON: Edit Subscribers</strong>.</li>
         <li><strong>PREMIUM ADD-ON: Import CSV</strong>.</li>
+        <li><strong>PREMIUM ADD-ON: Twilio</strong>.</li>
+        <li><strong>PREMIUM ADD-ON: Klaviyo</strong>.</li>
  	<li>Notification Mails are <strong>highly customizable</strong>.</li>
  	<li><strong>Works out of the box</strong>.</li>
  	<li><strong>Simple and Easy to use</strong>.</li>
@@ -79,8 +81,11 @@ We continue to support this plugin based on our paid extensions. Anyone can affo
     <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/polylang/"><strong>Polylang - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
     <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/import-csv/"><strong>Import CSV - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
     <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/edit-subscribers/"><strong>Edit Subscribers - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
+    <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/twilio-sms/"><strong>Twilio SMS - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
+    <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/klaviyo/"><strong>Klaviyo - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
     <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/"><strong>Bundle Add-ons(All Add-ons with discounted price) - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
-    <li><a href="https://codewoogeek.online/product-category/back-in-stock-notifier/"><strong>and more coming soon</strong></a></li>
+    
+<li><a href="https://codewoogeek.online/product-category/back-in-stock-notifier/"><strong>and more coming soon</strong></a></li>
 </ol>
 &nbsp;
 
@@ -130,9 +135,18 @@ The Import CSV add-on is for the Back In Stock Notifier plugin. Using this add-o
 
 Edit Subscribers is an add-on for Back In Stock Notifier. Using this add-on, the admin can edit already subscribed user entries without any hassle. Let's say you found that entries of subscriptions contain wrong information that you want to correct. With this add-on, you can easily achieve that.
 
-[<strong>Bundle Add-ons (All 11 Add-ons with a discounted price) + Future any New Add-ons - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/)
 
-Some people need a few add-ons, and some people need all add-ons. For them, we created bundle add-ons with a discounted price for all eleven add-ons + any new add-ons.
+[<strong>Twilio SMS - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://codewoogeek.online/shop/back-in-stock-notifier/twilio-sms/)
+
+The Twilio SMS Add-On for the Back in Stock Notifier for WooCommerce plugin enables you to send automated SMS alerts to customers when items they're interested in return to stock. By integrating Twilio SMS functionality, this add-on helps you engage customers with timely updates and capture missed sales opportunities.
+
+[<strong> Klaviyo - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://codewoogeek.online/shop/back-in-stock-notifier/klaviyo/)
+
+The Klaviyo Add-on will helpful to sync subscribers from Back InStock Notifier to Klaviyo
+
+[<strong>Bundle Add-ons (All 13 Add-ons with a discounted price) + Future any New Add-ons - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/)
+
+Some people need a few add-ons, and some people need all add-ons. For them, we created bundle add-ons with a discounted price for all thirteen add-ons + any new add-ons.
 
 == Installation ==
 
@@ -244,6 +258,11 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.6.2 2024-11-12 =
+* Tweak : Renamed the option "Enable Stop Sending Email from staging site environment" to "Disable sending emails on staging environments" in the "Troubleshoot Settings (Experimental)" settings section
+* Tweak : Added a confirmation alert when clicking the "Send Instock Mail" in the "Subscribers" List table (Admin Dashboard > Instock Notifier > All Subscribers)
+* Tweak : Enhanced email masking in the log file
+
 = 5.6.1 2024-10-28 =
 * New : Register Deactivation Hook to clear scheduled events
 * Tweak : Code Enhanced

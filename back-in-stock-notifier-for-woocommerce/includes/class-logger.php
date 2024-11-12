@@ -26,7 +26,7 @@ if ( ! class_exists( 'CWG_Instock_Logger' ) ) {
 			$replace = str_replace( '#', '', $this->message );
 			$arr = explode( ' ', $replace );
 			foreach ( $arr as $key => $val ) {
-				if ( preg_match( '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i', $val ) ) {
+				if ( preg_match( '/^[_a-z0-9+-]+(\.[_a-z0-9+-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i', $val ) ) {
 					$arr_email = explode( '@', $val );
 					$first_data = $arr_email[0];
 					if ( strlen( $first_data ) > 1 ) {

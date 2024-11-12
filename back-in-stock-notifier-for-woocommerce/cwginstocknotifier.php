@@ -5,7 +5,7 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://codewoogeek.online/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 5.6.1
+ * Version: 5.6.2
  * Author: codewoogeek
  * Requires Plugins: woocommerce
  * Author URI: https://codewoogeek.online
@@ -43,7 +43,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '5.6.1';
+		public $version = '5.6.2';
 
 		/**
 		 * Instance variable

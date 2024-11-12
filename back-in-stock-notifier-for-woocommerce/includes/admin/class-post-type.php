@@ -363,8 +363,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				);
 
 				$caption = __( 'Send Instock Mail', 'back-in-stock-notifier-for-woocommerce' );
-				$sendmail = "<a href='$query_arg'>$caption</a>";
-
+				$sendmail = "<a href='$query_arg' class='send_manual_email'>$caption</a>";
 				$newactions['sendmail'] = $sendmail;
 				if ( isset( $actions['trash'] ) ) {
 					$newactions['trash'] = $actions['trash'];
