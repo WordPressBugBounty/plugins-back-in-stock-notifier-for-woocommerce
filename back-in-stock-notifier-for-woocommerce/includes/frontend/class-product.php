@@ -15,6 +15,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			add_action( 'woocommerce_woosb_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
 			add_action( 'woocommerce_composite_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
 			add_action( 'woocommerce_after_variations_form', array( $this, 'display_in_no_variation_product' ) );
+			//jet product table
+			add_filter( 'woocommerce_loop_add_to_cart_link', array( $this, 'display_button_in_jetproduct_table' ), 10, 3 );
 			// add_action('woocommerce_grouped_add_to_cart', array($this, 'display_in_simple_product'), 32);
 			add_filter( 'woocommerce_available_variation', array( $this, 'display_in_variation' ), 999, 3 );
 			// some theme variation disabled by default if it is out of stock so for that workaround solution
@@ -47,6 +49,17 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			$display_filter = apply_filters( 'cwginstock_display_subscribe_form', true, $product, array() );
 			echo do_shortcode( $this->display_subscribe_box( $product, array(), $display_filter ) ?? '' );
 		}
+		public function display_button_in_jetproduct_table( $button, $product, $args ) {
+
+			if ($product->get_stock_status() == 'outofstock' && defined( 'JET_WC_PT__FILE__' ) ) {
+				$parent_id = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
+				$parent_obj = wc_get_product( $parent_id );
+				$product = $product->is_type( 'variation' ) ? $product : array();
+				return do_action( 'cwginstock_custom_form', $parent_obj, $product );
+			}
+			return $button;
+		}
+	
 
 		public function add_product_column_grouped( $columns, $product ) {
 			$columns[] = 'cwg_subscribe_form';

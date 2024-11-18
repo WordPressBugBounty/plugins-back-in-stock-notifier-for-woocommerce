@@ -63,6 +63,15 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				if ( $get_type ) {
 					if ( $variable_any_variation_backinstock ) {
 						$get_parent_id = $obj->get_parent_id();
+						$flag_key = 'email_sent_for_' . $get_parent_id;
+						$variable_obj = wc_get_product( $get_parent_id );
+						$parent_stock_status = $variable_obj->get_stock_status();
+
+						// Check if the flag is set.
+						if ( get_transient( $flag_key ) || ( 'outofstock' != $parent_stock_status ) ) {
+							return; // Email already sent for this restock session.
+						}
+
 						$parent_obj = new CWG_Instock_API( $get_parent_id, 0 );
 						$parent_subscribers = $parent_obj->get_list_of_subscribers( 'AND' );
 						if ( $parent_subscribers ) {
@@ -71,7 +80,8 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 									update_post_meta( $each_entry, 'cwginstock_bypass_pid', $id );
 								}
 							}
-							$list_of_subscribers = array_merge( $list_of_subscribers, $parent_subscribers );
+							$list_of_subscribers = array_unique(array_merge( $list_of_subscribers, $parent_subscribers ));
+							set_transient( $flag_key, true, 300 );
 						}
 					}
 				}

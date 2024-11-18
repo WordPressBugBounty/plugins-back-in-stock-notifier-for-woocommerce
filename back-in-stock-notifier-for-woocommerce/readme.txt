@@ -4,8 +4,8 @@ Tags: email, notification, outofstock, waitlist, stock
 Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier/](https://codewoogeek.online/product-category/back-in-stock-notifier/)
 Requires at least: 4.7
 Tested up to: 6.7
-Requires PHP: 7.0
-Stable tag: 5.6.2
+Requires PHP: 7.4
+Stable tag: 5.7.0
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -152,7 +152,7 @@ Some people need a few add-ons, and some people need all add-ons. For them, we c
 
 = Minimum Requirements =
 
-* PHP version 7.0 or greater
+* PHP version 7.4 or greater
 * MySQL 5.6 or greater
 * WooCommerce 3.0+
 * WordPress 4.7+
@@ -258,6 +258,14 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.0 2024-11-18 =
+* New : JetProductTables Compatibility
+* Fix : Duplicate emails to the variable product subscribers when restock variations
+* Fix : Create variations triggers instock email
+* Fix : Added clear scheduled event "cwg_schedule_third_party_support" upon plugin deactivation
+* Tweak : Tested with WooCommerce 9.4.1
+* Tweak : Minimum version of PHP is 7.4
+
 = 5.6.2 2024-11-12 =
 * Tweak : Renamed the option "Enable Stop Sending Email from staging site environment" to "Disable sending emails on staging environments" in the "Troubleshoot Settings (Experimental)" settings section
 * Tweak : Added a confirmation alert when clicking the "Send Instock Mail" in the "Subscribers" List table (Admin Dashboard > Instock Notifier > All Subscribers)

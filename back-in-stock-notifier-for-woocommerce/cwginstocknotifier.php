@@ -5,45 +5,47 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://codewoogeek.online/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 5.6.2
+ * Version: 5.7.0
  * Author: codewoogeek
  * Requires Plugins: woocommerce
  * Author URI: https://codewoogeek.online
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 9.3.3
+ * WC tested up to: 9.4.1
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      codewoogeek
  * @copyright   2024 CodeWooGeek, LLC
  * @license     GPL-3.0+
+ * License: GPL-3.0+
  * License URI: https://www.gnu.org/licenses/gpl-3.0.txt
  * @icons used from https://www.flaticon.com/authors/roundicons
  */
 
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
 	exit; // avoid direct access to the file
 }
 
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 if (isset($_GET['post_type']) && ( ( 'cwginstocknotifier' == $_GET['post_type'] ) || ( 'cwginstock_arrival' == $_GET['post_type'] ) )) {
-	require( 'includes/library/WP_Persistent_Notices.php' );
+	require 'includes/vendor/WP_Persistent_Notices.php';
 }
-require_once 'includes/library/wp-async-request.php';
-require_once 'includes/library/wp-background-process.php';
-require_once 'includes/library/stevegrunwell/wp-admin-tabbed-settings-pages/wp-admin-tabbed-settings-pages.php';
+require_once 'includes/vendor/wp-async-request.php';
+require_once 'includes/vendor/wp-background-process.php';
+require_once 'includes/vendor/stevegrunwell/wp-admin-tabbed-settings-pages/wp-admin-tabbed-settings-pages.php';
 
-if (!class_exists('CWG_Instock_Notifier')) {
+if (! class_exists('CWG_Instock_Notifier')) {
 
 	class CWG_Instock_Notifier {
+	
 
 		/**
 		 * Plugin Version
 		 *
 		 * @var string Version
 		 */
-		public $version = '5.6.2';
+		public $version = '5.7.0';
 
 		/**
 		 * Instance variable
@@ -74,15 +76,13 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		/**
 		 * Return error when this function called as it is a private method, so clonning will be forbidden
 		 */
-		private function __clone() {
-			
-		}
+		private function __clone() {}
 
 		/**
 		 * Construct the class
 		 */
 		public function __construct() {
-			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 			$this->avoid_header_sent();
 			$this->define_constant();
 			$this->initialize();
@@ -108,37 +108,37 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		 * Include necessary files to load
 		 */
 		public function include_files() {
-			include( 'includes/class-template.php' );
-			include( 'includes/admin/class-post-type.php' );
-			include( 'includes/frontend/class-product.php' );
-			include( 'includes/class-ajax.php' );
-			include( 'includes/class-core.php' );
-			include( 'includes/class-api.php' );
-			include( 'includes/admin/class-settings.php' );
-			include( 'includes/class-logger.php' );
-			include( 'includes/class-privacy.php' );
-			include( 'includes/admin/class-extra.php' );
-			include( 'includes/class-troubleshoot.php' );
-			include( 'includes/class-privacy-checkbox.php' );
-			include( 'includes/class-upgrade.php' );
-			include( 'includes/class-popup.php' );
-			include( 'includes/class-webhook.php' );
-			include( 'includes/class-rest-api.php' );
-			include( 'includes/abstract-mailer.php' );
-			include( 'includes/class-subscription-mail.php' );
-			include( 'includes/class-instock-mail.php' );
-			include( 'includes/admin/class-status.php' );
-			include( 'includes/class-test-mail.php' );
-			include( 'includes/class-stock-third-party.php' );
-			include( 'includes/class-auto-delete.php' );
-			include( 'includes/class-cache-buster.php' );
-			include( 'includes/class-copy-mailer.php' );
-			include( 'includes/class-quantity-field.php' );
-			include( 'includes/class-bot-protection.php' );
-			include( 'includes/class-keep-status.php' );
-			include( 'includes/class-site-checker.php' );
-			include( 'includes/class-stock-arrival.php' );
-			include( 'includes/class-stock-arrival-settings.php' );
+			include 'includes/class-template.php';
+			include 'includes/admin/class-post-type.php';
+			include 'includes/frontend/class-product.php';
+			include 'includes/class-ajax.php';
+			include  'includes/class-core.php';
+			include 'includes/class-api.php';
+			include 'includes/admin/class-settings.php';
+			include 'includes/class-logger.php';
+			include 'includes/class-privacy.php';
+			include 'includes/admin/class-extra.php';
+			include 'includes/class-troubleshoot.php';
+			include 'includes/class-privacy-checkbox.php';
+			include 'includes/class-upgrade.php';
+			include 'includes/class-popup.php';
+			include 'includes/class-webhook.php';
+			include 'includes/class-rest-api.php';
+			include 'includes/abstract-mailer.php';
+			include 'includes/class-subscription-mail.php';
+			include 'includes/class-instock-mail.php';
+			include 'includes/admin/class-status.php';
+			include 'includes/class-test-mail.php';
+			include 'includes/class-stock-third-party.php';
+			include 'includes/class-auto-delete.php';
+			include 'includes/class-cache-buster.php';
+			include 'includes/class-copy-mailer.php';
+			include 'includes/class-quantity-field.php';
+			include 'includes/class-bot-protection.php';
+			include 'includes/class-keep-status.php';
+			include 'includes/class-site-checker.php';
+			include 'includes/class-stock-arrival.php';
+			include 'includes/class-stock-arrival-settings.php';
 		}
 
 		/**
@@ -147,7 +147,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		 * @return void
 		 */
 		public function initialize() {
-			require_once( 'includes/class-background-mail-process.php' );
+			require_once('includes/class-background-mail-process.php');
 		}
 
 		/**
@@ -172,7 +172,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		 * @return void
 		 */
 		private function define( $name, $value) {
-			if (!defined($name)) {
+			if (! defined($name)) {
 				define($name, $value);
 			}
 		}
@@ -195,7 +195,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		 */
 		public function enqueue_scripts() {
 			$check_already_enqueued = $this->check_script_is_already_loaded('jquery-blockui');
-			if (!$check_already_enqueued) {
+			if (! $check_already_enqueued) {
 				wp_register_script('jquery-blockui', CWGINSTOCK_PLUGINURL . 'assets/js/jquery.blockUI.js', array('jquery'), $this->version, true);
 			}
 			wp_register_script('cwginstock_js', CWGINSTOCK_PLUGINURL . 'assets/js/frontend-dev.min.js', array('jquery', 'jquery-blockui'), $this->version, true);
@@ -207,7 +207,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 			wp_register_style('cwginstock_bootstrap', CWGINSTOCK_PLUGINURL . 'assets/css/bootstrap.min.css', array(), $this->version, false);
 			$get_option = get_option('cwginstocksettings');
 
-			$check_visibility = isset($get_option['hide_form_guests']) && '' != $get_option['hide_form_guests'] && !is_user_logged_in() ? false : true;
+			$check_visibility = isset($get_option['hide_form_guests']) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
 			if ($check_visibility) {
 				wp_enqueue_script('jquery');
 				wp_enqueue_script('jquery-blockui');
@@ -240,27 +240,27 @@ if (!class_exists('CWG_Instock_Notifier')) {
 				 * @since 1.0.0
 				 */
 				$translation_array = apply_filters(
-						'cwginstock_localization_array',
-						array(
-							'ajax_url' => $form_submission_mode ? rest_url() . 'back-in-stock/v1/subscriber/create/' : admin_url('admin-ajax.php'),
-							'default_ajax_url' => admin_url('admin-ajax.php'),
-							'security' => $form_submission_mode ? wp_create_nonce('wp_rest') : wp_create_nonce('cwg_subscribe_product'),
-							'user_id' => get_current_user_id(),
-							'security_error' => __('Something went wrong, please try after sometime', 'cwginstocknotifier'),
-							'empty_name' => $get_empty_name,
-							'empty_quantity' => $get_empty_quantity,
-							'empty_email' => $get_empty_msg,
-							'invalid_email' => $invalid_msg,
-							'is_popup' => $is_popup,
-							'phone_field' => $phone_field_visibility ? '1' : '2',
-							'phone_field_error' => array($invalid_phone_number, $invalid_phone_number, $phone_number_too_short, $phone_number_too_long, $invalid_phone_number),
-							'phone_utils_js' => $phone_field_visibility ? CWGINSTOCK_PLUGINURL . 'assets/js/utils.js' : '',
-							'is_phone_field_optional' => $phone_field_optional ? '1' : '2',
-							'is_quantity_field_optional' => $quantity_field_optional ? '1' : '2',
-							'hide_country_placeholder' => $hide_country_placeholder ? '1' : '2',
-							'default_country_code' => $default_country_code,
-							'custom_country_placeholder' => '' != $default_country_code && 'default' != $custom_country_placeholder && '' != $custom_placehoder_value ? $custom_placehoder_value : '',
-						)
+					'cwginstock_localization_array',
+					array(
+						'ajax_url' => $form_submission_mode ? rest_url() . 'back-in-stock/v1/subscriber/create/' : admin_url('admin-ajax.php'),
+						'default_ajax_url' => admin_url('admin-ajax.php'),
+						'security' => $form_submission_mode ? wp_create_nonce('wp_rest') : wp_create_nonce('cwg_subscribe_product'),
+						'user_id' => get_current_user_id(),
+						'security_error' => __('Something went wrong, please try after sometime', 'cwginstocknotifier'),
+						'empty_name' => $get_empty_name,
+						'empty_quantity' => $get_empty_quantity,
+						'empty_email' => $get_empty_msg,
+						'invalid_email' => $invalid_msg,
+						'is_popup' => $is_popup,
+						'phone_field' => $phone_field_visibility ? '1' : '2',
+						'phone_field_error' => array($invalid_phone_number, $invalid_phone_number, $phone_number_too_short, $phone_number_too_long, $invalid_phone_number),
+						'phone_utils_js' => $phone_field_visibility ? CWGINSTOCK_PLUGINURL . 'assets/js/utils.js' : '',
+						'is_phone_field_optional' => $phone_field_optional ? '1' : '2',
+						'is_quantity_field_optional' => $quantity_field_optional ? '1' : '2',
+						'hide_country_placeholder' => $hide_country_placeholder ? '1' : '2',
+						'default_country_code' => $default_country_code,
+						'custom_country_placeholder' => '' != $default_country_code && 'default' != $custom_country_placeholder && '' != $custom_placehoder_value ? $custom_placehoder_value : '',
+					)
 				);
 				wp_localize_script('cwginstock_js', 'cwginstock', $translation_array);
 				wp_enqueue_script('cwginstock_js');
@@ -297,12 +297,12 @@ if (!class_exists('CWG_Instock_Notifier')) {
 				wp_enqueue_style('cwginstock_admin_css', CWGINSTOCK_PLUGINURL . '/assets/css/admin.css', array(), $this->version);
 				wp_register_script('cwginstock_admin_js', CWGINSTOCK_PLUGINURL . '/assets/js/admin.js', array('jquery', 'wc-enhanced-select'), $this->version);
 				wp_localize_script(
-						'cwginstock_admin_js',
-						'cwg_enhanced_selected_params',
-						array(
-							'search_tags_nonce' => wp_create_nonce('search-tags'),
-							'ajax_url' => admin_url('admin-ajax.php'),
-						)
+					'cwginstock_admin_js',
+					'cwg_enhanced_selected_params',
+					array(
+						'search_tags_nonce' => wp_create_nonce('search-tags'),
+						'ajax_url' => admin_url('admin-ajax.php'),
+					)
 				);
 				wp_enqueue_script('cwginstock_admin_js');
 			}
@@ -373,14 +373,13 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		}
 
 		public function clear_schedule_events() {
-			$list_of_events = array('cwg_delete_subscribers', 'cwginstock_third_party');
+			$list_of_events = array('cwg_delete_subscribers', 'cwginstock_third_party', 'cwg_schedule_third_party_support');
 			foreach ($list_of_events as $each_event) {
 				if (as_next_scheduled_action($each_event)) {
 					as_unschedule_all_actions($each_event);
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -389,13 +388,13 @@ if (!class_exists('CWG_Instock_Notifier')) {
 	 * @since 1.0
 	 */
 	function CWG_Instock_Notifier() {
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 		if (cwg_is_woocommerce_activated()) {
 			return CWG_Instock_Notifier::instance();
 		}
 	}
 
-	if (!function_exists('cwg_is_woocommerce_activated')) {
+	if (! function_exists('cwg_is_woocommerce_activated')) {
 
 		/**
 		 * Summary of cwg_is_woocommerce_activated
@@ -403,7 +402,7 @@ if (!class_exists('CWG_Instock_Notifier')) {
 		 * @return bool
 		 */
 		function cwg_is_woocommerce_activated() {
-			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 			if (is_plugin_active('woocommerce/woocommerce.php')) {
 				return true;
 			} elseif (is_plugin_active_for_network('woocommerce/woocommerce.php')) {
@@ -412,7 +411,6 @@ if (!class_exists('CWG_Instock_Notifier')) {
 				return false;
 			}
 		}
-
 	}
 
 	CWG_Instock_Notifier();
