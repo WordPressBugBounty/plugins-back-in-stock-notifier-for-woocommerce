@@ -60,6 +60,10 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				$get_type = 'variation' == $obj->get_type() ? true : false;
 				$list_of_subscribers = $main_obj->get_list_of_subscribers();
 
+				if ( $obj && ( $obj->is_type( 'variable' ) ) ) {
+					return; // Variable product rely on variation so direct restock not required
+				}
+
 				if ( $get_type ) {
 					if ( $variable_any_variation_backinstock ) {
 						$get_parent_id = $obj->get_parent_id();
@@ -80,11 +84,12 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 									update_post_meta( $each_entry, 'cwginstock_bypass_pid', $id );
 								}
 							}
-							$list_of_subscribers = array_unique(array_merge( $list_of_subscribers, $parent_subscribers ));
+							$list_of_subscribers = array_unique( array_merge( $list_of_subscribers, $parent_subscribers ) );
 							set_transient( $flag_key, true, 300 );
 						}
 					}
 				}
+
 				/**
 				 * Filter for trigger status variation
 				 *
