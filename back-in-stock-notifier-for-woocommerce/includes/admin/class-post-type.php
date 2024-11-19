@@ -189,6 +189,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 					if ( 'edit.php?post_type=cwginstocknotifier' == $menu[ $key ][2] ) {
 						if ( ! isset( $get_option['hide_subscribercount'] ) || '1' != $get_option['hide_subscribercount'] ) {
 							// display a count or notification badge related to plugins or updates
+							// phpcs:ignore
 							$menu[ $key ][0] .= ' <span class="update-plugins"><span class="plugin-count">' . $count . '</span></span>';
 
 							return;

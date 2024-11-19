@@ -15,8 +15,6 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			add_action( 'woocommerce_woosb_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
 			add_action( 'woocommerce_composite_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
 			add_action( 'woocommerce_after_variations_form', array( $this, 'display_in_no_variation_product' ) );
-			//jet product table
-			add_filter( 'woocommerce_loop_add_to_cart_link', array( $this, 'display_button_in_jetproduct_table' ), 10, 3 );
 			// add_action('woocommerce_grouped_add_to_cart', array($this, 'display_in_simple_product'), 32);
 			add_filter( 'woocommerce_available_variation', array( $this, 'display_in_variation' ), 999, 3 );
 			// some theme variation disabled by default if it is out of stock so for that workaround solution
@@ -37,6 +35,14 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			add_filter( 'cwginstock_locate_template', array( $this, 'force_template_from_plugin' ), 10, 5 );
 			add_filter( 'cwginstock_success_subscription_html', array( $this, 'replace_shortcode_for_message' ), 10, 3 );
 			add_filter( 'cwginstock_error_subscription_html', array( $this, 'replace_shortcode_for_message' ), 10, 3 );
+
+			add_action( 'plugins_loaded', array( $this, 'jetproduct_compatibility' ), 999 );
+		}
+
+		public function jetproduct_compatibility() {
+			if ( defined( 'JET_WC_PT__FILE__' ) ) {
+				add_filter( 'woocommerce_loop_add_to_cart_link', array( $this, 'display_button_in_jetproduct_table' ), 10, 3 );
+			}
 		}
 
 		public function display_in_simple_product() {
@@ -51,15 +57,20 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		}
 		public function display_button_in_jetproduct_table( $button, $product, $args ) {
 
-			if ($product->get_stock_status() == 'outofstock' && defined( 'JET_WC_PT__FILE__' ) ) {
+			if ( $product->get_stock_status() == 'outofstock' && defined( 'JET_WC_PT__FILE__' ) ) {
 				$parent_id = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
 				$parent_obj = wc_get_product( $parent_id );
 				$product = $product->is_type( 'variation' ) ? $product : array();
+				/**
+				 * Display Subscribe Now Button using this below hook
+				 * 
+				 * @since 5.7.0
+				 */
 				return do_action( 'cwginstock_custom_form', $parent_obj, $product );
 			}
 			return $button;
 		}
-	
+
 
 		public function add_product_column_grouped( $columns, $product ) {
 			$columns[] = 'cwg_subscribe_form';

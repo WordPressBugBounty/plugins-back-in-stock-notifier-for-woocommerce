@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 5.7.1
+Stable tag: 5.7.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -258,6 +258,9 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.2 2024-11-19 =
+* Fix : An error of type E_ERROR due to JetProductTables Plugin Compatibility
+
 = 5.7.1 2024-11-18 =
 * Fix : Duplicate emails to the variable product subscribers when restock variations
 
