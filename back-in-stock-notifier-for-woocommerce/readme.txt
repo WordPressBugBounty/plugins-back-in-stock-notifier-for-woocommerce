@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 5.7.2
+Stable tag: 5.7.3
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -258,6 +258,9 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.3 2024-11-20 =
+* Fix : Code enhanced to display the button only on the JetProduct table
+
 = 5.7.2 2024-11-19 =
 * Fix : An error of type E_ERROR due to JetProductTables Plugin Compatibility
 
