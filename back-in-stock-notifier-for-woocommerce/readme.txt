@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 5.7.3
+Stable tag: 5.7.4
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -48,18 +48,19 @@ We designed this plugin to overcome this situation by sending emails in the back
  	<li><strong>Translation Ready</strong>.</li>
  	<li><strong>PREMIUM ADD-ON: WPML Compatible</strong>.</li>
  	<li><strong>PREMIUM ADD-ON: Subscription Mail with Unsubscribe Option.</li>
-        <li><strong>PREMIUM ADD-ON: Double Opt-In Support (Main Plugin v1.10.2 required)</li>
+    <li><strong>PREMIUM ADD-ON: Double Opt-In Support (Main Plugin v1.10.2 required)</li>
  	<li><strong>Subscribed Email Ids</strong> can be <strong>deleted from the backend</strong>.</li>
  	<li><strong>PREMIUM ADD-ON: Ban Email Ids and Domains</strong>.</li>
  	<li><strong>PREMIUM ADD-ON: Custom CSS to customize frontend Subscriber Form</strong>.</li>
  	<li><strong>PREMIUM ADD-ON: Export Waitlist as CSV file</strong>.</li>
 	<li><strong>PREMIUM ADD-ON: Mailchimp Sync</strong>.</li>
 	<li><strong>PREMIUM ADD-ON: Track Sales</strong>.</li>
-        <li><strong>PREMIUM ADD-ON: Polylang</strong>.</li>
-        <li><strong>PREMIUM ADD-ON: Edit Subscribers</strong>.</li>
-        <li><strong>PREMIUM ADD-ON: Import CSV</strong>.</li>
-        <li><strong>PREMIUM ADD-ON: Twilio</strong>.</li>
-        <li><strong>PREMIUM ADD-ON: Klaviyo</strong>.</li>
+    <li><strong>PREMIUM ADD-ON: Polylang</strong>.</li>
+    <li><strong>PREMIUM ADD-ON: Edit Subscribers</strong>.</li>
+    <li><strong>PREMIUM ADD-ON: Import CSV</strong>.</li>
+    <li><strong>PREMIUM ADD-ON: Twilio</strong>.</li>
+    <li><strong>PREMIUM ADD-ON: Klaviyo</strong>.</li>
+	<li><strong>PREMIUM ADD-ON: ActiveCampaign</strong>.</li>
  	<li>Notification Mails are <strong>highly customizable</strong>.</li>
  	<li><strong>Works out of the box</strong>.</li>
  	<li><strong>Simple and Easy to use</strong>.</li>
@@ -83,7 +84,8 @@ We continue to support this plugin based on our paid extensions. Anyone can affo
     <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/edit-subscribers/"><strong>Edit Subscribers - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
     <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/twilio-sms/"><strong>Twilio SMS - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
     <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/klaviyo/"><strong>Klaviyo - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
-    <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/"><strong>Bundle Add-ons(All Add-ons with discounted price) - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
+    <li><a href="https://codewoogeek.online/shop/back-in-stock-notifier/active-campaign/"><strong>ActiveCampaign - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
+	<li><a href="https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/"><strong>Bundle Add-ons(All Add-ons with discounted price) - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong></a></li>
     
 <li><a href="https://codewoogeek.online/product-category/back-in-stock-notifier/"><strong>and more coming soon</strong></a></li>
 </ol>
@@ -144,9 +146,13 @@ The Twilio SMS Add-On for the Back in Stock Notifier for WooCommerce plugin enab
 
 The Klaviyo Add-on will helpful to sync subscribers from Back InStock Notifier to Klaviyo
 
-[<strong>Bundle Add-ons (All 13 Add-ons with a discounted price) + Future any New Add-ons - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/)
+[<strong> ActiveCampaign - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://codewoogeek.online/shop/back-in-stock-notifier/active-campaign/)
 
-Some people need a few add-ons, and some people need all add-ons. For them, we created bundle add-ons with a discounted price for all thirteen add-ons + any new add-ons.
+The ActiveCampaign Add-on will helpful to sync subscribers from Back InStock Notifier to ActiveCampaign
+
+[<strong>Bundle Add-ons (All 14 Add-ons with a discounted price) + Future any New Add-ons - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/)
+
+Some people need a few add-ons, and some people need all add-ons. For them, we created bundle add-ons with a discounted price for all fourteen add-ons + any new add-ons.
 
 == Installation ==
 
@@ -258,6 +264,13 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.4 2024-12-06 =
+* Tweak : Added the display of the 'Backorder' status in the 'Current Stock Status' of the product in the Product column (Admin Dashboard > Instock Notifier > All Subscribers > Subscribers List Table > 'Product' column > Current Stock Status)
+* Tweak : Repositioned the 'Copy Subscription Mail Subject' and 'Copy Subscription Mail Message' options next to the 'Enter Email Ids separated by commas that you want to receive subscription copy mail' in the 'Mail Settings' section
+* Fix :  Estimated stock arrival remaining days are displayed as negative when the stock date is earlier than the current date
+* Tweak : Tested with WooCommerce 9.4.3
+* Tweak : Tested with WordPress 6.7.1
+
 = 5.7.3 2024-11-20 =
 * Fix : Code enhanced to display the button only on the JetProduct table
 

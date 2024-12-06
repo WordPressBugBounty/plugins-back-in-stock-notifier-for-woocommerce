@@ -149,3 +149,6 @@ div.cwg-section .cwg-addon-title {
 .cwg_stock_outofstock {
 	color: #e2401c;
 }
+.cwg_stock_backorder {
+	color: #ffa500 !important;
+}

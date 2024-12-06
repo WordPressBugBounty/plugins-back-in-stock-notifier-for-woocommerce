@@ -42,6 +42,7 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 						'PolyLang - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/polylang/',
 						'Twilio SMS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/twilio-sms/',
 						'Klaviyo - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/klaviyo/',
+						'ActiveCampaign - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/active-campaign/',
 						'More Addons coming soon' => '',
 					)
 			);
