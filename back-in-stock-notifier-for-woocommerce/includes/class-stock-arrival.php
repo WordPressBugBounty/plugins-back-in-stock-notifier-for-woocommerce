@@ -8,6 +8,7 @@ if (!class_exists('CWG_Estimate_Stock_Arrival')) {
 	class CWG_Estimate_Stock_Arrival {
 	
 
+
 		public $api;
 		public $options;
 
@@ -85,12 +86,21 @@ if (!class_exists('CWG_Estimate_Stock_Arrival')) {
 			switch ($column) {
 				case 'products':
 					$product_ids = get_post_meta($post_id, 'cwg_product_ids', true);
-					$current_v = isset($product_ids) ? $product_ids : '';
-					if (is_array($current_v) && !empty($current_v)) {
-						foreach ($current_v as $each_id) {
+					if (is_array($product_ids) && !empty($product_ids)) {
+						foreach ($product_ids as $each_id) {
 							$product = wc_get_product($each_id);
 							if ($product) {
-								printf('<pre>%s</pre>', wp_kses_post($product->get_formatted_name()));
+								$get_type = $product->get_type();
+								$product_id = 'variation' === $get_type ? $product->get_parent_id() : $each_id; // Fetch parent ID if it's a variation
+								$product_name = $product->get_name();
+								$permalink = esc_url(admin_url("post.php?post=$product_id&action=edit"));
+								printf(
+									'<a href="%s" title="%s">#%d %s</a><br>',
+									esc_url($permalink),
+									esc_attr($product_name),
+									esc_html($product_id),
+									esc_html($product_name)
+								);
 							}
 						}
 					}

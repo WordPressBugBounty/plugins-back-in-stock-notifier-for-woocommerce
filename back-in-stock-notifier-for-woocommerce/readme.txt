@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 5.7.4
+Stable tag: 5.7.5
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.5 2024-12-11 =
+* Fix : Product titles extend into other columns when they are too long in the 'Product(s)' column under the Instock Notifier > Estimate Stock Arrival > Estimate Stock Arrival List table
+* Tweak : Enhanced Mobile view for "All Subscribers" List table
+
 = 5.7.4 2024-12-06 =
 * Tweak : Added the display of the 'Backorder' status in the 'Current Stock Status' of the product in the Product column (Admin Dashboard > Instock Notifier > All Subscribers > Subscribers List Table > 'Product' column > Current Stock Status)
 * Tweak : Repositioned the 'Copy Subscription Mail Subject' and 'Copy Subscription Mail Message' options next to the 'Enter Email Ids separated by commas that you want to receive subscription copy mail' in the 'Mail Settings' section

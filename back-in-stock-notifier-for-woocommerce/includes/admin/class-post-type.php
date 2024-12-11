@@ -403,8 +403,12 @@ if (! class_exists('CWG_Instock_Post_Type')) {
 		}
 
 		public function list_table_primary_column( $default, $screen) {
-			if ('edit-cwginstocknotifier' === $screen && ! wp_is_mobile()) {
-				$default = 'email';
+			if ('edit-cwginstocknotifier' === $screen) {
+				// $detect = new \CWG_Detection\MobileDetect();
+				// $is_mobile = ( $detect->isMobile() ? ( $detect->isTablet() ? true : true ) : false );
+				// if (!$is_mobile) {
+					$default = 'email';
+				//} 
 			}
 			return $default;
 		}
