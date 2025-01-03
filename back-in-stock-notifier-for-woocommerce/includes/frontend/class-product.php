@@ -9,6 +9,7 @@ if (! class_exists('CWG_Instock_Notifier_Product')) {
 	class CWG_Instock_Notifier_Product {
 	
 
+
 		public function __construct() {
 			add_action('woocommerce_simple_add_to_cart', array($this, 'display_in_simple_product'), 31);
 			add_action('woocommerce_subscription_add_to_cart', array($this, 'display_in_simple_product'), 31);
@@ -38,6 +39,7 @@ if (! class_exists('CWG_Instock_Notifier_Product')) {
 			add_filter('cwginstock_error_subscription_html', array($this, 'replace_shortcode_for_message'), 10, 3);
 
 			add_filter('jet-wc-product-table/components/columns/get-column-content', array($this, 'jetproduct_compatibility'), 10, 4);
+			add_filter('pvtfw_row_cart_btn_oos', array($this, 'display_subscribe_form_in_pvttable'), 999, 6);
 		}
 
 
@@ -471,6 +473,18 @@ if (! class_exists('CWG_Instock_Notifier_Product')) {
 				}
 			}
 			return $message_html;
+		}
+		public function display_subscribe_form_in_pvttable( $cart_button, $product_id, $cart_url, $product_url, $variant_id, $stock_info) {
+			$parent_product = wc_get_product($product_id);
+			$child = wc_get_product($variant_id);
+			?>
+			<style type='text/css'>
+				button.pvtfw_variant_table_cart_btn.button.alt:disabled {
+					display: none !important;
+				}
+			</style>
+			<?php
+			do_action('cwginstock_custom_form', $parent_product, $child);
 		}
 	}
 

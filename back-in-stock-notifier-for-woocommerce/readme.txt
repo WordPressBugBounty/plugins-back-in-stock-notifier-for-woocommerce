@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 5.7.5
+Stable tag: 5.7.6
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,12 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.6 2025-01-03 =
+* New : Compatibility with the Plugin "PVT - Product Variation Table for WooCommerce"
+* Fix : Depreceted error:CWG_Detection\MobileDetect::__construct(): Implicitly marking parameter $headers as nullable is deprecated, the explicit nullable
+* Tweak : Improved the test email functionality on the Status Page by integrating the as_schedule_single_action event to verify the proper functionality of scheduled actions, particularly for automatic emails
+* Tweak : Tested with WooCommerce 9.5.1
+
 = 5.7.5 2024-12-11 =
 * Fix : Product titles extend into other columns when they are too long in the 'Product(s)' column under the Instock Notifier > Estimate Stock Arrival > Estimate Stock Arrival List table
 * Tweak : Enhanced Mobile view for "All Subscribers" List table

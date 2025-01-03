@@ -1,21 +1,25 @@
 <?php
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
-if (!class_exists('CWG_Instock_Status')) {
+if (! class_exists('CWG_Instock_Status')) {
 
 	class CWG_Instock_Status {
+	
+
+
 
 		public function __construct() {
 			add_action('admin_menu', array($this, 'add_settings_menu'));
 			add_action('admin_head', array($this, 'hide_notice'));
-			add_action('wp_ajax_cwginstock_test_email', array($this, 'test_email_callback'));
+			add_action('wp_ajax_cwginstock_test_email', array($this, 'schedule_test_email_callback'));
+			add_action('cwginstock_send_test_email', array($this, 'send_scheduled_test_email'));
 			add_action('wp_ajax_cwginstock_backend_ui', array($this, 'change_backend_ui'));
 		}
 
 		public function add_settings_menu() {
-			add_submenu_page('edit.php?post_type=cwginstocknotifier', __('Staus', 'back-in-stock-notifier-for-woocommerce'), __('Status', 'back-in-stock-notifier-for-woocommerce'), 'manage_woocommerce', 'cwg-instock-status', array($this, 'manage_settings'));
+			add_submenu_page('edit.php?post_type=cwginstocknotifier', __('Status', 'back-in-stock-notifier-for-woocommerce'), __('Status', 'back-in-stock-notifier-for-woocommerce'), 'manage_woocommerce', 'cwg-instock-status', array($this, 'manage_settings'));
 		}
 
 		public function manage_settings() {
@@ -98,9 +102,9 @@ if (!class_exists('CWG_Instock_Status')) {
 						),
 					);
 
-					if (is_array($settings_information) && !empty($settings_information)) {
+					if (is_array($settings_information) && ! empty($settings_information)) {
 						foreach ($settings_information as $key => $value) {
-							if (is_array($value) && !empty($value)) {
+							if (is_array($value) && ! empty($value)) {
 								foreach ($value as $checkbox_key => $checkbox_data) {
 									$is_enabled = 'checkbox' == $key ? ( isset($option[$checkbox_key]) ? $option[$checkbox_key] : 0 ) : ( isset($option[$checkbox_key]) && $option[$checkbox_key] ? 1 : 0 );
 									if (isset($checkbox_data[$is_enabled])) {
@@ -180,7 +184,7 @@ if (!class_exists('CWG_Instock_Status')) {
 								'CWG_Bundle_List_Table' => 'Bundle Add-ons',
 							);
 
-							if (is_array($active_addons) && !empty($active_addons)) {
+							if (is_array($active_addons) && ! empty($active_addons)) {
 								$i = 1;
 
 								foreach ($active_addons as $add_on => $add_on_name) {
@@ -268,20 +272,20 @@ if (!class_exists('CWG_Instock_Status')) {
 			 * @since 1.0.0
 			 */
 			$active_addons = apply_filters(
-					'cwginstock_addon_list',
-					array(
-						'CWG_Instock_Mailchimp' => 'Mailchimp Add-on',
-						'CWG_Instock_Notifier_Custom_CSS' => 'Custom CSS Add-on',
-						'CWG_Instock_Notifier_Unsubscribe' => 'Unsubscribe Add-on',
-						'CWG_Instock_Notifier_WPML' => 'WPML Add-on',
-						'CWG_Doubleopt_in' => 'Double Opt-In Add-on',
-						'CWG_Instock_Notifier_Export_CSV' => 'Export CSV Add-on',
-						'CWG_Instock_Notifier_Ban_Emails' => 'Ban Email Add-on',
-						'CWG_Instock_Notifier_Track_Sales' => 'Track Sales',
-						'CWG_Instock_Import_CSV' => 'Import CSV',
-						'CWG_Instock_Notifier_Edit_Subscribers' => 'Edit Subscribers',
-						'CWG_Instock_Notifier_Polylang' => 'Polylang',
-					)
+				'cwginstock_addon_list',
+				array(
+					'CWG_Instock_Mailchimp' => 'Mailchimp Add-on',
+					'CWG_Instock_Notifier_Custom_CSS' => 'Custom CSS Add-on',
+					'CWG_Instock_Notifier_Unsubscribe' => 'Unsubscribe Add-on',
+					'CWG_Instock_Notifier_WPML' => 'WPML Add-on',
+					'CWG_Doubleopt_in' => 'Double Opt-In Add-on',
+					'CWG_Instock_Notifier_Export_CSV' => 'Export CSV Add-on',
+					'CWG_Instock_Notifier_Ban_Emails' => 'Ban Email Add-on',
+					'CWG_Instock_Notifier_Track_Sales' => 'Track Sales',
+					'CWG_Instock_Import_CSV' => 'Import CSV',
+					'CWG_Instock_Notifier_Edit_Subscribers' => 'Edit Subscribers',
+					'CWG_Instock_Notifier_Polylang' => 'Polylang',
+				)
 			);
 			$is_active = false;
 
@@ -300,36 +304,39 @@ if (!class_exists('CWG_Instock_Status')) {
 				<?php
 			}
 		}
+		public function send_scheduled_test_email() {
+			$test_obj = new CWG_Instock_Test_Email();
+			$response = $test_obj->send();
 
-		public function test_email_callback() {
-			if (isset($_POST)) {
-				// nonce validation
-				if (isset($_POST['security']) && wp_verify_nonce(sanitize_text_field($_POST['security']), 'cwginstock_test_email')) {
-					$test_obj = new CWG_Instock_Test_Email();
-					$response = $test_obj->send();
-					if (( $response )) {
-						// if success
-						$status_detail = array(
-							'status' => 'success',
-							'checked_on' => gmdate('Y-m-d h:i:s'),
-						);
-					} else {
-						$status_detail = array(
-							'status' => 'failure',
-							'checked_on' => gmdate('Y-m-d h:i:s'),
-						);
-					}
-					update_option('cwginstock_test_email_status', $status_detail);
-
-					wp_send_json($status_detail);
-				} else {
-					$error = esc_html__('Unable to verify details, please try again after some time', 'back-in-stock-notifier-for-woocommerce');
-					wp_send_json_error($error, '401');
-				}
-
-				die();
+			if ($response) {
+				update_option('cwginstock_test_email_status', array(
+					'status' => 'success',
+					'checked_on' => gmdate('Y-m-d h:i:s'),
+				));
+			} else {
+				update_option('cwginstock_test_email_status', array(
+					'status' => 'failure',
+					'checked_on' => gmdate('Y-m-d h:i:s'),
+				));
 			}
 		}
+		public function schedule_test_email_callback() {
+			if (isset($_POST['security']) && wp_verify_nonce(sanitize_text_field($_POST['security']), 'cwginstock_test_email')) {
+				$timestamp = time() + 10;
+				as_schedule_single_action($timestamp, 'cwginstock_send_test_email', array(), 'back-in-stock-notifier-for-woocommerce');
+				wp_send_json(array(
+					'status' => 'success',
+					'message' => __('The test email has been scheduled to send shortly.', 'back-in-stock-notifier-for-woocommerce')
+				));
+			} else {
+				wp_send_json_error(array(
+					'status' => 'failure',
+					'message' => esc_html__('Unable to verify details, please try again later.', 'back-in-stock-notifier-for-woocommerce')
+				));
+			}
+			die();
+		}
+
 
 		public function change_backend_ui() {
 			if (isset($_POST)) {
@@ -349,7 +356,6 @@ if (!class_exists('CWG_Instock_Status')) {
 				die();
 			}
 		}
-
 	}
 
 	new CWG_Instock_Status();
