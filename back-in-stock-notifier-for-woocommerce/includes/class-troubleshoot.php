@@ -7,8 +7,14 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 
 	class CWG_Instock_Troubleshoot {
 
+
+
+
 		public function __construct() {
 			add_action( 'cwginstock_register_settings', array( $this, 'add_settings_field' ), 999 );
+			add_action( 'trashed_post', array( $this, 'check_deleted_product' ) );
+			add_action( 'woocommerce_before_delete_product_variation', array( $this, 'check_deleted_variation' ) );
+			add_action( 'cwgbis_trash_subscriber', array( $this, 'trash_subscriber_function' ) );
 		}
 
 		public function add_settings_field() {
@@ -26,6 +32,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			add_settings_field( 'cwg_instock_stop_email_staging', __( 'Disable sending emails on staging environments', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'stop_sending_email_staging' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_stop_email_staging_domain', __( 'Enter your staging site starting domain', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'stop_sending_email_staging_domain' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_disable_prefill_data', __( 'Disable Prefilled Data for Logged-in Users', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'stop_prefilled_data' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
+			add_settings_field( 'cwg_instock_enable_delete_on_product_delete', __( 'Trash Subscribers upon Product Deletion', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'enable_delete_on_product_delete' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 		}
 
 		public function troubleshoot_settings_heading() {
@@ -157,7 +164,72 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			</p>
 			<?php
 		}
+		public function enable_delete_on_product_delete() {
+			$options = get_option( 'cwginstocksettings' );
+			?>
+			<input type='checkbox' name='cwginstocksettings[enable_delete_on_product_delete]' <?php isset( $options['enable_delete_on_product_delete'] ) ? checked( $options['enable_delete_on_product_delete'], 1 ) : ''; ?> value="1" />
+			<p><i><?php esc_html_e( 'Enable this option to automatically trash the subscriber(s) associated with a product or variation when they are deleted', 'back-in-stock-notifier-for-woocommerce' ); ?></i>
+			</p>
+			<?php
+		}
+		public function check_deleted_product( $product_id ) {
+			$options = get_option( 'cwginstocksettings' );
+			if ( isset( $options['enable_delete_on_product_delete'] ) && 1 == $options['enable_delete_on_product_delete'] ) {
+				$variation_id = 0;
+				$cwg_api = new CWG_Instock_API( $product_id, $variation_id );
+				$subscribers = $cwg_api->get_list_of_subscribers( 'AND' );
 
+				if ( ! empty( $subscribers ) ) {
+					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - Found Subscribers: ' . json_encode( $subscribers ) );
+					$logger->record_log();
+
+					$subscriber_chunks = array_chunk( $subscribers, 10 );
+					foreach ( $subscriber_chunks as $chunk ) {
+						as_schedule_single_action( time(), 'cwgbis_trash_subscriber', array( $chunk ) ); //don't register generic name add prefix always
+					}
+					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - Subscribers scheduled for deletion: ' . json_encode( $subscribers ) );
+					$logger->record_log();
+				} else {
+					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - No Subscribers Found' );
+					$logger->record_log();
+				}
+			}
+		}
+		public function check_deleted_variation( $variation_id ) {
+			$options = get_option( 'cwginstocksettings' );
+			$delete_on_product_delete_enabled = isset( $options['enable_delete_on_product_delete'] ) && 1 == $options['enable_delete_on_product_delete'];
+			if ( $delete_on_product_delete_enabled ) {
+
+				$variation = wc_get_product( $variation_id );
+				if ( $variation ) {
+					$parent_id = $variation->get_parent_id();
+
+					$cwg_api = new CWG_Instock_API( $parent_id, $variation_id );
+					$subscribers = $cwg_api->get_list_of_subscribers( 'AND' );
+					if ( ! empty( $subscribers ) ) {
+						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - Found Subscribers: ' . json_encode( $subscribers ) );
+						$logger->record_log();
+						$subscriber_chunks = array_chunk( $subscribers, 10 );
+						foreach ( $subscriber_chunks as $chunk ) {
+							as_schedule_single_action( time(), 'cwgbis_trash_subscriber', array( $chunk ) );
+						}
+						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - Subscribers scheduled for deletion: ' . json_encode( $subscribers ) );
+						$logger->record_log();
+					} else {
+						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - No Subscribers Found' );
+						$logger->record_log();
+					}
+				} else {
+					$logger = new CWG_Instock_Logger( 'info', 'Variation ID: ' . $variation_id . ' - No valid Parent Product ID' );
+					$logger->record_log();
+				}
+			}
+		}
+		public function trash_subscriber_function( $subscriber_ids ) {
+			foreach ( $subscriber_ids as $subscriber_id ) {
+				wp_trash_post( $subscriber_id );
+			}
+		}
 	}
 
 	new CWG_Instock_Troubleshoot();

@@ -9,6 +9,38 @@ var turnstile_site_key = cwginstock.turnstile_site_key;
 
 var gtoken = '';
 
+if (typeof wc_bulk_variations_params !== 'undefined') {
+	document.addEventListener(
+		'click',
+		function (event) {
+			if (event.target.matches('.cwg_popup_submit')) {
+				console.log(event.target.dataset.product_id);
+				console.log('Captured click before stopPropagation!');
+				var e = event.target;
+				jQuery.blockUI({ message: null });
+				var product_id = e.dataset.product_id;
+				var variation_id = e.dataset.variation_id;
+				var quantity = e.dataset.quantity
+				var security = e.dataset.security
+
+				var data = {
+					action: 'cwg_trigger_popup_ajax',
+					product_id: product_id,
+					variation_id: variation_id,
+					quantity: quantity,
+					security: security
+				};
+				if (get_bot_type == 'recaptcha' && recaptcha_enabled == '1' && is_v3_recaptcha == 'yes') {
+					popup_notifier.popup_generate_v3_response(this);
+				} else {
+					popup_notifier.perform_ajax(data);
+				}
+				return false;
+			}
+		},
+		true // This enables the capturing phase
+	);
+}
 
 var popup_notifier = {
 	init: function () {
@@ -16,6 +48,7 @@ var popup_notifier = {
 			'click',
 			'.cwg_popup_submit',
 			function () {
+
 				jQuery.blockUI({ message: null });
 				var current = jQuery(this);
 				var product_id = current.attr('data-product_id');

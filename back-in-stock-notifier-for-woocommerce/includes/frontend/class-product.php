@@ -8,8 +8,6 @@ if (! class_exists('CWG_Instock_Notifier_Product')) {
 
 	class CWG_Instock_Notifier_Product {
 	
-
-
 		public function __construct() {
 			add_action('woocommerce_simple_add_to_cart', array($this, 'display_in_simple_product'), 31);
 			add_action('woocommerce_subscription_add_to_cart', array($this, 'display_in_simple_product'), 31);
@@ -40,6 +38,7 @@ if (! class_exists('CWG_Instock_Notifier_Product')) {
 
 			add_filter('jet-wc-product-table/components/columns/get-column-content', array($this, 'jetproduct_compatibility'), 10, 4);
 			add_filter('pvtfw_row_cart_btn_oos', array($this, 'display_subscribe_form_in_pvttable'), 999, 6);
+			add_action('wc_bulk_variations_before_cell_description', array($this, 'woocommerce_bulk_variations_compatibility'), 10, 5);
 		}
 
 
@@ -484,9 +483,25 @@ if (! class_exists('CWG_Instock_Notifier_Product')) {
 				}
 			</style>
 			<?php
+			/**
+			 * Action Hook for popup submit button
+			 * 
+			 * @since 5.7.6
+			 */
 			do_action('cwginstock_custom_form', $parent_product, $child);
 		}
+		public function woocommerce_bulk_variations_compatibility( $column, $row, $variation_ids, $is_single_variation, $variation) {
+			$product_id = $variation->get_parent_id();
+			$parent_obj = wc_get_product($product_id);
+			if ($variation->get_stock_status() == 'outofstock') {
+				/**
+				 * Action Hook for popup submit button
+				 * 
+				 * @since 5.7.6
+				 */
+				do_action('cwginstock_custom_form', $parent_obj, $variation);
+			}
+		}
 	}
-
 	$instock_product = new CWG_Instock_Notifier_Product();
 }

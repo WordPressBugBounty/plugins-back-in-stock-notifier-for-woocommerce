@@ -5,7 +5,7 @@ Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier
 Requires at least: 4.7
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 5.7.6
+Stable tag: 5.7.7
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,11 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.7 2025-01-20 =
+* New : Compatibility with the Plugin "WooCommerce Bulk Variations by Barn2Plugins"
+* New : Added a new setting "Trash Subscribers upon Product Deletion"
+* Tweak : Tested with WooCommerce 9.5.2
+
 = 5.7.6 2025-01-03 =
 * New : Compatibility with the Plugin "PVT - Product Variation Table for WooCommerce"
 * Fix : Depreceted error:CWG_Detection\MobileDetect::__construct(): Implicitly marking parameter $headers as nullable is deprecated, the explicit nullable
