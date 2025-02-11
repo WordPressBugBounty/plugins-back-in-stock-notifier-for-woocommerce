@@ -3,9 +3,9 @@ Contributors: codewoogeek
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: [https://codewoogeek.online/product-category/back-in-stock-notifier/](https://codewoogeek.online/product-category/back-in-stock-notifier/)
 Requires at least: 4.7
-Tested up to: 6.7
+Tested up to: 6.7.2
 Requires PHP: 7.4
-Stable tag: 5.7.8
+Stable tag: 5.7.9
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,11 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.7.9 2025-02-11 =
+* Tweak : Optimized Subscribers Count Display in Admin Menu
+* Tweak : Tested with WooCommerce 9.6.1
+* Tweak : Tested with WordPress 6.7.2
+
 = 5.7.8 2025-01-22 =
 * Tweak : Enhanced code to increase ajax variation threshold
 * Tweak : Tested with WooCommerce 9.6.0
