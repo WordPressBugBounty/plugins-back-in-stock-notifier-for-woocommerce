@@ -1,5 +1,5 @@
 <section
-	class="cwginstock-subscribe-form <?php esc_html_e( $variation_class ); ?> <?php esc_html_e( $dynamic_wrapper_class ); ?>">
+	class="cwginstock-subscribe-form <?php echo esc_attr( $variation_class ); ?> <?php echo esc_attr( $dynamic_wrapper_class ); ?>">
 	<div class="panel panel-primary cwginstock-panel-primary">
 		<div class="panel-heading cwginstock-panel-heading">
 			<?php
@@ -13,7 +13,7 @@
 			<h4 style="text-align: center;">
 				<?php
 				$form_title = esc_html__( 'Email when stock available', 'back-in-stock-notifier-for-woocommerce' );
-				esc_html_e( isset( $get_option['form_title'] ) && '' != $get_option['form_title'] ? $instock_api->sanitize_text_field( $get_option['form_title'] ) : $form_title );
+				echo esc_attr( isset( $get_option['form_title'] ) && '' != $get_option['form_title'] ? $instock_api->sanitize_text_field( $get_option['form_title'] ) : $form_title );
 				?>
 			</h4>
 			<?php
@@ -45,13 +45,13 @@
 								?>
 								<input type="text" style="width:100%; text-align:center;" class="cwgstock_name"
 									name="cwgstock_name"
-									placeholder="<?php esc_html_e( $instock_api->sanitize_text_field( $name_placeholder ) ); ?>"
-									value="<?php esc_html_e( $subscriber_name ); ?>" />
+									placeholder="<?php echo esc_attr( $instock_api->sanitize_text_field( $name_placeholder ) ); ?>"
+									value="<?php echo esc_attr( $subscriber_name ); ?>" />
 							<?php } ?>
 							<input type="email" style="width:100%; text-align:center;" class="cwgstock_email"
 								name="cwgstock_email"
-								placeholder="<?php esc_html_e( $instock_api->sanitize_text_field( $placeholder ) ); ?>"
-								value="<?php esc_html_e( $email ); ?>" />
+								placeholder="<?php echo esc_attr( $instock_api->sanitize_text_field( $placeholder ) ); ?>"
+								value="<?php echo esc_attr( $email ); ?>" />
 							<?php if ( $phone_field_visibility ) { ?>
 								<input type="tel" class="cwgstock_phone" name="cwgstock_phone" />
 							<?php } ?>
@@ -71,7 +71,7 @@
 						<input type="hidden" class="cwg-variation-id" name="cwg-variation-id"
 							value="<?php echo intval( $variation_id ); ?>" />
 						<input type="hidden" class="cwg-security" name="cwg-security"
-							value="<?php esc_html_e( $security ); ?>" />
+							value="<?php echo esc_attr( $security ); ?>" />
 						<?php
 						/**
 						 * Executed After Input Fields
@@ -91,16 +91,16 @@
 							$additional_class_name = isset( $get_option['btn_class'] ) && '' != $get_option['btn_class'] ? str_replace( ',', ' ', $get_option['btn_class'] ) : '';
 							?>
 							<input type="submit" name="cwgstock_submit"
-								class="cwgstock_button <?php esc_html_e( $additional_class_name ); ?>" 
-																		 <?php
-																			/**
-																			 * Submit Attribute
-																			 *
-																			 * @since 1.0.0
-																			 */
-																			echo do_shortcode( apply_filters( 'cwgstock_submit_attr', '', $product_id, $variation_id ) );
-																			?>
-								value="<?php esc_html_e( $instock_api->sanitize_text_field( $button_label ) ); ?>" />
+								class="cwgstock_button <?php echo esc_attr( $additional_class_name ); ?>" 
+																  <?php
+																	/**
+																	 * Submit Attribute
+																	 *
+																	 * @since 1.0.0
+																	 */
+																	echo do_shortcode( apply_filters( 'cwgstock_submit_attr', '', $product_id, $variation_id ) );
+																	?>
+								value="<?php echo esc_attr( $instock_api->sanitize_text_field( $button_label ) ); ?>" />
 							<?php
 							/**
 							 * Executed after the submit button

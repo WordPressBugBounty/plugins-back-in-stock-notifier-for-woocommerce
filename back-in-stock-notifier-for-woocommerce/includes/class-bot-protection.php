@@ -88,15 +88,18 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 			if ( self::get_bot_protection_type() == 'recaptcha' ) {
 				if ( '1' == self::is_recaptcha_enabled() ) {
 					if ( ! self::is_recaptcha_v3() ) {
-						wp_enqueue_script( 'recaptcha', 'https://www.google.com/recaptcha/api.js', array(), CWGINSTOCK_VERSION );
+						// phpcs:ignore
+						wp_enqueue_script( 'recaptcha', 'https://www.google.com/recaptcha/api.js', array(), CWGINSTOCK_VERSION, array( 'strategy' => 'defer' ) );
 					} else {
 						$site_key = $this->get_site_key();
-						wp_enqueue_script( 'recaptcha', "https://www.google.com/recaptcha/api.js?render=$site_key", array(), CWGINSTOCK_VERSION );
+						// phpcs:ignore
+						wp_enqueue_script( 'recaptcha', "https://www.google.com/recaptcha/api.js?render=$site_key", array(), CWGINSTOCK_VERSION, array( 'strategy' => 'defer' ) );
 					}
 				}
 			} else {
 				if ( '1' == self::is_turnstile_enabled() ) {
-					wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), CWGINSTOCK_VERSION );
+					// phpcs:ignore
+					wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), CWGINSTOCK_VERSION, array( 'in_footer' => false ) );
 				}
 			}
 		}

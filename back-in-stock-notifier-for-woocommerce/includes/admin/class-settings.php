@@ -62,6 +62,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function register_manage_settings() {
+			// phpcs:ignore PluginCheck.CodeAnalysis.SettingSanitization.register_settingDynamic
 			register_setting('cwginstocknotifier_settings', 'cwginstocksettings', array($this, 'sanitize_data'));
 			add_settings_section('cwginstock_section', __('Frontend Form', 'back-in-stock-notifier-for-woocommerce'), array($this, 'section_heading'), 'cwginstocknotifier_settings');
 			add_settings_field('cwg_frontend_displayform_type', __('Frontend Subscribe Form Display Type', 'back-in-stock-notifier-for-woocommerce'), array($this, 'cwg_frontend_displayform'), 'cwginstocknotifier_settings', 'cwginstock_section');
@@ -248,8 +249,8 @@ if (! class_exists('CWG_Instock_Settings')) {
 					$countries = $countries_obj->__get('countries');
 					foreach ($countries as $each_country => $country_name) {
 						?>
-						<option value='<?php esc_html_e($each_country); ?>' <?php echo isset($options['default_country']) && $each_country == $options['default_country'] ? 'selected=selected' : ''; ?>>
-							<?php esc_html_e($country_name, 'back-in-stock-notifier-for-woocommerce'); ?>
+						<option value='<?php echo esc_attr($each_country); ?>' <?php echo isset($options['default_country']) && $each_country == $options['default_country'] ? 'selected=selected' : ''; ?>>
+							<?php echo esc_attr($country_name, 'back-in-stock-notifier-for-woocommerce'); ?>
 						</option>
 						<?php
 					}

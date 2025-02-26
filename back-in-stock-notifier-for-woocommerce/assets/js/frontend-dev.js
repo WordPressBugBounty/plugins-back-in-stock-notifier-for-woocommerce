@@ -226,6 +226,7 @@ var instock_notifier = {
 	},
 
 	recaptcha_callback: function (response) {
+
 		var hasClass = document.getElementsByClassName("cwg-security");
 		if (hasClass.length > 0) {
 			document.getElementsByClassName("cwgstock_button")[0].disabled = false;

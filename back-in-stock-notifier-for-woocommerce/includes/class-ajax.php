@@ -30,6 +30,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 					'msg' => '-1',
 					'code' => 'cwg_nonce_verify_failed',
 				);
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$post_data = $obj->post_data_validation( $_REQUEST );
 				$product_id = $post_data['product_id'];
 				$get_option = get_option( 'cwginstocksettings' );
@@ -210,7 +211,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 				if ( ! $rest_api ) {
 					wp_send_json( $error_msg, 200 );
 				} else {
-					echo json_encode( $error_msg );
+					echo wp_json_encode( $error_msg );
 					die();
 				}
 			}
@@ -269,7 +270,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 				wp_die( -1 );
 			}
 
-			$search_text = isset( $_GET['term'] ) ? wc_clean( wp_unslash( $_GET['term'] ) ) : '';
+			$search_text = isset( $_GET['term'] ) ? sanitize_text_field( wp_unslash( $_GET['term'] ) ) : '';
 
 			if ( ! $search_text ) {
 				wp_die();
@@ -329,7 +330,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 		}
 
 		public function cwg_ajax_verification() {
-			if ( ! isset( $_POST['security'] ) || ( isset( $_POST['security'] ) && ! wp_verify_nonce( sanitize_text_field( $_POST['security'] ), 'cwg_trigger_popup_ajax' ) ) ) {
+			if ( ! isset( $_POST['security'] ) || ( isset( $_POST['security'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['security'] ) ), 'cwg_trigger_popup_ajax' ) ) ) {
 				if ( '1' == CWG_Instock_Bot_Protection::is_recaptcha_enabled() && CWG_Instock_Bot_Protection::is_recaptcha_v3() ) {
 					$verify_gresponse = $this->verify_recaptcha_client_response( $_REQUEST, false );
 					if ( is_wp_error( $verify_gresponse ) ) {

@@ -1,18 +1,18 @@
 <?php
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if (!class_exists('CWG_Instock_Premium_Extensions')) {
+if ( ! class_exists( 'CWG_Instock_Premium_Extensions' ) ) {
 
 	class CWG_Instock_Premium_Extensions {
 
 		public function __construct() {
-			add_action('admin_menu', array($this, 'add_settings_menu'), 999);
+			add_action( 'admin_menu', array( $this, 'add_settings_menu' ), 999 );
 		}
 
 		public function add_settings_menu() {
-			add_submenu_page('edit.php?post_type=cwginstocknotifier', __('Add-ons', 'back-in-stock-notifier-for-woocommerce'), __('Add-ons', 'back-in-stock-notifier-for-woocommerce'), 'manage_woocommerce', 'cwg-instock-extensions', array($this, 'manage_settings'));
+			add_submenu_page( 'edit.php?post_type=cwginstocknotifier', __( 'Add-ons', 'back-in-stock-notifier-for-woocommerce' ), __( 'Add-ons', 'back-in-stock-notifier-for-woocommerce' ), 'manage_woocommerce', 'cwg-instock-extensions', array( $this, 'manage_settings' ) );
 		}
 
 		public function manage_settings() {
@@ -26,25 +26,25 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 			 * @since 1.0.0
 			 */
 			$array_of_extensions = apply_filters(
-					'cwginstock_addon_list_with_link',
-					array(
-						'Bundle Add-ons - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/',
-						'WPML - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/wpml/',
-						'Unsubscribe - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/unsubscribe/',
-						'Double Opt-In - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/doubleoptin/',
-						'Ban Email Domains and Email Addresses - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/ban-emails/',
-						'Export CSV - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/export-csv/',
-						'Custom CSS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/custom-css/',
-						'Mailchimp - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/mailchimp/',
-						'Track Sales - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/track-sales/',
-						'Import CSV - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/import-csv/',
-						'Edit Subscribers - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/edit-subscribers/',
-						'PolyLang - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/polylang/',
-						'Twilio SMS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/twilio-sms/',
-						'Klaviyo - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/klaviyo/',
-						'ActiveCampaign - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/active-campaign/',
-						'More Addons coming soon' => '',
-					)
+				'cwginstock_addon_list_with_link',
+				array(
+					'Bundle Add-ons - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/',
+					'WPML - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/wpml/',
+					'Unsubscribe - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/unsubscribe/',
+					'Double Opt-In - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/doubleoptin/',
+					'Ban Email Domains and Email Addresses - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/ban-emails/',
+					'Export CSV - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/export-csv/',
+					'Custom CSS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/custom-css/',
+					'Mailchimp - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/mailchimp/',
+					'Track Sales - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/track-sales/',
+					'Import CSV - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/import-csv/',
+					'Edit Subscribers - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/edit-subscribers/',
+					'PolyLang - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/polylang/',
+					'Twilio SMS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/twilio-sms/',
+					'Klaviyo - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/klaviyo/',
+					'ActiveCampaign - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/active-campaign/',
+					'More Addons coming soon' => '',
+				)
 			);
 			?>
 			<div class="wrap cwg-addon-wrap">
@@ -58,36 +58,36 @@ if (!class_exists('CWG_Instock_Premium_Extensions')) {
 
 				<?php
 				$i = 1;
-				foreach ($array_of_extensions as $name => $url) {
+				foreach ( $array_of_extensions as $name => $url ) {
 					$final_url = '' != $url ? $url : 'http://codewoogeek.online/product-category/back-in-stock-notifier/';
 					?>
 
 					<div class="cwg-section">
-						<a href="<?php echo esc_url_raw($final_url); ?>" target="__blank">
+						<a href="<?php echo esc_url_raw( $final_url ); ?>" target="__blank">
 							<span style="width: 200px;height: 200px;position: absolute;">
 								<span class="cwg-addon-title">
-									<?php esc_html_e($name); ?>
+									<?php echo esc_attr( $name ); ?>
 								</span>
-								<?php if ('' != $url) { ?>
+								<?php if ( '' != $url ) { ?>
 									<?php
-									if (1 == $i) {
+									if ( 1 == $i ) {
 										$price_tag = '$39.99';
 									} else {
 										$price_tag = '$9.99';
 									}
 									?>
 									<span class="pricetag">
-										<?php echo do_shortcode($price_tag); ?>
+										<?php echo do_shortcode( $price_tag ); ?>
 									</span>
 									<span class="cwg-addon-bottom" style="font-weight:bold;">
 
 										<?php
-										if (1 == $i) {
+										if ( 1 == $i ) {
 											$text = 'Single Site for $39.99';
 										} else {
 											$text = 'Single Site for $9.99';
 										}
-										echo do_shortcode(get_submit_button($text));
+										echo do_shortcode( get_submit_button( $text ) );
 										?>
 									</span>
 								<?php } ?>

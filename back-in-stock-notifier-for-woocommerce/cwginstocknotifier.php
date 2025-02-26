@@ -2,17 +2,17 @@
 
 /*
  *
- * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
+ * Plugin Name: Back In Stock Notifier for WooCommerce
  * Plugin URI: https://codewoogeek.online/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 5.7.9
+ * Version: 5.8.0
  * Author: codewoogeek
  * Requires Plugins: woocommerce
  * Author URI: https://codewoogeek.online
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 9.6.1
+ * WC tested up to: 9.7.0
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      codewoogeek
  * @copyright   2025 CodeWooGeek, LLC
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
-
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 if ( isset( $_GET['post_type'] ) && ( ( 'cwginstocknotifier' == $_GET['post_type'] ) || ( 'cwginstock_arrival' == $_GET['post_type'] ) ) ) {
 	require 'includes/vendor/WP_Persistent_Notices.php';
 }
@@ -47,7 +47,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '5.7.9';
+		public $version = '5.8.0';
 
 		/**
 		 * Instance variable
@@ -249,7 +249,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 						'default_ajax_url' => admin_url( 'admin-ajax.php' ),
 						'security' => $form_submission_mode ? wp_create_nonce( 'wp_rest' ) : wp_create_nonce( 'cwg_subscribe_product' ),
 						'user_id' => get_current_user_id(),
-						'security_error' => __( 'Something went wrong, please try after sometime', 'cwginstocknotifier' ),
+						'security_error' => __( 'Something went wrong, please try after sometime', 'back-in-stock-notifier-for-woocommerce' ),
 						'empty_name' => $get_empty_name,
 						'empty_quantity' => $get_empty_quantity,
 						'empty_email' => $get_empty_msg,
@@ -298,7 +298,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			$screen = get_current_screen();
 			if ( isset( $screen->id ) && ( ( 'cwginstocknotifier_page_cwg-instock-mailer' == $screen->id ) || ( 'edit-cwginstocknotifier' == $screen->id ) || ( 'cwginstocknotifier_page_cwg-instock-status' == $screen->id ) || ( 'cwginstocknotifier_page_cwg-instock-extensions' == $screen->id ) ) ) {
 				wp_enqueue_style( 'cwginstock_admin_css', CWGINSTOCK_PLUGINURL . '/assets/css/admin.css', array(), $this->version );
-				wp_register_script( 'cwginstock_admin_js', CWGINSTOCK_PLUGINURL . '/assets/js/admin.js', array( 'jquery', 'wc-enhanced-select' ), $this->version );
+				wp_register_script( 'cwginstock_admin_js', CWGINSTOCK_PLUGINURL . '/assets/js/admin.js', array( 'jquery', 'wc-enhanced-select' ), $this->version, array( 'in_footer' => true ) );
 				wp_localize_script(
 					'cwginstock_admin_js',
 					'cwg_enhanced_selected_params',

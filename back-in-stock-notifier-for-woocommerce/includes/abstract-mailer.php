@@ -73,7 +73,7 @@ abstract class CWG_Instock_Mailer {
 		$cart_url = $obj->get_cart_link( $this->subscriber_id ); // esc_url_raw(add_query_arg('add-to-cart', $pid, get_permalink(wc_get_page_id('cart'))));
 		$blogname = get_bloginfo( 'name' );
 		$find_array = array( '{product_name}', '{product_id}', '{product_link}', '{shopname}', '{email_id}', '{subscriber_email}', '{cart_link}', '{only_product_name}', '{only_product_sku}', '{product_price}', '{product_image}', '{subscriber_name}', '{subscriber_phone}', '{subscriber_firstname}', '{subscriber_lastname}' );
-		$replace_array = array( strip_tags( $product_name ), $pid, $product_link, $blogname, $this->email, $this->email, $cart_url, $only_product_name, $only_product_sku, $product_price, $product_image, $subscriber_name, $subscriber_phone, $subscriber_firstname, $subscriber_lastname );
+		$replace_array = array( wp_strip_all_tags( $product_name ), $pid, $product_link, $blogname, $this->email, $this->email, $cart_url, $only_product_name, $only_product_sku, $product_price, $product_image, $subscriber_name, $subscriber_phone, $subscriber_firstname, $subscriber_lastname );
 		$formatted_content = str_replace( $find_array, $replace_array, $content );
 		/**
 		 * Replace shortcode

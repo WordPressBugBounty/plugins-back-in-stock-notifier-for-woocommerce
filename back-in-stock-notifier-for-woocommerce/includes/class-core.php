@@ -56,14 +56,13 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 			if ( $obj && ( $obj->is_type( 'variation' ) || $obj->is_type( 'variable' ) ) ) {
 				$main_obj = $obj->is_type( 'variable' ) ? new CWG_Instock_API( $id, 0 ) : new CWG_Instock_API( 0, $id, '', 0 );
 				$options = get_option( 'cwginstocksettings' );
-				$variable_any_variation_backinstock = isset( $options['variable_any_variation_backinstock'] ) && '1' == $options['variable_any_variation_backinstock'] ? true : false;
+				$variable_any_variation_backinstock = ( isset( $options['variable_any_variation_backinstock'] ) && '1' == $options['variable_any_variation_backinstock'] ) ? true : false;
 				$get_type = 'variation' == $obj->get_type() ? true : false;
 				$list_of_subscribers = $main_obj->get_list_of_subscribers();
 
 				if ( $obj && ( $obj->is_type( 'variable' ) ) ) {
 					return; // Variable product rely on variation so direct restock not required
 				}
-
 				if ( $get_type ) {
 					if ( $variable_any_variation_backinstock ) {
 						$get_parent_id = $obj->get_parent_id();

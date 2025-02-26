@@ -12,7 +12,7 @@ class CWG_Instock_Test_Email extends CWG_Instock_Mailer {
 		parent::__construct();
 		$this->slug = 'test';
 		$this->subscriber_id = $subscriber_id;
-		$this->email = get_bloginfo( 'admin_email' );
+		$this->email = get_option( 'woocommerce_email_from_address' );
 		/**
 		 * Trigger before instock
 		 *

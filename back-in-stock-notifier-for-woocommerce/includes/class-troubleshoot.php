@@ -167,7 +167,8 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 		public function enable_delete_on_product_delete() {
 			$options = get_option( 'cwginstocksettings' );
 			?>
-			<input type='checkbox' name='cwginstocksettings[enable_delete_on_product_delete]' <?php isset( $options['enable_delete_on_product_delete'] ) ? checked( $options['enable_delete_on_product_delete'], 1 ) : ''; ?> value="1" />
+			<input type='checkbox' name='cwginstocksettings[enable_delete_on_product_delete]' <?php isset( $options['enable_delete_on_product_delete'] ) ? checked( $options['enable_delete_on_product_delete'], 1 ) : ''; ?>
+				value="1" />
 			<p><i><?php esc_html_e( 'Enable this option to automatically trash the subscriber(s) associated with a product or variation when they are deleted', 'back-in-stock-notifier-for-woocommerce' ); ?></i>
 			</p>
 			<?php
@@ -180,14 +181,14 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 				$subscribers = $cwg_api->get_list_of_subscribers( 'AND' );
 
 				if ( ! empty( $subscribers ) ) {
-					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - Found Subscribers: ' . json_encode( $subscribers ) );
+					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - Found Subscribers: ' . wp_json_encode( $subscribers ) );
 					$logger->record_log();
 
 					$subscriber_chunks = array_chunk( $subscribers, 10 );
 					foreach ( $subscriber_chunks as $chunk ) {
 						as_schedule_single_action( time(), 'cwgbis_trash_subscriber', array( $chunk ) ); //don't register generic name add prefix always
 					}
-					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - Subscribers scheduled for deletion: ' . json_encode( $subscribers ) );
+					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - Subscribers scheduled for deletion: ' . wp_json_encode( $subscribers ) );
 					$logger->record_log();
 				} else {
 					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - No Subscribers Found' );
@@ -207,13 +208,13 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 					$cwg_api = new CWG_Instock_API( $parent_id, $variation_id );
 					$subscribers = $cwg_api->get_list_of_subscribers( 'AND' );
 					if ( ! empty( $subscribers ) ) {
-						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - Found Subscribers: ' . json_encode( $subscribers ) );
+						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - Found Subscribers: ' . wp_json_encode( $subscribers ) );
 						$logger->record_log();
 						$subscriber_chunks = array_chunk( $subscribers, 10 );
 						foreach ( $subscriber_chunks as $chunk ) {
 							as_schedule_single_action( time(), 'cwgbis_trash_subscriber', array( $chunk ) );
 						}
-						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - Subscribers scheduled for deletion: ' . json_encode( $subscribers ) );
+						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - Subscribers scheduled for deletion: ' . wp_json_encode( $subscribers ) );
 						$logger->record_log();
 					} else {
 						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - No Subscribers Found' );

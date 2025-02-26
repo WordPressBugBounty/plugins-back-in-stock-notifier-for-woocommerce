@@ -23,6 +23,7 @@ if ( ! class_exists( 'CWG_Instock_Privacy_Checkbox' ) ) {
 		}
 
 		public function register_settings() {
+			// phpcs:ignore PluginCheck.CodeAnalysis.SettingSanitization.register_settingDynamic
 			register_setting( 'cwginstocknotifier_settings', 'cwginstock_iagree_settings', array( $this, 'sanitize_data' ) );
 			add_settings_section( 'cwginstock_section_iagree', __( 'I Agree Checkbox in Subscribe Form', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'iagree_settings_heading' ), 'cwginstocknotifier_settings' );
 			add_settings_field( 'cwg_instock_enable_iagree', __( 'Enable I Agree in Subscribe Form', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'enable_iagree' ), 'cwginstocknotifier_settings', 'cwginstock_section_iagree' );

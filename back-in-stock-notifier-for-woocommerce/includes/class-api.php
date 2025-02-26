@@ -41,12 +41,15 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 					'value' => ( 'AND' == $relation || $this->variation_id > '0' || $this->variation_id > 0 ) ? $this->variation_id : 'no_data_found',
 				),
 			);
-			/**
-			 * Filter to modify the meta query used to retrieve the list of subscribers
-			 *
-			 * @since 1.0.0
-			 */
-			$args['meta_query'] = apply_filters( 'cwginstock_metaquery', $meta_query );
+
+			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			$args['meta_query'] =
+				/**
+				 * Filter to modify the meta query used to retrieve the list of subscribers
+				 *
+				 * @since 1.0.0
+				 */
+				apply_filters( 'cwginstock_metaquery', $meta_query );
 			$get_posts = get_posts( $args );
 
 			return $get_posts;
@@ -109,6 +112,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 					'value' => $this->subscriber_email,
 				),
 			);
+			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			$args['meta_query'] = $meta_query;
 			$get_posts = get_posts( $args );
 			return $get_posts;
@@ -132,6 +136,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 					'value' => $this->subscriber_email,
 				),
 			);
+			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			$args['meta_query'] = $meta_query;
 			$get_posts = get_posts( $args );
 			return $get_posts;
@@ -475,6 +480,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 			$args = array(
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => $status,
+				//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				'meta_query' => array(
 					array(
 						'key' => 'cwginstock_product_id',
@@ -493,6 +499,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 			if ( empty( $key ) ) {
 				return;
 			}
+			// phpcs:ignore
 			$meta_value = $wpdb->get_col( $wpdb->prepare( "SELECT DISTINCT pm.meta_value FROM {$wpdb->postmeta} pm LEFT JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_status = %s AND p.post_type = %s", $key, $status, $type ) );
 			return $meta_value;
 		}
