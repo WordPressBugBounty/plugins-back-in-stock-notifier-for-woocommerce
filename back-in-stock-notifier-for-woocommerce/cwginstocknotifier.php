@@ -5,7 +5,7 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce
  * Plugin URI: https://codewoogeek.online/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 5.8.0
+ * Version: 5.8.1
  * Author: codewoogeek
  * Requires Plugins: woocommerce
  * Author URI: https://codewoogeek.online
@@ -47,7 +47,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '5.8.0';
+		public $version = '5.8.1';
 
 		/**
 		 * Instance variable
@@ -219,7 +219,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 				$phone_field_visibility = isset( $get_option['show_phone_field'] ) && '' != $get_option['show_phone_field'] ? true : false;
 				if ( $phone_field_visibility ) {
 					wp_enqueue_style( 'cwginstock_phone_css', CWGINSTOCK_PLUGINURL . 'assets/css/intlTelInput.min.css', array(), $this->version, false );
-					wp_enqueue_script( 'cwginstock_phone_js', CWGINSTOCK_PLUGINURL . 'assets/js/intlTelInput.min.js', array( 'jquery', 'jquery-blockui' ), $this->version, true );
+					wp_enqueue_script( 'cwginstock_phone_js', CWGINSTOCK_PLUGINURL . 'assets/js/intlTelInputWithUtils.min.js', array( 'jquery', 'jquery-blockui' ), $this->version, true );
 				}
 				$phone_field_optional = isset( $get_option['phone_field_optional'] ) && '' != $get_option['phone_field_optional'] ? true : false;
 				$quantity_field_optional = isset( $get_option['quantity_field_optional'] ) && '' != $get_option['quantity_field_optional'] ? true : false;
@@ -257,7 +257,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 						'is_popup' => $is_popup,
 						'phone_field' => $phone_field_visibility ? '1' : '2',
 						'phone_field_error' => array( $invalid_phone_number, $invalid_phone_number, $phone_number_too_short, $phone_number_too_long, $invalid_phone_number ),
-						'phone_utils_js' => $phone_field_visibility ? CWGINSTOCK_PLUGINURL . 'assets/js/utils.js' : '',
+						//'phone_utils_js' => $phone_field_visibility ? CWGINSTOCK_PLUGINURL . 'assets/js/utils.js' : '',
 						'is_phone_field_optional' => $phone_field_optional ? '1' : '2',
 						'is_quantity_field_optional' => $quantity_field_optional ? '1' : '2',
 						'hide_country_placeholder' => $hide_country_placeholder ? '1' : '2',

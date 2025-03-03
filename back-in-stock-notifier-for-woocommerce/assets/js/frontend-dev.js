@@ -41,15 +41,6 @@ function cwginstock_recaptcha_callback(response) {
 		document.getElementsByClassName("cwg-security")[0].value = response;
 	}
 }
-/*
-turnstile.ready(function () {
-	turnstile.render('#cwg-turnstile-captcha', {
-		sitekey: '0x4AAAAAAAVouf1IxaDVFdGs',
-		callback: function (token) {
-			cwginstock_turnstile_callback(token);
-		},
-	});
-}); */
 
 
 function cwginstock_turnstile_callback(response) {
@@ -81,7 +72,6 @@ var instock_notifier = {
 					formatOnDisplay: true,
 					autoHideDialCode: false,
 					separateDialCode: true,
-					utilsScript: cwginstock.phone_utils_js,
 					initialCountry: default_country_code,
 					customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
 						default_country_code = default_country_code.toLowerCase();
@@ -156,6 +146,7 @@ var instock_notifier = {
 		if (phone_field == '1') {
 			var subscriber_phone = iti.getNumber();// jQuery(this).closest('.cwginstock-subscribe-form').find('.cwgstock_phone').val();
 			phone_meta_data = iti.getSelectedCountryData();
+			//console.log(phone_meta_data);
 			if (!iti.isValidNumber()) {
 
 				var errorCode = iti.getValidationError();
@@ -204,7 +195,7 @@ var instock_notifier = {
 				variation_id: var_id,
 				subscriber_name: subscriber_name,
 				subscriber_phone: subscriber_phone,
-				subscriber_phone_meta: phone_meta_data,
+				subscriber_phone_meta: JSON.stringify(phone_meta_data),
 				user_email: email_id,
 				user_id: userid,
 				security: security,
