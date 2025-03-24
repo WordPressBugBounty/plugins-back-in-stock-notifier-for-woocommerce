@@ -294,7 +294,6 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 			// turnstile
 			$already_loaded['enable_turnstile'] = self::is_turnstile_enabled();
 			$already_loaded['turnstile_site_key'] = self::get_turnstile_site_key();
-			$already_loaded['turnstile_secret_key'] = self::get_turnstile_secret_key();
 			return $already_loaded;
 		}
 

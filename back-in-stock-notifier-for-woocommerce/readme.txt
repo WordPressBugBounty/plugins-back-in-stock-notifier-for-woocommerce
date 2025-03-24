@@ -1,11 +1,11 @@
-=== Back In Stock Notifier for WooCommerce ===
+=== Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro ===
 Contributors: codewoogeek
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
 Tested up to: 6.7.2
 Requires PHP: 7.4
-Stable tag: 5.8.1
+Stable tag: 5.8.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,9 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.8.2 2025-03-24 =
+* Fix: Turnstile Secret Key localized to the JS variable
+
 = 5.8.1 2025-03-03 =
 * Fix : Google reCAPTCHA breaks with v5.8.0
 * Tweak : Phone library updated and code enhanced
