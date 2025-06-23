@@ -37,7 +37,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 							href="https://codewoogeek.online/shop/back-in-stock-notifier/bundle-add-ons/"
 							target="_blank"><strong>Buy Now Bundle Add-ons!</strong></a>
 					</p>
-					<p>Make a difference with your support—contribute financially to fuel our progress!</p>
+					<p>Don't let our progress get stuck - buy now and push us forward! </p>
 				</div>
 				<?php
 				settings_fields('cwginstocknotifier_settings');
@@ -98,6 +98,8 @@ if (! class_exists('CWG_Instock_Settings')) {
 
 			add_settings_field('cwginstock_visibility_on_regular', __('Hide Subscribe Form on Regular Products out of stock', 'back-in-stock-notifier-for-woocommerce'), array($this, 'visibility_settings_for_product_on_regular'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
 			add_settings_field('cwginstock_visibility_on_sale', __('Hide Subscribe Form on Sale Products out of stock', 'back-in-stock-notifier-for-woocommerce'), array($this, 'visibility_settings_for_product_on_sale'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
+
+			add_settings_field('cwginstock_visibility_on_free_product', __('Hide Subscribe Form on Free or Zero Price Out of Stock Products', 'back-in-stock-notifier-for-woocommerce'), array($this, 'visibility_settings_for_product_on_free'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
 
 			add_settings_field('cwginstock_bypass_disabled_variation', __("Don't overwrite disabled out of stock variations from theme configuration", 'back-in-stock-notifier-for-woocommerce'), array($this, 'disabled_variation_settings_option'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
 			add_settings_field('cwginstock_bypass_wc_visibility', __('Ignore WooCommerce Out of Stock Visibility Settings for Variation', 'back-in-stock-notifier-for-woocommerce'), array($this, 'ignore_settings_for_wc_out_of_stock_visibility'), 'cwginstocknotifier_settings', 'cwginstock_section_visibility');
@@ -250,7 +252,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 					foreach ($countries as $each_country => $country_name) {
 						?>
 						<option value='<?php echo esc_attr($each_country); ?>' <?php echo isset($options['default_country']) && $each_country == $options['default_country'] ? 'selected=selected' : ''; ?>>
-							<?php echo esc_attr($country_name, 'back-in-stock-notifier-for-woocommerce'); ?>
+							<?php echo esc_attr($country_name); ?>
 						</option>
 						<?php
 					}
@@ -515,6 +517,16 @@ if (! class_exists('CWG_Instock_Settings')) {
 			<?php
 		}
 
+		public function visibility_settings_for_product_on_free() {
+			$options = get_option('cwginstocksettings');
+			?>
+			<input type='checkbox' name='cwginstocksettings[hide_on_free]' <?php isset($options['hide_on_free']) ? checked($options['hide_on_free'], 1) : ''; ?> value="1" />
+			<p><i>
+					<?php esc_html_e('Hide Subscribe Form on Free or Zero Price Out of Stock Products', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</i></p>
+			<?php
+		}
+
 		public function error_section_heading() {
 			esc_html_e('Customize Error Message and its Visibility', 'back-in-stock-notifier-for-woocommerce');
 		}
@@ -574,7 +586,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		public function mail_settings_heading() {
 			esc_html_e('Customize Email Message and its corresponding settings', 'back-in-stock-notifier-for-woocommerce');
 			echo '<br> Available Shortcodes to be used for subject and message <br>';
-			echo '<strong>{product_name}, {product_id}, {product_link}, {shopname}, {email_id}, {subscriber_email}, {subscriber_name}, {subscriber_firstname}, {subscriber_lastname}, {subscriber_phone}, {cart_link}, {only_product_name}, {only_product_sku}, {product_price}, {product_image}</strong>';
+			echo '<strong>{product_name}, {product_id}, {product_link}, {shopname}, {email_id}, {subscriber_email}, {subscriber_name}, {subscriber_firstname}, {subscriber_lastname}, {subscriber_phone}, {cart_link}, {only_product_name}, {only_product_sku}, {product_price}, {product_image}, {cwginstock_quantity}</strong>';
 			echo '<br> If you want to show the image with specified size then you can try something like this one <strong>{product_image=thumbnail}</strong>, (you can pass parameter like <strong>thumbnail/medium/large</strong>) it also accept any custom width and height by pass something like this one <strong>{product_image=100x100}</strong> (widthxheight)';
 			echo "<br> <strong> When you use {product_link} or {cart_link} make sure you add anchor tag(some email client shows as plain text instead of hyperlink) <pre>&lt;a href='{product_link}'&gt;{product_name}&lt;/a&gt; </pre><pre>&lt;a href='{cart_link}'&gt;{cart_link}&lt;/a&gt;</pre> </strong>";
 		}

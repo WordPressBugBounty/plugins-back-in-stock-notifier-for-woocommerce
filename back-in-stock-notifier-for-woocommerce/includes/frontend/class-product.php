@@ -165,7 +165,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 				return;
 			}
 
-			if ( $check_guest_visibility && $check_member_visibility && ( $this->is_viewable( $product_id, $variation_id ) && $this->is_viewable_for_category( $product_id ) ) && $this->visibility_on_regular_or_sale( $product, $variation ) && $this->is_viewable_for_product_tag( $product_id ) ) {
+			if ( $check_guest_visibility && $check_member_visibility && ( $this->is_viewable( $product_id, $variation_id ) && $this->is_viewable_for_category( $product_id ) ) && $this->visibility_on_regular_or_sale( $product, $variation ) && $this->visibility_for_product_on_free( $product, $variation ) && $this->is_viewable_for_product_tag( $product_id ) ) {
 				if ( $display ) {
 					if ( ! $variation && ! $product->is_in_stock() || ( ! $variation && in_array( $stock_status, $default_stock_status ) ) || ( ( ! $variation && ( ( $product->managing_stock() && $product->backorders_allowed() && $product->is_on_backorder( 1 ) ) || $product->is_on_backorder( 1 ) ) && $visibility_backorder ) ) ) {
 						return $this->html_subscribe_form( $product );
@@ -365,6 +365,16 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			return $visibility;
 		}
 
+		public function visibility_for_product_on_free( $product, $variation ) {
+			$option = get_option( 'cwginstocksettings' );
+			$hide_on_free = isset( $option['hide_on_free'] ) && '1' == $option['hide_on_free'] ? true : false;
+			// check if the product is free or not	
+			//get the price of product and compare it whether it is 0 if it is 0 then it is free produc
+			$check_is_free = $variation ? ( $variation->get_price() <= 0 ) : ( $product->get_price() <= 0 );
+			$visibility = ( $hide_on_free && $check_is_free ) ? false : true;
+			return $visibility;
+		}
+
 		public function display_out_of_stock_products_in_variable( $value ) {
 			global $wp_query;
 			$option = get_option( 'cwginstocksettings' );
@@ -429,7 +439,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 				$variation_class = '';
 				$variation_id = 0;
 
-				if ( $check_guest_visibility && $check_member_visibility && ( $this->is_viewable( $product_id, $variation_id ) && $this->is_viewable_for_category( $product_id ) ) && $this->visibility_on_regular_or_sale( $product, $variation ) && $this->is_viewable_for_product_tag( $product_id ) ) {
+				if ( $check_guest_visibility && $check_member_visibility && ( $this->is_viewable( $product_id, $variation_id ) && $this->is_viewable_for_category( $product_id ) ) && $this->visibility_on_regular_or_sale( $product, $variation ) && $this->visibility_for_product_on_free( $product, $variation ) && $this->is_viewable_for_product_tag( $product_id ) ) {
 					if ( $is_not_variation && $display_popup && ( ! $variation && ! $product->is_in_stock() || ( ( ! $variation && ( ( $product->managing_stock() && $product->backorders_allowed() && $product->is_on_backorder( 1 ) ) || $product->is_on_backorder( 1 ) ) && $visibility_backorder ) ) ) ) {
 						/**
 						 * Trigger the 'cwginstock_custom_form' action hook to display a custom form for product availability

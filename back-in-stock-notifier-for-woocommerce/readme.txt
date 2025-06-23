@@ -3,9 +3,9 @@ Contributors: codewoogeek
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
-Tested up to: 6.7.2
+Tested up to: 6.8.1
 Requires PHP: 7.4
-Stable tag: 5.8.2
+Stable tag: 5.9.0
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,15 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 5.9.0 2025-06-23 =
+* New : Hide Subscribe Form on Free or Zero Price Out of Stock Products
+* Tweak: JS variable appended with proper prefix
+* Tweak: Required Quantity Shortcode {cwginstock_quantity} added for Email
+* Tweak: Translation missing for reCAPTCHA copyright notice
+* Tweak: Tested with WooCommerce 9.9.4
+* Tweak: Tested with WordPress 6.8.1
+* Tweak: POT File updated
+
 = 5.8.2 2025-03-24 =
 * Fix: Turnstile Secret Key localized to the JS variable
 

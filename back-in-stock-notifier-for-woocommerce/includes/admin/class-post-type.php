@@ -897,7 +897,8 @@ add_action(
 							Now Bundle Add-ons!</strong></a>
 				</p>
 				<p>
-					Your financial backing allows us to keep innovating—support us today!
+					Your payment isn't just for a product - it's for progress. Buy now, or support us directly via <a
+						href="https://paypal.me/codewoogeeksoftwares" target="_blank">PayPal</a>
 				</p>
 			</div>
 					<?php

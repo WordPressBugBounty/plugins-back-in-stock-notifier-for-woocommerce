@@ -310,10 +310,10 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 								<?php esc_html_e( 'This site is protected by reCAPTCHA and the Google', 'back-in-stock-notifier-for-woocommerce' ); ?>
 								<a href="https://policies.google.com/privacy">
 									<?php esc_html_e( 'Privacy Policy', 'back-in-stock-notifier-for-woocommerce' ); ?>
-								</a> and
+								</a> <?php esc_html_e( 'and', 'back-in-stock-notifier-for-woocommerce' ); ?>
 								<a href="https://policies.google.com/terms">
 									<?php esc_html_e( 'Terms of Service', 'back-in-stock-notifier-for-woocommerce' ); ?>
-								</a> apply.
+								</a> <?php esc_html_e( 'apply.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 							</small>
 						</div>
 						<?php
