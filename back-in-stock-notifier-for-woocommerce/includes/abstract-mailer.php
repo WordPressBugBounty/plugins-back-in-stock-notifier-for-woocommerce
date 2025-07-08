@@ -60,21 +60,21 @@ abstract class CWG_Instock_Mailer {
 		} else {
 			$pid = get_post_meta( $this->subscriber_id, 'cwginstock_bypass_pid', true );
 		}
-		$product_name = $obj->display_product_name( $this->subscriber_id );
-		$only_product_name = $obj->display_only_product_name( $this->subscriber_id );
-		$product_link = $obj->display_product_link( $this->subscriber_id );
-		$only_product_sku = $obj->get_product_sku( $this->subscriber_id );
-		$product_price = $obj->get_product_price( $this->subscriber_id );
-		$product_image = $obj->get_product_image( $this->subscriber_id );
-		$subscriber_name = $obj->get_subscriber_name( $this->subscriber_id );
+		$product_name         = $obj->display_product_name( $this->subscriber_id );
+		$only_product_name    = $obj->display_only_product_name( $this->subscriber_id );
+		$product_link         = $obj->display_product_link( $this->subscriber_id );
+		$only_product_sku     = $obj->get_product_sku( $this->subscriber_id );
+		$product_price        = $obj->get_product_price( $this->subscriber_id );
+		$product_image        = $obj->get_product_image( $this->subscriber_id );
+		$subscriber_name      = $obj->get_subscriber_name( $this->subscriber_id );
 		$subscriber_firstname = $obj->get_subscriber_firstname( $this->subscriber_id );
-		$subscriber_lastname = $obj->get_subscriber_lastname( $this->subscriber_id );
-		$subscriber_phone = $obj->get_subscriber_phone( $this->subscriber_id );
-		$cart_url = $obj->get_cart_link( $this->subscriber_id ); // esc_url_raw(add_query_arg('add-to-cart', $pid, get_permalink(wc_get_page_id('cart'))));
-		$blogname = get_bloginfo( 'name' );
-		$find_array = array( '{product_name}', '{product_id}', '{product_link}', '{shopname}', '{email_id}', '{subscriber_email}', '{cart_link}', '{only_product_name}', '{only_product_sku}', '{product_price}', '{product_image}', '{subscriber_name}', '{subscriber_phone}', '{subscriber_firstname}', '{subscriber_lastname}' );
-		$replace_array = array( wp_strip_all_tags( $product_name ), $pid, $product_link, $blogname, $this->email, $this->email, $cart_url, $only_product_name, $only_product_sku, $product_price, $product_image, $subscriber_name, $subscriber_phone, $subscriber_firstname, $subscriber_lastname );
-		$formatted_content = str_replace( $find_array, $replace_array, $content );
+		$subscriber_lastname  = $obj->get_subscriber_lastname( $this->subscriber_id );
+		$subscriber_phone     = $obj->get_subscriber_phone( $this->subscriber_id );
+		$cart_url             = $obj->get_cart_link( $this->subscriber_id ); // esc_url_raw(add_query_arg('add-to-cart', $pid, get_permalink(wc_get_page_id('cart'))));
+		$blogname             = get_bloginfo( 'name' );
+		$find_array           = array( '{product_name}', '{product_id}', '{product_link}', '{shopname}', '{email_id}', '{subscriber_email}', '{cart_link}', '{only_product_name}', '{only_product_sku}', '{product_price}', '{product_image}', '{subscriber_name}', '{subscriber_phone}', '{subscriber_firstname}', '{subscriber_lastname}' );
+		$replace_array        = array( wp_strip_all_tags( $product_name ), $pid, $product_link, $blogname, $this->email, $this->email, $cart_url, $only_product_name, $only_product_sku, $product_price, $product_image, $subscriber_name, $subscriber_phone, $subscriber_firstname, $subscriber_lastname );
+		$formatted_content    = str_replace( $find_array, $replace_array, $content );
 		/**
 		 * Replace shortcode
 		 *
@@ -117,7 +117,7 @@ abstract class CWG_Instock_Mailer {
 		// $headers[] = "Content-Type: text/html; charset=UTF-8";
 		// Above commented code is not needed as it is already in woocommerce core function
 
-		$mailer = WC()->mailer();
+		$mailer   = WC()->mailer();
 		$sendmail = $mailer->send( $to, $this->get_subject(), $this->format_html_message() );
 		/**
 		 * Send Mail

@@ -13,7 +13,7 @@ if ( ! class_exists( 'CWG_Instock_Logger' ) ) {
 		private $message;
 
 		public function __construct( $status = '', $message = '' ) {
-			$this->status = $status;
+			$this->status  = $status;
 			$this->message = $message;
 		}
 
@@ -24,17 +24,17 @@ if ( ! class_exists( 'CWG_Instock_Logger' ) ) {
 
 		public function format_message() {
 			$replace = str_replace( '#', '', $this->message );
-			$arr = explode( ' ', $replace );
+			$arr     = explode( ' ', $replace );
 			foreach ( $arr as $key => $val ) {
 				if ( preg_match( '/^[_a-z0-9+-]+(\.[_a-z0-9+-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i', $val ) ) {
-					$arr_email = explode( '@', $val );
+					$arr_email  = explode( '@', $val );
 					$first_data = $arr_email[0];
 					if ( strlen( $first_data ) > 1 ) {
-						$first_character = $first_data[0];
-						$last_character = substr( $first_data, -1, '1' );
-						$string_length = strlen( $first_data );
+						$first_character  = $first_data[0];
+						$last_character   = substr( $first_data, -1, '1' );
+						$string_length    = strlen( $first_data );
 						$hidden_character = substr( $first_data, 1, $string_length - 2 );
-						$hidden = '';
+						$hidden           = '';
 						if ( strlen( $hidden_character ) > 0 ) {
 							for ( $i = 1; $i <= strlen( $hidden_character ); $i++ ) {
 								$hidden .= 'x';
@@ -44,7 +44,7 @@ if ( ! class_exists( 'CWG_Instock_Logger' ) ) {
 					} else {
 						$arr_email[0] = 'xxxxx';
 					}
-					$val_new = implode( '@', $arr_email );
+					$val_new     = implode( '@', $arr_email );
 					$arr[ $key ] = $val_new;
 				}
 			}

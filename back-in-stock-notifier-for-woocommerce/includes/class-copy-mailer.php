@@ -25,7 +25,7 @@ if ( ! class_exists( 'CWG_Copy_Mailer' ) ) {
 		}
 
 		public function copy_subscription_mail_subject() {
-			$options = get_option( 'cwginstock_imail_settings' );
+			$options          = get_option( 'cwginstock_imail_settings' );
 			$copy_sub_subject = isset( $options['copy_sub_subject'] ) ? $options['copy_sub_subject'] : __( '{subscriber_name} has subscribed to {product_name}', 'back-in-stock-notifier-for-woocommerce' );
 			?>
 			<input type='text' style='width: 400px;' name='cwginstock_imail_settings[copy_sub_subject]'
@@ -34,7 +34,7 @@ if ( ! class_exists( 'CWG_Copy_Mailer' ) ) {
 		}
 
 		public function copy_subscription_mail_message() {
-			$options = get_option( 'cwginstock_imail_settings' );
+			$options          = get_option( 'cwginstock_imail_settings' );
 			$copy_sub_message = isset( $options['copy_sub_message'] ) ? $options['copy_sub_message'] : __( 'Subscription Info:<br> {subscriber_name} <br> {subscriber_email} <br> {product_name}', 'back-in-stock-notifier-for-woocommerce' );
 			?>
 			<textarea rows="5" cols="50"
@@ -43,7 +43,7 @@ if ( ! class_exists( 'CWG_Copy_Mailer' ) ) {
 		}
 
 		public function default_values() {
-			$get_option = (array) get_option( 'cwginstock_imail_settings', array() );
+			$get_option                     = (array) get_option( 'cwginstock_imail_settings', array() );
 			$get_option['copy_sub_subject'] = '{subscriber_name} has subscribed to {product_name}';
 			$get_option['copy_sub_message'] = 'Subscription Info:<br> {subscriber_name} <br> {subscriber_email} <br> {product_name}';
 			add_option( 'cwginstock_imail_settings', $get_option );

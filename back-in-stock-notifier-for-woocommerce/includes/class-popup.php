@@ -12,16 +12,16 @@ if ( ! class_exists( 'CWG_Sweetalert_Popup' ) ) {
 		}
 
 		public function hide_subscribe_form_variation( $bool, $product, $variation ) {
-			$options = get_option( 'cwginstocksettings' );
+			$options     = get_option( 'cwginstocksettings' );
 			$chosen_mode = isset( $options['mode'] ) && '2' == $options['mode'] ? false : true;
 			return $chosen_mode;
 		}
 
 		public function display_custom_button( $product, $variation ) {
-			$nonce = wp_create_nonce( 'cwg_trigger_popup_ajax' );
-			$get_option = get_option( 'cwginstocksettings' );
-			$button_label = isset( $get_option['button_label'] ) && '' != $get_option['button_label'] ? $get_option['button_label'] : __( 'Subscribe Now', 'back-in-stock-notifier-for-woocommerce' );
-			$instock_api = new CWG_Instock_API();
+			$nonce                 = wp_create_nonce( 'cwg_trigger_popup_ajax' );
+			$get_option            = get_option( 'cwginstocksettings' );
+			$button_label          = isset( $get_option['button_label'] ) && '' != $get_option['button_label'] ? $get_option['button_label'] : __( 'Subscribe Now', 'back-in-stock-notifier-for-woocommerce' );
+			$instock_api           = new CWG_Instock_API();
 			$additional_class_name = isset( $get_option['btn_class'] ) && '' != $get_option['btn_class'] ? str_replace( ',', ' ', $get_option['btn_class'] ) : '';
 			/**
 			 * Filter for popup button label

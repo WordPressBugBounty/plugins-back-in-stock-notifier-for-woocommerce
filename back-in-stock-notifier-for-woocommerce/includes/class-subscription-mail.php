@@ -10,9 +10,9 @@ class CWG_Instock_Subscription extends CWG_Instock_Mailer {
 
 	public function __construct( $subscriber_id ) {
 		parent::__construct();
-		$this->slug = 'subscribe';
+		$this->slug          = 'subscribe';
 		$this->subscriber_id = $subscriber_id;
-		$this->email = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
+		$this->email         = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
 		/**
 		 * Action triggers before in-stock.
 		 *

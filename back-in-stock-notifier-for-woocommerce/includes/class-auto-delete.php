@@ -31,7 +31,7 @@ if ( ! class_exists( 'CWG_Instock_Auto_Delete' ) ) {
 		}
 
 		public function delete_subscribers_for_x_days() {
-			$options = get_option( 'cwginstocksettings' );
+			$options          = get_option( 'cwginstocksettings' );
 			$get_option_value = isset( $options['delete_subscribers_for_x_days'] ) && $options['delete_subscribers_for_x_days'] > 0 ? $options['delete_subscribers_for_x_days'] : 7;
 			?>
 			<input type='number' style='width: 400px;' name='cwginstocksettings[delete_subscribers_for_x_days]'
@@ -47,11 +47,11 @@ if ( ! class_exists( 'CWG_Instock_Auto_Delete' ) ) {
 
 
 		public function generate_get_subscribers() {
-			$options = get_option( 'cwginstocksettings' );
+			$options                  = get_option( 'cwginstocksettings' );
 			$check_auto_delete_enable = isset( $options['enable_auto_delete'] ) && '1' == $options['enable_auto_delete'] ? true : false;
 			if ( $check_auto_delete_enable ) {
 				$get_days_delete_subscriber = isset( $options['delete_subscribers_for_x_days'] ) && $options['delete_subscribers_for_x_days'] > 0 ? $options['delete_subscribers_for_x_days'] : 7; // default 7 days
-				$args = array(
+				$args                       = array(
 					'numberposts' => -1,
 					'post_type' => 'cwginstocknotifier',
 					'post_status' => array( 'cwg_unsubscribed', 'cwg_mailsent', 'cwg_converted' ),
@@ -60,7 +60,7 @@ if ( ! class_exists( 'CWG_Instock_Auto_Delete' ) ) {
 						'before' => gmdate( 'Y-m-d', strtotime( "-$get_days_delete_subscriber days" ) ),
 					),
 				);
-				$posts = get_posts( $args );
+				$posts                      = get_posts( $args );
 				if ( is_array( $posts ) && ! empty( $posts ) ) {
 					foreach ( $posts as $id ) {
 						wp_delete_post( $id, true );

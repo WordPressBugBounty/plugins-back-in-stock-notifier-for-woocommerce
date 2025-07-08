@@ -79,7 +79,7 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		 * @return void
 		 */
 		public function quantity_field_empty_error() {
-			$options = get_option( 'cwginstocksettings' );
+			$options      = get_option( 'cwginstocksettings' );
 			$option_value = isset( $options['empty_quantity_message'] ) ? $options['empty_quantity_message'] : __( 'Quantity cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
 			?>
 			<input type='text' style='width: 400px;' name='cwginstocksettings[empty_quantity_message]'
@@ -109,13 +109,13 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		 * @return mixed
 		 */
 		public function add_column( $columns ) {
-			$options = get_option( 'cwginstocksettings' );
+			$options          = get_option( 'cwginstocksettings' );
 			$quantity_enabled = isset( $options['enable_quantity_field'] ) && '1' === $options['enable_quantity_field'];
 			if ( $quantity_enabled ) {
 				$date_columns = $columns['date'];
 				unset( $columns['date'] );
 				$columns['quantity'] = __( 'Required Quantity', 'back-in-stock-notifier-for-woocommerce' );
-				$columns['date'] = $date_columns;
+				$columns['date']     = $date_columns;
 			}
 			return $columns;
 		}
@@ -141,7 +141,7 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		 * @return bool
 		 */
 		public function is_quantity_field_enabled() {
-			$option = get_option( 'cwginstocksettings' );
+			$option           = get_option( 'cwginstocksettings' );
 			$check_is_enabled = isset( $option['enable_quantity_field'] ) && '1' == $option['enable_quantity_field'] ? true : false;
 			return $check_is_enabled;
 		}
@@ -152,7 +152,7 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		 * @return mixed
 		 */
 		public function get_placeholder() {
-			$option = get_option( 'cwginstocksettings' );
+			$option          = get_option( 'cwginstocksettings' );
 			$get_placeholder = isset( $option['quantity_field_placeholder'] ) && '' != $option['quantity_field_placeholder'] ? $option['quantity_field_placeholder'] : __( 'Quantity', 'back-in-stock-notifier-for-woocommerce' );
 			return $get_placeholder;
 		}
@@ -167,7 +167,7 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		public function add_quantity_field( $product_id, $variation_id ) {
 			$check_is_enabled = $this->is_quantity_field_enabled();
 			if ( $check_is_enabled ) {
-				$placeholder = $this->get_placeholder();
+				$placeholder   = $this->get_placeholder();
 				$quantity_data = '';
 				?>
 				<p>
@@ -200,8 +200,8 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		public function add_quantity_shortcode( $formatted_content, $subscriber_id ) {
 			$user_quantity = get_post_meta( $subscriber_id, 'cwginstock_custom_quantity', true );
 
-			$find = '{cwginstock_quantity}';
-			$replace = $user_quantity ? $user_quantity : 1;
+			$find              = '{cwginstock_quantity}';
+			$replace           = $user_quantity ? $user_quantity : 1;
 			$formatted_content = str_replace( $find, $replace, $formatted_content );
 
 			return $formatted_content;
@@ -216,14 +216,14 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		 * @return mixed
 		 */
 		public function add_quantity_url( $cart_url, $product_id, $subscriber_id ) {
-			$options = get_option( 'cwginstocksettings' );
+			$options          = get_option( 'cwginstocksettings' );
 			$quantity_enabled = isset( $options['enable_quantity_field'] ) && '1' === $options['enable_quantity_field'];
 
 			if ( $quantity_enabled ) {
 				$quantity_value = get_post_meta( $subscriber_id, 'cwginstock_custom_quantity', true );
 				if ( $quantity_value ) {
 					$query_args = array( 'quantity' => $quantity_value );
-					$cart_url = esc_url_raw( add_query_arg( $query_args, $cart_url ) );
+					$cart_url   = esc_url_raw( add_query_arg( $query_args, $cart_url ) );
 				}
 			}
 

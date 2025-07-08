@@ -33,7 +33,7 @@ if ( ! class_exists( 'CWG_Instock_Estimate_Stock_Settings' ) ) {
 		}
 
 		public function est_rule_priority() {
-			$options = get_option( 'cwginstocksettings' );
+			$options          = get_option( 'cwginstocksettings' );
 			$current_priority = isset( $options['est_rule_priority'] ) ? $options['est_rule_priority'] : 'first';
 			?>
 			<label>
@@ -51,7 +51,7 @@ if ( ! class_exists( 'CWG_Instock_Estimate_Stock_Settings' ) ) {
 		}
 
 		public function display_message_place() {
-			$options = get_option( 'cwginstocksettings' );
+			$options               = get_option( 'cwginstocksettings' );
 			$display_message_place = isset( $options['display_message_place'] ) ? $options['display_message_place'] : '';
 			?>
 			<select name="cwginstocksettings[display_message_place]">

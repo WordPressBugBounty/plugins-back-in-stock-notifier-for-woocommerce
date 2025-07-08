@@ -12,8 +12,8 @@ if ( ! class_exists( 'CWG_Site_Checker' ) ) {
 			add_filter( 'cwginstock_stop_email', array( $this, 'stop_send_email_for_staging' ), 10, 3 );
 		}
 		public function is_staging_site( $site_url ) {
-			$options = get_option( 'cwginstocksettings' );
-			$is_enabled = isset( $options['stop_sending_email_staging'] ) && '1' == $options['stop_sending_email_staging'] ? true : false;
+			$options             = get_option( 'cwginstocksettings' );
+			$is_enabled          = isset( $options['stop_sending_email_staging'] ) && '1' == $options['stop_sending_email_staging'] ? true : false;
 			$staging_domains_set = isset( $options['staging_domains'] ) && ( '' != $options['staging_domains'] ) ? true : false;
 			if ( $is_enabled && $staging_domains_set ) {
 				$array_of_staging = explode( ',', $options['staging_domains'] );

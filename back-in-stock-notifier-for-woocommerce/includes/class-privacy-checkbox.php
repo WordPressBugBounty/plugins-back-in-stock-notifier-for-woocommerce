@@ -10,7 +10,7 @@ if ( ! class_exists( 'CWG_Instock_Privacy_Checkbox' ) ) {
 		private $api;
 
 		public function __construct() {
-			$settings = get_option( 'cwginstock_iagree_settings' );
+			$settings  = get_option( 'cwginstock_iagree_settings' );
 			$is_enable = isset( $settings['enable_iagree'] ) ? $settings['enable_iagree'] : false;
 			// register settings
 			add_action( 'cwginstock_register_settings', array( $this, 'register_settings' ), 210 );
@@ -63,8 +63,8 @@ if ( ! class_exists( 'CWG_Instock_Privacy_Checkbox' ) ) {
 
 		public function show_iagree_frontend( $product_id, $variation_id ) {
 			$get_options = get_option( 'cwginstock_iagree_settings' );
-			$is_enable = isset( $get_options['enable_iagree'] ) ? $get_options['enable_iagree'] : false;
-			$get_text = isset( $get_options['iagree_text'] ) && '' != $get_options['iagree_text'] ? $get_options['iagree_text'] : false;
+			$is_enable   = isset( $get_options['enable_iagree'] ) ? $get_options['enable_iagree'] : false;
+			$get_text    = isset( $get_options['iagree_text'] ) && '' != $get_options['iagree_text'] ? $get_options['iagree_text'] : false;
 			if ( $is_enable && $get_text ) {
 				?>
 				<div class="cwg_iagree_checkbox"> <label for="cwg_iagree_checkbox_input"> <input type="checkbox"
@@ -77,18 +77,18 @@ if ( ! class_exists( 'CWG_Instock_Privacy_Checkbox' ) ) {
 
 		public function default_values() {
 			// delete_option('cwginstock_iagree_settings');
-			$get_option = get_option( 'cwginstock_iagree_settings', array() );
-			$privacy_url = function_exists( 'get_privacy_policy_url' ) ? get_privacy_policy_url() : '#';
-			$default_text = "I Agree to the <a href='#'>terms</a> and <a href='$privacy_url'>privacy policy</a>";
-			$get_option['iagree_text'] = $default_text;
+			$get_option                 = get_option( 'cwginstock_iagree_settings', array() );
+			$privacy_url                = function_exists( 'get_privacy_policy_url' ) ? get_privacy_policy_url() : '#';
+			$default_text               = "I Agree to the <a href='#'>terms</a> and <a href='$privacy_url'>privacy policy</a>";
+			$get_option['iagree_text']  = $default_text;
 			$get_option['iagree_error'] = 'Please accept our terms and privacy policy';
 			add_option( 'cwginstock_iagree_settings', $get_option );
 		}
 
 		public function add_localize_data( $already_loaded ) {
-			$get_option = get_option( 'cwginstock_iagree_settings' );
+			$get_option                         = get_option( 'cwginstock_iagree_settings' );
 			$already_loaded['is_iagree_enable'] = isset( $get_option['enable_iagree'] ) ? '1' : '2';
-			$already_loaded['iagree_error'] = $get_option['iagree_error'];
+			$already_loaded['iagree_error']     = $get_option['iagree_error'];
 			return $already_loaded;
 		}
 

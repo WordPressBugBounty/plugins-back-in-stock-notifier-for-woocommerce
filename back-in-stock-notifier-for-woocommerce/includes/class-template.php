@@ -16,9 +16,9 @@ if ( ! class_exists( 'CWG_Template' ) ) {
 
 		public function __construct( $template_name, $args = '', $template_path = '', $default_path = '' ) {
 			$this->template_name = $template_name;
-			$this->args = $args;
+			$this->args          = $args;
 			$this->template_path = $template_path;
-			$this->default_path = $default_path;
+			$this->default_path  = $default_path;
 		}
 
 		private function locate_template() {

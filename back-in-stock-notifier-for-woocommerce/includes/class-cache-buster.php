@@ -12,10 +12,10 @@ if ( ! class_exists( 'CWG_Cache_Buster' ) ) {
 		}
 
 		public function cache_buster_cart_link( $url, $pid, $id ) {
-			$options = get_option( 'cwginstocksettings' );
+			$options                   = get_option( 'cwginstocksettings' );
 			$check_cache_buster_enable = isset( $options['cache_buster'] ) && '1' == $options['cache_buster'] ? true : false;
 			if ( $check_cache_buster_enable ) {
-				$rand_num = wp_rand();
+				$rand_num             = wp_rand();
 				$cart_url_cachebuster = add_query_arg( 'cachebuster', $rand_num, $url );
 				return $cart_url_cachebuster;
 			} else {

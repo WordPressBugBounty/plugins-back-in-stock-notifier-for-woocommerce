@@ -30,17 +30,17 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Privacy' ) ) {
 		}
 
 		public function back_in_stock_notifier_exporter( $email_address, $page = 1 ) {
-			$number = 500;
-			$page = (int) $page;
+			$number       = 500;
+			$page         = (int) $page;
 			$to_be_export = array();
-			$args = array(
+			$args         = array(
 				'post_type' => 'cwginstocknotifier',
 				'paged' => $page,
 				'posts_per_page' => $number,
 				'post_status' => 'any',
 				's' => $email_address,
 			);
-			$get_posts = get_posts( $args );
+			$get_posts    = get_posts( $args );
 			if ( $get_posts ) {
 				foreach ( $get_posts as $each_post ) {
 					$data_to_export = $this->data_to_export( $each_post );
@@ -61,11 +61,11 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Privacy' ) ) {
 
 		public function back_in_stock_notifier_eraser( $email_address, $page = 1 ) {
 			$posts_per_page = 500;
-			$page = (int) $page;
-			$items_removed = false;
+			$page           = (int) $page;
+			$items_removed  = false;
 			$items_retained = false;
 
-			$args = array(
+			$args      = array(
 				'post_type' => 'cwginstocknotifier',
 				'paged' => $page,
 				'posts_per_page' => $posts_per_page,
@@ -100,7 +100,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Privacy' ) ) {
 		}
 
 		public function data_to_export( $each_post ) {
-			$to_be_export = array();
+			$to_be_export   = array();
 			$to_be_export[] = array(
 				'name' => 'Created',
 				'value' => $each_post->post_date,
@@ -114,11 +114,11 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Privacy' ) ) {
 				'name' => 'Status',
 				'value' => get_post_status( $each_post->ID ),
 			);
-			$obj = new CWG_Instock_API();
-			$product_name = $obj->display_product_name( $each_post->ID );
-			$product_id = get_post_meta( $each_post->ID, 'cwginstock_product_id', true );
-			$variation_id = get_post_meta( $each_post->ID, 'cwginstock_variation_id', true );
-			$intvariation = intval( $variation_id );
+			$obj            = new CWG_Instock_API();
+			$product_name   = $obj->display_product_name( $each_post->ID );
+			$product_id     = get_post_meta( $each_post->ID, 'cwginstock_product_id', true );
+			$variation_id   = get_post_meta( $each_post->ID, 'cwginstock_variation_id', true );
+			$intvariation   = intval( $variation_id );
 
 			$to_be_export[] = array(
 				'name' => 'Product ID',

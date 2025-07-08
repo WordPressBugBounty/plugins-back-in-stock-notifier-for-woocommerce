@@ -22,10 +22,10 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 			add_action( 'manage_cwginstock_arrival_posts_custom_column', array( $this, 'manage_columns' ), 10, 2 );
 			add_filter( 'post_row_actions', array( $this, 'manage_row_actions' ), 10, 2 );
 			add_action( 'admin_notices', array( $this, 'display_error' ) );
-			$this->api = new CWG_Instock_API();
-			$this->options = get_option( 'cwginstocksettings' );
+			$this->api        = new CWG_Instock_API();
+			$this->options    = get_option( 'cwginstocksettings' );
 			$enable_est_stock = isset( $this->options['enable_est_stock_arrival'] ) ? $this->options['enable_est_stock_arrival'] : 0;
-			$display_hook = isset( $this->options['display_message_place'] ) ? $this->options['display_message_place'] : '';
+			$display_hook     = isset( $this->options['display_message_place'] ) ? $this->options['display_message_place'] : '';
 			if ( $enable_est_stock ) {
 				add_action( $display_hook, array( $this, 'display_eta_message' ), 10, 2 );
 			}
@@ -73,9 +73,9 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 		}
 
 		public function add_columns( $columns ) {
-			$date_column = $columns['date'];
-			$columns['products'] = __( 'Product(s)', 'back-in-stock-notifier-for-woocommerce' );
-			$columns['est_date'] = __( 'Estimated Stock Arrival Date', 'back-in-stock-notifier-for-woocommerce' );
+			$date_column              = $columns['date'];
+			$columns['products']      = __( 'Product(s)', 'back-in-stock-notifier-for-woocommerce' );
+			$columns['est_date']      = __( 'Estimated Stock Arrival Date', 'back-in-stock-notifier-for-woocommerce' );
 			$columns['stock_message'] = __( 'Estimated Stock Arrival Message', 'back-in-stock-notifier-for-woocommerce' );
 			unset( $columns['date'] );
 			$columns['date'] = $date_column;
@@ -90,10 +90,10 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 						foreach ( $product_ids as $each_id ) {
 							$product = wc_get_product( $each_id );
 							if ( $product ) {
-								$get_type = $product->get_type();
-								$product_id = 'variation' === $get_type ? $product->get_parent_id() : $each_id; // Fetch parent ID if it's a variation
+								$get_type     = $product->get_type();
+								$product_id   = 'variation' === $get_type ? $product->get_parent_id() : $each_id; // Fetch parent ID if it's a variation
 								$product_name = $product->get_name();
-								$permalink = esc_url( admin_url( "post.php?post=$product_id&action=edit" ) );
+								$permalink    = esc_url( admin_url( "post.php?post=$product_id&action=edit" ) );
 								printf(
 									'<a href="%s" title="%s">#%d %s</a><br>',
 									esc_url( $permalink ),
@@ -128,7 +128,7 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 			global $submenu_file, $current_screen;
 			if ( 'cwginstock_arrival' == $current_screen->post_type ) {
 				$submenu_file = 'edit.php?post_type=cwginstock_arrival';
-				$parent_file = 'edit.php?post_type=cwginstocknotifier';
+				$parent_file  = 'edit.php?post_type=cwginstocknotifier';
 			}
 			return $parent_file;
 		}
@@ -149,9 +149,9 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 				return;
 			}
 
-			$product_ids = get_post_meta( $post->ID, 'cwg_product_ids', true );
+			$product_ids            = get_post_meta( $post->ID, 'cwg_product_ids', true );
 			$estimated_arrival_date = get_post_meta( $post->ID, 'cwg_eta_date', true );
-			$stock_message = get_post_meta( $post->ID, 'cwg_stock_message', true );
+			$stock_message          = get_post_meta( $post->ID, 'cwg_stock_message', true );
 			wp_nonce_field( 'cwg_estimate_stock_arrival_nonce', 'cwg_estimate_stock_arrival_nonce' );
 			?>
 
@@ -225,9 +225,9 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 				return;
 			}
 
-			$empty_fields = array();
-			$product_ids = isset( $_POST['cwg_product_ids'] ) ? array_map( 'intval', $_POST['cwg_product_ids'] ) : '';
-			$eta_date = isset( $_POST['cwg_eta_date'] ) ? sanitize_text_field( wp_unslash( $_POST['cwg_eta_date'] ) ) : '';
+			$empty_fields  = array();
+			$product_ids   = isset( $_POST['cwg_product_ids'] ) ? array_map( 'intval', $_POST['cwg_product_ids'] ) : '';
+			$eta_date      = isset( $_POST['cwg_eta_date'] ) ? sanitize_text_field( wp_unslash( $_POST['cwg_eta_date'] ) ) : '';
 			$stock_message = isset( $_POST['cwg_stock_message'] ) ? wp_kses_post( wp_unslash( $_POST['cwg_stock_message'] ) ) : '';
 
 			if ( empty( $product_ids ) ) {
@@ -270,7 +270,7 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 			global $wpdb;
 
 			$custom_post_type = 'cwginstock_arrival';
-			$meta_key = 'cwg_product_ids';
+			$meta_key         = 'cwg_product_ids';
 			// phpcs:ignore
 			$results = $wpdb->get_col( $wpdb->prepare(
 				"
@@ -304,22 +304,22 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 			} else {
 				$id = $product_id;
 			}
-			$product_name = '';
+			$product_name      = '';
 			$only_product_name = '';
-			$product_obj = wc_get_product( $id );
+			$product_obj       = wc_get_product( $id );
 			if ( $product_obj ) {
-				$product_name = $product_obj->get_formatted_name();
+				$product_name      = $product_obj->get_formatted_name();
 				$only_product_name = $product_obj->get_name();
 			}
-			$get_priority = isset( $this->options['est_rule_priority'] ) ? $this->options['est_rule_priority'] : 'first';
+			$get_priority     = isset( $this->options['est_rule_priority'] ) ? $this->options['est_rule_priority'] : 'first';
 			$fetch_matched_id = $this->get_eta_by_product_id( $id, $get_priority );
 
 			if ( $fetch_matched_id ) {
-				$get_stock_date = get_post_meta( $fetch_matched_id, 'cwg_eta_date', true );
-				$get_message = get_post_meta( $fetch_matched_id, 'cwg_stock_message', true );
-				$saved_timestamp = strtotime( $get_stock_date );
+				$get_stock_date    = get_post_meta( $fetch_matched_id, 'cwg_eta_date', true );
+				$get_message       = get_post_meta( $fetch_matched_id, 'cwg_stock_message', true );
+				$saved_timestamp   = strtotime( $get_stock_date );
 				$current_timestamp = strtotime( gmdate( 'Y-m-d' ) );
-				$diff_in_seconds = $saved_timestamp - $current_timestamp;
+				$diff_in_seconds   = $saved_timestamp - $current_timestamp;
 
 				$eta_shortcode_regx = false;
 				if ( preg_match( '/\{(days_left|stock_arrival_date)\}/', $get_message ) ) {
@@ -330,14 +330,14 @@ if ( ! class_exists( 'CWG_Estimate_Stock_Arrival' ) ) {
 					return;
 				}
 
-				$days_left = floor( $diff_in_seconds / ( 60 * 60 * 24 ) );
-				$days_left = $days_left > 1 ? $days_left . ' ' . __( 'Days', 'back-in-stock-notifier-for-woocommerce' ) : $days_left . ' ' . __( 'Day', 'back-in-stock-notifier-for-woocommerce' );
-				$get_stock_date = gmdate( get_option( 'date_format' ), strtotime( $get_stock_date ) );
-				$api = new CWG_Instock_API();
+				$days_left         = floor( $diff_in_seconds / ( 60 * 60 * 24 ) );
+				$days_left         = $days_left > 1 ? $days_left . ' ' . __( 'Days', 'back-in-stock-notifier-for-woocommerce' ) : $days_left . ' ' . __( 'Day', 'back-in-stock-notifier-for-woocommerce' );
+				$get_stock_date    = gmdate( get_option( 'date_format' ), strtotime( $get_stock_date ) );
+				$api               = new CWG_Instock_API();
 				$subscribers_count = $api->get_subscribers_count( $id, 'any' );
-				$find_array = array( '{stock_arrival_date}', '{product_name}', '{only_product_name}', '{days_left}', '{total_subscribers}' );
-				$replace_array = array( $get_stock_date, $product_name, $only_product_name, $days_left, $subscribers_count );
-				$get_message = str_replace( $find_array, $replace_array, $get_message );
+				$find_array        = array( '{stock_arrival_date}', '{product_name}', '{only_product_name}', '{days_left}', '{total_subscribers}' );
+				$replace_array     = array( $get_stock_date, $product_name, $only_product_name, $days_left, $subscribers_count );
+				$get_message       = str_replace( $find_array, $replace_array, $get_message );
 				echo do_shortcode( $get_message );
 			}
 		}

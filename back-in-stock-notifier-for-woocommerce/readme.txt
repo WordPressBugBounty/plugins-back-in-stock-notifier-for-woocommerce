@@ -1,11 +1,11 @@
 === Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro ===
-Contributors: codewoogeek
+Contributors: codewoogeek, propluginslab
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
 Tested up to: 6.8.1
 Requires PHP: 7.4
-Stable tag: 5.9.0
+Stable tag: 6.0.0
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,14 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.0.0 – 2025-07-09 =
+* New: Added Queued status
+* New: Reports Dashboard Widget
+* Tweak: Map variable product name when the option "Trigger mail to variable product subscribers when any other variation of that product is back in stock" is enabled
+* Tweak: Enhanced status color code
+* Tweak: Tested with WooCommerce 9.9.5
+* Tweak: POT File updated
+
 = 5.9.0 2025-06-23 =
 * New : Hide Subscribe Form on Free or Zero Price Out of Stock Products
 * Tweak: JS variable appended with proper prefix

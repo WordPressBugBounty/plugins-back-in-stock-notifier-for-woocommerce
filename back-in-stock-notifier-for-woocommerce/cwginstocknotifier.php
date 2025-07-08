@@ -5,14 +5,14 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://codewoogeek.online/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 5.9.0
+ * Version: 6.0.0
  * Author: codewoogeek
  * Requires Plugins: woocommerce
  * Author URI: https://codewoogeek.online
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 9.9.4
+ * WC tested up to: 9.9.5
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      codewoogeek
  * @copyright   2025 CodeWooGeek, LLC
@@ -47,7 +47,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '5.9.0';
+		public $version = '6.0.0';
 
 		/**
 		 * Instance variable
@@ -85,7 +85,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 * Construct the class
 		 */
 		public function __construct() {
-			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 			$this->avoid_header_sent();
 			$this->define_constant();
 			$this->initialize();
@@ -97,6 +97,9 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 			add_action( 'before_woocommerce_init', array( $this, 'declare_wc_compatibility' ) );
 
+			if ( is_admin() ) {
+				add_action( 'wp_dashboard_setup', array( 'CWG_Back_In_Stock_Dashboard_Widget', 'init' ) );
+			}
 			register_deactivation_hook( __FILE__, array( $this, 'clear_schedule_events' ) );
 		}
 
@@ -142,6 +145,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-site-checker.php';
 			include 'includes/class-stock-arrival.php';
 			include 'includes/class-stock-arrival-settings.php';
+			include 'includes/class-queue.php';
+			include 'includes/class-dashboard-widget.php';
 		}
 
 		/**
@@ -391,7 +396,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 	 * @since 1.0
 	 */
 	function CWG_Instock_Notifier() {
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( cwg_is_woocommerce_activated() ) {
 			return CWG_Instock_Notifier::instance();
 		}
@@ -405,7 +410,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 * @return bool
 		 */
 		function cwg_is_woocommerce_activated() {
-			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 			if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 				return true;
 			} elseif ( is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) ) {

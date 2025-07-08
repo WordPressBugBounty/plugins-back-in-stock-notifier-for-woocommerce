@@ -18,8 +18,8 @@ class CWG_Background_Task extends WP_Async_Task {
 	 * @return array
 	 */
 	protected function prepare_data( $data ) {
-		$product_id = $data[0];
-		$stockstatus = $data[1];
+		$product_id    = $data[0];
+		$stockstatus   = $data[1];
 		$get_post_type = get_post_type( $product_id );
 		if ( 'product' !== $get_post_type ) {
 			throw new Exception( 'We only want async tasks for products' );

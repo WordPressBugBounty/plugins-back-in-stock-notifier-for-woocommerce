@@ -6,30 +6,41 @@ mark.cwgmark {
 }
 
 mark.cwgsubscribed {
-	background: #3789e2;
+	background: #0073aa;
 	color: #fff;
 
 }
 
 mark.cwgunsubscribed {
-	background: red;
-	color: #fff;
+	background: #e0e0e0;
+	color: #000;
 }
 
 mark.cwgmailsent {
-	background: green;
+	background: #28a745;
 	color: #fff;
 }
 
 mark.cwgpurchased {
-	background: orange;
+	background: #6f42c1;
 	color: #fff;
 }
 
 mark.cwg_mailnotsent {
-	background: #f83030;
+	background: #dc3545;
 	color: #fff;
 }
+
+mark.cwgqueued {
+	background: #fd7e14;
+	color: #000;
+}
+
+mark.cwgdoubleoptin {
+	background: #ffc107;
+	color: #000;
+}
+
 
 mark.cwgmark_exists {
 	background: green;

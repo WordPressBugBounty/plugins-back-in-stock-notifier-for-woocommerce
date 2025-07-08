@@ -15,15 +15,15 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 		private $language;
 
 		public function __construct( $product_id = 0, $variation_id = 0, $user_email = '', $user_id = 0, $language = 'en_US' ) {
-			$this->product_id = $product_id;
-			$this->variation_id = $variation_id;
+			$this->product_id       = $product_id;
+			$this->variation_id     = $variation_id;
 			$this->subscriber_email = $user_email;
-			$this->user_id = $user_id;
-			$this->language = $language;
+			$this->user_id          = $user_id;
+			$this->language         = $language;
 		}
 
 		public function get_list_of_subscribers( $relation = 'OR' ) {
-			$args = array(
+			$args       = array(
 				'post_type' => 'cwginstocknotifier',
 				'fields' => 'ids',
 				'posts_per_page' => -1,
@@ -95,7 +95,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 		}
 
 		public function is_already_subscribed( $status = array( 'cwg_subscribed' ) ) {
-			$args = array(
+			$args       = array(
 				'post_type' => 'cwginstocknotifier',
 				'fields' => 'ids',
 				'posts_per_page' => -1,
@@ -114,12 +114,12 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 			);
 			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			$args['meta_query'] = $meta_query;
-			$get_posts = get_posts( $args );
+			$get_posts          = get_posts( $args );
 			return $get_posts;
 		}
 
 		public function is_already_doubleoptin() {
-			$args = array(
+			$args       = array(
 				'post_type' => 'cwginstocknotifier',
 				'fields' => 'ids',
 				'posts_per_page' => -1,
@@ -138,7 +138,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 			);
 			//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			$args['meta_query'] = $meta_query;
-			$get_posts = get_posts( $args );
+			$get_posts          = get_posts( $args );
 			return $get_posts;
 		}
 
@@ -148,7 +148,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => $status,
 			);
-			$id = wp_update_post( $args );
+			$id   = wp_update_post( $args );
 			return $id;
 		}
 
@@ -158,7 +158,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => 'cwg_subscribed',
 			);
-			$id = wp_update_post( $args );
+			$id   = wp_update_post( $args );
 			return $id;
 		}
 
@@ -168,7 +168,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => 'cwg_unsubscribed',
 			);
-			$id = wp_update_post( $args );
+			$id   = wp_update_post( $args );
 			return $id;
 		}
 
@@ -178,7 +178,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => 'cwg_mailsent',
 			);
-			$id = wp_update_post( $args );
+			$id   = wp_update_post( $args );
 			return $id;
 		}
 
@@ -188,7 +188,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => 'cwg_mailnotsent',
 			);
-			$id = wp_update_post( $args );
+			$id   = wp_update_post( $args );
 			return $id;
 		}
 
@@ -213,9 +213,19 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 			} else {
 				$pid = get_post_meta( $id, 'cwginstock_bypass_pid', true );
 			}
+
+			$options                            = get_option( 'cwginstocksettings' );
+			$variable_any_variation_backinstock = ( isset( $options['variable_any_variation_backinstock'] ) && '1' == $options['variable_any_variation_backinstock'] ) ? true : false;
+
 			$product = wc_get_product( $pid );
 			if ( $product ) {
 				$permalink = $product->get_permalink();
+				if ( $product->is_type( 'variation' ) && $variable_any_variation_backinstock ) {
+					$variation_obj = wc_get_product( $product->get_parent_id() );
+					if ( $variation_obj ) {
+						$permalink = $variation_obj->get_permalink();
+					}
+				}
 			}
 			return $permalink;
 		}
@@ -282,7 +292,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 
 		public function get_subscriber_name( $subscriber_id ) {
 			$subscriber_name = get_post_meta( $subscriber_id, 'cwginstock_subscriber_name', true );
-			$email = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
+			$email           = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
 			if ( '' == $subscriber_name ) {
 				$get_user_id = get_post_meta( $subscriber_id, 'cwginstock_user_id', true );
 				if ( $get_user_id > 0 ) {
@@ -296,7 +306,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 
 		public function get_subscriber_firstname( $subscriber_id ) {
 			$subscriber_name = get_post_meta( $subscriber_id, 'cwginstock_subscriber_name', true );
-			$email = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
+			$email           = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
 
 			if ( '' == $subscriber_name ) {
 				$get_user_id = get_post_meta( $subscriber_id, 'cwginstock_user_id', true );
@@ -306,8 +316,8 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 					$subscriber_name = $this->get_name_by_email( $email, 'first' );
 				}
 			} else {
-				$get_firstname = explode( ' ', $subscriber_name );
-				$get_firstname = is_array( $get_firstname ) && isset( $get_firstname[0] ) ? $get_firstname[0] : $subscriber_name;
+				$get_firstname   = explode( ' ', $subscriber_name );
+				$get_firstname   = is_array( $get_firstname ) && isset( $get_firstname[0] ) ? $get_firstname[0] : $subscriber_name;
 				$subscriber_name = $get_firstname;
 			}
 			return $subscriber_name;
@@ -315,7 +325,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 
 		public function get_subscriber_lastname( $subscriber_id ) {
 			$subscriber_name = get_post_meta( $subscriber_id, 'cwginstock_subscriber_name', true );
-			$email = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
+			$email           = get_post_meta( $subscriber_id, 'cwginstock_subscriber_email', true );
 
 			if ( '' == $subscriber_name ) {
 				$get_user_id = get_post_meta( $subscriber_id, 'cwginstock_user_id', true );
@@ -325,8 +335,8 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 					$subscriber_name = $this->get_name_by_email( $email, 'last' );
 				}
 			} else {
-				$get_lastname = explode( ' ', $subscriber_name );
-				$get_lastname = is_array( $get_lastname ) && isset( $get_lastname[1] ) ? $get_lastname[1] : $subscriber_name;
+				$get_lastname    = explode( ' ', $subscriber_name );
+				$get_lastname    = is_array( $get_lastname ) && isset( $get_lastname[1] ) ? $get_lastname[1] : $subscriber_name;
 				$subscriber_name = $get_lastname;
 			}
 			return $subscriber_name;
@@ -361,7 +371,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 						$get_permalink = $object->get_permalink();
 						if ( $object->is_type( 'variation' ) ) {
 							$get_parent_id = $object->get_parent_id();
-							$query_arg = array(
+							$query_arg     = array(
 								'variation_id' => $pid,
 								'add-to-cart' => $get_parent_id,
 							);
@@ -477,7 +487,7 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 		}
 
 		public function get_subscribers_count( $product_id, $status = 'any' ) {
-			$args = array(
+			$args  = array(
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => $status,
 				//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query

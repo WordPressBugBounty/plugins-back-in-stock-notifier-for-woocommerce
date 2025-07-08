@@ -33,7 +33,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 				</h1>
 				<div class="notice notice-success cwg_marketing_notice">
 					<p>
-						<strong>Savings and Power Combined</strong>: All Add-ons, One-Time Payment of $39, Zero Monthly Hassles! <a
+						<strong>Savings and Power Combined</strong>: All Add-ons, One-Time Payment of $49, Zero Monthly Hassles! <a
 							href="https://codewoogeek.online/shop/back-in-stock-notifier/bundle-add-ons/"
 							target="_blank"><strong>Buy Now Bundle Add-ons!</strong></a>
 					</p>
@@ -182,7 +182,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function form_name_placeholder() {
-			$options = get_option('cwginstocksettings');
+			$options      = get_option('cwginstocksettings');
 			$option_value = isset($options['name_placeholder']) ? $options['name_placeholder'] : __('Your Name', 'back-in-stock-notifier-for-woocommerce');
 			?>
 			<input type='text' style='width: 400px;' name='cwginstocksettings[name_placeholder]'
@@ -306,7 +306,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function hide_form_for_guest_msg() {
-			$options = get_option('cwginstocksettings');
+			$options                 = get_option('cwginstocksettings');
 			$hide_form_for_guest_msg = isset($options['hide_form_for_guest_msg']) ? $options['hide_form_for_guest_msg'] : '';
 			?>
 			<textarea class='hide_form_for_guest_msg' name="cwginstocksettings[hide_form_for_guest_msg]"
@@ -532,7 +532,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function empty_name_fields() {
-			$options = get_option('cwginstocksettings');
+			$options      = get_option('cwginstocksettings');
 			$option_value = isset($options['empty_name_message']) ? $options['empty_name_message'] : __('Name cannot be empty', 'back-in-stock-notifier-for-woocommerce');
 			?>
 			<input type='text' style='width: 400px;' name='cwginstocksettings[empty_name_message]'
@@ -557,7 +557,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function invalid_phone_number() {
-			$options = get_option('cwginstocksettings');
+			$options              = get_option('cwginstocksettings');
 			$invalid_phone_number = isset($options['invalid_phone_error']) ? $options['invalid_phone_error'] : esc_html__('Please enter valid Phone Number', 'back-in-stock-notifier-for-woocommerce');
 			?>
 			<input type='text' style='width: 400px;' name='cwginstocksettings[invalid_phone_error]'
@@ -566,7 +566,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function phone_number_too_short() {
-			$options = get_option('cwginstocksettings');
+			$options                = get_option('cwginstocksettings');
 			$phone_number_too_short = isset($options['phone_number_too_short']) ? $options['phone_number_too_short'] : esc_html__('Phone Number too short', 'back-in-stock-notifier-for-woocommerce');
 			?>
 			<input type='text' style='width: 400px;' name='cwginstocksettings[phone_number_too_short]'
@@ -575,7 +575,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function phone_number_too_long() {
-			$options = get_option('cwginstocksettings');
+			$options               = get_option('cwginstocksettings');
 			$phone_number_too_long = isset($options['phone_number_too_long']) ? $options['phone_number_too_long'] : esc_html__('Phone Number too long', 'back-in-stock-notifier-for-woocommerce');
 			?>
 			<input type='text' style='width: 400px;' name='cwginstocksettings[phone_number_too_long]'
@@ -664,7 +664,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function instock_mail_message_set_stock_quantity() {
-			$options = get_option('cwginstocksettings');
+			$options               = get_option('cwginstocksettings');
 			$get_option_value_user = isset($options['set_stock_quantity_for_instock_mail']) && $options['set_stock_quantity_for_instock_mail'] > 0 ? $options['set_stock_quantity_for_instock_mail'] : 0;
 			?>
 			<input type='number' style='width: 400px;' name='cwginstocksettings[set_stock_quantity_for_instock_mail]'
@@ -749,7 +749,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 			// delete_option('cwginstocksettings');
 			$success_subscribe_message = 'Dear {subscriber_name}, <br/>'
 				. 'Thank you for subscribing to the #{product_name}. We will email you once product back in stock';
-			$instock_message = 'Hello {subscriber_name}, <br/>'
+			$instock_message           = 'Hello {subscriber_name}, <br/>'
 				. "Thanks for your patience and finally the wait is over! <br/> Your Subscribed Product {product_name} is now back in stock! We only have a limited amount of stock, and this email is not a guarantee you'll get one, so hurry to be one of the lucky shoppers who do <br/> Add this product {product_name} directly to your cart <a href='{cart_link}'>{cart_link}</a>";
 			/**
 			 * Filter for modifying the array of default values
@@ -787,7 +787,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 
 			if (! isset($get_data['specific_categories_visibility'])) {
 				$get_data['specific_categories_visibility'] = '1';
-				$get_data['specific_products_visibility'] = '1';
+				$get_data['specific_products_visibility']   = '1';
 				update_option('cwginstocksettings', $get_data);
 			}
 

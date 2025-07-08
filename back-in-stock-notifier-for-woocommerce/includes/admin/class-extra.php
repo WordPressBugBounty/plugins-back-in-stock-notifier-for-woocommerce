@@ -71,9 +71,9 @@ if ( ! class_exists( 'CWG_Instock_Premium_Extensions' ) ) {
 								<?php if ( '' != $url ) { ?>
 									<?php
 									if ( 1 == $i ) {
-										$price_tag = '$39.99';
+										$price_tag = '$49';
 									} else {
-										$price_tag = '$9.99';
+										$price_tag = '$19';
 									}
 									?>
 									<span class="pricetag">
@@ -83,9 +83,9 @@ if ( ! class_exists( 'CWG_Instock_Premium_Extensions' ) ) {
 
 										<?php
 										if ( 1 == $i ) {
-											$text = 'Single Site for $39.99';
+											$text = 'Single Site for $49';
 										} else {
-											$text = 'Single Site for $9.99';
+											$text = 'Single Site for $19';
 										}
 										echo do_shortcode( get_submit_button( $text ) );
 										?>

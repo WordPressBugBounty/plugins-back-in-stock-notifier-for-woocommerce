@@ -15,7 +15,7 @@ if ( ! class_exists( 'CWG_Instock_Keep_Status' ) ) {
 		public function keep_subscribed_status( $new, $old, $post ) {
 			$post_type = $post->post_type;
 			if ( 'cwginstocknotifier' == $post_type ) {
-				$options = get_option( 'cwginstocksettings' );
+				$options                = get_option( 'cwginstocksettings' );
 				$keep_status_subscribed = isset( $options['keep_status_subscribed'] ) && '1' == $options['keep_status_subscribed'] ? true : false;
 				if ( $keep_status_subscribed ) {
 					if ( 'cwg_mailsent' == $new && 'cwg_subscribed' == $old ) {

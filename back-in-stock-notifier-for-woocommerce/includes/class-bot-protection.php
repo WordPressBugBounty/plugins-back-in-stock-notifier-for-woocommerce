@@ -14,7 +14,6 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 
 		public function __construct() {
 			$options = get_option( 'cwginstocksettings' );
-
 			add_action( 'cwg_instock_after_email_field', array( $this, 'add_captcha_to_subscribe_form' ), 10, 2 );
 			add_filter( 'cwgstock_submit_attr', array( $this, 'disable_attr_on_recaptcha' ), 10, 3 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_script' ), 999 );
@@ -31,7 +30,7 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 				if ( self::is_recaptcha_enabled() == '1' ) {
 					if ( ! self::is_recaptcha_v3() ) {
 						$variation_id = intval( $variation_id );
-						$options = $this->options;
+						$options      = $this->options;
 						/**
 						 * Filter for bypassing reCAPTCHA in the subscribe form.
 						 *
@@ -140,7 +139,7 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 		}
 
 		public function bot_protection_settings_heading() {
-			$url = __( 'Add Google reCAPTCHA to the Subscribe Form - Check this link for more information: https://www.google.com/recaptcha/ about Google reCAPTCHA. Or add Cloudflare Turnstile Captcha to the Subscribe Form - check this link for more information: https://www.cloudflare.com/products/turnstile/', 'back-in-stock-notifier-for-woocommerce' );
+			$url             = __( 'Add Google reCAPTCHA to the Subscribe Form - Check this link for more information: https://www.google.com/recaptcha/ about Google reCAPTCHA. Or add Cloudflare Turnstile Captcha to the Subscribe Form - check this link for more information: https://www.cloudflare.com/products/turnstile/', 'back-in-stock-notifier-for-woocommerce' );
 			$additional_info = __( 'Additionally, enabling Bot Protection via either "Google reCAPTCHA" or "Turnstile" will resolve the "Something went wrong, please try again after some time" error.<br><i>Note: Server-side validation is required for Google reCAPTCHA v2 and Turnstile to ensure proper functionality and security of the Bot Protection mechanism.</i>', 'back-in-stock-notifier-for-woocommerce' );
 			echo '<p>' . wp_kses_post( $url ) . '</p>';
 			echo '<p>' . wp_kses_post( $additional_info ) . '</p>';
@@ -230,31 +229,31 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 		}
 
 		public static function get_bot_protection_type() {
-			$options = get_option( 'cwginstocksettings' );
+			$options        = get_option( 'cwginstocksettings' );
 			$check_bot_type = isset( $options['bot_protection_via'] ) && 'turnstile' == $options['bot_protection_via'] ? 'turnstile' : 'recaptcha';
 			return $check_bot_type;
 		}
 
 		public static function is_turnstile_enabled() {
-			$options = get_option( 'cwginstocksettings' );
+			$options    = get_option( 'cwginstocksettings' );
 			$is_enabled = isset( $options['enable_turnstile'] ) && '1' == $options['enable_turnstile'] ? '1' : '2';
 			return $is_enabled;
 		}
 
 		public static function is_recaptcha_enabled() {
-			$options = get_option( 'cwginstocksettings' );
+			$options    = get_option( 'cwginstocksettings' );
 			$is_enabled = isset( $options['enable_recaptcha'] ) && '1' == $options['enable_recaptcha'] ? '1' : '2';
 			return $is_enabled;
 		}
 
 		public static function is_recaptcha_v3() {
-			$options = get_option( 'cwginstocksettings' );
+			$options     = get_option( 'cwginstocksettings' );
 			$get_version = isset( $options['select_recaptcha_version'] ) && 'v3' == $options['select_recaptcha_version'] ? true : false;
 			return $get_version;
 		}
 
 		public function get_site_key() {
-			$options = get_option( 'cwginstocksettings' );
+			$options  = get_option( 'cwginstocksettings' );
 			$site_key = isset( $options['recaptcha_site_key'] ) && '' != $options['recaptcha_site_key'] ? $options['recaptcha_site_key'] : '';
 			if ( self::is_recaptcha_v3() ) {
 				$site_key = isset( $options['recaptcha_v3_site_key'] ) && '' != $options['recaptcha_v3_site_key'] ? $options['recaptcha_v3_site_key'] : '';
@@ -263,7 +262,7 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 		}
 
 		public static function get_secret_key() {
-			$options = get_option( 'cwginstocksettings' );
+			$options    = get_option( 'cwginstocksettings' );
 			$secret_key = isset( $options['recaptcha_secret_key'] ) && '' != $options['recaptcha_secret_key'] ? $options['recaptcha_secret_key'] : '';
 			if ( self::is_recaptcha_v3() ) {
 				$secret_key = isset( $options['recaptcha_v3_secret_key'] ) && '' != $options['recaptcha_v3_secret_key'] ? $options['recaptcha_v3_secret_key'] : '';
@@ -272,27 +271,27 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 		}
 
 		public static function get_turnstile_site_key() {
-			$options = get_option( 'cwginstocksettings' );
+			$options  = get_option( 'cwginstocksettings' );
 			$site_key = isset( $options['turnstile_site_key'] ) && '' != $options['turnstile_site_key'] ? $options['turnstile_site_key'] : '';
 			return $site_key;
 		}
 
 		public static function get_turnstile_secret_key() {
-			$options = get_option( 'cwginstocksettings' );
+			$options    = get_option( 'cwginstocksettings' );
 			$secret_key = isset( $options['turnstile_secret_key'] ) && '' != $options['turnstile_secret_key'] ? $options['turnstile_secret_key'] : '';
 			return $secret_key;
 		}
 
 		public function add_localize_data( $already_loaded ) {
-			$options = get_option( 'cwginstocksettings' );
-			$already_loaded['get_bot_type'] = self::get_bot_protection_type();
-			$already_loaded['enable_recaptcha'] = self::is_recaptcha_enabled();
-			$already_loaded['recaptcha_site_key'] = $this->get_site_key();
-			$already_loaded['enable_recaptcha_verify'] = ! ( self::is_recaptcha_v3() ) && isset( $options['enable_recaptcha_verify'] ) && '1' == $options['enable_recaptcha_verify'] ? '1' : '2';
+			$options                                    = get_option( 'cwginstocksettings' );
+			$already_loaded['get_bot_type']             = self::get_bot_protection_type();
+			$already_loaded['enable_recaptcha']         = self::is_recaptcha_enabled();
+			$already_loaded['recaptcha_site_key']       = $this->get_site_key();
+			$already_loaded['enable_recaptcha_verify']  = ! ( self::is_recaptcha_v3() ) && isset( $options['enable_recaptcha_verify'] ) && '1' == $options['enable_recaptcha_verify'] ? '1' : '2';
 			$already_loaded['recaptcha_secret_present'] = self::get_secret_key() != '' ? 'yes' : 'no';
-			$already_loaded['is_v3_recaptcha'] = self::is_recaptcha_v3() ? 'yes' : 'no';
+			$already_loaded['is_v3_recaptcha']          = self::is_recaptcha_v3() ? 'yes' : 'no';
 			// turnstile
-			$already_loaded['enable_turnstile'] = self::is_turnstile_enabled();
+			$already_loaded['enable_turnstile']   = self::is_turnstile_enabled();
 			$already_loaded['turnstile_site_key'] = self::get_turnstile_site_key();
 			return $already_loaded;
 		}
@@ -301,7 +300,7 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 			$get_option = get_option( 'cwginstocksettings' );
 			if ( self::get_bot_protection_type() == 'recaptcha' ) {
 				if ( self::is_recaptcha_enabled() == '1' ) {
-					$is_v3 = self::is_recaptcha_v3() ? 'yes' : 'no';
+					$is_v3                  = self::is_recaptcha_v3() ? 'yes' : 'no';
 					$hide_recaptchav3_badge = 'yes' == $is_v3 && isset( $get_option['recaptchav3_badge_hide'] ) && '' != $get_option['recaptchav3_badge_hide'] ? true : false;
 					if ( $hide_recaptchav3_badge ) {
 						?>
