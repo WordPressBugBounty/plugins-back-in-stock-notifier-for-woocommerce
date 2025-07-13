@@ -5,7 +5,7 @@ Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
 Tested up to: 6.8.1
 Requires PHP: 7.4
-Stable tag: 6.0.0
+Stable tag: 6.0.1
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,7 +264,12 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
-= 6.0.0 – 2025-07-09 =
+= 6.0.1 2025-07-13 =
+* Fix: Issue with "Keep Subscribed" status option when using the new "Queued" status
+* Fix: Conflict between Turnstile and Contact Form 7 Turnstile Integration
+* Tweak: Compatibility tested with WooCommerce 10.0.0
+
+= 6.0.0 2025-07-09 =
 * New: Added Queued status
 * New: Reports Dashboard Widget
 * Tweak: Map variable product name when the option "Trigger mail to variable product subscribers when any other variation of that product is back in stock" is enabled

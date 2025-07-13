@@ -108,7 +108,7 @@ var instock_notifier = {
 		}
 	},
 	generate_v3_response: function () {
-		if (cwginstock_recaptcha_enabled == '1' && cwginstock_is_v3_recaptcha == 'yes') {
+		if (cwginstock_get_bot_type == 'recaptcha' && cwginstock_recaptcha_enabled == '1' && cwginstock_is_v3_recaptcha == 'yes') {
 			grecaptcha.ready(
 				function () {
 					grecaptcha.execute(cwginstock_recaptcha_site_key, { action: 'subscribe_form' }).then(
