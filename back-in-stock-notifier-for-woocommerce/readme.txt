@@ -5,7 +5,7 @@ Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
 Tested up to: 6.8.1
 Requires PHP: 7.4
-Stable tag: 6.0.1
+Stable tag: 6.0.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.0.2 2025-07-14 =
+* Fix: "Subscribe" button remained disabled when bot protection was turned off
+* Tweak: Added fallback option when Turnstile fails to load implicitly
+
 = 6.0.1 2025-07-13 =
 * Fix: Issue with "Keep Subscribed" status option when using the new "Queued" status
 * Fix: Conflict between Turnstile and Contact Form 7 Turnstile Integration

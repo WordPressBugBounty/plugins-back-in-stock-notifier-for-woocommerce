@@ -74,11 +74,10 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 		}
 
 		public function disable_attr_on_recaptcha( $attr, $product_id, $variation_id ) {
-			if ( self::get_bot_protection_type() == 'recaptcha' || self::get_bot_protection_type() == 'turnstile' ) {
-				// recaptcha
-				if ( self::is_recaptcha_enabled() == '1' || self::is_turnstile_enabled() == '1' ) {
-					$attr = "disabled='disabled' ";
-				}
+			if ( self::get_bot_protection_type() == 'recaptcha' && self::is_recaptcha_enabled() == '1' ) {
+				$attr = "disabled='disabled' ";
+			} elseif ( self::get_bot_protection_type() == 'turnstile' && self::is_turnstile_enabled() == '1' ) {
+				$attr = "disabled='disabled' ";
 			}
 			return $attr;
 		}
@@ -98,7 +97,10 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 			} else {
 				if ( '1' == self::is_turnstile_enabled() ) {
 					// phpcs:ignore
-					wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), CWGINSTOCK_VERSION, array() );
+					wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), CWGINSTOCK_VERSION, array(
+						'strategy' => 'defer',
+						'in_footer' => false, // Note: This is the default value.
+					) );
 				}
 			}
 		}
