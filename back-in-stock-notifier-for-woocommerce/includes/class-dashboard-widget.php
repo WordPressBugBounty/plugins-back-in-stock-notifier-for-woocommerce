@@ -142,8 +142,13 @@ if ( ! class_exists( 'CWG_Back_In_Stock_Dashboard_Widget' ) ) {
 
 				if ( get_post_type( $pid ) === 'product_variation' ) {
 					$product = wc_get_product( $pid );
-					// Use the product's formatted name if available, otherwise fallback to a generic title
-					$title = $product ? $product->get_formatted_name() : sprintf( __( 'Variation #%d', 'back-in-stock-notifier-for-woocommerce' ), $pid );
+					if ( $product ) {
+						// Strip HTML tags from the formatted variation name
+						$title = wp_strip_all_tags( $product->get_formatted_name() );
+					} else {
+						/* translators: %d is the variation product ID */
+						$title = sprintf( __( 'Variation #%d', 'back-in-stock-notifier-for-woocommerce' ), $pid );
+					}
 				} else {
 					$title = get_the_title( $pid );
 				}
@@ -154,7 +159,6 @@ if ( ! class_exists( 'CWG_Back_In_Stock_Dashboard_Widget' ) ) {
 					esc_html( $count )
 				);
 			}
-
 			$output .= '</ol>';
 
 			return $output;

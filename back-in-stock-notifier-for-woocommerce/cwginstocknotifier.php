@@ -5,7 +5,7 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://codewoogeek.online/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 6.0.2
+ * Version: 6.0.4
  * Author: codewoogeek
  * Requires Plugins: woocommerce
  * Author URI: https://codewoogeek.online
@@ -47,7 +47,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '6.0.2';
+		public $version = '6.0.4';
 
 		/**
 		 * Instance variable
@@ -302,14 +302,16 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		public function admin_enqueue_scripts() {
 			$screen = get_current_screen();
 			if ( isset( $screen->id ) && ( ( 'cwginstocknotifier_page_cwg-instock-mailer' == $screen->id ) || ( 'edit-cwginstocknotifier' == $screen->id ) || ( 'cwginstocknotifier_page_cwg-instock-status' == $screen->id ) || ( 'cwginstocknotifier_page_cwg-instock-extensions' == $screen->id ) ) ) {
+				wp_enqueue_script( 'sweetalert2', CWGINSTOCK_PLUGINURL . 'assets/js/sweetalert2.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_style( 'cwginstock_admin_css', CWGINSTOCK_PLUGINURL . '/assets/css/admin.css', array(), $this->version );
-				wp_register_script( 'cwginstock_admin_js', CWGINSTOCK_PLUGINURL . '/assets/js/admin.js', array( 'jquery', 'wc-enhanced-select' ), $this->version, array( 'in_footer' => true ) );
+				wp_register_script( 'cwginstock_admin_js', CWGINSTOCK_PLUGINURL . '/assets/js/admin.js', array( 'jquery', 'wc-enhanced-select', 'wp-i18n' ), $this->version, array( 'in_footer' => true ) );
 				wp_localize_script(
 					'cwginstock_admin_js',
 					'cwg_enhanced_selected_params',
 					array(
 						'search_tags_nonce' => wp_create_nonce( 'search-tags' ),
 						'ajax_url' => admin_url( 'admin-ajax.php' ),
+						'confirm_nonce' => wp_create_nonce( 'cwginstock_delete_all_posts_and_related' ),
 					)
 				);
 				wp_enqueue_script( 'cwginstock_admin_js' );

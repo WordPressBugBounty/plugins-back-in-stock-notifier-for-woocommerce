@@ -343,6 +343,71 @@ jQuery(
                 );
             }
         );
+
+        jQuery(document).ready(function ($) {
+            const { __ } = wp.i18n;
+
+            $('#cwginstock_delete_all_posts_btn').on('click', function (e) {
+                e.preventDefault();
+
+                const randomText = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+                Swal.fire({
+                    title: __('Are you absolutely sure?', 'back-in-stock-notifier-for-woocommerce'),
+                    html:
+                        '<p>' + __('This will delete ALL subscription posts and related data.', 'back-in-stock-notifier-for-woocommerce') + '</p>' +
+                        '<p>' + __('Type the following code to confirm:', 'back-in-stock-notifier-for-woocommerce') + ' <strong>' + randomText + '</strong></p>' +
+                        '<input id="swal-input" class="swal2-input" placeholder="' + __('Enter confirmation code', 'back-in-stock-notifier-for-woocommerce') + '">' +
+                        '<label style="display:block;margin-top:10px;">' +
+                        '<input type="checkbox" id="swal-checkbox"> ' +
+                        __('I understand this cannot be undone.', 'back-in-stock-notifier-for-woocommerce') +
+                        '</label>',
+                    showCancelButton: true,
+                    confirmButtonText: __('Confirm', 'back-in-stock-notifier-for-woocommerce'),
+                    cancelButtonText: __('Cancel', 'back-in-stock-notifier-for-woocommerce'),
+                    preConfirm: () => {
+                        const inputVal = document.getElementById('swal-input').value.trim();
+                        const checkbox = document.getElementById('swal-checkbox').checked;
+
+                        if (!checkbox) {
+                            Swal.showValidationMessage(__('You must check the box to proceed.', 'back-in-stock-notifier-for-woocommerce'));
+                            return false;
+                        }
+
+                        if (inputVal !== randomText) {
+                            Swal.showValidationMessage(__('The confirmation code does not match.', 'back-in-stock-notifier-for-woocommerce'));
+                            return false;
+                        }
+
+                        return true;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#cwginstock_delete_all_posts_status').html(__('Processing...', 'back-in-stock-notifier-for-woocommerce'));
+                        $.ajax({
+                            type: 'POST',
+                            url: ajaxurl,
+                            data: {
+                                action: 'cwginstock_delete_all_posts',
+                                security: cwg_enhanced_selected_params.confirm_nonce
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    $('#cwginstock_delete_all_posts_status').html('<span style="color:green;">' + response.data.message + '</span>');
+                                } else {
+                                    $('#cwginstock_delete_all_posts_status').html('<span style="color:red;">' + response.data.message + '</span>');
+                                }
+                            },
+                            error: function () {
+                                $('#cwginstock_delete_all_posts_status').html('<span style="color:red;">' + __('An error occurred. Please try again.', 'back-in-stock-notifier-for-woocommerce') + '</span>');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+
         $("#submitFormUI").click(
             function (e) {
                 e.preventDefault();

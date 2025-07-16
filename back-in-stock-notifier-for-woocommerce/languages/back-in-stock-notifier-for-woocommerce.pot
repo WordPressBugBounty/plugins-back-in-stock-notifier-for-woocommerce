@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 6.0.0\n"
+"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 6.0.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/back-in-stock-notifier-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-08T19:58:46+00:00\n"
+"POT-Creation-Date: 2025-07-16T17:54:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: back-in-stock-notifier-for-woocommerce\n"
@@ -227,7 +227,7 @@ msgid "Email"
 msgstr ""
 
 #: includes/admin/class-post-type.php:224
-#: includes/admin/class-status.php:22
+#: includes/admin/class-status.php:19
 msgid "Status"
 msgstr ""
 
@@ -762,87 +762,99 @@ msgstr ""
 msgid "Supported Shortcodes {product_name}, {only_product_name}"
 msgstr ""
 
-#: includes/admin/class-status.php:66
+#: includes/admin/class-status.php:63
 msgid "Success Subscription Mail::Enabled"
 msgstr ""
 
-#: includes/admin/class-status.php:67
+#: includes/admin/class-status.php:64
 msgid "Success Subscription Mail::Disabled"
 msgstr ""
 
-#: includes/admin/class-status.php:71
+#: includes/admin/class-status.php:68
 msgid "Back In Stock Email::Enabled"
 msgstr ""
 
-#: includes/admin/class-status.php:72
+#: includes/admin/class-status.php:69
 msgid "Back in Stock Email::Disabled"
 msgstr ""
 
-#: includes/admin/class-status.php:76
+#: includes/admin/class-status.php:73
 msgid "Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)::Enabled"
 msgstr ""
 
-#: includes/admin/class-status.php:77
+#: includes/admin/class-status.php:74
 msgid "Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)::Disabled"
 msgstr ""
 
-#: includes/admin/class-status.php:84
+#: includes/admin/class-status.php:81
 msgid "Success Subscription Email Subject::missing"
 msgstr ""
 
-#: includes/admin/class-status.php:85
+#: includes/admin/class-status.php:82
 msgid "Success Subscription Email Subject::present"
 msgstr ""
 
-#: includes/admin/class-status.php:89
+#: includes/admin/class-status.php:86
 msgid "Success Subscription Email Message::missing"
 msgstr ""
 
-#: includes/admin/class-status.php:90
+#: includes/admin/class-status.php:87
 msgid "Success Subscription Email Message::present"
 msgstr ""
 
-#: includes/admin/class-status.php:94
+#: includes/admin/class-status.php:91
 msgid "Back In stock Email Subject::missing"
 msgstr ""
 
-#: includes/admin/class-status.php:95
+#: includes/admin/class-status.php:92
 msgid "Back In Stock Email Subject::present"
 msgstr ""
 
-#: includes/admin/class-status.php:99
+#: includes/admin/class-status.php:96
 msgid "Back In Stock Email Message::missing"
 msgstr ""
 
-#: includes/admin/class-status.php:100
+#: includes/admin/class-status.php:97
 msgid "Back In Stock Email Message::present"
 msgstr ""
 
-#: includes/admin/class-status.php:146
+#: includes/admin/class-status.php:143
 msgid "Email sending Failed, last tested on:"
 msgstr ""
 
-#: includes/admin/class-status.php:146
+#: includes/admin/class-status.php:143
 msgid "Email sent successfully, last tested on:"
 msgstr ""
 
-#: includes/admin/class-status.php:329
+#: includes/admin/class-status.php:344
 msgid "The test email has been scheduled to send shortly."
 msgstr ""
 
-#: includes/admin/class-status.php:334
+#: includes/admin/class-status.php:349
 msgid "Unable to verify details, please try again later."
 msgstr ""
 
-#: includes/admin/class-status.php:348
+#: includes/admin/class-status.php:363
 msgid "Settings UI changed successfully"
 msgstr ""
 
-#: includes/admin/class-status.php:352
+#: includes/admin/class-status.php:367
 #: includes/class-ajax.php:337
 #: includes/class-ajax.php:342
 #: includes/class-ajax.php:348
 msgid "Unable to verify details, please try again after some time"
+msgstr ""
+
+#: includes/admin/class-status.php:381
+msgid "Unauthorized request."
+msgstr ""
+
+#: includes/admin/class-status.php:395
+msgid "No posts found to delete."
+msgstr ""
+
+#: includes/admin/class-status.php:415
+msgid "All subscription posts and related data deleted successfully."
 msgstr ""
 
 #: includes/class-ajax.php:128
@@ -869,115 +881,115 @@ msgstr ""
 msgid "After a certain number of days, delete subscribers from the following statuses: MAIL SENT, UNSUBSCRIBED, and PURCHASED"
 msgstr ""
 
-#: includes/class-bot-protection.php:107
+#: includes/class-bot-protection.php:109
 msgid "Bot Protection"
 msgstr ""
 
-#: includes/class-bot-protection.php:108
+#: includes/class-bot-protection.php:110
 msgid "Bot Protection through"
 msgstr ""
 
-#: includes/class-bot-protection.php:110
+#: includes/class-bot-protection.php:112
 msgid "Enable Google reCAPTCHA in Subscribe Form"
 msgstr ""
 
-#: includes/class-bot-protection.php:111
+#: includes/class-bot-protection.php:113
 msgid "Select Google reCAPTCHA version"
 msgstr ""
 
-#: includes/class-bot-protection.php:112
+#: includes/class-bot-protection.php:114
 msgid "Google reCAPTCHA v2 Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:113
+#: includes/class-bot-protection.php:115
 msgid "Verify Google reCAPTCHA response in Server Side - this will ignore nonce validation"
 msgstr ""
 
-#: includes/class-bot-protection.php:114
+#: includes/class-bot-protection.php:116
 msgid "Google reCAPTCHA v2 Secret Key(this is required when you want to verify reCAPTCHA response in server side)"
 msgstr ""
 
-#: includes/class-bot-protection.php:117
+#: includes/class-bot-protection.php:119
 msgid "Google reCAPTCHA v3 Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:118
+#: includes/class-bot-protection.php:120
 msgid "Google reCAPTCHA v3 Secret Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:119
+#: includes/class-bot-protection.php:121
 msgid "Hide Google v3 reCAPTCHA badge in website"
 msgstr ""
 
-#: includes/class-bot-protection.php:122
+#: includes/class-bot-protection.php:124
 msgid "Enable Turnstile in Subscribe Form"
 msgstr ""
 
-#: includes/class-bot-protection.php:123
+#: includes/class-bot-protection.php:125
 msgid "Turnstile Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:124
+#: includes/class-bot-protection.php:126
 msgid "Turnstile Secret Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:132
+#: includes/class-bot-protection.php:134
 msgid "Google reCAPTCHA"
 msgstr ""
 
-#: includes/class-bot-protection.php:135
+#: includes/class-bot-protection.php:137
 msgid "Turnstile"
 msgstr ""
 
-#: includes/class-bot-protection.php:142
+#: includes/class-bot-protection.php:144
 msgid "Add Google reCAPTCHA to the Subscribe Form - Check this link for more information: https://www.google.com/recaptcha/ about Google reCAPTCHA. Or add Cloudflare Turnstile Captcha to the Subscribe Form - check this link for more information: https://www.cloudflare.com/products/turnstile/"
 msgstr ""
 
-#: includes/class-bot-protection.php:143
+#: includes/class-bot-protection.php:145
 msgid "Additionally, enabling Bot Protection via either \"Google reCAPTCHA\" or \"Turnstile\" will resolve the \"Something went wrong, please try again after some time\" error.<br><i>Note: Server-side validation is required for Google reCAPTCHA v2 and Turnstile to ensure proper functionality and security of the Bot Protection mechanism.</i>"
 msgstr ""
 
-#: includes/class-bot-protection.php:153
+#: includes/class-bot-protection.php:155
 msgid "Select this option to enable reCAPTCHA in Subscribe Form(site key required for this option)"
 msgstr ""
 
-#: includes/class-bot-protection.php:164
+#: includes/class-bot-protection.php:166
 msgid "v2"
 msgstr ""
 
-#: includes/class-bot-protection.php:167
+#: includes/class-bot-protection.php:169
 msgid "v3"
 msgstr ""
 
-#: includes/class-bot-protection.php:179
+#: includes/class-bot-protection.php:181
 msgid "By Default this option is unchecked means reCAPTCHA verified in client side and WP Nonce Verification in server side, if you check this option then reCAPTCHA Verification can take place in both Client/Server Side(validate again client reCAPTCHA response) and ignore WP Nonce"
 msgstr ""
 
-#: includes/class-bot-protection.php:200
+#: includes/class-bot-protection.php:202
 msgid "reCAPTCHA Secret Key required only when you enabled this option - 'Verify reCAPTCHA response in Server Side', otherwise it is optional"
 msgstr ""
 
-#: includes/class-bot-protection.php:309
+#: includes/class-bot-protection.php:311
 msgid "This site is protected by reCAPTCHA and the Google"
 msgstr ""
 
-#: includes/class-bot-protection.php:311
+#: includes/class-bot-protection.php:313
 msgid "Privacy Policy"
 msgstr ""
 
-#: includes/class-bot-protection.php:312
+#: includes/class-bot-protection.php:314
 msgid "and"
 msgstr ""
 
-#: includes/class-bot-protection.php:314
+#: includes/class-bot-protection.php:316
 msgid "Terms of Service"
 msgstr ""
 
-#: includes/class-bot-protection.php:315
+#: includes/class-bot-protection.php:317
 msgid "apply."
 msgstr ""
 
-#: includes/class-bot-protection.php:329
+#: includes/class-bot-protection.php:331
 msgid "Select this option to enable Turnstile in Subscribe Form(site key required for this option)"
 msgstr ""
 
@@ -1021,7 +1033,8 @@ msgstr ""
 msgid "— No data in last 7 days —"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:146
+#. translators: %d is the variation product ID
+#: includes/class-dashboard-widget.php:150
 msgid "Variation #%d"
 msgstr ""
 
@@ -1451,4 +1464,48 @@ msgstr ""
 
 #: templates/default-form.php:15
 msgid "Email when stock available"
+msgstr ""
+
+#: assets/js/admin.js:356
+msgid "Are you absolutely sure?"
+msgstr ""
+
+#: assets/js/admin.js:358
+msgid "This will delete ALL subscription posts and related data."
+msgstr ""
+
+#: assets/js/admin.js:359
+msgid "Type the following code to confirm:"
+msgstr ""
+
+#: assets/js/admin.js:360
+msgid "Enter confirmation code"
+msgstr ""
+
+#: assets/js/admin.js:363
+msgid "I understand this cannot be undone."
+msgstr ""
+
+#: assets/js/admin.js:366
+msgid "Confirm"
+msgstr ""
+
+#: assets/js/admin.js:367
+msgid "Cancel"
+msgstr ""
+
+#: assets/js/admin.js:373
+msgid "You must check the box to proceed."
+msgstr ""
+
+#: assets/js/admin.js:378
+msgid "The confirmation code does not match."
+msgstr ""
+
+#: assets/js/admin.js:386
+msgid "Processing..."
+msgstr ""
+
+#: assets/js/admin.js:402
+msgid "An error occurred. Please try again."
 msgstr ""

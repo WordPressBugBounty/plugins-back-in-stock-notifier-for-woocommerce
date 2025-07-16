@@ -3,9 +3,9 @@ Contributors: codewoogeek, propluginslab
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.0.2
+Stable tag: 6.0.4
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,11 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.0.4 2025-07-16 =
+* New: Added "Delete Subscribers Data" option on the Status page with confirmation prompt
+* Tweak: Removed unwanted HTML tags in Dashboard Widget report
+* Tweak: Updated POT file
+
 = 6.0.2 2025-07-14 =
 * Fix: "Subscribe" button remained disabled when bot protection was turned off
 * Tweak: Added fallback option when Turnstile fails to load implicitly

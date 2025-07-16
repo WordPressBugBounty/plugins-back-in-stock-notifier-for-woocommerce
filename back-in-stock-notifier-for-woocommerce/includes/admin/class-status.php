@@ -7,17 +7,14 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 
 	class CWG_Instock_Status {
 
-
-
-
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
 			add_action( 'admin_head', array( $this, 'hide_notice' ) );
 			add_action( 'wp_ajax_cwginstock_test_email', array( $this, 'schedule_test_email_callback' ) );
 			add_action( 'cwginstock_send_test_email', array( $this, 'send_scheduled_test_email' ) );
 			add_action( 'wp_ajax_cwginstock_backend_ui', array( $this, 'change_backend_ui' ) );
+			add_action( 'wp_ajax_cwginstock_delete_all_posts', array( $this, 'delete_subscribers_data' ) );
 		}
-
 		public function add_settings_menu() {
 			add_submenu_page( 'edit.php?post_type=cwginstocknotifier', __( 'Status', 'back-in-stock-notifier-for-woocommerce' ), __( 'Status', 'back-in-stock-notifier-for-woocommerce' ), 'manage_woocommerce', 'cwg-instock-status', array( $this, 'manage_settings' ) );
 		}
@@ -35,10 +32,10 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 						<td>
 							<?php
 							if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
-								$message     = 'WP_CRON was disabled';
+								$message = 'WP_CRON was disabled';
 								$status_code = 0;
 							} else {
-								$message     = 'WP_CRON ACTIVE';
+								$message = 'WP_CRON ACTIVE';
 								$status_code = 1;
 							}
 							?>
@@ -109,8 +106,8 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 									$is_enabled = 'checkbox' == $key ? ( isset( $option[ $checkbox_key ] ) ? $option[ $checkbox_key ] : 0 ) : ( isset( $option[ $checkbox_key ] ) && $option[ $checkbox_key ] ? 1 : 0 );
 									if ( isset( $checkbox_data[ $is_enabled ] ) ) {
 										$split_by_colon = explode( '::', $checkbox_data[ $is_enabled ] );
-										$heading        = $split_by_colon[0];
-										$status_info    = $split_by_colon[1];
+										$heading = $split_by_colon[0];
+										$status_info = $split_by_colon[1];
 										?>
 										<tr>
 											<th scope="row">
@@ -136,13 +133,13 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 					<?php
 					$nonce = wp_create_nonce( 'cwginstock_test_email' );
 					wp_enqueue_script( 'jquery' );
-					$saved_info          = get_option( 'cwginstock_test_email_status' );
+					$saved_info = get_option( 'cwginstock_test_email_status' );
 					$detailed_status_msg = '';
-					$status              = '';
+					$status = '';
 					if ( $saved_info && isset( $saved_info['status'] ) ) {
-						$status              = $saved_info['status'];
-						$status_format       = ucwords( $status );
-						$last_tested_on      = $saved_info['checked_on'];
+						$status = $saved_info['status'];
+						$status_format = ucwords( $status );
+						$last_tested_on = $saved_info['checked_on'];
 						$detailed_status_msg = 'failure' == $status ? __( 'Email sending Failed, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on" : __( 'Email sent successfully, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on";
 					}
 					?>
@@ -211,7 +208,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 						<th scope="row">Is Subscribe Form Template Override/loaded from Theme?</th>
 						<td>
 							<?php
-							$template_dir        = 'back-in-stock-notifier-for-woocommerce';
+							$template_dir = 'back-in-stock-notifier-for-woocommerce';
 							$template_theme_file = get_stylesheet_directory() . '/' . $template_dir . '/default-form.php';
 							if ( file_exists( $template_theme_file ) ) {
 								echo "<p style='color:green;'>YES</p>";
@@ -225,6 +222,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 			</table>
 
 			<hr>
+
 			<table class="form-table">
 				<tbody>
 					<tr>
@@ -240,7 +238,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 									'default_ui' => 'Default UI',
 									'tabbed_ui' => 'Tabbed UI',
 								);
-								$saved_option     = get_option( 'cwginstock_backend_ui', 'tabbed_ui' );
+								$saved_option = get_option( 'cwginstock_backend_ui', 'tabbed_ui' );
 
 								foreach ( $settings_options as $option_key => $option_name ) {
 									?>
@@ -261,6 +259,23 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 					</tr>
 				</tbody>
 			</table>
+
+			<hr>
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row">Delete All Subscription Posts & Related Data</th>
+						<td>
+							<button id="cwginstock_delete_all_posts_btn" style="background:#d63638;color:#fff;">Delete All Posts &
+								Related
+								Data</button>
+							<p id="cwginstock_delete_all_posts_status"></p>
+
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
 
 			<?php
 		}
@@ -287,7 +302,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 					'CWG_Instock_Notifier_Polylang' => 'Polylang',
 				)
 			);
-			$is_active     = false;
+			$is_active = false;
 
 			foreach ( $active_addons as $each_addon_class => $addon_name ) {
 				if ( class_exists( $each_addon_class ) ) {
@@ -356,6 +371,55 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 				die();
 			}
 		}
+
+		public function delete_subscribers_data() {
+			if (
+				! current_user_can( 'manage_woocommerce' ) ||
+				! isset( $_POST['security'] ) ||
+				! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['security'] ) ), 'cwginstock_delete_all_posts_and_related' )
+			) {
+				wp_send_json_error( array( 'message' => esc_html__( 'Unauthorized request.', 'back-in-stock-notifier-for-woocommerce' ) ) );
+			}
+
+			global $wpdb;
+
+			// Get all post IDs of type 'cwginstocknotifier'
+			$post_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s",
+					'cwginstocknotifier'
+				)
+			);
+
+			if ( empty( $post_ids ) ) {
+				wp_send_json_success( array( 'message' => esc_html__( 'No posts found to delete.', 'back-in-stock-notifier-for-woocommerce' ) ) );
+			}
+
+			// Build placeholder string like: %d, %d, %d
+			$placeholders = implode( ', ', array_fill( 0, count( $post_ids ), '%d' ) );
+
+			// Build queries with safe bindings
+			$tables_and_columns = array(
+				$wpdb->term_relationships => 'object_id',
+				$wpdb->postmeta => 'post_id',
+				$wpdb->posts => 'ID',
+			);
+
+			foreach ( $tables_and_columns as $table => $column ) {
+				$sql = "DELETE FROM {$table} WHERE {$column} IN ($placeholders)";
+				$args = array_merge( array( $sql ), $post_ids );
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$wpdb->query( call_user_func_array( array( $wpdb, 'prepare' ), $args ) );
+			}
+
+			wp_send_json_success( array( 'message' => esc_html__( 'All subscription posts and related data deleted successfully.', 'back-in-stock-notifier-for-woocommerce' ) ) );
+		}
+
+
+
+
+
+
 	}
 
 	new CWG_Instock_Status();
