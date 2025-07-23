@@ -139,18 +139,24 @@ if ( ! class_exists( 'CWG_Back_In_Stock_Dashboard_Widget' ) ) {
 				$pid = (int) $row->pid;
 				$count = (int) $row->count;
 				$title = '';
-
-				if ( get_post_type( $pid ) === 'product_variation' ) {
-					$product = wc_get_product( $pid );
-					if ( $product ) {
-						// Strip HTML tags from the formatted variation name
-						$title = wp_strip_all_tags( $product->get_formatted_name() );
+				$product_obj = wc_get_product( $pid );
+				if ( $product_obj ) {
+					if ( get_post_type( $pid ) === 'product_variation' ) {
+						$product = wc_get_product( $pid );
+						if ( $product ) {
+							// Strip HTML tags from the formatted variation name
+							$title = wp_strip_all_tags( $product->get_formatted_name() );
+						} else {
+							/* translators: %d is the variation product ID */
+							$title = sprintf( __( 'Variation #%d', 'back-in-stock-notifier-for-woocommerce' ), $pid );
+						}
 					} else {
-						/* translators: %d is the variation product ID */
-						$title = sprintf( __( 'Variation #%d', 'back-in-stock-notifier-for-woocommerce' ), $pid );
+						$title = get_the_title( $pid );
 					}
 				} else {
-					$title = get_the_title( $pid );
+					/* translators: %d is the product ID */
+					$title = sprintf( __( 'Deleted Product #%d', 'back-in-stock-notifier-for-woocommerce' ), $pid );
+
 				}
 
 				$output .= sprintf(

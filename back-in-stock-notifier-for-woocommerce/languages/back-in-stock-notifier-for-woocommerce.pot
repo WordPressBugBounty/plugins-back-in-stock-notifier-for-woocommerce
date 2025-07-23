@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 6.0.4\n"
+"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 6.0.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/back-in-stock-notifier-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-16T17:54:15+00:00\n"
+"POT-Creation-Date: 2025-07-23T11:57:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: back-in-stock-notifier-for-woocommerce\n"
@@ -41,6 +41,7 @@ msgstr ""
 
 #: cwginstocknotifier.php:232
 #: includes/admin/class-settings.php:536
+#: includes/admin/class-settings.php:772
 msgid "Name cannot be empty"
 msgstr ""
 
@@ -50,6 +51,7 @@ msgid "Quantity cannot be empty"
 msgstr ""
 
 #: cwginstocknotifier.php:234
+#: includes/admin/class-settings.php:762
 msgid "Email Address cannot be empty"
 msgstr ""
 
@@ -63,6 +65,7 @@ msgstr ""
 
 #: cwginstocknotifier.php:239
 #: includes/admin/class-settings.php:561
+#: includes/admin/class-settings.php:773
 msgid "Please enter valid Phone Number"
 msgstr ""
 
@@ -240,7 +243,7 @@ msgid "Registered User"
 msgstr ""
 
 #: includes/admin/class-post-type.php:227
-#: includes/admin/class-post-type.php:314
+#: includes/admin/class-post-type.php:322
 msgid "Subscribed on"
 msgstr ""
 
@@ -268,113 +271,118 @@ msgstr ""
 msgid "Available Quantity:"
 msgstr ""
 
-#: includes/admin/class-post-type.php:287
+#. translators: %d is the id of deleted product.
+#: includes/admin/class-post-type.php:285
+msgid "Product #%d (deleted or not exists)"
+msgstr ""
+
+#: includes/admin/class-post-type.php:295
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/class-post-type.php:289
+#: includes/admin/class-post-type.php:297
 msgid "No"
 msgstr ""
 
-#: includes/admin/class-post-type.php:332
+#: includes/admin/class-post-type.php:340
 msgid "Subscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:336
+#: includes/admin/class-post-type.php:344
 msgid "Mail Sent"
 msgstr ""
 
-#: includes/admin/class-post-type.php:340
+#: includes/admin/class-post-type.php:348
 msgid "Unsubscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:344
+#: includes/admin/class-post-type.php:352
 msgid "Purchased"
 msgstr ""
 
-#: includes/admin/class-post-type.php:348
+#: includes/admin/class-post-type.php:356
 msgid "Failed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:352
+#: includes/admin/class-post-type.php:360
 msgid "Waiting for Confirmation"
 msgstr ""
 
-#: includes/admin/class-post-type.php:356
+#: includes/admin/class-post-type.php:364
 msgid "Queued"
 msgstr ""
 
-#: includes/admin/class-post-type.php:378
+#: includes/admin/class-post-type.php:386
 msgid "ID:"
 msgstr ""
 
-#: includes/admin/class-post-type.php:394
+#: includes/admin/class-post-type.php:402
 msgid "Send Instock Mail"
 msgstr ""
 
-#: includes/admin/class-post-type.php:419
+#: includes/admin/class-post-type.php:427
 msgid "View Subscribers"
 msgstr ""
 
-#: includes/admin/class-post-type.php:452
-#: includes/admin/class-post-type.php:751
+#: includes/admin/class-post-type.php:460
+#: includes/admin/class-post-type.php:759
 msgid "Instock mail sent to {email_id} successfully"
 msgstr ""
 
-#: includes/admin/class-post-type.php:470
-#: includes/admin/class-post-type.php:758
+#: includes/admin/class-post-type.php:478
+#: includes/admin/class-post-type.php:766
 msgid "Unable to send Instock mail to this {email_id}"
 msgstr ""
 
-#: includes/admin/class-post-type.php:483
-#: includes/admin/class-post-type.php:766
+#: includes/admin/class-post-type.php:491
+#: includes/admin/class-post-type.php:774
 msgid "Unable to send Instock mail to this {email_id} as stock product does not exists/deleted !!!"
 msgstr ""
 
-#: includes/admin/class-post-type.php:498
+#: includes/admin/class-post-type.php:506
 msgid "Security Check Failed, Please try later"
 msgstr ""
 
-#: includes/admin/class-post-type.php:534
+#: includes/admin/class-post-type.php:542
 msgid "Change status to Mail Sent"
 msgstr ""
 
-#: includes/admin/class-post-type.php:535
+#: includes/admin/class-post-type.php:543
 msgid "Change status to Subscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:536
+#: includes/admin/class-post-type.php:544
 msgid "Change status to Unsubscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:537
+#: includes/admin/class-post-type.php:545
 msgid "Send Email"
 msgstr ""
 
-#: includes/admin/class-post-type.php:582
+#: includes/admin/class-post-type.php:590
 msgid "Filter by products"
 msgstr ""
 
 #. translators: %s:
-#: includes/admin/class-post-type.php:674
+#: includes/admin/class-post-type.php:682
 msgid "%s - Data(s) Manually marked status to Mail Sent"
 msgstr ""
 
 #. translators: %s:
-#: includes/admin/class-post-type.php:700
+#: includes/admin/class-post-type.php:708
 msgid "%s - Data(s) Manually marked status to Subscribed"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:726
+#: includes/admin/class-post-type.php:734
 msgid "%s - Data(s) Manually marked status to Unsubscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:774
+#: includes/admin/class-post-type.php:782
 msgid "Bulk Email: "
 msgstr ""
 
-#: includes/admin/class-post-type.php:798
+#: includes/admin/class-post-type.php:806
 msgid "Subscribers Count"
 msgstr ""
 
@@ -608,6 +616,7 @@ msgid "Pop-Up Subscribe Form"
 msgstr ""
 
 #: includes/admin/class-settings.php:186
+#: includes/admin/class-settings.php:759
 #: includes/frontend/class-product.php:229
 msgid "Your Name"
 msgstr ""
@@ -762,6 +771,60 @@ msgstr ""
 msgid "Supported Shortcodes {product_name}, {only_product_name}"
 msgstr ""
 
+#: includes/admin/class-settings.php:749
+msgid "Dear {subscriber_name}, <br/>Thank you for subscribing to the #{product_name}. We will email you once product back in stock"
+msgstr ""
+
+#: includes/admin/class-settings.php:750
+msgid "Hello {subscriber_name}, <br/>Thanks for your patience and finally the wait is over! <br/> Your Subscribed Product {product_name} is now back in stock! We only have a limited amount of stock, and this email is not a guarantee you'll get one, so hurry to be one of the lucky shoppers who do <br/> Add this product {product_name} directly to your cart <a href='{cart_link}'>{cart_link}</a>"
+msgstr ""
+
+#: includes/admin/class-settings.php:758
+#: templates/default-form.php:15
+msgid "Email when stock available"
+msgstr ""
+
+#: includes/admin/class-settings.php:760
+#: includes/frontend/class-product.php:230
+msgid "Your Email Address"
+msgstr ""
+
+#: includes/admin/class-settings.php:761
+#: includes/class-popup.php:23
+#: includes/frontend/class-product.php:231
+msgid "Subscribe Now"
+msgstr ""
+
+#: includes/admin/class-settings.php:763
+msgid "Please enter valid Email Address"
+msgstr ""
+
+#: includes/admin/class-settings.php:765
+msgid "You subscribed to {product_name} at {shopname}"
+msgstr ""
+
+#: includes/admin/class-settings.php:768
+msgid "Product {product_name} is back in stock"
+msgstr ""
+
+#: includes/admin/class-settings.php:770
+#: includes/class-ajax.php:128
+msgid "You have successfully subscribed, we will inform you when this product back in stock"
+msgstr ""
+
+#: includes/admin/class-settings.php:771
+#: includes/class-ajax.php:199
+msgid "Seems like you have already subscribed to this product"
+msgstr ""
+
+#: includes/admin/class-settings.php:774
+msgid "Phone number is too short"
+msgstr ""
+
+#: includes/admin/class-settings.php:775
+msgid "Phone number is too long"
+msgstr ""
+
 #: includes/admin/class-status.php:63
 msgid "Success Subscription Mail::Enabled"
 msgstr ""
@@ -855,14 +918,6 @@ msgstr ""
 
 #: includes/admin/class-status.php:415
 msgid "All subscription posts and related data deleted successfully."
-msgstr ""
-
-#: includes/class-ajax.php:128
-msgid "You have successfully subscribed, we will inform you when this product back in stock"
-msgstr ""
-
-#: includes/class-ajax.php:199
-msgid "Seems like you have already subscribed to this product"
 msgstr ""
 
 #: includes/class-auto-delete.php:16
@@ -1034,13 +1089,13 @@ msgid "— No data in last 7 days —"
 msgstr ""
 
 #. translators: %d is the variation product ID
-#: includes/class-dashboard-widget.php:150
+#: includes/class-dashboard-widget.php:151
 msgid "Variation #%d"
 msgstr ""
 
-#: includes/class-popup.php:23
-#: includes/frontend/class-product.php:231
-msgid "Subscribe Now"
+#. translators: %d is the product ID
+#: includes/class-dashboard-widget.php:158
+msgid "Deleted Product #%d"
 msgstr ""
 
 #: includes/class-privacy-checkbox.php:28
@@ -1456,14 +1511,6 @@ msgstr ""
 
 #: includes/class-troubleshoot.php:172
 msgid "Enable this option to automatically trash the subscriber(s) associated with a product or variation when they are deleted"
-msgstr ""
-
-#: includes/frontend/class-product.php:230
-msgid "Your Email Address"
-msgstr ""
-
-#: templates/default-form.php:15
-msgid "Email when stock available"
 msgstr ""
 
 #: assets/js/admin.js:356

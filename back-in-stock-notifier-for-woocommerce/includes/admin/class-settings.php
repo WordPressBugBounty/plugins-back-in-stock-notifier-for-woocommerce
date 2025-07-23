@@ -746,39 +746,34 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function default_value() {
-			// delete_option('cwginstocksettings');
-			$success_subscribe_message = 'Dear {subscriber_name}, <br/>'
-				. 'Thank you for subscribing to the #{product_name}. We will email you once product back in stock';
-			$instock_message           = 'Hello {subscriber_name}, <br/>'
-				. "Thanks for your patience and finally the wait is over! <br/> Your Subscribed Product {product_name} is now back in stock! We only have a limited amount of stock, and this email is not a guarantee you'll get one, so hurry to be one of the lucky shoppers who do <br/> Add this product {product_name} directly to your cart <a href='{cart_link}'>{cart_link}</a>";
+			$success_subscribe_message = __( 'Dear {subscriber_name}, <br/>Thank you for subscribing to the #{product_name}. We will email you once product back in stock', 'back-in-stock-notifier-for-woocommerce' );
+			$instock_message = __( 'Hello {subscriber_name}, <br/>Thanks for your patience and finally the wait is over! <br/> Your Subscribed Product {product_name} is now back in stock! We only have a limited amount of stock, and this email is not a guarantee you\'ll get one, so hurry to be one of the lucky shoppers who do <br/> Add this product {product_name} directly to your cart <a href=\'{cart_link}\'>{cart_link}</a>', 'back-in-stock-notifier-for-woocommerce' );
 			/**
 			 * Filter for modifying the array of default values
 			 *
 			 * @since 1.0.0
 			 */
 			$data = apply_filters(
-				'cwginstock_default_values',
-				array(
-					'form_title' => 'Email when stock available',
-					'name_placeholder' => 'Your Name',
-					'form_placeholder' => 'Your Email Address',
-					'button_label' => 'Subscribe Now',
-					'empty_error_message' => 'Email Address cannot be empty',
-					'invalid_email_error' => 'Please enter valid Email Address',
-					'enable_success_sub_mail' => '1',
-					'success_sub_subject' => 'You subscribed to {product_name} at {shopname}',
-					'success_sub_message' => $success_subscribe_message,
-					'enable_instock_mail' => '1',
-					'instock_mail_subject' => 'Product {product_name} is back in stock',
-					'instock_mail_message' => $instock_message,
-					'success_subscription' => 'You have successfully subscribed, we will inform you when this product back in stock',
-					'already_subscribed' => 'Seems like you have already subscribed to this product',
-					'empty_name_message' => 'Name cannot be empty',
-					'invalid_phone_error' => 'Please enter valid Phone Number',
-					'phone_number_too_short' => 'Phone number is too short',
-					'phone_number_too_long' => 'Phone number is too long',
-				)
-			);
+				'cwginstock_default_values', array(
+				'form_title' => __('Email when stock available', 'back-in-stock-notifier-for-woocommerce'),
+				'name_placeholder' => __('Your Name', 'back-in-stock-notifier-for-woocommerce'),
+				'form_placeholder' => __('Your Email Address', 'back-in-stock-notifier-for-woocommerce'),
+				'button_label' => __('Subscribe Now', 'back-in-stock-notifier-for-woocommerce'),
+				'empty_error_message' => __('Email Address cannot be empty', 'back-in-stock-notifier-for-woocommerce'),
+				'invalid_email_error' => __('Please enter valid Email Address', 'back-in-stock-notifier-for-woocommerce'),
+				'enable_success_sub_mail' => '1',
+				'success_sub_subject' => __('You subscribed to {product_name} at {shopname}', 'back-in-stock-notifier-for-woocommerce'),
+				'success_sub_message' => $success_subscribe_message,
+				'enable_instock_mail' => '1',
+				'instock_mail_subject' => __('Product {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce'),
+				'instock_mail_message' => $instock_message,
+				'success_subscription' => __('You have successfully subscribed, we will inform you when this product back in stock', 'back-in-stock-notifier-for-woocommerce'),
+				'already_subscribed' => __('Seems like you have already subscribed to this product', 'back-in-stock-notifier-for-woocommerce'),
+				'empty_name_message' => __('Name cannot be empty', 'back-in-stock-notifier-for-woocommerce'),
+				'invalid_phone_error' => __('Please enter valid Phone Number', 'back-in-stock-notifier-for-woocommerce'),
+				'phone_number_too_short' => __('Phone number is too short', 'back-in-stock-notifier-for-woocommerce'),
+				'phone_number_too_long' => __('Phone number is too long', 'back-in-stock-notifier-for-woocommerce'),
+				));
 
 			if (is_array($data) && ! empty($data)) {
 				add_option('cwginstocksettings', $data);

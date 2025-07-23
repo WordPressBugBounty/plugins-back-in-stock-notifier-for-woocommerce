@@ -5,7 +5,7 @@ Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.0.4
+Stable tag: 6.0.5
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,12 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.0.5 2025-07-23 =
+* Fix: Fatal error related to Bulk Variations Grid compatibility
+* Tweak: Displayed "Product Deleted" info in list table instead of leaving it blank
+* Tweak: Enhanced dashboard report
+* Tweak: Updated POT file
+
 = 6.0.4 2025-07-16 =
 * New: Added "Delete Subscribers Data" option on the Status page with confirmation prompt
 * Tweak: Removed unwanted HTML tags in Dashboard Widget report

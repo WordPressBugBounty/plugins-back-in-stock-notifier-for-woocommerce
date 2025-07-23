@@ -48,9 +48,9 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		public function jetproduct_compatibility( $content, $product, $param3, $param4 ) {
 			if ( 'product-actions' == $param3 && $param3['id'] ) {
 				if ( 'outofstock' == $product->get_stock_status() ) {
-					$parent_id  = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
+					$parent_id = $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id();
 					$parent_obj = wc_get_product( $parent_id );
-					$child      = $product->is_type( 'variation' ) ? $product : array();
+					$child = $product->is_type( 'variation' ) ? $product : array();
 
 					ob_start();
 					/**
@@ -90,7 +90,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			 * @since 1.0.0
 			 */
 			$display_filter = apply_filters( 'cwginstock_display_subscribe_form', true, $child, array() );
-			$value          = $value . $this->display_subscribe_box( $child, array(), $display_filter );
+			$value = $value . $this->display_subscribe_box( $child, array(), $display_filter );
 			return $value;
 		}
 
@@ -133,18 +133,18 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		}
 
 		public function display_subscribe_box( $product, $variation = array(), $display = true ) {
-			$get_option           = get_option( 'cwginstocksettings' );
+			$get_option = get_option( 'cwginstocksettings' );
 			$visibility_backorder = isset( $get_option['show_on_backorders'] ) && '1' == $get_option['show_on_backorders'] ? true : false;
-			$stock_status         = $variation ? $variation->get_stock_status() : $product->get_stock_status();
+			$stock_status = $variation ? $variation->get_stock_status() : $product->get_stock_status();
 
-			$check_guest_visibility  = isset( $get_option['hide_form_guests'] ) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
+			$check_guest_visibility = isset( $get_option['hide_form_guests'] ) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
 			$check_member_visibility = isset( $get_option['hide_form_members'] ) && '' != $get_option['hide_form_members'] && is_user_logged_in() ? false : true;
-			$guest_message           = isset( $get_option['hide_form_for_guest_msg'] ) ? $get_option['hide_form_for_guest_msg'] : '';
+			$guest_message = isset( $get_option['hide_form_for_guest_msg'] ) ? $get_option['hide_form_for_guest_msg'] : '';
 
-			$product_id      = $product->get_id();
+			$product_id = $product->get_id();
 			$variation_class = '';
 			if ( $variation ) {
-				$variation_id    = $variation->get_id();
+				$variation_id = $variation->get_id();
 				$variation_class = "cwginstock-subscribe-form-$variation_id";
 			} else {
 				$variation_id = 0;
@@ -196,22 +196,22 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		}
 
 		public function html_subscribe_form( $product, $variation = array() ) {
-			$get_option              = get_option( 'cwginstocksettings' );
-			$check_guest_visibility  = isset( $get_option['hide_form_guests'] ) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
+			$get_option = get_option( 'cwginstocksettings' );
+			$check_guest_visibility = isset( $get_option['hide_form_guests'] ) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
 			$check_member_visibility = isset( $get_option['hide_form_members'] ) && '' != $get_option['hide_form_members'] && is_user_logged_in() ? false : true;
-			$name_field_visibility   = isset( $get_option['hide_name_field'] ) && '' != $get_option['hide_name_field'] ? false : true;
-			$phone_field_visibility  = isset( $get_option['show_phone_field'] ) && '' != $get_option['show_phone_field'] ? true : false;
-			$product_id              = $product->get_id();
-			$variation_class         = '';
-			$dynamic_wrapper_class   = '';
+			$name_field_visibility = isset( $get_option['hide_name_field'] ) && '' != $get_option['hide_name_field'] ? false : true;
+			$phone_field_visibility = isset( $get_option['show_phone_field'] ) && '' != $get_option['show_phone_field'] ? true : false;
+			$product_id = $product->get_id();
+			$variation_class = '';
+			$dynamic_wrapper_class = '';
 			if ( $variation ) {
-				$variation_id    = $variation->get_id();
+				$variation_id = $variation->get_id();
 				$variation_class = "cwginstock-subscribe-form-$variation_id";
-				$stock_status    = $variation->get_stock_status();
-				$stock_quantity  = $variation->get_stock_quantity();
+				$stock_status = $variation->get_stock_status();
+				$stock_quantity = $variation->get_stock_quantity();
 			} else {
-				$variation_id   = 0;
-				$stock_status   = $product->get_stock_status();
+				$variation_id = 0;
+				$stock_status = $product->get_stock_status();
 				$stock_quantity = $product->get_stock_quantity();
 			}
 			$dynamic_wrapper_class = 'cwginstock-' . $stock_quantity . $stock_status;
@@ -227,23 +227,23 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			$security = wp_create_nonce( 'codewoogeek-product_id-' . $product_id );
 			ob_start();
 			$name_placeholder = isset( $get_option['name_placeholder'] ) && '' != $get_option['name_placeholder'] ? $get_option['name_placeholder'] : __( 'Your Name', 'back-in-stock-notifier-for-woocommerce' );
-			$placeholder      = isset( $get_option['form_placeholder'] ) && '' != $get_option['form_placeholder'] ? $get_option['form_placeholder'] : __( 'Your Email Address', 'back-in-stock-notifier-for-woocommerce' );
-			$button_label     = isset( $get_option['button_label'] ) && '' != $get_option['button_label'] ? $get_option['button_label'] : __( 'Subscribe Now', 'back-in-stock-notifier-for-woocommerce' );
+			$placeholder = isset( $get_option['form_placeholder'] ) && '' != $get_option['form_placeholder'] ? $get_option['form_placeholder'] : __( 'Your Email Address', 'back-in-stock-notifier-for-woocommerce' );
+			$button_label = isset( $get_option['button_label'] ) && '' != $get_option['button_label'] ? $get_option['button_label'] : __( 'Subscribe Now', 'back-in-stock-notifier-for-woocommerce' );
 			/**
 			 * Filter for sumbit button label
 			 *
 			 * @since 4.0.1
 			 */
-			$btn_label_filter     = apply_filters( 'cwginstock_submit_btn_label', $button_label, $product, $variation );
-			$instock_api          = new CWG_Instock_API();
+			$btn_label_filter = apply_filters( 'cwginstock_submit_btn_label', $button_label, $product, $variation );
+			$instock_api = new CWG_Instock_API();
 			$disable_prefill_data = isset( $get_option['disable_prefill_data'] ) && '1' == $get_option['disable_prefill_data'];
 
-			$email            = ! $disable_prefill_data && is_user_logged_in() ? $instock_api->get_user_email( get_current_user_id() ) : '';
-			$subscriber_name  = ! $disable_prefill_data && is_user_logged_in() ? $instock_api->get_name( get_current_user_id() ) : '';
-			$subscriber_name  = trim( $subscriber_name ) != '' ? $subscriber_name : '';
+			$email = ! $disable_prefill_data && is_user_logged_in() ? $instock_api->get_user_email( get_current_user_id() ) : '';
+			$subscriber_name = ! $disable_prefill_data && is_user_logged_in() ? $instock_api->get_name( get_current_user_id() ) : '';
+			$subscriber_name = trim( $subscriber_name ) != '' ? $subscriber_name : '';
 			$subscriber_phone = '';
 
-			$args     = array(
+			$args = array(
 				'variation_class' => $variation_class,
 				'dynamic_wrapper_class' => $dynamic_wrapper_class,
 				'get_option' => $get_option,
@@ -273,13 +273,13 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			 *
 			 * @since 1.0.0
 			 */
-			$display_filter            = apply_filters( 'cwginstock_display_subscribe_form', true, $product, $variation );
+			$display_filter = apply_filters( 'cwginstock_display_subscribe_form', true, $product, $variation );
 			$atts['availability_html'] = $get_stock . $this->display_subscribe_box( $product, $variation, $display_filter );
 			return $atts;
 		}
 
 		public function enable_disabled_variation_dropdown( $active, $variation ) {
-			$option                    = get_option( 'cwginstocksettings' );
+			$option = get_option( 'cwginstocksettings' );
 			$ignore_disabled_variation = isset( $option['ignore_disabled_variation'] ) && '1' == $option['ignore_disabled_variation'] ? true : false;
 			if ( ! $ignore_disabled_variation ) {
 				// if it is false then enable disabled out of stock variation from theme
@@ -289,8 +289,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		}
 
 		public function is_viewable( $product_id, $variation_id = 0 ) {
-			$option                  = get_option( 'cwginstocksettings' );
-			$selected_products       = isset( $option['specific_products'] ) ? $option['specific_products'] : array();
+			$option = get_option( 'cwginstocksettings' );
+			$selected_products = isset( $option['specific_products'] ) ? $option['specific_products'] : array();
 			$product_visibility_mode = isset( $option['specific_products_visibility'] ) ? $option['specific_products_visibility'] : '';
 			if ( ( is_array( $selected_products ) && ! empty( $selected_products ) ) && '' != $product_visibility_mode ) {
 				if ( $variation_id > 0 ) {
@@ -312,8 +312,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		}
 
 		public function is_viewable_for_category( $product_id ) {
-			$option                     = get_option( 'cwginstocksettings' );
-			$selected_categories        = isset( $option['specific_categories'] ) ? $option['specific_categories'] : array();
+			$option = get_option( 'cwginstocksettings' );
+			$selected_categories = isset( $option['specific_categories'] ) ? $option['specific_categories'] : array();
 			$categories_visibility_mode = isset( $option['specific_categories_visibility'] ) ? $option['specific_categories_visibility'] : '';
 
 			if ( ( is_array( $selected_categories ) && ! empty( $selected_categories ) ) && '' != $categories_visibility_mode ) {
@@ -333,8 +333,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		}
 
 		public function is_viewable_for_product_tag( $product_id ) {
-			$option               = get_option( 'cwginstocksettings' );
-			$selected_tags        = isset( $option['specific_tags'] ) ? $option['specific_tags'] : array();
+			$option = get_option( 'cwginstocksettings' );
+			$selected_tags = isset( $option['specific_tags'] ) ? $option['specific_tags'] : array();
 			$tags_visibility_mode = isset( $option['specific_tags_visibility'] ) ? $option['specific_tags_visibility'] : '';
 
 			if ( ( is_array( $selected_tags ) && ! empty( $selected_tags ) ) && '' != $tags_visibility_mode ) {
@@ -357,27 +357,27 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		}
 
 		public function visibility_on_regular_or_sale( $product, $variation ) {
-			$option           = get_option( 'cwginstocksettings' );
-			$hide_on_regular  = isset( $option['hide_on_regular'] ) && '1' == $option['hide_on_regular'] ? true : false;
-			$hide_on_sale     = isset( $option['hide_on_sale'] ) && '1' == $option['hide_on_sale'] ? true : false;
+			$option = get_option( 'cwginstocksettings' );
+			$hide_on_regular = isset( $option['hide_on_regular'] ) && '1' == $option['hide_on_regular'] ? true : false;
+			$hide_on_sale = isset( $option['hide_on_sale'] ) && '1' == $option['hide_on_sale'] ? true : false;
 			$check_is_on_sale = $variation ? $variation->is_on_sale() : $product->is_on_sale();
-			$visibility       = ( ( $hide_on_regular && ! $check_is_on_sale ) || ( $hide_on_sale && $check_is_on_sale ) ) ? false : true;
+			$visibility = ( ( $hide_on_regular && ! $check_is_on_sale ) || ( $hide_on_sale && $check_is_on_sale ) ) ? false : true;
 			return $visibility;
 		}
 
 		public function visibility_for_product_on_free( $product, $variation ) {
-			$option       = get_option( 'cwginstocksettings' );
+			$option = get_option( 'cwginstocksettings' );
 			$hide_on_free = isset( $option['hide_on_free'] ) && '1' == $option['hide_on_free'] ? true : false;
 			// check if the product is free or not	
 			//get the price of product and compare it whether it is 0 if it is 0 then it is free produc
 			$check_is_free = $variation ? ( $variation->get_price() <= 0 ) : ( $product->get_price() <= 0 );
-			$visibility    = ( $hide_on_free && $check_is_free ) ? false : true;
+			$visibility = ( $hide_on_free && $check_is_free ) ? false : true;
 			return $visibility;
 		}
 
 		public function display_out_of_stock_products_in_variable( $value ) {
 			global $wp_query;
-			$option               = get_option( 'cwginstocksettings' );
+			$option = get_option( 'cwginstocksettings' );
 			$ignore_wc_visibility = isset( $option['ignore_wc_visibility'] ) && '1' == $option['ignore_wc_visibility'] ? true : false;
 			if ( ! class_exists( 'WooCommerce' ) ) {
 				// to avoid fatal error is_product conflict with other plugins like boost sales etc
@@ -392,18 +392,18 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 
 		public function subscribe_form_shortcode( $atts ) {
 			ob_start();
-			$att          = shortcode_atts(
+			$att = shortcode_atts(
 				array(
 					'product_id' => '',
 					'variation_id' => '',
 				),
 				$atts
 			);
-			$product_id   = isset( $att['product_id'] ) ? (int) $att['product_id'] : false;
+			$product_id = isset( $att['product_id'] ) ? (int) $att['product_id'] : false;
 			$variation_id = isset( $att['variation_id'] ) ? (int) $att['variation_id'] : false;
 
 			if ( $variation_id && ( $variation_id > 0 ) ) {
-				$product   = wc_get_product( $product_id );
+				$product = wc_get_product( $product_id );
 				$variation = wc_get_product( $variation_id );
 				if ( $product && $variation ) {
 					add_filter( 'cwginstock_bypass_recaptcha', array( $this, 'bypass_recaptcha_for_variation' ), 10, 3 );
@@ -425,19 +425,19 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		public function display_popup_button_in_catalog_page() {
 			global $product;
 			if ( $product ) {
-				$get_option           = get_option( 'cwginstocksettings' );
+				$get_option = get_option( 'cwginstocksettings' );
 				$visibility_backorder = isset( $get_option['show_on_backorders'] ) && '1' == $get_option['show_on_backorders'] ? true : false;
-				$display_popup        = isset( $get_option['show_subscribe_button_catalog'] ) && '1' == $get_option['show_subscribe_button_catalog'] ? true : false;
-				$id                   = $product->get_id();
-				$product              = wc_get_product( $id );
-				$variation            = array();
-				$is_not_variation     = $product && $product->is_type( 'variation' ) || $product->is_type( 'variable' ) ? false : true;
+				$display_popup = isset( $get_option['show_subscribe_button_catalog'] ) && '1' == $get_option['show_subscribe_button_catalog'] ? true : false;
+				$id = $product->get_id();
+				$product = wc_get_product( $id );
+				$variation = array();
+				$is_not_variation = $product && $product->is_type( 'variation' ) || $product->is_type( 'variable' ) ? false : true;
 
-				$check_guest_visibility  = isset( $get_option['hide_form_guests'] ) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
+				$check_guest_visibility = isset( $get_option['hide_form_guests'] ) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
 				$check_member_visibility = isset( $get_option['hide_form_members'] ) && '' != $get_option['hide_form_members'] && is_user_logged_in() ? false : true;
-				$product_id              = $product->get_id();
-				$variation_class         = '';
-				$variation_id            = 0;
+				$product_id = $product->get_id();
+				$variation_class = '';
+				$variation_id = 0;
 
 				if ( $check_guest_visibility && $check_member_visibility && ( $this->is_viewable( $product_id, $variation_id ) && $this->is_viewable_for_category( $product_id ) ) && $this->visibility_on_regular_or_sale( $product, $variation ) && $this->visibility_for_product_on_free( $product, $variation ) && $this->is_viewable_for_product_tag( $product_id ) ) {
 					if ( $is_not_variation && $display_popup && ( ! $variation && ! $product->is_in_stock() || ( ( ! $variation && ( ( $product->managing_stock() && $product->backorders_allowed() && $product->is_on_backorder( 1 ) ) || $product->is_on_backorder( 1 ) ) && $visibility_backorder ) ) ) ) {
@@ -460,12 +460,12 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			 * @since 1.0.0
 			 */
 			$display_filter = apply_filters( 'cwginstock_display_subscribe_form', true, $product, $variation );
-			$stock_html     = $stock_html . $this->display_subscribe_box( $product, $variation, $display_filter );
+			$stock_html = $stock_html . $this->display_subscribe_box( $product, $variation, $display_filter );
 			return $stock_html;
 		}
 
 		public function force_template_from_plugin( $template, $template_name, $template_path, $default_path, $args ) {
-			$options    = get_option( 'cwginstocksettings' );
+			$options = get_option( 'cwginstocksettings' );
 			$force_load = isset( $options['template_from_plugin'] ) && '1' == $options['template_from_plugin'] ? true : false;
 			if ( $force_load ) {
 				$template = $default_path . $template_name;
@@ -478,18 +478,18 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			if ( $id ) {
 				$obj = wc_get_product( $id );
 				if ( $obj ) {
-					$product_name      = $obj->get_formatted_name();
+					$product_name = $obj->get_formatted_name();
 					$only_product_name = $obj->get_name();
-					$find_shortcode    = array( '{product_name}', '{only_product_name}' );
-					$replce_shortcode  = array( $product_name, $only_product_name );
-					$message_html      = str_replace( $find_shortcode, $replce_shortcode, $message_html );
+					$find_shortcode = array( '{product_name}', '{only_product_name}' );
+					$replce_shortcode = array( $product_name, $only_product_name );
+					$message_html = str_replace( $find_shortcode, $replce_shortcode, $message_html );
 				}
 			}
 			return $message_html;
 		}
 		public function display_subscribe_form_in_pvttable( $cart_button, $product_id, $cart_url, $product_url, $variant_id, $stock_info ) {
 			$parent_product = wc_get_product( $product_id );
-			$child          = wc_get_product( $variant_id );
+			$child = wc_get_product( $variant_id );
 			?>
 			<style type='text/css'>
 				button.pvtfw_variant_table_cart_btn.button.alt:disabled {
@@ -505,6 +505,9 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			do_action( 'cwginstock_custom_form', $parent_product, $child );
 		}
 		public function woocommerce_bulk_variations_compatibility( $column, $row, $variation_ids, $is_single_variation, $variation ) {
+			if ( ! $variation ) {
+				return;
+			}
 			$product_id = $variation->get_parent_id();
 			$parent_obj = wc_get_product( $product_id );
 			if ( $variation->get_stock_status() == 'outofstock' ) {
