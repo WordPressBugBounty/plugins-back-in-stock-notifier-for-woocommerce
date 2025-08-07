@@ -737,7 +737,9 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			}
 		}
 
+
 		public function bulk_send_manual_email( $post_ids ) {
+			$get_email = '';
 			$sent = 0;
 			$failed = 0;
 			$not_exists = 0;
@@ -914,7 +916,7 @@ add_action(
 			add_action(
 				'all_admin_notices',
 				function () {
-				?>
+					?>
 			<div class="notice notice-success cwg_marketing_notice">
 				<p>
 					<strong>Pay Once, Benefit Forever</strong>: All Add-ons Included, No Monthly Commitment - Just $49! <a
@@ -926,8 +928,8 @@ add_action(
 						href="https://www.paypal.com/donate/?hosted_button_id=M72YSS7BWF32C" target="_blank">PayPal</a>
 				</p>
 			</div>
-			<?php
-			}
+					<?php
+				}
 			);
 		}
 	}
