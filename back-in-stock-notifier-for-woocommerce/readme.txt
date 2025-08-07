@@ -1,11 +1,11 @@
 === Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro ===
 Contributors: codewoogeek, propluginslab
 Tags: email, notification, outofstock, waitlist, stock
-Donate link: https://www.paypal.com/donate/?hosted_button_id=M72YSS7BWF32C
+Donate link: https://codewoogeek.online/product-category/back-in-stock-notifier/
 Requires at least: 4.7
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.0.6
+Stable tag: 6.0.5
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,10 +264,6 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
-= 6.0.6 2025-08-07 =
-* Tweak: Added logging for deleted subscription entries.
-* Fix: Resolved issue where REST API status updates triggered subscription success emails for all statuses.
-
 = 6.0.5 2025-07-23 =
 * Fix: Fatal error related to Bulk Variations Grid compatibility
 * Tweak: Displayed "Product Deleted" info in list table instead of leaving it blank
