@@ -75,7 +75,7 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 												  "custom_quantity" : "3"
 												  } */
 
-			$body             = $request->get_body();
+			$body = $request->get_body();
 			$body_decode_json = json_decode( $body, true );
 
 			// validation
@@ -93,11 +93,11 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 				}
 			}
 
-			$product_id   = $body_decode_json['product_id'];
+			$product_id = $body_decode_json['product_id'];
 			$variation_id = isset( $body_decode_json['variation_id'] ) && $body_decode_json['variation_id'] > 0 ? (int) $body_decode_json['variation_id'] : 0;
-			$email_id     = $body_decode_json['email'];
-			$name         = $body_decode_json['name'];
-			$status       = $body_decode_json['status'];
+			$email_id = $body_decode_json['email'];
+			$name = $body_decode_json['name'];
+			$status = $body_decode_json['status'];
 
 			$is_valid_email = is_email( $email_id ) ? true : false;
 			if ( ! $is_valid_email ) {
@@ -105,10 +105,10 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 			}
 
 			$validate_product = $variation_id > 0 ? $variation_id : $product_id;
-			$product_obj      = wc_get_product( $validate_product );
+			$product_obj = wc_get_product( $validate_product );
 			if ( $product_obj ) {
 				// insert subscriber
-				$obj                         = new CWG_Instock_API( $product_id, $variation_id, $email_id );
+				$obj = new CWG_Instock_API( $product_id, $variation_id, $email_id );
 				$check_is_already_subscribed = $obj->is_already_subscribed();
 				if ( ! $check_is_already_subscribed ) {
 					$id = $obj->insert_subscriber( $status );
@@ -117,12 +117,15 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 						$obj->insert_custom_data( $id, $body_decode_json, array( 'subscriber_name', 'subscriber_phone', 'custom_quantity' ) );
 						$get_count = $obj->get_subscribers_count( $product_id, 'cwg_subscribed' );
 						update_post_meta( $product_id, 'cwg_total_subscribers', $get_count );
-						/**
-						 * Perform action after inserting the subscriber.
-						 *
-						 * @since 1.0.0
-						 */
-						do_action( 'cwginstock_after_insert_subscriber', $id, $body_decode_json );
+						if ( 'cwg_subscribed' == $status ) {
+							/**
+							 * Perform action after inserting the subscriber.
+							 *
+							 * @since 1.0.0
+							 */
+							do_action( 'cwginstock_after_insert_subscriber', $id, $body_decode_json );
+
+						}
 						update_post_meta( $id, 'cwginstock_created_via', 'rest_api' );
 						// logger
 						$logger = new CWG_Instock_Logger( 'success', "Subscriber #$email_id successfully created with status #$status via REST API - #$id" );
@@ -140,7 +143,7 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 		}
 
 		public function format_response( $response ) {
-			$data    = array();
+			$data = array();
 			$default = array(
 				'ID' => 'id',
 				'post_date' => 'subscribed_date',
@@ -177,7 +180,7 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 		}
 
 		public function format_subscriber_data_schema( $response, $multi = false ) {
-			$data    = array();
+			$data = array();
 			$default = array(
 				'ID' => 'id',
 				'post_modified' => 'last_modified_date',
@@ -219,7 +222,7 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 												  "subscriber_phone" : "+1 2015550123",
 												  "custom_quantity" : "3"
 												  } */
-			$body             = $request->get_body();
+			$body = $request->get_body();
 			$body_decode_json = json_decode( $body, true );
 
 			// validation
@@ -238,22 +241,22 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 				}
 			}
 
-			$product_id     = $body_decode_json['product_id'];
-			$variation_id   = isset( $body_decode_json['variation_id'] ) && $body_decode_json['variation_id'] > 0 ? (int) $body_decode_json['variation_id'] : 0;
-			$email_id       = $body_decode_json['email'];
-			$name           = $body_decode_json['name'];
-			$status         = $body_decode_json['status'];
+			$product_id = $body_decode_json['product_id'];
+			$variation_id = isset( $body_decode_json['variation_id'] ) && $body_decode_json['variation_id'] > 0 ? (int) $body_decode_json['variation_id'] : 0;
+			$email_id = $body_decode_json['email'];
+			$name = $body_decode_json['name'];
+			$status = $body_decode_json['status'];
 			$is_valid_email = is_email( $email_id ) ? true : false;
 			if ( ! $is_valid_email ) {
 				return new WP_Error( 'woocommerce_rest_cannot_view', __( 'Sorry invalid email in your given request', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => '403' ) );
 			}
 			$validate_product = $variation_id > 0 ? $variation_id : $product_id;
-			$product_obj      = wc_get_product( $validate_product );
+			$product_obj = wc_get_product( $validate_product );
 			if ( $product_obj ) {
 				// insert subscriber
 				$obj = new CWG_Instock_API( $product_id, $variation_id, $email_id );
-				$id  = $body_decode_json['ID'];
-				$id  = $obj->update_subscriber( $id, $status );
+				$id = $body_decode_json['ID'];
+				$id = $obj->update_subscriber( $id, $status );
 				if ( $id ) {
 					// perform the insertion of data for a subscriber into the database
 					$obj->insert_data( $id );
@@ -285,6 +288,9 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 				if ( $get_post ) {
 					$post_type = $get_post->post_type;
 					if ( 'cwginstocknotifier' == $post_type ) {
+						$id = $request['id'];
+						$logger = new CWG_Instock_Logger( 'success', "Subscriber deleted successfully via REST API - #$id" );
+						$logger->record_log();
 						$data = wp_delete_post( $request['id'], true );
 						return rest_ensure_response( array( 'msg' => '#' . $request['id'] . ' Deleted successfully' ) );
 					} else {
@@ -306,11 +312,11 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 												  "status" : array('cwg_subscribed','cwg_unsubscribed'),
 												  }
 												 */
-			$body             = $request->get_body();
+			$body = $request->get_body();
 			$body_decode_json = json_decode( $body, true );
-			$status           = isset( $body_decode_json['status'] ) ? $body_decode_json['status'] : 'any';
-			$product_id       = isset( $body_decode_json['p_ids'] ) ? $body_decode_json['p_ids'] : array();
-			$args             = array(
+			$status = isset( $body_decode_json['status'] ) ? $body_decode_json['status'] : 'any';
+			$product_id = isset( $body_decode_json['p_ids'] ) ? $body_decode_json['p_ids'] : array();
+			$args = array(
 				'numberposts' => -1,
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => $status,
