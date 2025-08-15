@@ -570,7 +570,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			$action_links = array(
 				'settings' => '<a href="' . esc_url( get_admin_url( null, 'edit.php?post_type=cwginstocknotifier&page=cwg-instock-mailer' ) ) . '">Settings</a>',
 				'add-ons' => '<a href="' . esc_url( get_admin_url( null, 'edit.php?post_type=cwginstocknotifier&page=cwg-instock-extensions' ) ) . '">Add-ons</a>',
-				'support' => '<a href="https://codewoogeek.online" target="_blank">Custom Development and Support</a>',
+				'support' => '<a href="https://propluginslab.com" target="_blank">Custom Development and Support</a>',
 			);
 			return array_merge( $action_links, $links );
 		}
@@ -920,7 +920,7 @@ add_action(
 			<div class="notice notice-success cwg_marketing_notice">
 				<p>
 					<strong>Pay Once, Benefit Forever</strong>: All Add-ons Included, No Monthly Commitment - Just $49! <a
-						href="https://codewoogeek.online/shop/back-in-stock-notifier/bundle-add-ons/" target="_blank"><strong>Buy
+						href="https://propluginslab.com/shop/back-in-stock-notifier/bundle-add-ons/" target="_blank"><strong>Buy
 							Now Bundle Add-ons!</strong></a>
 				</p>
 				<p>

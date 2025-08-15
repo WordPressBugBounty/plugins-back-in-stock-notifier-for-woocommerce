@@ -28,21 +28,21 @@ if ( ! class_exists( 'CWG_Instock_Premium_Extensions' ) ) {
 			$array_of_extensions = apply_filters(
 				'cwginstock_addon_list_with_link',
 				array(
-					'Bundle Add-ons - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier-bundle-add-ons/',
-					'WPML - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/wpml/',
-					'Unsubscribe - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/unsubscribe/',
-					'Double Opt-In - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/doubleoptin/',
-					'Ban Email Domains and Email Addresses - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/ban-emails/',
-					'Export CSV - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/export-csv/',
-					'Custom CSS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/custom-css/',
-					'Mailchimp - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/mailchimp/',
-					'Track Sales - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/track-sales/',
-					'Import CSV - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/import-csv/',
-					'Edit Subscribers - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/edit-subscribers/',
-					'PolyLang - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/back-in-stock-notifier/polylang/',
-					'Twilio SMS - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/twilio-sms/',
-					'Klaviyo - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/klaviyo/',
-					'ActiveCampaign - Back In Stock Notifier for WooCommerce' => 'https://codewoogeek.online/shop/add-ons/back-in-stock-notifier/active-campaign/',
+					'Bundle Add-ons - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier-bundle-add-ons/',
+					'WPML - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/wpml/',
+					'Unsubscribe - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/unsubscribe/',
+					'Double Opt-In - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/doubleoptin/',
+					'Ban Email Domains and Email Addresses - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/ban-emails/',
+					'Export CSV - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/export-csv/',
+					'Custom CSS - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/custom-css/',
+					'Mailchimp - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/mailchimp/',
+					'Track Sales - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/track-sales/',
+					'Import CSV - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/import-csv/',
+					'Edit Subscribers - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/edit-subscribers/',
+					'PolyLang - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/back-in-stock-notifier/polylang/',
+					'Twilio SMS - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/add-ons/back-in-stock-notifier/twilio-sms/',
+					'Klaviyo - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/add-ons/back-in-stock-notifier/klaviyo/',
+					'ActiveCampaign - Back In Stock Notifier for WooCommerce' => 'https://propluginslab.com/shop/add-ons/back-in-stock-notifier/active-campaign/',
 					'More Addons coming soon' => '',
 				)
 			);
@@ -59,7 +59,7 @@ if ( ! class_exists( 'CWG_Instock_Premium_Extensions' ) ) {
 				<?php
 				$i = 1;
 				foreach ( $array_of_extensions as $name => $url ) {
-					$final_url = '' != $url ? $url : 'http://codewoogeek.online/product-category/back-in-stock-notifier/';
+					$final_url = '' != $url ? $url : 'http://propluginslab.com/product-category/back-in-stock-notifier/';
 					?>
 
 					<div class="cwg-section">

@@ -34,7 +34,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 				<div class="notice notice-success cwg_marketing_notice">
 					<p>
 						<strong>Savings and Power Combined</strong>: All Add-ons, One-Time Payment of $49, Zero Monthly Hassles! <a
-							href="https://codewoogeek.online/shop/back-in-stock-notifier/bundle-add-ons/"
+							href="https://propluginslab.com/shop/back-in-stock-notifier/bundle-add-ons/"
 							target="_blank"><strong>Buy Now Bundle Add-ons!</strong></a>
 					</p>
 					<p>Don't let our progress get stuck - buy now and push us forward! </p>
