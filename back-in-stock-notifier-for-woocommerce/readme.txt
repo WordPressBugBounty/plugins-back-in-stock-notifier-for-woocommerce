@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/donate/?hosted_button_id=M72YSS7BWF32C
 Requires at least: 4.7
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.0.7
+Stable tag: 6.0.8
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,9 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.0.8 2025-08-21 =
+* Tweak: Added e.stopPropagation() in the subscribe button click handler to prevent event bubbling into the WooCommerce cart form.
+
 = 6.0.7 2025-08-15 =
 * Tweak: URL updated
 * Tweak: Tested upto WooCommerce v10.1.0

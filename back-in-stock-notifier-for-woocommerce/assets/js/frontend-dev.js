@@ -162,6 +162,7 @@ var instock_notifier = {
 	},
 	submit_form: function (e) {
 		e.preventDefault();
+		e.stopPropagation();
 		var submit_button_obj = jQuery(this);
 		var subscriber_name = jQuery(this).closest('.cwginstock-subscribe-form').find('.cwgstock_name').val();
 		var email_id = jQuery(this).closest('.cwginstock-subscribe-form').find('.cwgstock_email').val();
