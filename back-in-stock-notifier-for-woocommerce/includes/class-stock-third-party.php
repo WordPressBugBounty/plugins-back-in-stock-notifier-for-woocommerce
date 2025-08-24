@@ -14,7 +14,7 @@ if ( ! class_exists( ' CWG_Instock_Third_Party_Support' ) ) {
 		}
 
 		public function retrive_product_ids() {
-			$options                        = get_option( 'cwginstocksettings' );
+			$options = get_option( 'cwginstocksettings' );
 			$check_stock_status_third_party = isset( $options['update_stock_third_party'] ) && '1' == $options['update_stock_third_party'] ? true : false;
 			global $wpdb;
 			if ( $check_stock_status_third_party ) {
@@ -57,6 +57,13 @@ if ( ! class_exists( ' CWG_Instock_Third_Party_Support' ) ) {
 
 		public function action_based_on_stock_status( $id, $stockstatus, $obj = '' ) {
 			/**
+			 * Action 'cwginstock_before_trigger_status' before processing stock status.
+			 * 
+			 * @since 6.0.8.1
+			 */
+			do_action( 'cwginstock_before_trigger_status', $id, $stockstatus, $obj );
+
+			/**
 			 * Filter 'cwg_before_process_instock_email' allows processing (returns true) and the stock status is 'instock', the action hook 'cwginstock_trigger_status' is triggered.
 			 *
 			 * @since 1.0.0
@@ -88,8 +95,9 @@ if ( ! class_exists( ' CWG_Instock_Third_Party_Support' ) ) {
 		}
 
 		public function register_schedule() {
+			as_unschedule_all_actions( 'cwginstock_third_party' );
 			if ( ! as_next_scheduled_action( 'cwginstock_third_party' ) ) {
-				as_schedule_recurring_action( time(), 300, 'cwginstock_third_party' );
+				as_schedule_recurring_action( time(), DAY_IN_SECONDS, 'cwginstock_third_party' );
 			}
 		}
 

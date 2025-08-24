@@ -162,6 +162,29 @@ jQuery(
         }
         show_hide_guest_msg.init();
 
+        var third_party_stock_update = {
+            init: function() {
+                var ele = '.cwg_thirdparty_stock_update';
+                third_party_stock_update.show_hide(ele);
+                jQuery(document).on(
+                    'click',
+                    '.cwg_thirdparty_stock_update',
+                    function () {
+                        var element = this;
+                        third_party_stock_update.show_hide(element);
+                    }
+                );
+            },
+            show_hide: function(element) {
+                if (jQuery(element).is(':checked')) {
+                    jQuery('.cwg_third_party_recurrence').parent().parent().show();
+                } else {
+                    jQuery('.cwg_third_party_recurrence').parent().parent().hide();
+                }
+            }
+        }
+        third_party_stock_update.init();
+
         var stop_sending_email_staging = {
             init: function () {
                 var ele = '.stop_sending_email_staging';
