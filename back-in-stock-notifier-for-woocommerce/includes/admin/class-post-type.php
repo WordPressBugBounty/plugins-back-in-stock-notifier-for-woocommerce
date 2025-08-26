@@ -924,8 +924,8 @@ add_action(
 							Now Bundle Add-ons!</strong></a>
 				</p>
 				<p>
-					Your payment isn't just for a product - it's for progress. Buy now, or donate us directly via <a
-						href="https://www.paypal.com/donate/?hosted_button_id=M72YSS7BWF32C" target="_blank">PayPal</a>
+					Your payment isn't just for a product - it's for progress. Buy now, or Support us directly - <a
+						href="https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00" target="_blank">Donate Now</a>
 				</p>
 			</div>
 					<?php

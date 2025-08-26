@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 6.0.9\n"
+"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 6.0.9.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/back-in-stock-notifier-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-24T22:27:07+00:00\n"
+"POT-Creation-Date: 2025-08-26T18:31:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: back-in-stock-notifier-for-woocommerce\n"
@@ -1470,66 +1470,74 @@ msgid "Trash Subscribers upon Product Deletion"
 msgstr ""
 
 #: includes/class-troubleshoot.php:42
-msgid "If frontend Subscribe Form layout breaks/input field overlap? then enable below checkbox option to troubleshoot this issue. If it is not work out then please open a support ticket with us https://codewoogeek.online"
-msgstr ""
-
-#: includes/class-troubleshoot.php:51
-msgid "WordPress AJAX(default)"
+msgid "Auto Purge W3 Total Cache on Stock Status Update"
 msgstr ""
 
 #: includes/class-troubleshoot.php:54
+msgid "Select this option to automatically purge the W3 Total Cache of the corresponding product page when its stock status is updated"
+msgstr ""
+
+#: includes/class-troubleshoot.php:60
+msgid "If frontend Subscribe Form layout breaks/input field overlap? then enable below checkbox option to troubleshoot this issue. If it is not work out then please open a support ticket with us https://codewoogeek.online"
+msgstr ""
+
+#: includes/class-troubleshoot.php:69
+msgid "WordPress AJAX(default)"
+msgstr ""
+
+#: includes/class-troubleshoot.php:72
 msgid "WordPress REST API Route"
 msgstr ""
 
-#: includes/class-troubleshoot.php:65
+#: includes/class-troubleshoot.php:83
 msgid "Select this option only if the subscribe form layout breaks in frontend(experimental)"
 msgstr ""
 
-#: includes/class-troubleshoot.php:83
+#: includes/class-troubleshoot.php:101
 msgid "Select this option to hide subscriber count appeared in the admin menu"
 msgstr ""
 
-#: includes/class-troubleshoot.php:101
+#: includes/class-troubleshoot.php:120
 msgid "Every 5 Minutes"
 msgstr ""
 
-#: includes/class-troubleshoot.php:104
+#: includes/class-troubleshoot.php:123
 msgid "Every 12 Hours"
 msgstr ""
 
-#: includes/class-troubleshoot.php:107
+#: includes/class-troubleshoot.php:126
 msgid "Every Day"
 msgstr ""
 
-#: includes/class-troubleshoot.php:111
+#: includes/class-troubleshoot.php:130
 msgid "Select how often to run the third-party stock update cron job."
 msgstr ""
 
-#: includes/class-troubleshoot.php:165
+#: includes/class-troubleshoot.php:184
 msgid "Select this option to ignore the loading of subscribe form template from theme"
 msgstr ""
 
-#: includes/class-troubleshoot.php:175
+#: includes/class-troubleshoot.php:194
 msgid "Select this option to add a cache buster to the \"add-to-cart\" link in the in-stock email"
 msgstr ""
 
-#: includes/class-troubleshoot.php:186
+#: includes/class-troubleshoot.php:205
 msgid "Select this option to show \"Subscribers Count\" column in product list table (Admin Dashboard>Products) "
 msgstr ""
 
-#: includes/class-troubleshoot.php:196
+#: includes/class-troubleshoot.php:215
 msgid "Enable this option to disable email notifications when sites are accessed on staging domains that mirror the production site. This prevents unnecessary alerts from a testing environment, ensuring the production email flow remains unaffected"
 msgstr ""
 
-#: includes/class-troubleshoot.php:207
+#: includes/class-troubleshoot.php:226
 msgid "Enter your starting domain(s) of the staging environment. This option is comma-separated (e.g., \"dev.\", \"test.\", \"staging.\", \"demo\", etc.)"
 msgstr ""
 
-#: includes/class-troubleshoot.php:216
+#: includes/class-troubleshoot.php:235
 msgid "Enable this option to prevent the subscription form from auto-filling the name and email fields for logged-in users."
 msgstr ""
 
-#: includes/class-troubleshoot.php:225
+#: includes/class-troubleshoot.php:244
 msgid "Enable this option to automatically trash the subscriber(s) associated with a product or variation when they are deleted"
 msgstr ""
 

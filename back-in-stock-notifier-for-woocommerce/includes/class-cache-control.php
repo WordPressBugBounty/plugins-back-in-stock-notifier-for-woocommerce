@@ -14,15 +14,22 @@ if ( ! class_exists( 'CWG_Instock_Cache_Control' ) ) {
 		}
 
 		public function auto_purge_cache_for_product( $id, $stock_status, $obj ) {
-			$product_obj = wc_get_product($id); //sometimes obj in parameter may return empty
-			if ($product_obj) {
+			//Auto Purge settings is enabled or not before purging cache
+			$options = get_option( 'cwginstocksettings' );
+			$check_auto_purge_w3tc = isset( $options['auto_purge_w3tc'] ) && '1' == $options['auto_purge_w3tc'] ? true : false;
+			if ( ! $check_auto_purge_w3tc ) {
+				return;
+			}
+			//get the parent id if the product is variation
+			$product_obj = wc_get_product( $id ); //sometimes obj in parameter may return empty
+			if ( $product_obj ) {
 				$get_type = 'variation' == $obj->get_type() ? true : false;
-				if ($get_type) {
+				if ( $get_type ) {
 					$get_parent_id = $obj->get_parent_id();
 					$id = $get_parent_id;
 				}
 			}
-			
+
 			if ( function_exists( 'w3tc_pgcache_flush_post' ) ) {
 				// Purge cache for this product page
 				w3tc_pgcache_flush_post( $id );
@@ -35,7 +42,7 @@ if ( ! class_exists( 'CWG_Instock_Cache_Control' ) ) {
 					w3tc_flush_all();
 				}
 			}
-		 
+
 		}
 
 

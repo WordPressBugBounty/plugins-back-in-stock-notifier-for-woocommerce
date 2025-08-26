@@ -1,11 +1,11 @@
 === Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro ===
 Contributors: codewoogeek, propluginslab
 Tags: email, notification, outofstock, waitlist, stock
-Donate link: https://www.paypal.com/donate/?hosted_button_id=M72YSS7BWF32C
+Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.0.9
+Stable tag: 6.0.9.1
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.0.9.1 2025-08-27 =
+* Tweak: Added Checkbox option to Turn Auto Purge Cache for W3Total Cache when Product Stock Status Change in Troubleshoot Settings
+* Tweak: POT file updated.
+
 = 6.0.9 2025-08-25 =
 * New: Built-in support to automatically purge the corresponding product cache in W3 Total Cache when stock status changes.
 * Tweak: Third-party cron recurrence is now customizable.
