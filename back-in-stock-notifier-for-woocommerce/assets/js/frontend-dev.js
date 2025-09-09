@@ -209,7 +209,7 @@ var instock_notifier = {
 			// check is valid email
 			if (!instock_notifier.is_email(email_id)) {
 				jQuery(this).closest('.cwginstock-subscribe-form').find('.cwgstock_output').fadeIn();
-				jQuery(this).closest('.cwginstock-subscribe_form').find('.cwgstock_output').html("<div class='cwginstockerror' style='color:red;'>" + cwginstock_invalidemail + "</div>");
+				jQuery(this).closest('.cwginstock-subscribe-form').find('.cwgstock_output').html("<div class='cwginstockerror' style='color:red;'>" + cwginstock_invalidemail + "</div>");
 				return false;
 			}
 

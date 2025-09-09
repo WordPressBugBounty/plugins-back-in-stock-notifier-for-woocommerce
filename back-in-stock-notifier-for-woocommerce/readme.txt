@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.0.9.1
+Stable tag: 6.0.9.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.0.9.2 2025-09-09 =
+* Fix: Invalid Email Address not displayed
+* Tweak: Priority set to 999 for the upgrader_process_complete hook
+
 = 6.0.9.1 2025-08-27 =
 * Tweak: Added Checkbox option to Turn Auto Purge Cache for W3Total Cache when Product Stock Status Change in Troubleshoot Settings
 * Tweak: POT file updated.

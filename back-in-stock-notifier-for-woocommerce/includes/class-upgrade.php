@@ -11,7 +11,7 @@ if ( ! class_exists( 'CWG_Instock_Upgrade' ) ) {
 		public $upgrade_version = '1.0';
 
 		public function __construct() {
-			add_action( 'upgrader_process_complete', array( $this, 'trigger_upgrade_instock' ), 10, 2 );
+			add_action( 'upgrader_process_complete', array( $this, 'trigger_upgrade_instock' ), 999, 2 );
 			add_action( 'cwg_instock_upgrade', array( $this, 'register_schedule' ) );
 			add_action( 'cwg_sync_instock_data', array( $this, 'perform_upgrade' ), 99, 1 );
 			register_activation_hook( CWGINSTOCK_FILE, array( $this, 'register_schedule' ) );
@@ -35,7 +35,7 @@ if ( ! class_exists( 'CWG_Instock_Upgrade' ) ) {
 
 		public function register_schedule() {
 			// upon update to the plugin perform some actions
-			$api             = new CWG_Instock_API();
+			$api = new CWG_Instock_API();
 			$get_meta_values = $api->get_meta_values( 'cwginstock_product_id', 'cwginstocknotifier' );
 			if ( $get_meta_values ) {
 				$chunk_data = array_chunk( $get_meta_values, 5 );
