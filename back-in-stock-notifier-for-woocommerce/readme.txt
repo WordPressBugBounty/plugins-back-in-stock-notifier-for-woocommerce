@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.0.9.2
+Stable tag: 6.1.0
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,15 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.1.0 = 2025-09-25 =
+* New: Added email validation using the Egulias EmailValidator library.
+  - Syntax validation (RFC compliance)
+  - DNS-level validation (MX/A record check)
+* Tweak: Improved security and reliability of email input handling.
+* Tweak: Removed unused JavaScript files.
+* Tweak: Tested up to WooCommerce v10.2.1.
+* Tweak: Updated POT file.
+
 = 6.0.9.2 2025-09-09 =
 * Fix: Invalid Email Address not displayed
 * Tweak: Priority set to 999 for the upgrader_process_complete hook

@@ -4,6 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\DNSCheckValidation;
+use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
+use Egulias\EmailValidator\Validation\RFCValidation;
+
 if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 
 	class CWG_Instock_Ajax {
@@ -25,15 +30,15 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 
 		public function ajax_subscription( $perform_security = true, $rest_api = false ) {
 			if ( isset( $_POST ) ) {
-				$obj         = new CWG_Instock_API();
+				$obj = new CWG_Instock_API();
 				$array_error = array(
 					'msg' => '-1',
 					'code' => 'cwg_nonce_verify_failed',
 				);
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$post_data         = $obj->post_data_validation( $_REQUEST );
-				$product_id        = $post_data['product_id'];
-				$get_option        = get_option( 'cwginstocksettings' );
+				$post_data = $obj->post_data_validation( $_REQUEST );
+				$product_id = $post_data['product_id'];
+				$get_option = get_option( 'cwginstocksettings' );
 				$check_is_security = isset( $post_data['security'] ) && '' != $post_data['security'] ? 'yes' : 'no';
 				if ( 'no' == $check_is_security ) {
 					// block ajax request as it may be a bot
@@ -48,9 +53,9 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 				}
 
 				if ( 'recaptcha' == CWG_Instock_Bot_Protection::get_bot_protection_type() ) {
-					$check_is_recaptcha_enabled    = isset( $get_option['enable_recaptcha'] ) && '1' == $get_option['enable_recaptcha'] ? '1' : '2';
+					$check_is_recaptcha_enabled = isset( $get_option['enable_recaptcha'] ) && '1' == $get_option['enable_recaptcha'] ? '1' : '2';
 					$check_recaptcha_server_verify = isset( $get_option['enable_recaptcha_verify'] ) && '1' == $get_option['enable_recaptcha_verify'] ? '1' : '2';
-					$check_secret_key              = CWG_Instock_Bot_Protection::get_secret_key() != '' ? CWG_Instock_Bot_Protection::get_secret_key() : '2';
+					$check_secret_key = CWG_Instock_Bot_Protection::get_secret_key() != '' ? CWG_Instock_Bot_Protection::get_secret_key() : '2';
 					// if it is recaptcha ignore nonce and try verify recaptcha from google(avoid something went wrong error cause because of mainly from cache)
 					if ( '2' == $check_is_recaptcha_enabled || ( '1' == $check_is_recaptcha_enabled && ( ! CWG_Instock_Bot_Protection::is_recaptcha_v3() ) && '2' == $check_recaptcha_server_verify ) ) {
 						if ( ( $perform_security && ( ! ( check_ajax_referer( 'codewoogeek-product_id-' . $product_id, 'security', false ) ) && ! wp_verify_nonce( $post_data['security'], 'codewoogeek-product_id-' . $product_id ) ) ) ) {
@@ -75,7 +80,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 								);
 							}
 						} else {
-							$gresponse_body   = json_decode( wp_remote_retrieve_body( $verify_gresponse ) );
+							$gresponse_body = json_decode( wp_remote_retrieve_body( $verify_gresponse ) );
 							$gresponse_status = $gresponse_body->success;
 							if ( ! $gresponse_status ) {
 								if ( ! $rest_api ) {
@@ -104,7 +109,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 								);
 							}
 						} else {
-							$tresponse_body   = json_decode( wp_remote_retrieve_body( $verify_tresponse ) );
+							$tresponse_body = json_decode( wp_remote_retrieve_body( $verify_tresponse ) );
 							$tresponse_status = $tresponse_body->success;
 							if ( ! $tresponse_status ) {
 								if ( ! $rest_api ) {
@@ -119,14 +124,29 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 						}
 					}
 				}
+
+				// validate email address in php level
+				$validator = new EmailValidator();
+				$multipleValidations = new MultipleValidationWithAnd( array(
+					new RFCValidation(),
+					new DNSCheckValidation()
+				) );
+
+				$is_email_valid = $validator->isValid( $post_data['user_email'], $multipleValidations );
+				if ( ! $is_email_valid ) {
+					$get_option = get_option( 'cwginstocksettings' );
+					$email_valid_error = isset( $get_option['invalid_email_error'] ) && '' != $get_option['invalid_email_error'] ? $get_option['invalid_email_error'] : __( 'Please Enter Valid Email Address', 'back-in-stock-notifier-for-woocommerce' );
+					wp_send_json( array( 'msg' => $email_valid_error ), 403 );
+				}
+
 				/**
 				 * Action for success subscription
 				 *
 				 * @since 1.0.0
 				 */
 				do_action( 'cwginstock_ajax_data', $post_data, $rest_api );
-				$success_msg     = __( 'You have successfully subscribed, we will inform you when this product back in stock', 'back-in-stock-notifier-for-woocommerce' );
-				$success         = isset( $get_option['success_subscription'] ) && $get_option['success_subscription'] ? $get_option['success_subscription'] : $success_msg;
+				$success_msg = __( 'You have successfully subscribed, we will inform you when this product back in stock', 'back-in-stock-notifier-for-woocommerce' );
+				$success = isset( $get_option['success_subscription'] ) && $get_option['success_subscription'] ? $get_option['success_subscription'] : $success_msg;
 				$success_message = "<div class='cwginstocksuccess' style='color:green;'>$success</div>";
 				/**
 				 * Filter for HTML success subscription
@@ -134,7 +154,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 				 * @since 1.0.0
 				 */
 				$success_message = apply_filters( 'cwginstock_success_subscription_html', $success_message, $success, $post_data );
-				$array_success   = array( 'msg' => $success_message );
+				$array_success = array( 'msg' => $success_message );
 				if ( ! $rest_api ) {
 					wp_send_json( $array_success, 200 );
 				} else {
@@ -148,9 +168,9 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 		}
 
 		public function perform_action_on_ajax_data( $post_data, $rest_api ) {
-			$get_email    = $post_data['user_email'];
-			$get_user_id  = $post_data['user_id'];
-			$product_id   = $post_data['product_id'];
+			$get_email = $post_data['user_email'];
+			$get_user_id = $post_data['user_id'];
+			$product_id = $post_data['product_id'];
 			$variation_id = $post_data['variation_id'];
 
 			$obj = new CWG_Instock_API( $product_id, $variation_id, $get_email, $get_user_id );
@@ -195,17 +215,17 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 					do_action( 'cwginstocknotifier_double_optin', $post_data );
 				}
 			} else {
-				$get_option      = get_option( 'cwginstocksettings' );
+				$get_option = get_option( 'cwginstocksettings' );
 				$already_sub_msg = __( 'Seems like you have already subscribed to this product', 'back-in-stock-notifier-for-woocommerce' );
-				$error           = isset( $get_option['already_subscribed'] ) && $get_option['already_subscribed'] ? $get_option['already_subscribed'] : $already_sub_msg;
-				$raw_error       = $error;
-				$error           = "<div class='cwginstockerror' style='color:red;'>$error</div>";
+				$error = isset( $get_option['already_subscribed'] ) && $get_option['already_subscribed'] ? $get_option['already_subscribed'] : $already_sub_msg;
+				$raw_error = $error;
+				$error = "<div class='cwginstockerror' style='color:red;'>$error</div>";
 				/**
 				 * Filter for HTML error subscription
 				 *
 				 * @since 1.0.0
 				 */
-				$error     = apply_filters( 'cwginstock_error_subscription_html', $error, $raw_error, $post_data );
+				$error = apply_filters( 'cwginstock_error_subscription_html', $error, $raw_error, $post_data );
 				$error_msg = array( 'msg' => $error );
 
 				if ( ! $rest_api ) {
@@ -222,9 +242,9 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 		public function perform_action_after_insertion( $id, $post_data ) {
 			// send mail
 			// settings data
-			$option     = get_option( 'cwginstocksettings' );
+			$option = get_option( 'cwginstocksettings' );
 			$is_enabled = isset( $option['enable_success_sub_mail'] ) ? $option['enable_success_sub_mail'] : 0;
-			$get_email  = $post_data['user_email'];
+			$get_email = $post_data['user_email'];
 			if ( '1' == $is_enabled || 1 == $is_enabled ) {
 				$mailer = new CWG_Instock_Subscription( $id );
 				$mailer->send();
@@ -235,29 +255,29 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 
 		private function verify_recaptcha_client_response( $post, $options ) {
 			$verify_url = 'https://www.google.com/recaptcha/api/siteverify';
-			$site_key   = CWG_Instock_Bot_Protection::get_secret_key();
-			$gresponse  = $post['security'];
-			$args       = array(
+			$site_key = CWG_Instock_Bot_Protection::get_secret_key();
+			$gresponse = $post['security'];
+			$args = array(
 				'body' => array(
 					'secret' => $site_key,
 					'response' => $gresponse,
 				),
 			);
-			$response   = wp_remote_post( $verify_url, $args );
+			$response = wp_remote_post( $verify_url, $args );
 			return $response;
 		}
 
 		private function verify_turnstile_client_response( $post, $options ) {
 			$verify_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 			$secret_key = CWG_Instock_Bot_Protection::get_turnstile_secret_key();
-			$tresponse  = $post['security'];
-			$args       = array(
+			$tresponse = $post['security'];
+			$args = array(
 				'body' => array(
 					'secret' => $secret_key,
 					'response' => $tresponse,
 				),
 			);
-			$response   = wp_remote_post( $verify_url, $args );
+			$response = wp_remote_post( $verify_url, $args );
 			return $response;
 		}
 
@@ -277,7 +297,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 			}
 
 			$found_tags = array();
-			$args       = array(
+			$args = array(
 				'taxonomy' => array( 'product_tag' ),
 				'orderby' => 'id',
 				'order' => 'ASC',
@@ -290,8 +310,8 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 
 			if ( $terms ) {
 				foreach ( $terms as $term ) {
-					$term->formatted_name         = '';
-					$term->formatted_name        .= $term->name . ' (' . $term->count . ')';
+					$term->formatted_name = '';
+					$term->formatted_name .= $term->name . ' (' . $term->count . ')';
 					$found_tags[ $term->term_id ] = $term;
 				}
 			}
@@ -336,7 +356,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 					if ( is_wp_error( $verify_gresponse ) ) {
 						esc_html_e( 'Unable to verify details, please try again after some time', 'back-in-stock-notifier-for-woocommerce' );
 					} else {
-						$gresponse_body   = json_decode( wp_remote_retrieve_body( $verify_gresponse ) );
+						$gresponse_body = json_decode( wp_remote_retrieve_body( $verify_gresponse ) );
 						$gresponse_status = $gresponse_body->success;
 						if ( ! $gresponse_status ) {
 							esc_html_e( 'Unable to verify details, please try again after some time', 'back-in-stock-notifier-for-woocommerce' );
@@ -355,9 +375,9 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 
 		private function subscribe_form_shortcode( $post ) {
 
-			$product_id   = (int) ( isset( $post['product_id'] ) ? sanitize_text_field( $post['product_id'] ) : '' );
+			$product_id = (int) ( isset( $post['product_id'] ) ? sanitize_text_field( $post['product_id'] ) : '' );
 			$variation_id = (int) ( isset( $post['variation_id'] ) ? sanitize_text_field( $post['variation_id'] ) : '' );
-			$shortcode    = "[cwginstock_subscribe_form product_id='" . $product_id . "' variation_id='" . $variation_id . "']";
+			$shortcode = "[cwginstock_subscribe_form product_id='" . $product_id . "' variation_id='" . $variation_id . "']";
 			return $shortcode;
 		}
 

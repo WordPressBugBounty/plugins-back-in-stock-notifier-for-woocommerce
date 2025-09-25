@@ -371,10 +371,40 @@ var instock_notifier = {
 							}
 						}
 					}
-					if (request.responseText === '-1' || request.responseText === -1) {
+					
+					if ( request.responseText === '-1' || request.responseText === -1) {
 						submit_button_obj.closest('.cwginstock-subscribe-form').find('.cwgstock_output').fadeIn(2000);
 						submit_button_obj.closest('.cwginstock-subscribe-form').find('.cwgstock_output').html("<div class='cwginstockerror' style='color:red;'>" + cwginstock_security_error + "</div>");
 					}
+
+					if (request.status === 403) {
+						let responseMessage = request.responseText;
+
+						try {
+							// Try parsing JSON if the server returns JSON
+							let parsedResponse = JSON.parse(request.responseText);
+							if (parsedResponse.msg && (parsedResponse.msg !== '-1' || parsedResponse.msg !== -1 )) {
+								responseMessage = parsedResponse.msg;
+							}
+						} catch (e) {
+							// Parsing failed, keep responseMessage as raw responseText
+							responseMessage = request.responseText;
+							console.warn("Failed to parse JSON response, using raw responseText.");
+						}
+
+						// Only display if responseMessage is not '-1'
+						if (responseMessage !== '-1' || responseMessage !== -1 ) {
+							let outputElem = submit_button_obj
+								.closest('.cwginstock-subscribe-form')
+								.find('.cwgstock_output');
+
+							outputElem.fadeIn(2000);
+							outputElem.html(
+								"<div class='cwginstockerror' style='color:red;'>" + responseMessage + "</div>"
+							);
+						}
+					}
+
 					// jQuery.unblockUI();
 					if (jQuery.fn.block) {
 						submit_button_obj.closest('.cwginstock-subscribe-form').unblock();
