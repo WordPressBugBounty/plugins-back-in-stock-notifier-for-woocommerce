@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 6.1.0
+Stable tag: 6.1.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,7 +264,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
-= 6.1.0 = 2025-09-25 =
+= 6.1.2 2025-09-25 =
+* Fix: Egulias EmailValidator library PHP Dependency.
+
+= 6.1.1 2025-09-25 =
 * New: Added email validation using the Egulias EmailValidator library.
   - Syntax validation (RFC compliance)
   - DNS-level validation (MX/A record check)
