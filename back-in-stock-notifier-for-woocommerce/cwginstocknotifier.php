@@ -5,17 +5,17 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 6.1.2
+ * Version: 6.3.2
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.com
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 10.2.1
+ * WC tested up to: 10.4.3
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      propluginslab
- * @copyright   2025 CodeWooGeek, LLC (USA) and CodeWooGeek Softwares Private Limited (India). All rights reserved.
+ * @copyright   2026 CodeWooGeek, LLC (USA) and CodeWooGeek Softwares Private Limited (India). All rights reserved.
  * @license     GPL-3.0+
  * License: GPL-3.0+
  * License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -52,7 +52,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '6.1.2';
+		public $version = '6.3.2';
 
 		/**
 		 * Instance variable
@@ -208,13 +208,13 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 * @return void
 		 */
 		public function enqueue_scripts() {
-			$check_already_enqueued = $this->check_script_is_already_loaded( 'jquery-blockui' );
+			$check_already_enqueued = $this->check_script_is_already_loaded( 'wc-jquery-blockui' );
 			if ( ! $check_already_enqueued ) {
-				wp_register_script( 'jquery-blockui', CWGINSTOCK_PLUGINURL . 'assets/js/jquery.blockUI.js', array( 'jquery' ), $this->version, true );
+				wp_register_script( 'wc-jquery-blockui', CWGINSTOCK_PLUGINURL . 'assets/js/jquery.blockUI.js', array( 'jquery' ), $this->version, true );
 			}
-			wp_register_script( 'cwginstock_js', CWGINSTOCK_PLUGINURL . 'assets/js/frontend-dev.min.js', array( 'jquery', 'jquery-blockui' ), $this->version, true );
-			wp_register_script( 'sweetalert2', CWGINSTOCK_PLUGINURL . 'assets/js/sweetalert2.min.js', array( 'jquery', 'jquery-blockui' ), $this->version, true );
-			wp_register_script( 'cwginstock_popup', CWGINSTOCK_PLUGINURL . 'assets/js/cwg-popup.min.js', array( 'jquery', 'jquery-blockui', 'sweetalert2' ), $this->version, true );
+			wp_register_script( 'cwginstock_js', CWGINSTOCK_PLUGINURL . 'assets/js/frontend-dev.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
+			wp_register_script( 'sweetalert2', CWGINSTOCK_PLUGINURL . 'assets/js/sweetalert2.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
+			wp_register_script( 'cwginstock_popup', CWGINSTOCK_PLUGINURL . 'assets/js/cwg-popup.min.js', array( 'jquery', 'wc-jquery-blockui', 'sweetalert2' ), $this->version, true );
 
 			wp_register_style( 'cwginstock_frontend_css', CWGINSTOCK_PLUGINURL . 'assets/css/frontend.min.css', array(), $this->version, false );
 			wp_register_style( 'cwginstock_frontend_guest', CWGINSTOCK_PLUGINURL . 'assets/css/guest.min.css', array(), $this->version, false );
@@ -224,13 +224,13 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			$check_visibility = isset( $get_option['hide_form_guests'] ) && '' != $get_option['hide_form_guests'] && ! is_user_logged_in() ? false : true;
 			if ( $check_visibility ) {
 				wp_enqueue_script( 'jquery' );
-				wp_enqueue_script( 'jquery-blockui' );
+				wp_enqueue_script( 'wc-jquery-blockui' );
 				wp_enqueue_style( 'cwginstock_frontend_css' );
 				wp_enqueue_style( 'cwginstock_bootstrap' );
 				$phone_field_visibility = isset( $get_option['show_phone_field'] ) && '' != $get_option['show_phone_field'] ? true : false;
 				if ( $phone_field_visibility ) {
 					wp_enqueue_style( 'cwginstock_phone_css', CWGINSTOCK_PLUGINURL . 'assets/css/intlTelInput.min.css', array(), $this->version, false );
-					wp_enqueue_script( 'cwginstock_phone_js', CWGINSTOCK_PLUGINURL . 'assets/js/intlTelInputWithUtils.min.js', array( 'jquery', 'jquery-blockui' ), $this->version, true );
+					wp_enqueue_script( 'cwginstock_phone_js', CWGINSTOCK_PLUGINURL . 'assets/js/intlTelInputWithUtils.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
 				}
 				$phone_field_optional = isset( $get_option['phone_field_optional'] ) && '' != $get_option['phone_field_optional'] ? true : false;
 				$quantity_field_optional = isset( $get_option['quantity_field_optional'] ) && '' != $get_option['quantity_field_optional'] ? true : false;

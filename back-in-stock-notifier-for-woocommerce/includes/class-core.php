@@ -74,29 +74,41 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				if ( $obj && ( $obj->is_type( 'variable' ) ) ) {
 					return; // Variable product rely on variation so direct restock not required
 				}
-				if ( $get_type ) {
-					if ( $variable_any_variation_backinstock ) {
-						$get_parent_id = $obj->get_parent_id();
-						$flag_key = 'email_sent_for_' . $get_parent_id;
-						$variable_obj = wc_get_product( $get_parent_id );
-						$parent_stock_status = $variable_obj->get_stock_status();
 
-						// Check if the flag is set.
-						if ( get_transient( $flag_key ) || ( 'outofstock' != $parent_stock_status ) ) {
-							return; // Email already sent for this restock session.
+				if ( $get_type && $variable_any_variation_backinstock ) {
+
+					$parent_id = $obj->get_parent_id();
+					$flag_key = 'email_sent_for_' . $parent_id;
+
+					// Prevent duplicate sends if already processed recently
+					$parent_product = wc_get_product( $parent_id );
+					$parent_stock_status = $parent_product ? $parent_product->get_stock_status() : 'outofstock';
+					$variable_stock_check = ( isset( $options['variable_product_stock_check'] ) && '1' == $options['variable_product_stock_check'] ) ? true : false;
+
+					if ( get_transient( $flag_key ) || ( $variable_stock_check && 'outofstock' != $parent_stock_status ) ) {
+						$logger = new CWG_Instock_Logger( 'error', __( 'Transient for Parent Variable Product is present try after 3 minutes', 'back-in-stock-notifier-for-woocommerce' ) );
+						$logger->record_log();
+						return;
+					}
+
+					// Fetch parent-level subscribers
+					$parent_api = new CWG_Instock_API( $parent_id, 0 );
+					$parent_subscribers = (array) $parent_api->get_list_of_subscribers( 'AND' );
+
+					if ( ! empty( $parent_subscribers ) ) {
+
+						// Mark each parent subscriber so the email system knows which variation triggered it
+						foreach ( $parent_subscribers as $subscriber_id ) {
+							update_post_meta( $subscriber_id, 'cwginstock_bypass_pid', $id );
 						}
 
-						$parent_obj = new CWG_Instock_API( $get_parent_id, 0 );
-						$parent_subscribers = $parent_obj->get_list_of_subscribers( 'AND' );
-						if ( $parent_subscribers ) {
-							if ( is_array( $parent_subscribers ) && ! empty( $parent_subscribers ) ) {
-								foreach ( $parent_subscribers as $each_entry ) {
-									update_post_meta( $each_entry, 'cwginstock_bypass_pid', $id );
-								}
-							}
-							$list_of_subscribers = array_unique( array_merge( $list_of_subscribers, $parent_subscribers ) );
-							set_transient( $flag_key, true, 300 );
-						}
+						// Merge variation + parent subscribers
+						$list_of_subscribers = array_unique(
+							array_merge( (array) $list_of_subscribers, $parent_subscribers )
+						);
+
+						// Set transient for 5 minutes — avoid duplicate notifications
+						set_transient( $flag_key, true, 180 );
 					}
 				}
 

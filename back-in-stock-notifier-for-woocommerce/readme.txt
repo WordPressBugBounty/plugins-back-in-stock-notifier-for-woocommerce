@@ -3,9 +3,9 @@ Contributors: codewoogeek, propluginslab
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
-Tested up to: 6.8.2
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 6.1.2
+Stable tag: 6.3.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,41 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.3.2 2026-02-04 =
+* New: Delete Subscribers Cron Schedule can be customized in the Troubleshoot settings.
+
+= 6.3.1 2026-01-21 =
+* New: Added custom From Name, From Email, and Reply-To Email settings
+* Tweak: POT File updated
+
+= 6.3.0 2026-01-09 =
+* New: Dashboard Report Widget enhanced
+* Tweak: Added option to check variable level stock when "Trigger mail to variable product subscribers when any other variation of that product is back in stock" option enabled
+* Tweak: Tested with WooCommerce v10.4.3
+* Tweak: POT File updated
+
+= 6.2.4 2025-12-09 =
+* Fix: Webhook not firing after queued status integration.
+* Tweak: Code enhanced for variable product subscribers with transient set to 180 seconds.
+
+= 6.2.3 2025-12-04 =
+* Tweak: Tested with WooCommerce v10.3.6
+* Tweak: Tested with WordPress v6.9
+
+= 6.2.2 2025-11-13 =
+* Fix: View Subscribers Count showing 0 in Product display
+* Tweak: Removed unwanted code
+* Tweak: Tested with WooCommerce v10.3.5
+
+= 6.2.1 2025-10-30 =
+* Fix: Deprecated notice for jQuery BlockUI
+* Tweak: Tested with WooCommerce v10.3.3
+
+= 6.2.0 2025-10-24 =
+* Fix: Prevented custom post statuses from being injected into WooCommerce product queries, which previously caused SQL errors in MariaDB
+* Tweak: Tested with WooCommerce v10.3.0
+* Tweak: Tested with WordPress v6.8.3
+
 = 6.1.2 2025-09-25 =
 * Fix: Egulias EmailValidator library PHP Dependency.
 

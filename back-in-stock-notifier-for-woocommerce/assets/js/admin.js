@@ -185,6 +185,29 @@ jQuery(
         }
         third_party_stock_update.init();
 
+        var trigger_variable_product_email = {
+            init: function () {
+                var ele = '.cwginstock_trigger_variable_email';
+                trigger_variable_product_email.show_hide(ele);
+                jQuery(document).on(
+                    'click',
+                    '.cwginstock_trigger_variable_email',
+                    function () {
+                        var element = this;
+                        trigger_variable_product_email.show_hide(element);
+                    }
+                );
+            },
+            show_hide: function (element) {
+                if (jQuery(element).is(':checked')) {
+                    jQuery('.cwginstock_variable_product_stock_check').parent().parent().show();
+                } else {
+                    jQuery('.cwginstock_variable_product_stock_check').parent().parent().hide();
+                }
+            }
+        };
+        trigger_variable_product_email.init();
+
         var stop_sending_email_staging = {
             init: function () {
                 var ele = '.stop_sending_email_staging';

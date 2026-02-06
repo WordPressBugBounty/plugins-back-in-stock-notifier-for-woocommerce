@@ -56,21 +56,21 @@ if ( ! class_exists( 'CWG_Instock_Webhook' ) ) {
 
 		public function resource_payload( $payload, $resource, $resource_id, $webhook_id ) {
 			if ( 'subscriber' == $resource ) {
-				$variation_id      = get_post_meta( $resource_id, 'cwginstock_variation_id', true );
-				$product_id        = get_post_meta( $resource_id, 'cwginstock_product_id', true );
-				$subscriber_name   = get_post_meta( $resource_id, 'cwginstock_subscriber_name', true );
-				$subscriber_email  = get_post_meta( $resource_id, 'cwginstock_subscriber_email', true );
-				$subscriber_phone  = get_post_meta( $resource_id, 'cwginstock_subscriber_phone', true );
-				$quantity          = get_post_meta( $resource_id, 'cwginstock_custom_quantity', true );
-				$post_date         = get_the_date( '', $resource_id );
-				$post_status       = str_replace( 'cwg_', '', get_post_status( $resource_id ) );
-				$pid               = get_post_meta( $resource_id, 'cwginstock_pid', true );
-				$api               = new CWG_Instock_API();
-				$sku               = $api->get_product_sku( $resource_id );
-				$product_name      = $api->display_product_name( $resource_id );
+				$variation_id = get_post_meta( $resource_id, 'cwginstock_variation_id', true );
+				$product_id = get_post_meta( $resource_id, 'cwginstock_product_id', true );
+				$subscriber_name = get_post_meta( $resource_id, 'cwginstock_subscriber_name', true );
+				$subscriber_email = get_post_meta( $resource_id, 'cwginstock_subscriber_email', true );
+				$subscriber_phone = get_post_meta( $resource_id, 'cwginstock_subscriber_phone', true );
+				$quantity = get_post_meta( $resource_id, 'cwginstock_custom_quantity', true );
+				$post_date = get_the_date( '', $resource_id );
+				$post_status = str_replace( 'cwg_', '', get_post_status( $resource_id ) );
+				$pid = get_post_meta( $resource_id, 'cwginstock_pid', true );
+				$api = new CWG_Instock_API();
+				$sku = $api->get_product_sku( $resource_id );
+				$product_name = $api->display_product_name( $resource_id );
 				$only_product_name = $api->display_only_product_name( $resource_id );
-				$product_link      = $api->display_product_link( $resource_id );
-				$product_image     = $api->get_product_image( $resource_id );
+				$product_link = $api->display_product_link( $resource_id );
+				$product_image = $api->get_product_image( $resource_id );
 				/**
 				 * Filter for payload data
 				 *
@@ -97,7 +97,7 @@ if ( ! class_exists( 'CWG_Instock_Webhook' ) ) {
 					$resource_id,
 					$webhook_id
 				);
-				$payload         = $subscriber_data;
+				$payload = $subscriber_data;
 			}
 			return $payload;
 		}
@@ -113,7 +113,7 @@ if ( ! class_exists( 'CWG_Instock_Webhook' ) ) {
 				 */
 				do_action( 'cwginstock_subscriber_updated', $post->ID );
 
-				if ( ( 'cwg_subscribed' == $old && 'cwg_mailsent' == $new ) || ( 'cwg_doubleoptin' == $old && 'cwg_mailsent' == $new ) ) {
+				if ( ( 'cwg_subscribed' == $old && 'cwg_mailsent' == $new ) || ( 'cwg_queued' == $old && 'cwg_mailsent' == $new ) || ( 'cwg_doubleoptin' == $old && 'cwg_mailsent' == $new ) ) {
 					/**
 					 * Action for fire only when the subscription status move from subscribed to mail sent
 					 *

@@ -59,6 +59,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			add_action( 'cwginstock_manual_email_sent', array( $this, 'manual_instock_mail_sent' ), 999, 2 );
 			add_filter( 'post_date_column_status', array( $this, 'alter_date_status' ), 10, 4 );
 			add_filter( 'post_date_column_time', array( $this, 'alter_subscribed_date' ), 10, 2 );
+			add_filter( 'pre_get_posts', array( $this, 'display_all_statuses_in_cpt' ), 10, 1 );
 		}
 
 		/**
@@ -119,8 +120,8 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				'cwg_mailsent',
 				array(
 					'label' => _x( 'Mail Sent', 'post', 'back-in-stock-notifier-for-woocommerce' ),
-					'public' => true,
-					'exclude_from_search' => false,
+					'public' => false,
+					'exclude_from_search' => true,
 					'show_in_admin_all_list' => true,
 					'show_in_admin_status_list' => true,
 					/* translators: %s: count */
@@ -132,9 +133,9 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				'cwg_mailnotsent',
 				array(
 					'label' => _x( 'Failed', 'post', 'back-in-stock-notifier-for-woocommerce' ),
-					'public' => true,
-					'exclude_from_search' => false,
-					'show_in_admin_all_list' => false,
+					'public' => false,
+					'exclude_from_search' => true,
+					'show_in_admin_all_list' => true,
 					'show_in_admin_status_list' => true,
 					/* translators: %s: count */
 					'label_count' => _n_noop( 'Failed <span class="count">(%s)</span>', 'Failed <span class="count">(%s)</span>', 'back-in-stock-notifier-for-woocommerce' ),
@@ -145,8 +146,8 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				'cwg_subscribed',
 				array(
 					'label' => _x( 'Subscribed', 'post', 'back-in-stock-notifier-for-woocommerce' ),
-					'public' => true,
-					'exclude_from_search' => false,
+					'public' => false,
+					'exclude_from_search' => true,
 					'show_in_admin_all_list' => true,
 					'show_in_admin_status_list' => true,
 					/* translators: %s: count */
@@ -158,9 +159,9 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				'cwg_unsubscribed',
 				array(
 					'label' => _x( 'Unsubscribed', 'post', 'back-in-stock-notifier-for-woocommerce' ),
-					'public' => true,
-					'exclude_from_search' => false,
-					'show_in_admin_all_list' => false,
+					'public' => false,
+					'exclude_from_search' => true,
+					'show_in_admin_all_list' => true,
 					'show_in_admin_status_list' => true,
 					/* translators: %s: count */
 					'label_count' => _n_noop( 'Unsubscribed <span class="count">(%s)</span>', 'Unsubscribed <span class="count">(%s)</span>', 'back-in-stock-notifier-for-woocommerce' ),
@@ -171,8 +172,8 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				'cwg_converted',
 				array(
 					'label' => _x( 'Purchased', 'post', 'back-in-stock-notifier-for-woocommerce' ),
-					'public' => true,
-					'exclude_from_search' => false,
+					'public' => false,
+					'exclude_from_search' => true,
 					'show_in_admin_all_list' => true,
 					'show_in_admin_status_list' => true,
 					/* translators: %s: count */
@@ -184,8 +185,8 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				'cwg_queued',
 				array(
 					'label' => _x( 'Queued', 'post', 'back-in-stock-notifier-for-woocommerce' ),
-					'public' => true,
-					'exclude_from_search' => false,
+					'public' => false,
+					'exclude_from_search' => true,
 					'show_in_admin_all_list' => true,
 					'show_in_admin_status_list' => true,
 					/* translators: %s: count */
@@ -304,7 +305,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 					if ( $cwginstock_mail_on ) {
 						echo esc_attr( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $cwginstock_mail_on ) );
 					} else {
-						echo esc_attr( '---', 'back-in-stock-notifier-for-woocommerce' );
+						esc_attr_e( '---', 'back-in-stock-notifier-for-woocommerce' );
 					}
 					break;
 				default:
@@ -898,6 +899,32 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 
 		public function manual_instock_mail_sent( $subscriber_id, $action_triggered_time ) {
 			update_post_meta( $subscriber_id, 'cwginstock_mail_on', $action_triggered_time );
+		}
+		/**
+		 * Include all cwg_ statuses in the "All" view of CPT admin list table.
+		 *
+		 * @param WP_Query $query
+		 */
+		public function display_all_statuses_in_cpt( $query ) {
+			// Only in admin and main query
+			if ( ! is_admin() || ! $query->is_main_query() ) {
+				return;
+			}
+
+			// Only for the custom CPT
+			if ( isset( $query->query['post_type'] ) && 'cwginstocknotifier' === $query->query['post_type'] ) {
+
+				// Only modify the "All" view (no post_status filter)
+				if ( empty( $query->query['post_status'] ) ) {
+
+					// Include all statuses starting with 'cwg_'
+					$cwg_statuses = array_filter( get_post_stati(), function ( $status ) {
+						return strpos( $status, 'cwg_' ) === 0;
+					} );
+
+					$query->set( 'post_status', $cwg_statuses );
+				}
+			}
 		}
 	}
 

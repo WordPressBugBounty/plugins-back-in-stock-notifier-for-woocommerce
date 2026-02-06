@@ -116,6 +116,11 @@ if (! class_exists('CWG_Instock_Settings')) {
 			add_settings_field('cwg_instock_error_phone_too_long', __('Phone Number too long error', 'back-in-stock-notifier-for-woocommerce'), array($this, 'phone_number_too_long'), 'cwginstocknotifier_settings', 'cwginstock_section_error');
 
 			add_settings_section('cwginstock_section_mail', __('Mail Settings', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_settings_heading'), 'cwginstocknotifier_settings');
+
+			add_settings_field('cwg_instock_mail_from_name',__('From Name','back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_name'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+			add_settings_field('cwg_instock_mail_from_email',__('From Email','back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_email'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+			add_settings_field('cwg_instock_mail_reply_to',__('Reply To Email','back-in-stock-notifier-for-woocommerce'), array($this, 'mail_reply_to'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+
 			add_settings_field('cwg_instock_success_subscription_mail', __('Enable Success Subscription Mail', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_success_subscription_subject', __('Success Subscription Mail Subject', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail_subject'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_success_subscription_message', __('Success Subscription Mail Message', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail_message'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
@@ -589,6 +594,47 @@ if (! class_exists('CWG_Instock_Settings')) {
 			echo '<strong>{product_name}, {product_id}, {product_link}, {shopname}, {email_id}, {subscriber_email}, {subscriber_name}, {subscriber_firstname}, {subscriber_lastname}, {subscriber_phone}, {cart_link}, {only_product_name}, {only_product_sku}, {product_price}, {product_image}, {cwginstock_quantity}</strong>';
 			echo '<br> If you want to show the image with specified size then you can try something like this one <strong>{product_image=thumbnail}</strong>, (you can pass parameter like <strong>thumbnail/medium/large</strong>) it also accept any custom width and height by pass something like this one <strong>{product_image=100x100}</strong> (widthxheight)';
 			echo "<br> <strong> When you use {product_link} or {cart_link} make sure you add anchor tag(some email client shows as plain text instead of hyperlink) <pre>&lt;a href='{product_link}'&gt;{product_name}&lt;/a&gt; </pre><pre>&lt;a href='{cart_link}'&gt;{cart_link}&lt;/a&gt;</pre> </strong>";
+		}
+
+
+		public function mail_from_name() {
+			$options = get_option('cwginstocksettings');
+			//from name default value fetch it from woocommerce settings
+			if (empty($options['mail_from_name'])) {
+				$wc_from_name                 = get_option('woocommerce_email_from_name');
+				$options['mail_from_name'] = ! empty($wc_from_name) ? $wc_from_name : get_bloginfo('name');
+			}
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[mail_from_name]'
+				value="<?php echo wp_kses_post($this->api->sanitize_text_field($options['mail_from_name'])); ?>" />
+			<?php
+		}
+
+		public function mail_from_email() {
+			$options = get_option('cwginstocksettings');
+			//from email default value fetch it from woocommerce settings
+			if (empty($options['mail_from_email'])) {
+				$wc_from_email                 = get_option('woocommerce_email_from_address');
+				$options['mail_from_email'] = ! empty($wc_from_email) ? $wc_from_email : get_bloginfo('admin_email');
+			}
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[mail_from_email]'
+				value="<?php echo wp_kses_post($this->api->sanitize_text_field($options['mail_from_email'])); ?>" />
+			<?php
+		}
+
+		public function mail_reply_to() {
+			$options = get_option('cwginstocksettings');
+			if(empty($options['mail_reply_to'])) {
+				$options['mail_reply_to'] = '';
+			}
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[mail_reply_to]'
+				value="<?php echo wp_kses_post($this->api->sanitize_text_field($options['mail_reply_to'])); ?>" />
+			<?php
+			//description to explain if you don't want to add reply to keep it as empty
+			echo esc_html( __( 'If you want to set Reply-To email address then enter email id otherwise keep it empty', 'back-in-stock-notifier-for-woocommerce' ) );
+
 		}
 
 		public function success_subscription_mail() {

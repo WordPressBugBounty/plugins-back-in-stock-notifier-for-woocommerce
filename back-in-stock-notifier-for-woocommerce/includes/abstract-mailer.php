@@ -11,23 +11,36 @@ abstract class CWG_Instock_Mailer {
 	}
 
 	public function from_email() {
-		$admin_email = get_bloginfo( 'admin_email' );
+		$options = get_option( 'cwginstocksettings' );
+		$from_email = ! empty( $options['mail_from_email'] ) ? $options['mail_from_email'] : get_option( 'woocommerce_email_from_address', get_bloginfo( 'admin_email' ) );
 		/**
 		 *  Modify the "From" email address
 		 *
 		 * @since 1.0.0
 		 */
-		return apply_filters( 'cwginstock_from_email', get_option( 'woocommerce_email_from_address', $admin_email ) );
+		return apply_filters( 'cwginstock_from_email', $from_email );
 	}
 
 	public function from_name() {
-		$from_name = get_bloginfo( 'name' );
+		$options = get_option( 'cwginstocksettings' );
+		$from_name = ! empty( $options['mail_from_name'] ) ? $options['mail_from_name'] : get_option( 'woocommerce_email_from_name', get_bloginfo( 'name' ) );
 		/**
 		 *  Modify the "From" name
 		 *
 		 * @since 1.0.0
 		 */
-		return apply_filters( 'cwginstock_from_name', get_option( 'woocommerce_email_from_name', $from_name ) );
+		return apply_filters( 'cwginstock_from_name', $from_name );
+	}
+
+	public function reply_to_email() {
+		$options = get_option( 'cwginstocksettings' );
+		$reply_to = ! empty( $options['mail_reply_to'] ) ? $options['mail_reply_to'] : '';
+		/**
+		 *  Modify the "Reply To" email address
+		 *
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'cwginstock_reply_to_email', $reply_to );
 	}
 
 	public function format_data( $message ) {
@@ -111,14 +124,28 @@ abstract class CWG_Instock_Mailer {
 
 	public function send() {
 		$to = $this->email;
-		// $from_name = $this->from_name();
-		// $from_email = $this->from_email();
-		// $headers[] = "From: $from_name<$from_email>";
-		// $headers[] = "Content-Type: text/html; charset=UTF-8";
-		// Above commented code is not needed as it is already in woocommerce core function
 
 		$mailer   = WC()->mailer();
+		
+		// Set the from email and name for WooCommerce mailer
+		add_filter( 'woocommerce_email_from_address', array( $this, 'from_email' ), 10, 1 );
+		add_filter( 'woocommerce_email_from_name', array( $this, 'from_name' ), 10, 1 );
+		
+		// Add reply-to header if set using wp_mail hook
+		$reply_to = $this->reply_to_email();
+		if ( ! empty( $reply_to ) ) {
+			add_filter( 'wp_mail', array( $this, 'add_reply_to_wp_mail' ), 10, 1 );
+		}
+		
 		$sendmail = $mailer->send( $to, $this->get_subject(), $this->format_html_message() );
+		
+		// Remove filters
+		remove_filter( 'woocommerce_email_from_address', array( $this, 'from_email' ), 10 );
+		remove_filter( 'woocommerce_email_from_name', array( $this, 'from_name' ), 10 );
+		if ( ! empty( $reply_to ) ) {
+			remove_filter( 'wp_mail', array( $this, 'add_reply_to_wp_mail' ), 10 );
+		}
+		
 		/**
 		 * Send Mail
 		 *
@@ -164,6 +191,19 @@ abstract class CWG_Instock_Mailer {
 			do_action( 'cwg_' . $this->slug . '_mail_sent_failure', $this->subscriber_id );
 			return false;
 		}
+	}
+
+	public function add_reply_to_wp_mail( $args ) {
+		$reply_to = $this->reply_to_email();
+		if ( ! empty( $reply_to ) ) {
+			if ( ! isset( $args['headers'] ) ) {
+				$args['headers'] = array();
+			} elseif ( is_string( $args['headers'] ) ) {
+				$args['headers'] = array( $args['headers'] );
+			}
+			$args['headers'][] = 'Reply-To: ' . sanitize_email( $reply_to );
+		}
+		return $args;
 	}
 
 }

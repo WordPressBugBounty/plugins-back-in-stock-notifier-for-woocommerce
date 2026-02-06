@@ -64,8 +64,6 @@
 						 */
 						do_action( 'cwg_instock_after_email_field', $product_id, $variation_id );
 						?>
-						<input type="hidden" class="cwg-phone-number" name="cwg-phone-number" value="" />
-						<input type="hidden" class="cwg-phone-number-meta" name="cwg-phone-number-meta" value="" />
 						<input type="hidden" class="cwg-product-id" name="cwg-product-id"
 							value="<?php echo intval( $product_id ); ?>" />
 						<input type="hidden" class="cwg-variation-id" name="cwg-variation-id"
