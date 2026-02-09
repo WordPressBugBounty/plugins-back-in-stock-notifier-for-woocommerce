@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 6.3.2
+Stable tag: 6.3.3
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -264,6 +264,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 6.3.3 2026-02-09 =
+* Tweak: Added Sortable Columns for Mail Sent on and Required Quantity Columns in List Table
+* Tweak: Tested with WooCommerce v10.5.0
+
 = 6.3.2 2026-02-04 =
 * New: Delete Subscribers Cron Schedule can be customized in the Troubleshoot settings.
 

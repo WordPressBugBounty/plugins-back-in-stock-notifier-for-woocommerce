@@ -130,7 +130,7 @@ if ( ! class_exists( 'CWG_Instock_Quantity_Field' ) ) {
 		public function manage_column( $column, $post_id ) {
 			if ( 'quantity' == $column ) {
 				$custom_quantity = get_post_meta( $post_id, 'cwginstock_custom_quantity', true );
-				$custom_quantity = isset( $custom_quantity ) && '' != $custom_quantity ? $custom_quantity : 1;
+				$custom_quantity = isset( $custom_quantity ) && '' != $custom_quantity ? $custom_quantity : '-';
 				echo esc_attr( $custom_quantity );
 			}
 		}

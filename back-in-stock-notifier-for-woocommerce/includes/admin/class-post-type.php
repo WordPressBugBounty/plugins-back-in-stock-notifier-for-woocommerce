@@ -60,6 +60,8 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			add_filter( 'post_date_column_status', array( $this, 'alter_date_status' ), 10, 4 );
 			add_filter( 'post_date_column_time', array( $this, 'alter_subscribed_date' ), 10, 2 );
 			add_filter( 'pre_get_posts', array( $this, 'display_all_statuses_in_cpt' ), 10, 1 );
+			add_filter( 'posts_clauses', array( $this, 'fix_mail_sent_sorting' ), 20, 2 );
+
 		}
 
 		/**
@@ -375,6 +377,8 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 		public function sortable_columns( $columns ) {
 			$columns['email'] = 'title';
 			$columns['product'] = 'product';
+			$columns['quantity'] = 'quantity';
+			$columns['instockmail_on'] = 'instockmail_on';
 			return $columns;
 		}
 
@@ -850,7 +854,76 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				$query->set( 'meta_key', 'cwg_total_subscribers' );
 				$query->set( 'orderby', 'meta_value_num' );
 			}
+
+			
 		}
+
+		public function fix_mail_sent_sorting( $clauses, $query ) {
+
+			if ( ! is_admin() || ! $query->is_main_query() ) {
+				return $clauses;
+			}
+
+			if ( 'cwginstocknotifier' !== $query->get( 'post_type' ) ) {
+				return $clauses;
+			}
+
+			global $wpdb;
+
+			$orderby = $query->get( 'orderby' );
+			$order = strtoupper( $query->get( 'order' ) ) === 'ASC' ? 'ASC' : 'DESC';
+
+			/*
+			 |--------------------------------------------------------------------------
+			 | MAIL SENT DATE SORT
+			 |--------------------------------------------------------------------------
+			 */
+			if ( 'instockmail_on' === $orderby ) {
+
+				$clauses['join'] .= "
+            LEFT JOIN {$wpdb->postmeta} cwgmailmeta
+            ON ({$wpdb->posts}.ID = cwgmailmeta.post_id
+            AND cwgmailmeta.meta_key = 'cwginstock_mail_on')
+        ";
+
+				$clauses['orderby'] = "
+            CASE
+                WHEN cwgmailmeta.meta_value IS NULL
+                     OR cwgmailmeta.meta_value = ''
+                     OR cwgmailmeta.meta_value = '0'
+                THEN 1 ELSE 0
+            END,
+            CAST(cwgmailmeta.meta_value AS UNSIGNED) $order
+        ";
+
+				return $clauses;
+			}
+
+			if ( 'quantity' === $orderby ) {
+
+				$clauses['join'] .= "
+            LEFT JOIN {$wpdb->postmeta} cwgqtymeta
+            ON ({$wpdb->posts}.ID = cwgqtymeta.post_id
+            AND cwgqtymeta.meta_key = 'cwginstock_custom_quantity')
+        ";
+
+				$clauses['orderby'] = "
+            CASE
+                WHEN cwgqtymeta.meta_value IS NULL
+                     OR cwgqtymeta.meta_value = ''
+                     OR cwgqtymeta.meta_value = '0'
+                THEN 1 ELSE 0
+            END,
+            CAST(cwgqtymeta.meta_value AS UNSIGNED) $order
+        ";
+
+				return $clauses;
+			}
+
+			return $clauses;
+		}
+
+
 
 		public function custom_search_query( $query ) {
 			$post_type = 'cwginstocknotifier';

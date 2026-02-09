@@ -117,9 +117,9 @@ if (! class_exists('CWG_Instock_Settings')) {
 
 			add_settings_section('cwginstock_section_mail', __('Mail Settings', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_settings_heading'), 'cwginstocknotifier_settings');
 
-			add_settings_field('cwg_instock_mail_from_name',__('From Name','back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_name'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
-			add_settings_field('cwg_instock_mail_from_email',__('From Email','back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_email'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
-			add_settings_field('cwg_instock_mail_reply_to',__('Reply To Email','back-in-stock-notifier-for-woocommerce'), array($this, 'mail_reply_to'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+			add_settings_field('cwg_instock_mail_from_name', __('From Name', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_name'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+			add_settings_field('cwg_instock_mail_from_email', __('From Email', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_email'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+			add_settings_field('cwg_instock_mail_reply_to', __('Reply To Email', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_reply_to'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 
 			add_settings_field('cwg_instock_success_subscription_mail', __('Enable Success Subscription Mail', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_success_subscription_subject', __('Success Subscription Mail Subject', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail_subject'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
@@ -625,7 +625,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 
 		public function mail_reply_to() {
 			$options = get_option('cwginstocksettings');
-			if(empty($options['mail_reply_to'])) {
+			if (empty($options['mail_reply_to'])) {
 				$options['mail_reply_to'] = '';
 			}
 			?>
