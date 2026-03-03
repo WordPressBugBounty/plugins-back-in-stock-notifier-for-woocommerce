@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 6.3.3
+Stable tag: 7.0.0
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -89,6 +89,24 @@ We continue to support this plugin based on our paid extensions. Anyone can affo
     
 <li><a href="https://propluginslab.com/product-category/back-in-stock-notifier/"><strong>and more coming soon</strong></a></li>
 </ol>
+&nbsp;
+
+== Standalone Pro Plugins by ProPluginsLab ==
+
+Explore our range of powerful standalone WooCommerce plugins - built independently and packed with advanced features.
+
+<ol>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/composite-products-for-woocommerce/"><strong>Composite Products for WooCommerce Pro with Inbuilt Product Bundle Feature (2 in 1)</strong></a> - Create highly configurable composite products with an inbuilt product bundle builder. Two powerful features in one plugin - let customers build their own kits, boxes, or product combos with ease.</li>
+
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/fees-for-woocommerce/"><strong>Fees for WooCommerce Pro - Advanced Fees Manager Plugin for WooCommerce</strong></a> - Add extra fees and surcharges to WooCommerce orders based on flexible conditions such as cart total, shipping method, payment gateway, product category, user role, and more. Full control over conditional fee rules.</li>
+
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/gift-cards-for-woocommerce/"><strong>Gift Cards for WooCommerce Pro - Advanced Gift Card Plugin</strong></a> - Sell and manage digital gift cards in your WooCommerce store. Supports customizable gift card templates, scheduled delivery, balance management, and flexible redemption options.</li>
+
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/name-your-price-for-woocommerce/"><strong>Name Your Price for WooCommerce Pro</strong></a> - Let your customers set their own price for products. Perfect for donations, pay-what-you-want campaigns, tipping, and flexible pricing models. Set minimum and maximum price boundaries with full control.</li>
+</ol>
+
+Visit <a href="https://propluginslab.com/"><strong>ProPluginsLab</strong></a> for all our premium WooCommerce plugins and solutions.
+
 &nbsp;
 
 [<strong>WPML - Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro</strong>](https://propluginslab.com/shop/back-in-stock-notifier/wpml/)
@@ -264,6 +282,12 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.0.0 2026-03-03 =
+* New: Introduced our own WooCommerce email templates for Subscription Confirmation (Successful Subscription) and Back in Stock - Product Available emails.
+* Tweak: Enhanced Extensions page.
+* Tweak: POT File updated
+* Tweak: Tested with WooCommerce v10.5.3.
+
 = 6.3.3 2026-02-09 =
 * Tweak: Added Sortable Columns for Mail Sent on and Required Quantity Columns in List Table
 * Tweak: Tested with WooCommerce v10.5.0

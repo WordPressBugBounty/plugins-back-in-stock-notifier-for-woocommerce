@@ -5,7 +5,7 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 6.3.3
+ * Version: 7.0.0
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.com
@@ -52,7 +52,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '6.3.3';
+		public $version = '7.0.0';
 
 		/**
 		 * Instance variable
@@ -129,6 +129,9 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-logger.php';
 			include 'includes/class-privacy.php';
 			include 'includes/admin/class-extra.php';
+			include 'includes/admin/class-promotions.php';
+			include 'includes/class-remote-feed.php';
+			include 'includes/class-email-manager.php';
 			include 'includes/class-troubleshoot.php';
 			include 'includes/class-privacy-checkbox.php';
 			include 'includes/class-upgrade.php';
@@ -232,22 +235,22 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 					wp_enqueue_style( 'cwginstock_phone_css', CWGINSTOCK_PLUGINURL . 'assets/css/intlTelInput.min.css', array(), $this->version, false );
 					wp_enqueue_script( 'cwginstock_phone_js', CWGINSTOCK_PLUGINURL . 'assets/js/intlTelInputWithUtils.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
 				}
-				$phone_field_optional = isset( $get_option['phone_field_optional'] ) && '' != $get_option['phone_field_optional'] ? true : false;
-				$quantity_field_optional = isset( $get_option['quantity_field_optional'] ) && '' != $get_option['quantity_field_optional'] ? true : false;
-				$hide_country_placeholder = isset( $get_option['hide_country_placeholder'] ) && '' != $get_option['hide_country_placeholder'] ? true : false;
-				$get_empty_name = isset( $get_option['empty_name_message'] ) && '' != $get_option['empty_name_message'] ? $get_option['empty_name_message'] : __( 'Name cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
-				$get_empty_quantity = isset( $get_option['empty_quantity_message'] ) && '' != $get_option['empty_quantity_message'] ? $get_option['empty_quantity_message'] : __( 'Quantity cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
-				$get_empty_msg = isset( $get_option['empty_error_message'] ) && '' != $get_option['empty_error_message'] ? $get_option['empty_error_message'] : __( 'Email Address cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
-				$invalid_msg = isset( $get_option['invalid_email_error'] ) && '' != $get_option['invalid_email_error'] ? $get_option['invalid_email_error'] : __( 'Please Enter Valid Email Address', 'back-in-stock-notifier-for-woocommerce' );
-				$form_submission_mode = isset( $get_option['ajax_submission_via'] ) && ( 'wordpress_rest_api_route' == $get_option['ajax_submission_via'] ) ? true : false;
-				$is_popup = isset( $get_option['mode'] ) && ( '2' == $get_option['mode'] ) ? 'yes' : 'no';
-				$empty_phone_message = isset( $get_option['empty_phone_message'] ) ? $get_option['empty_phone_message'] : esc_html__( 'Phone Number cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
-				$invalid_phone_number = isset( $get_option['invalid_phone_error'] ) ? $get_option['invalid_phone_error'] : esc_html__( 'Please enter valid Phone Number', 'back-in-stock-notifier-for-woocommerce' );
-				$phone_number_too_short = isset( $get_option['phone_number_too_short'] ) ? $get_option['phone_number_too_short'] : esc_html__( 'Phone Number too short', 'back-in-stock-notifier-for-woocommerce' );
-				$phone_number_too_long = isset( $get_option['phone_number_too_long'] ) ? $get_option['phone_number_too_long'] : esc_html__( 'Phone Number too long', 'back-in-stock-notifier-for-woocommerce' );
-				$default_country_code = isset( $get_option['default_country'] ) ? $get_option['default_country'] : '';
+				$phone_field_optional       = isset( $get_option['phone_field_optional'] ) && '' != $get_option['phone_field_optional'] ? true : false;
+				$quantity_field_optional    = isset( $get_option['quantity_field_optional'] ) && '' != $get_option['quantity_field_optional'] ? true : false;
+				$hide_country_placeholder   = isset( $get_option['hide_country_placeholder'] ) && '' != $get_option['hide_country_placeholder'] ? true : false;
+				$get_empty_name             = isset( $get_option['empty_name_message'] ) && '' != $get_option['empty_name_message'] ? $get_option['empty_name_message'] : __( 'Name cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
+				$get_empty_quantity         = isset( $get_option['empty_quantity_message'] ) && '' != $get_option['empty_quantity_message'] ? $get_option['empty_quantity_message'] : __( 'Quantity cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
+				$get_empty_msg              = isset( $get_option['empty_error_message'] ) && '' != $get_option['empty_error_message'] ? $get_option['empty_error_message'] : __( 'Email Address cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
+				$invalid_msg                = isset( $get_option['invalid_email_error'] ) && '' != $get_option['invalid_email_error'] ? $get_option['invalid_email_error'] : __( 'Please Enter Valid Email Address', 'back-in-stock-notifier-for-woocommerce' );
+				$form_submission_mode       = isset( $get_option['ajax_submission_via'] ) && ( 'wordpress_rest_api_route' == $get_option['ajax_submission_via'] ) ? true : false;
+				$is_popup                   = isset( $get_option['mode'] ) && ( '2' == $get_option['mode'] ) ? 'yes' : 'no';
+				$empty_phone_message        = isset( $get_option['empty_phone_message'] ) ? $get_option['empty_phone_message'] : esc_html__( 'Phone Number cannot be empty', 'back-in-stock-notifier-for-woocommerce' );
+				$invalid_phone_number       = isset( $get_option['invalid_phone_error'] ) ? $get_option['invalid_phone_error'] : esc_html__( 'Please enter valid Phone Number', 'back-in-stock-notifier-for-woocommerce' );
+				$phone_number_too_short     = isset( $get_option['phone_number_too_short'] ) ? $get_option['phone_number_too_short'] : esc_html__( 'Phone Number too short', 'back-in-stock-notifier-for-woocommerce' );
+				$phone_number_too_long      = isset( $get_option['phone_number_too_long'] ) ? $get_option['phone_number_too_long'] : esc_html__( 'Phone Number too long', 'back-in-stock-notifier-for-woocommerce' );
+				$default_country_code       = isset( $get_option['default_country'] ) ? $get_option['default_country'] : '';
 				$custom_country_placeholder = isset( $get_option['default_country_placeholder'] ) ? $get_option['default_country_placeholder'] : 'default';
-				$custom_placehoder_value = isset( $get_option['custom_placeholder'] ) ? $get_option['custom_placeholder'] : '';
+				$custom_placehoder_value    = isset( $get_option['custom_placeholder'] ) ? $get_option['custom_placeholder'] : '';
 				/**
 				 * Hook cwginstock localization array
 				 *
@@ -288,7 +291,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 				$get_bot_type = CWG_Instock_Bot_Protection::get_bot_protection_type();
 				if ( 'recaptcha' == $get_bot_type ) {
 					// google v3 recaptcha
-					$is_v3 = CWG_Instock_Bot_Protection::is_recaptcha_v3() ? 'yes' : 'no';
+					$is_v3                  = CWG_Instock_Bot_Protection::is_recaptcha_v3() ? 'yes' : 'no';
 					$hide_recaptchav3_badge = 'yes' == $is_v3 && isset( $get_option['recaptchav3_badge_hide'] ) && '' != $get_option['recaptchav3_badge_hide'] ? true : false;
 					if ( $hide_recaptchav3_badge ) {
 						$hide_badge_css = '.grecaptcha-badge { visibility: hidden !important; }';
@@ -326,7 +329,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 
 		public function load_plugin_textdomain() {
 			$domain = 'back-in-stock-notifier-for-woocommerce';
-			$dir = untrailingslashit( WP_LANG_DIR );
+			$dir    = untrailingslashit( WP_LANG_DIR );
 			/**
 			 * Filter hook to allow other parts of the code to modify the locale value if needed
 			 *
@@ -370,7 +373,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			 * @since 1.0.0
 			 */
 			$extend_screen_ids = apply_filters( 'cwginstock_screen_ids', array( 'edit-cwginstocknotifier', 'cwginstocknotifier_page_cwg-instock-mailer', 'cwginstock_arrival' ) );
-			$screen_ids = array_merge( $screen_ids, $extend_screen_ids );
+			$screen_ids        = array_merge( $screen_ids, $extend_screen_ids );
 			return $screen_ids;
 		}
 
@@ -394,6 +397,11 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 				if ( as_next_scheduled_action( $each_event ) ) {
 					as_unschedule_all_actions( $each_event );
 				}
+			}
+
+			// Clear remote feed daily cron
+			if ( class_exists( 'CWG_Instock_Remote_Feed' ) ) {
+				CWG_Instock_Remote_Feed::deactivation_cleanup();
 			}
 		}
 	}

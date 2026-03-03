@@ -35,7 +35,7 @@ if ( ! class_exists( 'CWG_Instock_Upgrade' ) ) {
 
 		public function register_schedule() {
 			// upon update to the plugin perform some actions
-			$api = new CWG_Instock_API();
+			$api             = new CWG_Instock_API();
 			$get_meta_values = $api->get_meta_values( 'cwginstock_product_id', 'cwginstocknotifier' );
 			if ( $get_meta_values ) {
 				$chunk_data = array_chunk( $get_meta_values, 5 );

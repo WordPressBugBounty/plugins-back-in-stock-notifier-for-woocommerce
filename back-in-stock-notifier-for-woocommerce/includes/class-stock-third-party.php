@@ -14,7 +14,7 @@ if ( ! class_exists( ' CWG_Instock_Third_Party_Support' ) ) {
 		}
 
 		public function retrive_product_ids() {
-			$options = get_option( 'cwginstocksettings' );
+			$options                        = get_option( 'cwginstocksettings' );
 			$check_stock_status_third_party = isset( $options['update_stock_third_party'] ) && '1' == $options['update_stock_third_party'] ? true : false;
 			global $wpdb;
 			if ( $check_stock_status_third_party ) {

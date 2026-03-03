@@ -8,7 +8,7 @@ if ( ! class_exists( 'CWG_Instock_Premium_Extensions' ) ) {
 	class CWG_Instock_Premium_Extensions {
 
 		public function __construct() {
-			add_action( 'admin_menu', array( $this, 'add_settings_menu' ), 999 );
+			//add_action( 'admin_menu', array( $this, 'add_settings_menu' ), 999 );
 		}
 
 		public function add_settings_menu() {

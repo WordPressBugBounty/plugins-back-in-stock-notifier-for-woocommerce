@@ -11,7 +11,7 @@ abstract class CWG_Instock_Mailer {
 	}
 
 	public function from_email() {
-		$options = get_option( 'cwginstocksettings' );
+		$options    = get_option( 'cwginstocksettings' );
 		$from_email = ! empty( $options['mail_from_email'] ) ? $options['mail_from_email'] : get_option( 'woocommerce_email_from_address', get_bloginfo( 'admin_email' ) );
 		/**
 		 *  Modify the "From" email address
@@ -22,7 +22,7 @@ abstract class CWG_Instock_Mailer {
 	}
 
 	public function from_name() {
-		$options = get_option( 'cwginstocksettings' );
+		$options   = get_option( 'cwginstocksettings' );
 		$from_name = ! empty( $options['mail_from_name'] ) ? $options['mail_from_name'] : get_option( 'woocommerce_email_from_name', get_bloginfo( 'name' ) );
 		/**
 		 *  Modify the "From" name
@@ -33,7 +33,7 @@ abstract class CWG_Instock_Mailer {
 	}
 
 	public function reply_to_email() {
-		$options = get_option( 'cwginstocksettings' );
+		$options  = get_option( 'cwginstocksettings' );
 		$reply_to = ! empty( $options['mail_reply_to'] ) ? $options['mail_reply_to'] : '';
 		/**
 		 *  Modify the "Reply To" email address
@@ -125,7 +125,7 @@ abstract class CWG_Instock_Mailer {
 	public function send() {
 		$to = $this->email;
 
-		$mailer   = WC()->mailer();
+		$mailer = WC()->mailer();
 		
 		// Set the from email and name for WooCommerce mailer
 		add_filter( 'woocommerce_email_from_address', array( $this, 'from_email' ), 10, 1 );

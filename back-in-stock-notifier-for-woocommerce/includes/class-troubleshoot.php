@@ -115,7 +115,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 		}
 
 		public function third_party_cron_recurrence() {
-			$options = get_option( 'cwginstocksettings' );
+			$options  = get_option( 'cwginstocksettings' );
 			$selected = isset( $options['third_party_cron_recurrence'] ) ? $options['third_party_cron_recurrence'] : 'every_5_minutes';
 			?>
 			<select class='cwg_third_party_recurrence' name="cwginstocksettings[third_party_cron_recurrence]">
@@ -136,7 +136,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 		}
 
 		public function delete_subscribers_cron_recurrence() {
-			$options = get_option( 'cwginstocksettings' );
+			$options  = get_option( 'cwginstocksettings' );
 			$selected = isset( $options['delete_sub_cron_recurrence'] ) ? $options['delete_sub_cron_recurrence'] : 'every_5_minutes';
 			?>
 			<select class='cwg_delete_subscriber_recurrence' name="cwginstocksettings[delete_sub_cron_recurrence]">
@@ -268,7 +268,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 		}
 
 		public function stop_sending_email_staging_domain() {
-			$options = get_option( 'cwginstocksettings' );
+			$options         = get_option( 'cwginstocksettings' );
 			$staging_domains = isset( $options['staging_domains'] ) ? $options['staging_domains'] : '';
 			?>
 			<textarea class="staging_domains" name="cwginstocksettings[staging_domains]" rows="4"
@@ -299,8 +299,8 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			$options = get_option( 'cwginstocksettings' );
 			if ( isset( $options['enable_delete_on_product_delete'] ) && 1 == $options['enable_delete_on_product_delete'] ) {
 				$variation_id = 0;
-				$cwg_api = new CWG_Instock_API( $product_id, $variation_id );
-				$subscribers = $cwg_api->get_list_of_subscribers( 'AND' );
+				$cwg_api      = new CWG_Instock_API( $product_id, $variation_id );
+				$subscribers  = $cwg_api->get_list_of_subscribers( 'AND' );
 
 				if ( ! empty( $subscribers ) ) {
 					$logger = new CWG_Instock_Logger( 'info', 'Simple Product ID: ' . $product_id . ' - Found Subscribers: ' . wp_json_encode( $subscribers ) );
@@ -319,7 +319,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			}
 		}
 		public function check_deleted_variation( $variation_id ) {
-			$options = get_option( 'cwginstocksettings' );
+			$options                          = get_option( 'cwginstocksettings' );
 			$delete_on_product_delete_enabled = isset( $options['enable_delete_on_product_delete'] ) && 1 == $options['enable_delete_on_product_delete'];
 			if ( $delete_on_product_delete_enabled ) {
 
@@ -327,7 +327,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 				if ( $variation ) {
 					$parent_id = $variation->get_parent_id();
 
-					$cwg_api = new CWG_Instock_API( $parent_id, $variation_id );
+					$cwg_api     = new CWG_Instock_API( $parent_id, $variation_id );
 					$subscribers = $cwg_api->get_list_of_subscribers( 'AND' );
 					if ( ! empty( $subscribers ) ) {
 						$logger = new CWG_Instock_Logger( 'info', 'Variable Product ID: ' . $parent_id . ' Variation ID: ' . $variation_id . ' - Found Subscribers: ' . wp_json_encode( $subscribers ) );

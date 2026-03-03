@@ -32,10 +32,10 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 						<td>
 							<?php
 							if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
-								$message = 'WP_CRON was disabled';
+								$message     = 'WP_CRON was disabled';
 								$status_code = 0;
 							} else {
-								$message = 'WP_CRON ACTIVE';
+								$message     = 'WP_CRON ACTIVE';
 								$status_code = 1;
 							}
 							?>
@@ -106,8 +106,8 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 									$is_enabled = 'checkbox' == $key ? ( isset( $option[ $checkbox_key ] ) ? $option[ $checkbox_key ] : 0 ) : ( isset( $option[ $checkbox_key ] ) && $option[ $checkbox_key ] ? 1 : 0 );
 									if ( isset( $checkbox_data[ $is_enabled ] ) ) {
 										$split_by_colon = explode( '::', $checkbox_data[ $is_enabled ] );
-										$heading = $split_by_colon[0];
-										$status_info = $split_by_colon[1];
+										$heading        = $split_by_colon[0];
+										$status_info    = $split_by_colon[1];
 										?>
 										<tr>
 											<th scope="row">
@@ -133,13 +133,13 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 					<?php
 					$nonce = wp_create_nonce( 'cwginstock_test_email' );
 					wp_enqueue_script( 'jquery' );
-					$saved_info = get_option( 'cwginstock_test_email_status' );
+					$saved_info          = get_option( 'cwginstock_test_email_status' );
 					$detailed_status_msg = '';
-					$status = '';
+					$status              = '';
 					if ( $saved_info && isset( $saved_info['status'] ) ) {
-						$status = $saved_info['status'];
-						$status_format = ucwords( $status );
-						$last_tested_on = $saved_info['checked_on'];
+						$status              = $saved_info['status'];
+						$status_format       = ucwords( $status );
+						$last_tested_on      = $saved_info['checked_on'];
 						$detailed_status_msg = 'failure' == $status ? __( 'Email sending Failed, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on" : __( 'Email sent successfully, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on";
 					}
 					?>
@@ -208,7 +208,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 						<th scope="row">Is Subscribe Form Template Override/loaded from Theme?</th>
 						<td>
 							<?php
-							$template_dir = 'back-in-stock-notifier-for-woocommerce';
+							$template_dir        = 'back-in-stock-notifier-for-woocommerce';
 							$template_theme_file = get_stylesheet_directory() . '/' . $template_dir . '/default-form.php';
 							if ( file_exists( $template_theme_file ) ) {
 								echo "<p style='color:green;'>YES</p>";
@@ -238,7 +238,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 									'default_ui' => 'Default UI',
 									'tabbed_ui' => 'Tabbed UI',
 								);
-								$saved_option = get_option( 'cwginstock_backend_ui', 'tabbed_ui' );
+								$saved_option     = get_option( 'cwginstock_backend_ui', 'tabbed_ui' );
 
 								foreach ( $settings_options as $option_key => $option_name ) {
 									?>
@@ -302,7 +302,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 					'CWG_Instock_Notifier_Polylang' => 'Polylang',
 				)
 			);
-			$is_active = false;
+			$is_active     = false;
 
 			foreach ( $active_addons as $each_addon_class => $addon_name ) {
 				if ( class_exists( $each_addon_class ) ) {
@@ -406,7 +406,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 			);
 
 			foreach ( $tables_and_columns as $table => $column ) {
-				$sql = "DELETE FROM {$table} WHERE {$column} IN ($placeholders)";
+				$sql  = "DELETE FROM {$table} WHERE {$column} IN ($placeholders)";
 				$args = array_merge( array( $sql ), $post_ids );
 				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 				$wpdb->query( call_user_func_array( array( $wpdb, 'prepare' ), $args ) );

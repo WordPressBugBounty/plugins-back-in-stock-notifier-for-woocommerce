@@ -65,11 +65,11 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 			$queued_api = new CWG_BIS_Queue( $wpdb );
 
 			if ( $obj && ( $obj->is_type( 'variation' ) || $obj->is_type( 'variable' ) ) ) {
-				$main_obj = $obj->is_type( 'variable' ) ? new CWG_Instock_API( $id, 0 ) : new CWG_Instock_API( 0, $id, '', 0 );
-				$options = get_option( 'cwginstocksettings' );
+				$main_obj                           = $obj->is_type( 'variable' ) ? new CWG_Instock_API( $id, 0 ) : new CWG_Instock_API( 0, $id, '', 0 );
+				$options                            = get_option( 'cwginstocksettings' );
 				$variable_any_variation_backinstock = ( isset( $options['variable_any_variation_backinstock'] ) && '1' == $options['variable_any_variation_backinstock'] ) ? true : false;
-				$get_type = 'variation' == $obj->get_type() ? true : false;
-				$list_of_subscribers = $main_obj->get_list_of_subscribers();
+				$get_type                           = 'variation' == $obj->get_type() ? true : false;
+				$list_of_subscribers                = $main_obj->get_list_of_subscribers();
 
 				if ( $obj && ( $obj->is_type( 'variable' ) ) ) {
 					return; // Variable product rely on variation so direct restock not required
@@ -78,11 +78,11 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				if ( $get_type && $variable_any_variation_backinstock ) {
 
 					$parent_id = $obj->get_parent_id();
-					$flag_key = 'email_sent_for_' . $parent_id;
+					$flag_key  = 'email_sent_for_' . $parent_id;
 
 					// Prevent duplicate sends if already processed recently
-					$parent_product = wc_get_product( $parent_id );
-					$parent_stock_status = $parent_product ? $parent_product->get_stock_status() : 'outofstock';
+					$parent_product       = wc_get_product( $parent_id );
+					$parent_stock_status  = $parent_product ? $parent_product->get_stock_status() : 'outofstock';
 					$variable_stock_check = ( isset( $options['variable_product_stock_check'] ) && '1' == $options['variable_product_stock_check'] ) ? true : false;
 
 					if ( get_transient( $flag_key ) || ( $variable_stock_check && 'outofstock' != $parent_stock_status ) ) {
@@ -92,7 +92,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 					}
 
 					// Fetch parent-level subscribers
-					$parent_api = new CWG_Instock_API( $parent_id, 0 );
+					$parent_api         = new CWG_Instock_API( $parent_id, 0 );
 					$parent_subscribers = (array) $parent_api->get_list_of_subscribers( 'AND' );
 
 					if ( ! empty( $parent_subscribers ) ) {
@@ -154,7 +154,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 		}
 
 		public function send_subscription_copy_to_recipients( $to, $subject, $message ) {
-			$get_option = get_option( 'cwginstocksettings' );
+			$get_option         = get_option( 'cwginstocksettings' );
 			$check_copy_enabled = isset( $get_option['enable_copy_subscription'] ) && '1' == $get_option['enable_copy_subscription'] ? true : false;
 			if ( $check_copy_enabled ) {
 				$get_recipients = isset( $get_option['subscription_copy_recipients'] ) && ! empty( $get_option['subscription_copy_recipients'] ) ? $get_option['subscription_copy_recipients'] : false;
@@ -162,7 +162,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 					$explode_data = explode( ',', $get_recipients );
 					if ( is_array( $explode_data ) && ! empty( $explode_data ) ) {
 						foreach ( $explode_data as $each_mail ) {
-							$mailer = WC()->mailer();
+							$mailer   = WC()->mailer();
 							$sendmail = $mailer->send( $each_mail, $subject, $message );
 						}
 					}
@@ -171,7 +171,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 		}
 
 		public function recount_subscribers_upon_instock( $subscriber_id ) {
-			$obj = new CWG_Instock_API();
+			$obj            = new CWG_Instock_API();
 			$get_product_id = get_post_meta( $subscriber_id, 'cwginstock_product_id', true );
 			if ( $get_product_id ) {
 				$get_count = $obj->get_subscribers_count( $get_product_id, 'cwg_subscribed' );
@@ -185,19 +185,19 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 
 		public function replace_shortcode_with_parameters( $content, $subscriber_id ) {
 			// return $content;
-			$obj = new CWG_Instock_API();
-			$prefix = '{product_image=';
-			$suffix = '}';
+			$obj                       = new CWG_Instock_API();
+			$prefix                    = '{product_image=';
+			$suffix                    = '}';
 			$get_the_shortcode_content = $obj->get_match_based_on_prefix_suffix( $content, $prefix, $suffix );
 			if ( is_array( $get_the_shortcode_content ) && ! empty( $get_the_shortcode_content ) ) {
 				// exits
 				foreach ( $get_the_shortcode_content as $each_parameters ) {
-					$explode_data = explode( 'x', $each_parameters ); // if param value contain something like widthxheight(ex 300x200)
-					$count = count( $explode_data );
-					$shortcode = $prefix . $each_parameters . $suffix;
-					$each_parameters = $count > 1 ? array( (int) $explode_data[0], (int) $explode_data[1] ) : $each_parameters;
+					$explode_data      = explode( 'x', $each_parameters ); // if param value contain something like widthxheight(ex 300x200)
+					$count             = count( $explode_data );
+					$shortcode         = $prefix . $each_parameters . $suffix;
+					$each_parameters   = $count > 1 ? array( (int) $explode_data[0], (int) $explode_data[1] ) : $each_parameters;
 					$replace_shortcode = $obj->get_product_image( $subscriber_id, $each_parameters );
-					$content = str_replace( $shortcode, $replace_shortcode, $content );
+					$content           = str_replace( $shortcode, $replace_shortcode, $content );
 				}
 			}
 			return $content;
@@ -207,22 +207,22 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 			$get_bg_engine = get_option( 'cwginstocksettings' );
 			$get_bg_engine = isset( $get_bg_engine['bgp_engine'] ) ? $get_bg_engine['bgp_engine'] : 'wcbgp';
 
-			$variation_log = 'Stock found for Variation id #{id} and  Background Process queued for {subscriber_ids}';
+			$variation_log    = 'Stock found for Variation id #{id} and  Background Process queued for {subscriber_ids}';
 			$variation_bg_log = 'Variation id #{id} Instock Background Process started - Total: {total}';
-			$product_log = 'Stock found for Product id {id} and Background Process queued for {subscriber_ids}';
-			$product_bg_log = 'Product id #{id} Instock Background Process started - Total: {total}';
+			$product_log      = 'Stock found for Product id {id} and Background Process queued for {subscriber_ids}';
+			$product_bg_log   = 'Product id #{id} Instock Background Process started - Total: {total}';
 
 			if ( $is_variation ) {
 				// variation_log
-				$queue_log = $variation_log;
+				$queue_log   = $variation_log;
 				$started_log = $variation_bg_log;
 			} else {
 				// product_log
-				$queue_log = $product_log;
+				$queue_log   = $product_log;
 				$started_log = $product_bg_log;
 			}
 
-			$queue_log = $this->placeholder_log_replacement( $queue_log, $get_posts, $id );
+			$queue_log   = $this->placeholder_log_replacement( $queue_log, $get_posts, $id );
 			$started_log = $this->placeholder_log_replacement( $started_log, $get_posts, $id );
 
 			if ( is_array( $get_posts ) && ! empty( $get_posts ) ) {
@@ -240,16 +240,16 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				}
 				$logger = new CWG_Instock_Logger( 'info', $queue_log );
 				$logger->record_log();
-				$total = count( $get_posts );
+				$total  = count( $get_posts );
 				$logger = new CWG_Instock_Logger( 'info', $started_log );
 				$logger->record_log();
 			}
 		}
 
 		public function placeholder_log_replacement( $msg, $get_posts, $id ) {
-			$find_shortcode = array( '{id}', '{subscriber_ids}', '{total}' );
+			$find_shortcode    = array( '{id}', '{subscriber_ids}', '{total}' );
 			$replace_shortcode = array( $id, implode( ',', $get_posts ), count( $get_posts ) );
-			$str_replace = str_replace( $find_shortcode, $replace_shortcode, $msg );
+			$str_replace       = str_replace( $find_shortcode, $replace_shortcode, $msg );
 			return $str_replace;
 		}
 
@@ -265,8 +265,8 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 					$product_obj = wc_get_product( $pid );
 					if ( $product_obj && $product_obj->is_in_stock() ) {
 						if ( 'cwg_subscribed' == $get_post_status || 'cwg_queued' == $get_post_status ) {
-							$get_email = get_post_meta( $each_id, 'cwginstock_subscriber_email', true );
-							$option = get_option( 'cwginstocksettings' );
+							$get_email  = get_post_meta( $each_id, 'cwginstock_subscriber_email', true );
+							$option     = get_option( 'cwginstocksettings' );
 							$is_enabled = isset( $option['enable_instock_mail'] ) ? $option['enable_instock_mail'] : 0;
 							/**
 							 * Filter for Stop Email
@@ -274,13 +274,13 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 							 * @since 5.6.0
 							 */
 							$stop_send_email = apply_filters( 'cwginstock_stop_email', false, $each_id, $product_obj );
-							if ( ! $stop_send_email && ( '1' == $is_enabled || 1 == $is_enabled ) ) {
-								$mailer = new CWG_Instock_Mail( $each_id );
+							if ( ! $stop_send_email) {
+								$mailer    = new CWG_Instock_Mail( $each_id );
 								$send_mail = $mailer->send(); // mail sent
 								if ( $send_mail ) {
-									$api = new CWG_Instock_API();
+									$api         = new CWG_Instock_API();
 									$mail_status = $api->mail_sent_status( $each_id ); // update mail sent status
-									$logger = new CWG_Instock_Logger( 'info', "Automatic Instock Mail Triggered for ID #$each_id with #$get_email" );
+									$logger      = new CWG_Instock_Logger( 'info', "Automatic Instock Mail Triggered for ID #$each_id with #$get_email" );
 									$logger->record_log();
 									/**
 									 * Action hook for retrieving the timestamp when the automatic in-stock mail is triggered
@@ -289,9 +289,9 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 									 */
 									do_action( 'cwginstock_auto_email_sent', $each_id, time() );
 								} else {
-									$api = new CWG_Instock_API();
+									$api         = new CWG_Instock_API();
 									$mail_status = $api->mail_not_sent_status( $each_id );
-									$logger = new CWG_Instock_Logger( 'error', "Failed to send Automatic Instock Mail for ID #$each_id with #$get_email" );
+									$logger      = new CWG_Instock_Logger( 'error', "Failed to send Automatic Instock Mail for ID #$each_id with #$get_email" );
 									$logger->record_log();
 								}
 							}
@@ -312,7 +312,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				// now check this product exists in bundle product or not
 				if ( function_exists( 'wc_pb_is_bundled_cart_item' ) ) {
 					$product_ids = array( $product_id );
-					$results = WC_PB_DB::query_bundled_items(
+					$results     = WC_PB_DB::query_bundled_items(
 						array(
 							'return' => 'id=>bundle_id',
 							'product_id' => $product_ids,
@@ -325,7 +325,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 							$bundle = wc_get_product( $bundle_id );
 							if ( $bundle && $bundle->is_in_stock() ) { // if it is true it check stock for bundled items as well
 								// fetch subscribers only when the bundle product items back in stock
-								$main_obj = new CWG_Instock_API( $bundle_id, 0 );
+								$main_obj                = new CWG_Instock_API( $bundle_id, 0 );
 								$get_list_of_subscribers = $main_obj->get_list_of_subscribers();
 								if ( is_array( $get_list_of_subscribers ) && ! empty( $get_list_of_subscribers ) ) {
 									$subscribers = array_merge( $subscribers, $get_list_of_subscribers );
@@ -342,15 +342,15 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 		public function product_visibility_check( $bool, $id, $stockstatus ) {
 			$product = wc_get_product( $id );
 			$options = get_option( 'cwginstocksettings' );
-			$bool = $product && 'publish' != $product->get_status() && isset( $options['enable_instock_mail_for_product_status'] ) && 1 == $options['enable_instock_mail_for_product_status'] ? false : $bool;
+			$bool    = $product && 'publish' != $product->get_status() && isset( $options['enable_instock_mail_for_product_status'] ) && 1 == $options['enable_instock_mail_for_product_status'] ? false : $bool;
 			return $bool;
 		}
 
 		public function minimum_stock_quantity_check( $bool, $id, $stockstatus ) {
-			$product = wc_get_product( $id );
-			$options = get_option( 'cwginstocksettings' );
+			$product         = wc_get_product( $id );
+			$options         = get_option( 'cwginstocksettings' );
 			$min_stock_value = isset( $options['set_stock_quantity_for_instock_mail'] ) && ( '' != $options['set_stock_quantity_for_instock_mail'] || 0 < $options['set_stock_quantity_for_instock_mail'] ) ? true : false;
-			$bool = $min_stock_value && $product && $product->managing_stock() && isset( $options['set_stock_quantity_for_instock_mail'] ) && $product->get_stock_quantity() < $options['set_stock_quantity_for_instock_mail'] ? false : $bool;
+			$bool            = $min_stock_value && $product && $product->managing_stock() && isset( $options['set_stock_quantity_for_instock_mail'] ) && $product->get_stock_quantity() < $options['set_stock_quantity_for_instock_mail'] ? false : $bool;
 			return $bool;
 		}
 

@@ -33,11 +33,17 @@ if (! class_exists('CWG_Instock_Settings')) {
 				</h1>
 				<div class="notice notice-success cwg_marketing_notice">
 					<p>
-						<strong>Savings and Power Combined</strong>: All Add-ons, One-Time Payment of $49, Zero Monthly Hassles! <a
-							href="https://propluginslab.com/shop/back-in-stock-notifier/bundle-add-ons/"
-							target="_blank"><strong>Buy Now Bundle Add-ons!</strong></a>
+						<strong><?php esc_html_e( 'Supercharge your store!', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
+						<?php
+						echo wp_kses_post(
+							sprintf(
+								/* translators: %s: URL to extensions page */
+								__( 'Check out our <a href="%s"><strong>Extensions & Add-ons</strong></a> to unlock more features.', 'back-in-stock-notifier-for-woocommerce' ),
+								esc_url( admin_url( 'edit.php?post_type=cwginstocknotifier&page=cwg-instock-extensions' ) )
+							)
+						);
+						?>
 					</p>
-					<p>Don't let our progress get stuck - buy now and push us forward! </p>
 				</div>
 				<?php
 				settings_fields('cwginstocknotifier_settings');
@@ -117,13 +123,12 @@ if (! class_exists('CWG_Instock_Settings')) {
 
 			add_settings_section('cwginstock_section_mail', __('Mail Settings', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_settings_heading'), 'cwginstocknotifier_settings');
 
+			add_settings_field('cwg_instock_email_template_buttons', __('Email Notifications', 'back-in-stock-notifier-for-woocommerce'), array($this, 'email_template_buttons'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+
 			add_settings_field('cwg_instock_mail_from_name', __('From Name', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_name'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_mail_from_email', __('From Email', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_from_email'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_mail_reply_to', __('Reply To Email', 'back-in-stock-notifier-for-woocommerce'), array($this, 'mail_reply_to'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 
-			add_settings_field('cwg_instock_success_subscription_mail', __('Enable Success Subscription Mail', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
-			add_settings_field('cwg_instock_success_subscription_subject', __('Success Subscription Mail Subject', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail_subject'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
-			add_settings_field('cwg_instock_success_subscription_message', __('Success Subscription Mail Message', 'back-in-stock-notifier-for-woocommerce'), array($this, 'success_subscription_mail_message'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_success_subscription_copy', __('Additionally Send this Subscription mail as a copy to specific email ids', 'back-in-stock-notifier-for-woocommerce'), array($this, 'enable_copy_subscription'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_success_subscription_copy_recipients', __('Enter Email Ids separated by commas that you want to receive subscription copy mail', 'back-in-stock-notifier-for-woocommerce'), array($this, 'subscription_copy_recipients'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			/**
@@ -132,13 +137,11 @@ if (! class_exists('CWG_Instock_Settings')) {
 			 * @since 5.7.3 
 			 */
 			do_action('cwginstock_copy_subscription_settings');
-			add_settings_field('cwg_instock_mail', __('Enable Instock Mail', 'back-in-stock-notifier-for-woocommerce'), array($this, 'enable_instock_mail'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_mail_product_visibility_status', __('Consider Only Published Product Status', 'back-in-stock-notifier-for-woocommerce'), array($this, 'enable_instock_mail_for_product_status'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
-			add_settings_field('cwg_instock_mail_subject', __('Instock Mail Subject', 'back-in-stock-notifier-for-woocommerce'), array($this, 'instock_mail_subject'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
-			add_settings_field('cwg_instock_mail_message', __('Instock Mail Message', 'back-in-stock-notifier-for-woocommerce'), array($this, 'instock_mail_message'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_mail_set_minimum_stock_quantity', __('Minimum stock quantity threshold value', 'back-in-stock-notifier-for-woocommerce'), array($this, 'instock_mail_message_set_stock_quantity'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_post_status_subscribed', __('Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)', 'back-in-stock-notifier-for-woocommerce'), array($this, 'enable_post_status_subscribed'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 
+			
 			add_settings_section('cwginstock_section_bgprocess', __('Background Process Engine - Advanced Settings', 'back-in-stock-notifier-for-woocommerce'), array($this, 'background_process_heading'), 'cwginstocknotifier_settings');
 			add_settings_field('cwginstock_bgp_selection', __('Background Process Engine', 'back-in-stock-notifier-for-woocommerce'), array($this, 'bgp_engine'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
 			/**
@@ -589,11 +592,46 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function mail_settings_heading() {
-			esc_html_e('Customize Email Message and its corresponding settings', 'back-in-stock-notifier-for-woocommerce');
-			echo '<br> Available Shortcodes to be used for subject and message <br>';
-			echo '<strong>{product_name}, {product_id}, {product_link}, {shopname}, {email_id}, {subscriber_email}, {subscriber_name}, {subscriber_firstname}, {subscriber_lastname}, {subscriber_phone}, {cart_link}, {only_product_name}, {only_product_sku}, {product_price}, {product_image}, {cwginstock_quantity}</strong>';
-			echo '<br> If you want to show the image with specified size then you can try something like this one <strong>{product_image=thumbnail}</strong>, (you can pass parameter like <strong>thumbnail/medium/large</strong>) it also accept any custom width and height by pass something like this one <strong>{product_image=100x100}</strong> (widthxheight)';
-			echo "<br> <strong> When you use {product_link} or {cart_link} make sure you add anchor tag(some email client shows as plain text instead of hyperlink) <pre>&lt;a href='{product_link}'&gt;{product_name}&lt;/a&gt; </pre><pre>&lt;a href='{cart_link}'&gt;{cart_link}&lt;/a&gt;</pre> </strong>";
+			echo '<p>' . esc_html__( 'Email notifications are now managed through WooCommerce Email Templates for better customization. Use the buttons below to configure each email template.', 'back-in-stock-notifier-for-woocommerce' ) . '</p>';
+		}
+
+		
+		/**
+		 * Render buttons to link to WooCommerce email template settings.
+		 *
+		 * @since 7.0.0
+		 */
+		public function email_template_buttons() {
+			$sub_url     = CWG_Instock_Email_Manager::get_email_settings_url( 'WC_Email_BIS_Subscription' );
+			$instock_url = CWG_Instock_Email_Manager::get_email_settings_url( 'WC_Email_BIS_Instock' );
+			?>
+			<div class="cwg-email-buttons-wrap">
+				<div class="cwg-email-btn-row">
+					<a href="<?php echo esc_url( $sub_url ); ?>" class="cwg-email-template-btn">
+						<span class="dashicons dashicons-email"></span>
+						<?php esc_html_e( 'Customize Subscription Confirmation Email', 'back-in-stock-notifier-for-woocommerce' ); ?>
+					</a>
+					<a href="<?php echo esc_url( $instock_url ); ?>" class="cwg-email-template-btn">
+						<span class="dashicons dashicons-email-alt"></span>
+						<?php esc_html_e( 'Customize Back In Stock Email', 'back-in-stock-notifier-for-woocommerce' ); ?>
+					</a>
+				</div>
+				<div class="cwg-email-info-box">
+					<span class="dashicons dashicons-info-outline"></span>
+					<?php esc_html_e( 'These email templates are fully integrated with WooCommerce. You can customize the subject, heading, content, and email type directly through the WooCommerce email settings interface. Your existing settings have been automatically migrated.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+					<br><br>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+							/* translators: %s: URL to WooCommerce emails settings */
+							__( 'You can also find them under <a href="%s">WooCommerce → Settings → Emails</a>.', 'back-in-stock-notifier-for-woocommerce' ),
+							esc_url( admin_url( 'admin.php?page=wc-settings&tab=email' ) )
+						)
+					);
+					?>
+				</div>
+			</div>
+			<?php
 		}
 
 
@@ -601,7 +639,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 			$options = get_option('cwginstocksettings');
 			//from name default value fetch it from woocommerce settings
 			if (empty($options['mail_from_name'])) {
-				$wc_from_name                 = get_option('woocommerce_email_from_name');
+				$wc_from_name              = get_option('woocommerce_email_from_name');
 				$options['mail_from_name'] = ! empty($wc_from_name) ? $wc_from_name : get_bloginfo('name');
 			}
 			?>
@@ -614,7 +652,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 			$options = get_option('cwginstocksettings');
 			//from email default value fetch it from woocommerce settings
 			if (empty($options['mail_from_email'])) {
-				$wc_from_email                 = get_option('woocommerce_email_from_address');
+				$wc_from_email              = get_option('woocommerce_email_from_address');
 				$options['mail_from_email'] = ! empty($wc_from_email) ? $wc_from_email : get_bloginfo('admin_email');
 			}
 			?>
@@ -793,7 +831,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 
 		public function default_value() {
 			$success_subscribe_message = __( 'Dear {subscriber_name}, <br/>Thank you for subscribing to the #{product_name}. We will email you once product back in stock', 'back-in-stock-notifier-for-woocommerce' );
-			$instock_message = __( 'Hello {subscriber_name}, <br/>Thanks for your patience and finally the wait is over! <br/> Your Subscribed Product {product_name} is now back in stock! We only have a limited amount of stock, and this email is not a guarantee you\'ll get one, so hurry to be one of the lucky shoppers who do <br/> Add this product {product_name} directly to your cart <a href=\'{cart_link}\'>{cart_link}</a>', 'back-in-stock-notifier-for-woocommerce' );
+			$instock_message           = __( 'Hello {subscriber_name}, <br/>Thanks for your patience and finally the wait is over! <br/> Your Subscribed Product {product_name} is now back in stock! We only have a limited amount of stock, and this email is not a guarantee you\'ll get one, so hurry to be one of the lucky shoppers who do <br/> Add this product {product_name} directly to your cart <a href=\'{cart_link}\'>{cart_link}</a>', 'back-in-stock-notifier-for-woocommerce' );
 			/**
 			 * Filter for modifying the array of default values
 			 *

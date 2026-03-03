@@ -164,3 +164,58 @@ div.cwg-section .cwg-addon-title {
 .cwg_stock_backorder {
 	color: #ffa500 !important;
 }
+
+.cwg-email-buttons-wrap {
+	padding: 8px 0;
+}
+
+.cwg-email-btn-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.cwg-email-template-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 20px;
+	background: #0073aa;
+	color: #fff !important;
+	text-decoration: none !important;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 13px;
+	transition: background 0.2s ease;
+}
+
+.cwg-email-template-btn:hover,
+.cwg-email-template-btn:focus {
+	background: #005a87;
+	color: #fff !important;
+}
+
+.cwg-email-template-btn .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+}
+
+.cwg-email-info-box {
+	background: #f0f6fc;
+	border: 1px solid #c3d8e6;
+	border-radius: 6px;
+	padding: 14px 18px;
+	margin-top: 12px;
+	font-size: 13px;
+	color: #1d2327;
+	line-height: 1.6;
+}
+
+.cwg-email-info-box .dashicons {
+	color: #0073aa;
+	margin-right: 4px;
+	vertical-align: middle;
+}
