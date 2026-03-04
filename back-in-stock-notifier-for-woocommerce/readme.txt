@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 7.0.0
+Stable tag: 7.0.1
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -282,6 +282,9 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.0.1 2026-03-04 =
+* Tweak: Fixed a false positive reported by an anti-malware scanner for the REST API example email address.
+
 = 7.0.0 2026-03-03 =
 * New: Introduced our own WooCommerce email templates for Subscription Confirmation (Successful Subscription) and Back in Stock - Product Available emails.
 * Tweak: Enhanced Extensions page.

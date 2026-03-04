@@ -67,11 +67,11 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 												 * SAMPLE JSON REQUEST
 												 * {
 												 * "subscriber_name" : "subscriber name",
-												  "email" : "xxxxxxx@gmail.com",
+												  "email" : "email address",
 												  "product_id": "valid product id",
 												  "variation_id" : "valid variation id",
 												  "status" : "valid registered status",
-												  "subscriber_phone" : "+1 2015550123",
+												  "subscriber_phone" : "Your phone number",
 												  "custom_quantity" : "3"
 												  } */
 
@@ -211,15 +211,14 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 
 		public function update_subscriber( WP_REST_Request $request ) {
 			/*
-												 * SAMPLE JSON REQUEST
+												* SAMPLE JSON REQUEST
 												 * {
-												 * "ID": "",
-												  "subscriber_name" : "subscriber name",
-												  "email" : "xxxxxxx@gmail.com",
+												 * "subscriber_name" : "subscriber name",
+												  "email" : "email address",
 												  "product_id": "valid product id",
 												  "variation_id" : "valid variation id",
 												  "status" : "valid registered status",
-												  "subscriber_phone" : "+1 2015550123",
+												  "subscriber_phone" : "Your phone number",
 												  "custom_quantity" : "3"
 												  } */
 			$body             = $request->get_body();
