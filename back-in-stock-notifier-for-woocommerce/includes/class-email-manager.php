@@ -47,7 +47,6 @@ if ( ! class_exists( 'CWG_Instock_Email_Manager' ) ) {
 
 			return $emails;
 		}
-
 		public function from_email() {
 			$options    = get_option( 'cwginstocksettings' );
 			$from_email = ! empty( $options['mail_from_email'] ) ? $options['mail_from_email'] : get_option( 'woocommerce_email_from_address', get_bloginfo( 'admin_email' ) );

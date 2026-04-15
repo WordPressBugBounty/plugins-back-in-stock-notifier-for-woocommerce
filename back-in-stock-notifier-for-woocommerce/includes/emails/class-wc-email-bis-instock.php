@@ -26,7 +26,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 			$this->id             = 'cwg_bis_instock';
 			$this->customer_email = true;
 			$this->title          = __( 'Back In Stock - Product Available', 'back-in-stock-notifier-for-woocommerce' );
-			$this->description    = __( 'Sent to subscribers when a product they subscribed to is back in stock.', 'back-in-stock-notifier-for-woocommerce' );
+			$this->description    = __( 'Sent to subscribers when a product they subscribed to is back in stock. <strong>Available placeholders:</strong> <code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>.', 'back-in-stock-notifier-for-woocommerce' );
 			$this->template_html  = 'emails/bis-instock.php';
 			$this->template_plain = 'emails/plain/bis-instock.php';
 
@@ -135,6 +135,8 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 				$pid = get_post_meta( $this->subscriber_id, 'cwginstock_bypass_pid', true );
 			}
 
+			//cwginstock_remove_villa_email_customizer();
+			cwg_bis_remove_villa_header_override();
 			return wc_get_template_html(
 				$this->template_html,
 				array(
@@ -160,6 +162,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 
 		public function get_content_plain() {
 			$api = new CWG_Instock_API();
+			cwg_bis_remove_villa_header_override();
 			return wc_get_template_html(
 				$this->template_plain,
 				array(
@@ -184,7 +187,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 		public function init_form_fields() {
 			$placeholder_text = sprintf(
 				__( 'Available shortcodes: %s', 'back-in-stock-notifier-for-woocommerce' ),
-				'<code>{product_name}</code>, <code>{only_product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{product_price}</code>, <code>{only_product_sku}</code>, <code>{cart_link}</code>, <code>{subscriber_name}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{subscriber_email}</code>, <code>{subscriber_phone}</code>, <code>{shopname}</code>'
+				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>'
 			);
 
 			$this->form_fields = array(

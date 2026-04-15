@@ -33,7 +33,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 		const PAGE_SLUG = 'cwg-instock-extensions';
 
 		public function __construct() {
-			add_action( 'admin_menu', array( $this, 'add_menu' ), 999 );
+			add_action( 'admin_menu', array( $this, 'add_menu' ), 1000 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		}
 
@@ -247,8 +247,18 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 			$type        = isset( $product['type'] ) ? $product['type'] : 'addon';
 			$category    = ! empty( $product['category'] ) ? $product['category'] : 'general';
 
+			// Calculate save percentage for sale items
+			$save_pct = 0;
+			if ( $has_sale && $sale_price && ! $status ) {
+				$orig_price = floatval( isset( $product['price'] ) ? $product['price'] : 0 );
+				$disc_price = floatval( $sale_price );
+				if ( $orig_price > 0 && $disc_price < $orig_price ) {
+					$save_pct = round( ( ( $orig_price - $disc_price ) / $orig_price ) * 100 );
+				}
+			}
+
 			$btn_label = ( 'pro' === $type )
-				? __( 'View Plugin', 'back-in-stock-notifier-for-woocommerce' )
+				? __( 'Get Plugin', 'back-in-stock-notifier-for-woocommerce' )
 				: __( 'Get Add-on', 'back-in-stock-notifier-for-woocommerce' );
 
 			$classes = array( 'cwg-promo-card' );
@@ -318,18 +328,25 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				<div class="cwg-promo-card-footer">
 					<div class="cwg-promo-card-pricing">
 						<?php if ( $has_sale && $sale_price && ! $status ) : ?>
-							From:
-						<span class="cwg-promo-price cwg-promo-price--old">
-							<?php echo esc_html( '$' . $product['price'] ); ?>
-						</span>
-						<span class="cwg-promo-price cwg-promo-price--sale">
-							<?php echo esc_html( '$' . $sale_price ); ?>
-						</span>
+						<div class="cwg-promo-pricing-stack">
+							<div class="cwg-promo-pricing-row">
+								<span class="cwg-promo-from-label"><?php esc_html_e( 'From', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
+								<span class="cwg-promo-price cwg-promo-price--old"><?php echo esc_html( '$' . $product['price'] ); ?></span>
+								<span class="cwg-promo-price cwg-promo-price--sale"><?php echo esc_html( '$' . $sale_price ); ?></span>
+								<?php if ( $save_pct > 0 ) : ?>
+								<span class="cwg-promo-save-badge">-<?php echo absint( $save_pct ); ?>%</span>
+								<?php endif; ?>
+							</div>
+							<span class="cwg-promo-limited-time">
+								<span class="dashicons dashicons-clock"></span>
+								<?php esc_html_e( 'Limited time offer', 'back-in-stock-notifier-for-woocommerce' ); ?>
+							</span>
+						</div>
 						<?php elseif ( ! $status ) : ?>
-							From:
-						<span class="cwg-promo-price">
-							<?php echo esc_html( '$' . $product['price'] ); ?>
-						</span>
+						<div class="cwg-promo-pricing-row">
+							<span class="cwg-promo-from-label"><?php esc_html_e( 'From', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
+							<span class="cwg-promo-price"><?php echo esc_html( '$' . $product['price'] ); ?></span>
+						</div>
 						<?php endif; ?>
 					</div>
 
@@ -345,9 +362,9 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						?>
 					</span>
 					<?php else : ?>
-					<a href="<?php echo esc_url( $product_url ); ?>" target="_blank" rel="noopener noreferrer" class="cwg-promo-card-btn">
+					<a href="<?php echo esc_url( $product_url ); ?>" target="_blank" rel="noopener noreferrer" class="cwg-promo-card-btn cwg-promo-card-btn--<?php echo esc_attr( $type ); ?>">
 						<?php echo esc_html( $btn_label ); ?>
-						<span class="dashicons dashicons-external"></span>
+						<span class="dashicons dashicons-arrow-right-alt"></span>
 					</a>
 					<?php endif; ?>
 				</div>
@@ -433,11 +450,12 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 					<div class="cwg-promo-header-left">
 						<h1><?php esc_html_e( 'Extensions & Add-ons', 'back-in-stock-notifier-for-woocommerce' ); ?></h1>
 						<p class="cwg-promo-subtitle">
-							<strong><?php esc_html_e( 'Supercharge your Back In Stock Notifier with powerful add-ons and premium plugins.', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
+							<?php esc_html_e( 'Supercharge your Back In Stock Notifier with powerful add-ons and premium plugins.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						</p>
-						<p class="cwg-promo-subtitle">
-							<i><?php esc_html_e('Enjoy one-time pricing with zero recurring charges - buy once and use forever on your licensed sites.', 'back-in-stock-notifier-for-woocommerce'); ?></i>
-						</p>
+						<div class="cwg-promo-value-pill">
+							<span class="dashicons dashicons-yes-alt"></span>
+							<?php esc_html_e( 'One-time payment &nbsp;·&nbsp; No subscriptions &nbsp;·&nbsp; Buy once, use forever', 'back-in-stock-notifier-for-woocommerce' ); ?>
+						</div>
 					</div>
 					<div class="cwg-promo-header-right">
 						<?php if ( $has_products ) : ?>
@@ -470,6 +488,38 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 							<span class="cwg-btn-text"><?php esc_html_e( 'Refresh', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
 						</button>
 						<?php endif; ?>
+					</div>
+				</div>
+
+				<!-- Trust bar -->
+				<div class="cwg-promo-trust-bar">
+					<div class="cwg-trust-item">
+						<span class="dashicons dashicons-money-alt"></span>
+						<div class="cwg-trust-item-text">
+							<strong><?php esc_html_e( 'One-Time Payment', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
+							<span><?php esc_html_e( 'No recurring fees, ever', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
+						</div>
+					</div>
+					<div class="cwg-trust-item">
+						<span class="dashicons dashicons-update-alt"></span>
+						<div class="cwg-trust-item-text">
+							<strong><?php esc_html_e( 'Lifetime Updates', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
+							<span><?php esc_html_e( 'Always on the latest version', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
+						</div>
+					</div>
+					<div class="cwg-trust-item">
+						<span class="dashicons dashicons-shield-alt"></span>
+						<div class="cwg-trust-item-text">
+							<strong><?php esc_html_e( '14-Day Refund Policy', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
+							<span><?php esc_html_e( 'Risk-free purchase', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
+						</div>
+					</div>
+					<div class="cwg-trust-item">
+						<span class="dashicons dashicons-sos"></span>
+						<div class="cwg-trust-item-text">
+							<strong><?php esc_html_e( 'Priority Support', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
+							<span><?php esc_html_e( 'Fast expert help', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
+						</div>
 					</div>
 				</div>
 

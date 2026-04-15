@@ -3,6 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
 if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 
 	class CWG_Instock_Status {
@@ -53,7 +54,9 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 			<table class="form-table">
 				<tbody>
 					<?php
-					$option = get_option( 'cwginstocksettings' );
+					$wc_subscription_settings = get_option( 'woocommerce_cwg_bis_subscription_settings', array() );
+					$wc_instock_settings      = get_option( 'woocommerce_cwg_bis_instock_settings', array() );
+					$legacy_option            = get_option( 'cwginstocksettings', array() );
 
 					$settings_information = array(
 						'checkbox' =>
@@ -103,7 +106,31 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 						foreach ( $settings_information as $key => $value ) {
 							if ( is_array( $value ) && ! empty( $value ) ) {
 								foreach ( $value as $checkbox_key => $checkbox_data ) {
-									$is_enabled = 'checkbox' == $key ? ( isset( $option[ $checkbox_key ] ) ? $option[ $checkbox_key ] : 0 ) : ( isset( $option[ $checkbox_key ] ) && $option[ $checkbox_key ] ? 1 : 0 );
+									$is_enabled = 0;
+
+									switch ( $checkbox_key ) {
+										case 'enable_success_sub_mail':
+											$is_enabled = isset( $wc_subscription_settings['enabled'] ) ? ( 'yes' === $wc_subscription_settings['enabled'] ? 1 : 0 ) : ( isset( $legacy_option['enable_success_sub_mail'] ) && 1 == $legacy_option['enable_success_sub_mail'] ? 1 : 0 );
+											break;
+										case 'enable_instock_mail':
+											$is_enabled = isset( $wc_instock_settings['enabled'] ) ? ( 'yes' === $wc_instock_settings['enabled'] ? 1 : 0 ) : ( isset( $legacy_option['enable_instock_mail'] ) && 1 == $legacy_option['enable_instock_mail'] ? 1 : 0 );
+											break;
+										case 'keep_status_subscribed':
+											$is_enabled = isset( $legacy_option['keep_status_subscribed'] ) && 1 == $legacy_option['keep_status_subscribed'] ? 1 : 0;
+											break;
+										case 'success_sub_subject':
+											$is_enabled = isset( $wc_subscription_settings['subject'] ) && '' !== trim( $wc_subscription_settings['subject'] ) ? 1 : 0;
+											break;
+										case 'success_sub_message':
+											$is_enabled = isset( $wc_subscription_settings['additional_content'] ) && '' !== trim( $wc_subscription_settings['additional_content'] ) ? 1 : 0;
+											break;
+										case 'instock_mail_subject':
+											$is_enabled = isset( $wc_instock_settings['subject'] ) && '' !== trim( $wc_instock_settings['subject'] ) ? 1 : 0;
+											break;
+										case 'instock_mail_message':
+											$is_enabled = isset( $wc_instock_settings['additional_content'] ) && '' !== trim( $wc_instock_settings['additional_content'] ) ? 1 : 0;
+											break;
+									}
 									if ( isset( $checkbox_data[ $is_enabled ] ) ) {
 										$split_by_colon = explode( '::', $checkbox_data[ $is_enabled ] );
 										$heading        = $split_by_colon[0];
@@ -178,6 +205,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 								'CWG_Instock_Notifier_Polylang' => 'Polylang Add-on',
 								'CWG_Instock_Twilio_SMS' => 'Twilio SMS Add-on',
 								'CWG_Instock_Klaviyo' => 'Klaviyo Add-on',
+								'CWG_Instock_Never_Restock_Notifier' => 'Never Restock Add-on',
 								'CWG_Bundle_List_Table' => 'Bundle Add-ons',
 							);
 
