@@ -49,15 +49,15 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 				'{shopname}'             => $this->get_blogname(),
 			);
 
-			$this->heading = __( 'Good News! {product_name} is Back!', 'back-in-stock-notifier-for-woocommerce' );
-			$this->subject = __( 'Product {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' );
+			$this->heading = __( 'Your subscribed item {product_name} is now available', 'back-in-stock-notifier-for-woocommerce' );
+			$this->subject = __( 'Good news — {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' );
 
 			parent::__construct();
 			$this->template_base = CWGINSTOCK_PLUGINDIR . 'templates/';
 		}
 
 		public function get_default_additional_content() {
-			return __( 'We only have limited stock — hurry before it sells out again!', 'back-in-stock-notifier-for-woocommerce' );
+			return __( 'Hello {subscriber_name},<br/><br/>Good news — {product_name} is now back in stock. View it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
 		}
 
 		/**

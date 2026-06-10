@@ -12,6 +12,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 
 		public function __construct() {
 			add_action( 'plugins_loaded', array( $this, 'initialize' ) );
+			$this->initialize();
 			add_action( 'woocommerce_product_set_stock_status', array( $this, 'action_based_on_stock_status' ), 999, 3 );
 			add_action( 'woocommerce_variation_set_stock_status', array( $this, 'action_based_on_stock_status' ), 999, 3 );
 			add_action( 'cwginstock_trigger_status', array( $this, 'trigger_instock_status' ), 999, 3 );
@@ -227,6 +228,9 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 
 			if ( is_array( $get_posts ) && ! empty( $get_posts ) ) {
 				if ( 'wpbgp' == $get_bg_engine ) {
+					if ( ! $this->process_mail instanceof CWG_Instock_Mail_Process ) {
+						$this->initialize();
+					}
 					foreach ( $get_posts as $each_id ) {
 						$this->process_mail->push_to_queue( $each_id );
 					}

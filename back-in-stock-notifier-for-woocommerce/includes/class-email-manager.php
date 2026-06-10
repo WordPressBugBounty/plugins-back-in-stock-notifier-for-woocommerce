@@ -26,7 +26,10 @@ if ( ! class_exists( 'CWG_Instock_Email_Manager' ) ) {
 
 		public function __construct() {
 			add_filter( 'woocommerce_email_classes', array( $this, 'register_email_classes' ) );
-			add_action( 'admin_init', array( $this, 'maybe_migrate_settings' ), 5 );
+			// Run after the legacy/default settings are initialized so fresh installs
+			// also get the default email subject/message values mapped into the
+			// WooCommerce email options.
+			add_action( 'admin_init', array( $this, 'maybe_migrate_settings' ), 15 );
 			add_filter( 'woocommerce_email_from_name', array( __CLASS__, 'filter_from_name' ), 10, 2 );
 			add_filter( 'woocommerce_email_from_address', array( __CLASS__, 'filter_from_email' ), 10, 2 );
 			add_filter( 'woocommerce_email_headers', array( __CLASS__, 'filter_headers' ), 10, 3 );
@@ -144,56 +147,75 @@ if ( ! class_exists( 'CWG_Instock_Email_Manager' ) ) {
 		 * One-time migration of legacy plugin settings → WooCommerce email options.
 		 */
 		public function maybe_migrate_settings() {
-			if ( get_option( self::MIGRATION_FLAG ) ) {
-				return;
+			$old = get_option( 'cwginstocksettings', array() );
+			if ( ! is_array( $old ) ) {
+				$old = array();
 			}
 
-			$old = get_option( 'cwginstocksettings', array() );
-			if ( empty( $old ) || ! is_array( $old ) ) {
-				update_option( self::MIGRATION_FLAG, '1' );
+			$sub_settings = get_option( 'woocommerce_cwg_bis_subscription_settings', array() );
+			if ( ! is_array( $sub_settings ) ) {
+				$sub_settings = array();
+			}
+
+			$ins_settings = get_option( 'woocommerce_cwg_bis_instock_settings', array() );
+			if ( ! is_array( $ins_settings ) ) {
+				$ins_settings = array();
+			}
+
+			$needs_sub_migration = empty( $sub_settings )
+				|| empty( $sub_settings['subject'] )
+				|| empty( $sub_settings['heading'] )
+				|| empty( $sub_settings['additional_content'] );
+			$needs_in_migration  = empty( $ins_settings )
+				|| empty( $ins_settings['subject'] )
+				|| empty( $ins_settings['heading'] )
+				|| empty( $ins_settings['additional_content'] );
+
+			if ( get_option( self::MIGRATION_FLAG ) && ! $needs_sub_migration && ! $needs_in_migration ) {
 				return;
 			}
 
 			// Migrate Subscription Email
-			$sub_settings = get_option( 'woocommerce_cwg_bis_subscription_settings', array() );
-			if ( empty( $sub_settings ) ) {
-				$sub_settings = array();
+			if ( $needs_sub_migration ) {
+				$sub_settings = wp_parse_args(
+					$sub_settings,
+					array(
+						'enabled'            => ! empty( $old['enable_success_sub_mail'] ) ? 'yes' : 'no',
+						'subject'            => ! empty( $old['success_sub_subject'] )
+							? sanitize_text_field( $old['success_sub_subject'] )
+							: __( 'You subscribed to {product_name} at {shopname}', 'back-in-stock-notifier-for-woocommerce' ),
+						'heading'            => ! empty( $old['success_sub_subject'] )
+							? sanitize_text_field( $old['success_sub_subject'] )
+							: __( 'Thanks for subscribing to {product_name}', 'back-in-stock-notifier-for-woocommerce' ),
+						'additional_content' => ! empty( $old['success_sub_message'] )
+							? wp_kses_post( $old['success_sub_message'] )
+							: __( 'Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_name} (#{product_id}). We will notify {subscriber_email} as soon as this product is back in stock. You can review the product here: {product_link}.<br/><br/>Thanks for shopping with {shopname}.', 'back-in-stock-notifier-for-woocommerce' ),
+						'email_type'         => 'html',
+					)
+				);
 
-				// Enabled flag
-				$sub_settings['enabled'] = ! empty( $old['enable_success_sub_mail'] ) ? 'yes' : 'no';
-
-				// Subject - use old value if set
-				if ( ! empty( $old['success_sub_subject'] ) ) {
-					$sub_settings['subject'] = sanitize_text_field( $old['success_sub_subject'] );
-					$sub_settings['heading'] = sanitize_text_field( $old['success_sub_subject'] ); // best effort to set heading same as subject if old subject exists
-				}
-
-				// Message → additional_content (best effort; the template itself now has structured HTML)
-				if ( ! empty( $old['success_sub_message'] ) ) {
-					$sub_settings['additional_content'] = wp_kses_post( $old['success_sub_message'] );
-				}
-
-				$sub_settings['email_type'] = 'html';
 				update_option( 'woocommerce_cwg_bis_subscription_settings', $sub_settings );
 			}
 
 			// Migrate Instock Email
-			$ins_settings = get_option( 'woocommerce_cwg_bis_instock_settings', array() );
-			if ( empty( $ins_settings ) ) {
-				$ins_settings = array();
+			if ( $needs_in_migration ) {
+				$ins_settings = wp_parse_args(
+					$ins_settings,
+					array(
+						'enabled'            => ! empty( $old['enable_instock_mail'] ) ? 'yes' : 'no',
+						'subject'            => ! empty( $old['instock_mail_subject'] )
+							? sanitize_text_field( $old['instock_mail_subject'] )
+							: __( 'Good news — {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' ),
+						'heading'            => ! empty( $old['instock_mail_subject'] )
+							? sanitize_text_field( $old['instock_mail_subject'] )
+							: __( 'Your subscribed item {product_name} is now available', 'back-in-stock-notifier-for-woocommerce' ),
+						'additional_content' => ! empty( $old['instock_mail_message'] )
+							? wp_kses_post( $old['instock_mail_message'] )
+							: __( 'Hello {subscriber_name},<br/><br/>Good news — {product_name} is now back in stock. You can view it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' ),
+						'email_type'         => 'html',
+					)
+				);
 
-				$ins_settings['enabled'] = ! empty( $old['enable_instock_mail'] ) ? 'yes' : 'no';
-
-				if ( ! empty( $old['instock_mail_subject'] ) ) {
-					$ins_settings['subject'] = sanitize_text_field( $old['instock_mail_subject'] );
-					$ins_settings['heading'] = sanitize_text_field( $old['instock_mail_subject'] ); // best effort to set heading same as subject if old subject exists
-				}
-
-				if ( ! empty( $old['instock_mail_message'] ) ) {
-					$ins_settings['additional_content'] = wp_kses_post( $old['instock_mail_message'] );
-				}
-
-				$ins_settings['email_type'] = 'html';
 				update_option( 'woocommerce_cwg_bis_instock_settings', $ins_settings );
 			}
 

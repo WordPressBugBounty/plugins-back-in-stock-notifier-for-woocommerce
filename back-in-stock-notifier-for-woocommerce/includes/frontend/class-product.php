@@ -10,6 +10,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 
 		public function __construct() {
 			add_action( 'woocommerce_simple_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
+			add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'display_elementor_compatible_form' ), 20 );
+			add_action( 'woocommerce_after_add_to_cart_form', array( $this, 'display_elementor_compatible_form' ), 20 );
 			add_action( 'woocommerce_subscription_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
 			add_action( 'woocommerce_bundle_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
 			add_action( 'woocommerce_woosb_add_to_cart', array( $this, 'display_in_simple_product' ), 31 );
@@ -65,6 +67,24 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			return $content;
 		}
 
+
+		public function display_elementor_compatible_form() {
+			global $product;
+
+			if ( ! $product || ! is_product() ) {
+				return;
+			}
+
+			$render_key = 'cwginstock_elementor_form_' . $product->get_id();
+			if ( ! empty( $GLOBALS[ $render_key ] ) ) {
+				return;
+			}
+
+			$GLOBALS[ $render_key ] = true;
+
+			$display_filter = apply_filters( 'cwginstock_display_subscribe_form', true, $product, array() );
+			echo do_shortcode( $this->display_subscribe_box( $product, array(), $display_filter ) ?? '' );
+		}
 
 		public function display_in_simple_product() {
 			global $product;

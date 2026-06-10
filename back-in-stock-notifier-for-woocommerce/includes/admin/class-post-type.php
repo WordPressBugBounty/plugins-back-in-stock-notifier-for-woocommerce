@@ -438,7 +438,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 		public function list_table_primary_column( $default, $screen ) {
 			if ( 'edit-cwginstocknotifier' === $screen ) {
 				$detect    = new \CWG_Detection\MobileDetect();
-				$is_mobile = ( $detect->isMobile() ? ( $detect->isTablet() ? true : true ) : false );
+				$is_mobile = ( $detect->isMobile() ? true : false );
 				if ( ! $is_mobile ) {
 					$default = 'email';
 				}
@@ -527,6 +527,17 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 
 				table.wp-list-table .column-total_subscribers {
 					width: 10%;
+				}
+
+				table.wp-list-table th.column-status,
+				table.wp-list-table td.column-status {
+					white-space: nowrap;
+					width: 120px;
+				}
+
+				table.wp-list-table td.column-status .cwgmark {
+					display: inline-block;
+					white-space: nowrap;
 				}
 
 				#cwgimage p {

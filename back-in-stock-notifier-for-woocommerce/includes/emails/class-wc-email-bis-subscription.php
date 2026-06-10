@@ -58,7 +58,7 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 			);
 
 			// Default values
-			$this->heading = __( 'Subscription Confirmed', 'back-in-stock-notifier-for-woocommerce' );
+			$this->heading = __( 'Thanks for subscribing to {product_name}', 'back-in-stock-notifier-for-woocommerce' );
 			$this->subject = __( 'You subscribed to {product_name} at {shopname}', 'back-in-stock-notifier-for-woocommerce' );
 
 			parent::__construct();
@@ -73,7 +73,7 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 		 * @return string
 		 */
 		public function get_default_additional_content() {
-			return __( 'We will email you as soon as this product is back in stock.', 'back-in-stock-notifier-for-woocommerce' );
+			return __( 'Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_name} (#{product_id}). We will send an update to {subscriber_email} as soon as this item is back in stock. You can review the product here: {product_link}.<br/><br/>Thanks for shopping with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
 		}
 
 		/**

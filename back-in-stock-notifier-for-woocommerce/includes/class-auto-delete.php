@@ -52,13 +52,13 @@ if ( ! class_exists( 'CWG_Instock_Auto_Delete' ) ) {
 			$check_auto_delete_enable = isset( $options['enable_auto_delete'] ) && '1' == $options['enable_auto_delete'] ? true : false;
 			if ( $check_auto_delete_enable ) {
 				$get_days_delete_subscriber = isset( $options['delete_subscribers_for_x_days'] ) && $options['delete_subscribers_for_x_days'] > 0 ? $options['delete_subscribers_for_x_days'] : 7; // default 7 days
-				$batch_size                = 50; // Process in batches of 50 to avoid memory issues
-				$offset                    = 0;
-				$deleted_count             = 0;
-				$max_deletions_per_run     = 100; // Limit total deletions per run to prevent timeouts
+				$batch_size                 = 50; // Process in batches of 50 to avoid memory issues
+				$offset                     = 0;
+				$deleted_count              = 0;
+				$max_deletions_per_run      = 100; // Limit total deletions per run to prevent timeouts
 
 				while ( $deleted_count < $max_deletions_per_run ) {
-					$args = array(
+					$args  = array(
 						'post_type'      => 'cwginstocknotifier',
 						'post_status'    => array( 'cwg_unsubscribed', 'cwg_mailsent', 'cwg_converted' ),
 						'fields'         => 'ids',

@@ -29,22 +29,36 @@ class CWG_Instock_Mail extends CWG_Instock_Mailer {
 		 */
 		do_action( 'cwg_instock_before_' . $this->slug . '_mail', $this->email, $this->subscriber_id );
 
-		// Read from old settings for backward compatibility with filters
-		$option = get_option( 'cwginstocksettings' );
+		// Read from old settings for backward compatibility with filters.
+		// Fall back to safe defaults when the option keys are not yet present.
+		$option = get_option( 'cwginstocksettings', array() );
+		if ( ! is_array( $option ) ) {
+			$option = array();
+		}
+
+		$default_subject = __( 'Good news — {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' );
+		$default_message = __( 'Hello {subscriber_name},<br/><br/>Good news — {product_name} is now back in stock. You can view it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
+
+		$subject = isset( $option['instock_mail_subject'] ) && '' !== $option['instock_mail_subject']
+			? $option['instock_mail_subject']
+			: $default_subject;
+		$message = isset( $option['instock_mail_message'] ) && '' !== $option['instock_mail_message']
+			? $option['instock_mail_message']
+			: $default_message;
 
 		/**
 		 * Filter for modifying the subject.
 		 *
 		 * @since 1.0.0
 		 */
-		$this->get_subject = apply_filters( 'cwginstock_raw_subject', $option['instock_mail_subject'], $subscriber_id );
+		$this->get_subject = apply_filters( 'cwginstock_raw_subject', $subject, $subscriber_id );
 
 		/**
 		 * Filter for modifying the message.
 		 *
 		 * @since 1.0.0
 		 */
-		$this->get_message = apply_filters( 'cwginstock_raw_message', nl2br( $option['instock_mail_message'] ), $subscriber_id );
+		$this->get_message = apply_filters( 'cwginstock_raw_message', nl2br( $message ), $subscriber_id );
 	}
 
 	/**

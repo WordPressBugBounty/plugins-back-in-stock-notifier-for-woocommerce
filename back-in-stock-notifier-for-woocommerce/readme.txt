@@ -3,9 +3,9 @@ Contributors: codewoogeek, propluginslab
 Tags: email, notification, outofstock, waitlist, stock
 Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
-Tested up to: 6.9.4
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 7.1.0
+Stable tag: 7.2.0
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -282,6 +282,18 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.2.0 2026-06-10 =
+* New: Added compatibility with Elementor.
+* New: Added an Accessibility Compliance option under Troubleshoot Settings.
+* Fix: Resolved the Mobile Detect library error.
+* Fix: Resolved the Undefined Array Key error.
+* Fix: Resolved the default value issue affecting the Subscription Success Email and Back In Stock Email subject and message.
+* Fix: Updated the background processing library to the latest version to resolve issues with the default background process not functioning properly.
+* Fix: Resolved an issue where the Status column was breaking in the list table.
+* Tweak: Tested with WordPress 7.0.
+* Tweak: Tested with WooCommerce 10.8.1.
+* Tweak: Updated POT files.
+
 = 7.1.0 2026-04-15 =
 * New: Chunked data handling added to auto-delete functionality
 * Tweak: Status page enhanced

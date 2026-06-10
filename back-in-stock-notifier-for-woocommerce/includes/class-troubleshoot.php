@@ -24,6 +24,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			add_settings_section( 'cwginstock_section_troubleshoot', __( 'Troubleshoot Settings (Experimental)', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'troubleshoot_settings_heading' ), 'cwginstocknotifier_settings' );
 			add_settings_field( 'cwg_instock_subscriptionform_submission', __( 'Frontend Subscribe Form Submission via', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'submit_subscriptionform_via' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_enable_troubleshoot', __( 'Enable if Subscribe Form Layout Problem/Input Field Overlap', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'enable_troubleshoot' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
+			add_settings_field( 'cwg_instock_enable_accessibility_compliance', __( 'Enable Accessibility Compliance for Subscribe Form', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'enable_accessibility_compliance' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_enable_button_troubleshoot', __( 'Additional Class Name for Subscribe Button(seperated by commas)', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'enable_button_for_class' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_hide_subscribecount', __( 'Hide Subscriber Count(Admin Side)', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'hide_subscribercount' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_stock_update_from_thirdparty', __( 'Enable this option if you have updated the stock from a third-party inventory plugin', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'update_stock_third_party' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
@@ -84,6 +85,16 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			<input type='checkbox' name='cwginstocksettings[enable_troubleshoot]' <?php isset( $options['enable_troubleshoot'] ) ? checked( $options['enable_troubleshoot'], 1 ) : ''; ?> value="1" />
 			<p><i>
 					<?php esc_html_e( 'Select this option only if the subscribe form layout breaks in frontend(experimental)', 'back-in-stock-notifier-for-woocommerce' ); ?>
+				</i></p>
+			<?php
+		}
+
+		public function enable_accessibility_compliance() {
+			$options = get_option( 'cwginstocksettings' );
+			?>
+			<input type='checkbox' name='cwginstocksettings[enable_accessibility_compliance]' <?php isset( $options['enable_accessibility_compliance'] ) ? checked( $options['enable_accessibility_compliance'], 1 ) : ''; ?> value="1" />
+			<p><i>
+					<?php esc_html_e( 'Enable accessible labels, screen-reader messaging, and safe submit behavior for the subscribe form.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 				</i></p>
 			<?php
 		}

@@ -830,8 +830,8 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function default_value() {
-			$success_subscribe_message = __( 'Dear {subscriber_name}, <br/>Thank you for subscribing to the #{product_name}. We will email you once product back in stock', 'back-in-stock-notifier-for-woocommerce' );
-			$instock_message           = __( 'Hello {subscriber_name}, <br/>Thanks for your patience and finally the wait is over! <br/> Your Subscribed Product {product_name} is now back in stock! We only have a limited amount of stock, and this email is not a guarantee you\'ll get one, so hurry to be one of the lucky shoppers who do <br/> Add this product {product_name} directly to your cart <a href=\'{cart_link}\'>{cart_link}</a>', 'back-in-stock-notifier-for-woocommerce' );
+			$success_subscribe_message = __( 'Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_name} (#{product_id}). We will send you an email at {subscriber_email} as soon as this item is back in stock. You can review the product here: {product_link}.<br/><br/>Thanks for shopping with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
+			$instock_message           = __( 'Hello {subscriber_name},<br/><br/>Good news — {product_name} is now back in stock. You can view the item here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
 			/**
 			 * Filter for modifying the array of default values
 			 *
