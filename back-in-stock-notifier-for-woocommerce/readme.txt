@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 7.2.1
+Stable tag: 7.2.2
 License: GPL-3.0+
 License URI: [https://www.gnu.org/licenses/gpl-3.0.txt](https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -282,6 +282,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.2.2 2026-06-19 =
+* Tweak: Resolved a conflict in the Background Process library by downgrading the library version.
+* Tweak: Removed code that caused duplicate subscription forms to be displayed.
+
 = 7.2.0 2026-06-10 =
 * New: Added compatibility with Elementor.
 * New: Added an Accessibility Compliance option under Troubleshoot Settings.
