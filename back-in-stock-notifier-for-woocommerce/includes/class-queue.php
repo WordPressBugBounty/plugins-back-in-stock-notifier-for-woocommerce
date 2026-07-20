@@ -12,6 +12,7 @@ class CWG_BIS_Queue {
 	}
 
 	public function update_post_statuses( array $post_ids, $new_status ) {
+		$post_ids = array_filter( array_map( 'absint', $post_ids ) );
 		if ( empty( $post_ids ) ) {
 			return false;
 		}
@@ -27,8 +28,15 @@ class CWG_BIS_Queue {
         ";
 
 		// Prepare query with args
-		$args = array_merge( array( $new_status ), $post_ids );
-		return $this->wpdb->query( $this->wpdb->prepare( $sql, ...$args ) );
+		$args   = array_merge( array( $new_status ), $post_ids );
+		$result = $this->wpdb->query( $this->wpdb->prepare( $sql, ...$args ) );
+
+		// Direct SQL bypasses the object cache, clear each post to avoid stale statuses.
+		foreach ( $post_ids as $post_id ) {
+			clean_post_cache( $post_id );
+		}
+
+		return $result;
 	}
 }
 

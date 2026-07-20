@@ -374,10 +374,11 @@ jQuery(
                         url: cwg_enhanced_selected_params.ajax_url,
                         data: data,
                         success: function (response) {
+                            var message = response.message ? response.message : '';
                             if (response.status == 'failure') {
-                                $('.cwginstock_test_email_info').html("Email sending Failed").css('color', 'red');
+                                $('.cwginstock_test_email_info').text(message ? message : "Email sending Failed").css('color', 'red');
                             } else {
-                                $('.cwginstock_test_email_info').html("Email sent successfully").css('color', 'green');
+                                $('.cwginstock_test_email_info').text(message ? message : "The test email has been scheduled to send shortly.").css('color', 'green');
                             }
                             current_event.removeAttr('disabled');
                         },

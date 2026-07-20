@@ -21,7 +21,6 @@ if ( ! class_exists( 'CWG_Sweetalert_Popup' ) ) {
 			$nonce                 = wp_create_nonce( 'cwg_trigger_popup_ajax' );
 			$get_option            = get_option( 'cwginstocksettings' );
 			$button_label          = isset( $get_option['button_label'] ) && '' != $get_option['button_label'] ? $get_option['button_label'] : __( 'Subscribe Now', 'back-in-stock-notifier-for-woocommerce' );
-			$instock_api           = new CWG_Instock_API();
 			$additional_class_name = isset( $get_option['btn_class'] ) && '' != $get_option['btn_class'] ? str_replace( ',', ' ', $get_option['btn_class'] ) : '';
 			/**
 			 * Filter for popup button label
@@ -30,11 +29,11 @@ if ( ! class_exists( 'CWG_Sweetalert_Popup' ) ) {
 			 */
 			$popup_button_label_filter = apply_filters( 'cwginstock_popup_btn_label', $button_label, $product, $variation );
 			?>
-			<input type="submit" data-security="<?php echo do_shortcode( $nonce ); ?>"
-				data-variation_id="<?php echo do_shortcode( $variation ? $variation->get_id() : '' ); ?>"
-				data-product_id="<?php echo do_shortcode( $product ? $product->get_id() : '' ); ?>"
-				class="cwg_popup_submit <?php echo do_shortcode( $additional_class_name ); ?>"
-				value="<?php echo do_shortcode( $instock_api->sanitize_text_field( $popup_button_label_filter ) ); ?>" />
+			<input type="button" data-security="<?php echo esc_attr( $nonce ); ?>"
+				data-variation_id="<?php echo esc_attr( $variation ? $variation->get_id() : '' ); ?>"
+				data-product_id="<?php echo esc_attr( $product ? $product->get_id() : '' ); ?>"
+				class="cwg_popup_submit <?php echo esc_attr( $additional_class_name ); ?>"
+				value="<?php echo esc_attr( $popup_button_label_filter ); ?>" />
 			<?php
 		}
 

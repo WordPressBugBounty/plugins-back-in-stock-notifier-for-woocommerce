@@ -173,12 +173,23 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 		}
 
 		public function mail_sent_status( $subscribe_id ) {
+			$subscriber_id = absint( $subscribe_id );
+			if ( ! $subscriber_id ) {
+				return false;
+			}
+
 			$args = array(
-				'ID' => $subscribe_id,
+				'ID' => $subscriber_id,
 				'post_type' => 'cwginstocknotifier',
 				'post_status' => 'cwg_mailsent',
 			);
 			$id   = wp_update_post( $args );
+
+			if ( ! is_wp_error( $id ) && $id ) {
+				// Store UTC epoch, the admin column formats it with wp_date() in site timezone.
+				update_post_meta( $subscriber_id, 'cwginstock_mail_on', time() );
+			}
+
 			return $id;
 		}
 

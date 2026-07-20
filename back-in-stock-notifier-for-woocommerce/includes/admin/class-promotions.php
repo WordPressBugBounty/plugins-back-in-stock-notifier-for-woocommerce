@@ -40,8 +40,8 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 		public function add_menu() {
 			add_submenu_page(
 				'edit.php?post_type=cwginstocknotifier',
-				__( 'Extensions & Add-ons', 'back-in-stock-notifier-for-woocommerce' ),
-				__( 'Extensions', 'back-in-stock-notifier-for-woocommerce' ),
+				__( 'Marketplace - Pro Plugins & Add-ons', 'back-in-stock-notifier-for-woocommerce' ),
+				__( 'Marketplace', 'back-in-stock-notifier-for-woocommerce' ),
 				'manage_woocommerce',
 				self::PAGE_SLUG,
 				array( $this, 'render_page' )
@@ -53,18 +53,24 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				return;
 			}
 
+			// Version by file modification time so asset updates always bust browser cache.
+			$css_path = CWGINSTOCK_PLUGINDIR . 'assets/css/promotions.css';
+			$js_path  = CWGINSTOCK_PLUGINDIR . 'assets/js/promotions.js';
+			$css_ver  = file_exists( $css_path ) ? (string) filemtime( $css_path ) : CWGINSTOCK_VERSION;
+			$js_ver   = file_exists( $js_path ) ? (string) filemtime( $js_path ) : CWGINSTOCK_VERSION;
+
 			wp_enqueue_style(
 				'cwg-bis-promotions',
 				CWGINSTOCK_PLUGINURL . 'assets/css/promotions.css',
 				array(),
-				CWGINSTOCK_VERSION
+				$css_ver
 			);
 
 			wp_enqueue_script(
 				'cwg-bis-promotions',
 				CWGINSTOCK_PLUGINURL . 'assets/js/promotions.js',
 				array( 'jquery' ),
-				CWGINSTOCK_VERSION,
+				$js_ver,
 				true
 			);
 
@@ -236,6 +242,29 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 		}
 
 		/* ================================================================
+		 * Helper: add UTM tracking parameters to URLs
+		 * ================================================================ */
+
+		private function add_utm_params( $url, $content = '' ) {
+			if ( empty( $url ) ) {
+				return $url;
+			}
+
+			$separator = strpos( $url, '?' ) !== false ? '&' : '?';
+			$utm_params = array(
+				'utm_source=wordpress',
+				'utm_medium=admin',
+				'utm_campaign=extensions-page',
+			);
+
+			if ( ! empty( $content ) ) {
+				$utm_params[] = 'utm_content=' . urlencode( $content );
+			}
+
+			return $url . $separator . implode( '&', $utm_params );
+		}
+
+		/* ================================================================
 		 * Card rendering
 		 * ================================================================ */
 
@@ -243,12 +272,11 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 			$has_sale    = ! empty( $product['discount_active'] );
 			$sale_price  = $has_sale && ! empty( $product['discount_price'] ) ? $product['discount_price'] : '';
 			$badge_text  = ! empty( $product['badge'] ) ? $product['badge'] : '';
-			$product_url = ! empty( $product['url'] ) ? $product['url'] : 'https://propluginslab.com/';
+			$base_url    = ! empty( $product['url'] ) ? $product['url'] : 'https://propluginslab.com/';
 			$type        = isset( $product['type'] ) ? $product['type'] : 'addon';
 			$category    = ! empty( $product['category'] ) ? $product['category'] : 'general';
+			$product_url = $this->add_utm_params( $base_url, isset( $product['name'] ) ? $product['name'] : 'product' );
 
-			// Calculate save percentage for sale items
-			$save_pct = 0;
 			if ( $has_sale && $sale_price && ! $status ) {
 				$orig_price = floatval( isset( $product['price'] ) ? $product['price'] : 0 );
 				$disc_price = floatval( $sale_price );
@@ -387,6 +415,23 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 			$last_fetch    = CWG_Instock_Remote_Feed::get_last_fetch_time();
 			$has_products  = ! empty( $all_products );
 
+			if ( $has_products ) {
+				$pro_products   = array();
+				$addon_products = array();
+
+				foreach ( $all_products as $product ) {
+					$type = isset( $product['type'] ) ? $product['type'] : 'addon';
+
+					if ( 'pro' === $type ) {
+						$pro_products[] = $product;
+					} else {
+						$addon_products[] = $product;
+					}
+				}
+
+				$all_products = array_merge( $pro_products, $addon_products );
+			}
+
 			// ── Classify products and build category counts ──
 			$addon_count = 0;
 			$pro_count   = 0;
@@ -448,7 +493,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				<!-- Header -->
 				<div class="cwg-promo-header">
 					<div class="cwg-promo-header-left">
-						<h1><?php esc_html_e( 'Extensions & Add-ons', 'back-in-stock-notifier-for-woocommerce' ); ?></h1>
+						<h1><?php esc_html_e( 'Marketplace', 'back-in-stock-notifier-for-woocommerce' ); ?></h1>
 						<p class="cwg-promo-subtitle">
 							<?php esc_html_e( 'Supercharge your Back In Stock Notifier with powerful add-ons and premium plugins.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						</p>
@@ -545,10 +590,10 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						<?php if ( empty( $feed_url ) ) : ?>
 							<?php esc_html_e( 'The remote feed URL is not configured. Please set it in Settings, or browse extensions on our website.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<?php else : ?>
-							<?php esc_html_e( 'Extensions will be loaded automatically via daily sync. Click "Refresh" above to load now, or visit our website.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Products will be loaded automatically via daily sync. Click "Refresh" above to load now, or visit our website.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<?php endif; ?>
 					</p>
-					<a href="https://propluginslab.com/" target="_blank" class="button button-primary button-hero">
+					<a href="<?php echo esc_url( $this->add_utm_params( 'https://propluginslab.com/', 'empty-state' ) ); ?>" target="_blank" class="button button-primary button-hero">
 						<?php esc_html_e( 'Visit ProPluginsLab', 'back-in-stock-notifier-for-woocommerce' ); ?>
 					</a>
 				</div>
@@ -561,15 +606,15 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						<?php esc_html_e( 'All', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<span class="cwg-btn-count"><?php echo count( $all_products ); ?></span>
 					</button>
-					<button type="button" class="cwg-type-btn cwg-type-btn--addon" data-type="addon">
-						<span class="dashicons dashicons-admin-plugins"></span>
-						<?php esc_html_e( 'Add-ons', 'back-in-stock-notifier-for-woocommerce' ); ?>
-						<span class="cwg-btn-count"><?php echo absint( $addon_count ); ?></span>
-					</button>
 					<button type="button" class="cwg-type-btn cwg-type-btn--pro" data-type="pro">
 						<span class="dashicons dashicons-star-filled"></span>
 						<?php esc_html_e( 'Pro Plugins', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<span class="cwg-btn-count"><?php echo absint( $pro_count ); ?></span>
+					</button>
+					<button type="button" class="cwg-type-btn cwg-type-btn--addon" data-type="addon">
+						<span class="dashicons dashicons-admin-plugins"></span>
+						<?php esc_html_e( 'Add-ons', 'back-in-stock-notifier-for-woocommerce' ); ?>
+						<span class="cwg-btn-count"><?php echo absint( $addon_count ); ?></span>
 					</button>
 				</div>
 
@@ -622,14 +667,11 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				<div class="cwg-promo-footer">
 					<p>
 						<?php esc_html_e( 'Need help? Visit', 'back-in-stock-notifier-for-woocommerce' ); ?>
-						<a href="https://support.codewoogeek.online" target="_blank"><?php esc_html_e( 'ProPluginsLab Support', 'back-in-stock-notifier-for-woocommerce' ); ?></a>
-					</p>
-				</div>
-
+					<a href="<?php echo esc_url( $this->add_utm_params( 'https://support.codewoogeek.online', 'footer-support' ) ); ?>" target="_blank"><?php esc_html_e( 'ProPluginsLab Support', 'back-in-stock-notifier-for-woocommerce' ); ?></a>
+				</p>
 			</div>
+
 			<?php
 		}
 	}
-
-	new CWG_Instock_Promotions();
-}
+new CWG_Instock_Promotions();}

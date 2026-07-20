@@ -1,5 +1,5 @@
 /**
- * Back In Stock Notifier — Extensions & Promotions Page
+ * Back In Stock Notifier - Extensions & Promotions Page
  * Clean, modern admin UI with button-based filters
  *
  * @since 7.2.0
@@ -98,17 +98,28 @@
 	color: #8c8f94;
 }
 
+/* Keep the dashicon vertically centered with the button label */
+#cwg-refresh-feed,
+.cwg-promo-header-right .button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+}
+
+#cwg-refresh-feed .dashicons,
 .cwg-promo-header-right .button .dashicons {
 	font-size: 16px;
 	width: 16px;
 	height: 16px;
-	margin-right: 2px;
-	vertical-align: middle;
-	line-height: inherit;
+	margin: 0;
+	line-height: 1;
 }
 
+#cwg-refresh-feed.refreshing .dashicons,
 .cwg-promo-header-right .button.refreshing .dashicons {
 	animation: cwg-spin 1s linear infinite;
+	transform-origin: 50% 50%;
 }
 
 @keyframes cwg-spin {

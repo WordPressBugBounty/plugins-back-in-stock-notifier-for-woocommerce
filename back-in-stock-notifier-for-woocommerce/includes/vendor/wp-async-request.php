@@ -20,7 +20,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * (default value: 'wp')
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $prefix = 'wp';
 
@@ -30,7 +29,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * (default value: 'async_request')
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $action = 'async_request';
 
@@ -38,7 +36,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * Identifier
 		 *
 		 * @var mixed
-		 * @access protected
 		 */
 		protected $identifier;
 
@@ -48,7 +45,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * (default value: array())
 		 *
 		 * @var array
-		 * @access protected
 		 */
 		protected $data = array();
 
@@ -131,6 +127,11 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 				'blocking' => false,
 				'body' => $this->data,
 				'cookies' => $_COOKIE,
+				/**
+				 * Filter whether to verify SSL for local async requests.
+				 *
+				 * @since 1.0.0
+				 */
 				'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
 			);
 		}

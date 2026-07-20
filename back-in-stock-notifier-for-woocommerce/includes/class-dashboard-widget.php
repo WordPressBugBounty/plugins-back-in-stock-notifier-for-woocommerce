@@ -212,7 +212,7 @@ if ( ! class_exists( 'CWG_Back_In_Stock_Dashboard_Widget' ) ) {
 			$results = $wpdb->get_results( $wpdb->prepare( $sql, $params ) ); // phpcs:ignore
 
 			if ( empty( $results ) ) {
-				return '<em>' . esc_html__( '— No data for selected period —', 'back-in-stock-notifier-for-woocommerce' ) . '</em>';
+				return '<em>' . esc_html__( 'No data for selected period', 'back-in-stock-notifier-for-woocommerce' ) . '</em>';
 			}
 
 			$out = '<ol style="margin:0;padding-left:1em;">';

@@ -13,11 +13,6 @@
  * KNOWN LIMITATIONS: https://github.com/serbanghita/Mobile-Detect/blob/master/docs/KNOWN_LIMITATIONS.md
  * EXAMPLES: https://github.com/serbanghita/Mobile-Detect/wiki/Code-examples
  *
- * @license https://github.com/serbanghita/Mobile-Detect/blob/master/LICENSE
- * @author  Serban Ghita <serbanghita@gmail.com> (since 2012)
- * @author  Nick Ilyin <nick.ilyin@gmail.com>
- * @author: Victor Stanciu <vic.stanciu@gmail.com> (original author)
- *
  * @version 3.74.3
  */
 namespace CWG_Detection;

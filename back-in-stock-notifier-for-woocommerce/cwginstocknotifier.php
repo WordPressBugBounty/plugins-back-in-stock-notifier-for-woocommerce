@@ -5,14 +5,14 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.2.2
+ * Version: 7.3.0
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.com
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 10.8.1
+ * WC tested up to: 10.9.4
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      propluginslab
  * @copyright   2026 CodeWooGeek, LLC (USA) and CodeWooGeek Softwares Private Limited (India). All rights reserved.
@@ -58,7 +58,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.2.2';
+		public $version = '7.3.0';
 
 		/**
 		 * Instance variable
@@ -161,6 +161,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-stock-arrival.php';
 			include 'includes/class-stock-arrival-settings.php';
 			include 'includes/class-queue.php';
+			include 'includes/class-mail-throttle.php';
+			include 'includes/class-partial-stock.php';
 			include 'includes/class-dashboard-widget.php';
 			include 'includes/class-cache-control.php';
 		}
@@ -317,9 +319,14 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		public function admin_enqueue_scripts() {
 			$screen = get_current_screen();
 			if ( isset( $screen->id ) && ( ( 'cwginstocknotifier_page_cwg-instock-mailer' == $screen->id ) || ( 'edit-cwginstocknotifier' == $screen->id ) || ( 'cwginstocknotifier_page_cwg-instock-status' == $screen->id ) || ( 'cwginstocknotifier_page_cwg-instock-extensions' == $screen->id ) ) ) {
+				// Version admin assets by file modification time so updates always bust browser cache.
+				$admin_css_path = CWGINSTOCK_PLUGINDIR . 'assets/css/admin.css';
+				$admin_js_path  = CWGINSTOCK_PLUGINDIR . 'assets/js/admin.js';
+				$admin_css_ver  = file_exists( $admin_css_path ) ? (string) filemtime( $admin_css_path ) : $this->version;
+				$admin_js_ver   = file_exists( $admin_js_path ) ? (string) filemtime( $admin_js_path ) : $this->version;
 				wp_enqueue_script( 'sweetalert2', CWGINSTOCK_PLUGINURL . 'assets/js/sweetalert2.min.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_style( 'cwginstock_admin_css', CWGINSTOCK_PLUGINURL . '/assets/css/admin.css', array(), $this->version );
-				wp_register_script( 'cwginstock_admin_js', CWGINSTOCK_PLUGINURL . '/assets/js/admin.js', array( 'jquery', 'wc-enhanced-select', 'wp-i18n' ), $this->version, array( 'in_footer' => true ) );
+				wp_enqueue_style( 'cwginstock_admin_css', CWGINSTOCK_PLUGINURL . '/assets/css/admin.css', array(), $admin_css_ver );
+				wp_register_script( 'cwginstock_admin_js', CWGINSTOCK_PLUGINURL . '/assets/js/admin.js', array( 'jquery', 'wc-enhanced-select', 'wp-i18n' ), $admin_js_ver, array( 'in_footer' => true ) );
 				wp_localize_script(
 					'cwginstock_admin_js',
 					'cwg_enhanced_selected_params',

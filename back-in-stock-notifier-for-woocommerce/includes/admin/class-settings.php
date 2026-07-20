@@ -140,10 +140,14 @@ if (! class_exists('CWG_Instock_Settings')) {
 			add_settings_field('cwg_instock_mail_product_visibility_status', __('Consider Only Published Product Status', 'back-in-stock-notifier-for-woocommerce'), array($this, 'enable_instock_mail_for_product_status'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_mail_set_minimum_stock_quantity', __('Minimum stock quantity threshold value', 'back-in-stock-notifier-for-woocommerce'), array($this, 'instock_mail_message_set_stock_quantity'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 			add_settings_field('cwg_instock_post_status_subscribed', __('Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)', 'back-in-stock-notifier-for-woocommerce'), array($this, 'enable_post_status_subscribed'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+			add_settings_field('cwg_instock_fcfs_enable', __('Fair Sending: Notify only as many Subscribers as Units in Stock', 'back-in-stock-notifier-for-woocommerce'), array($this, 'fcfs_enable_field'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
+			add_settings_field('cwg_instock_fcfs_per_unit', __('Fair Sending: Subscribers to Notify per Unit in Stock', 'back-in-stock-notifier-for-woocommerce'), array($this, 'fcfs_per_unit_field'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 
-			
+
 			add_settings_section('cwginstock_section_bgprocess', __('Background Process Engine - Advanced Settings', 'back-in-stock-notifier-for-woocommerce'), array($this, 'background_process_heading'), 'cwginstocknotifier_settings');
 			add_settings_field('cwginstock_bgp_selection', __('Background Process Engine', 'back-in-stock-notifier-for-woocommerce'), array($this, 'bgp_engine'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
+			add_settings_field('cwg_instock_email_throttle', __('Limit Email Sending Speed', 'back-in-stock-notifier-for-woocommerce'), array($this, 'email_throttle_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
+			add_settings_field('cwg_instock_emails_per_minute', __('Maximum Emails per Minute', 'back-in-stock-notifier-for-woocommerce'), array($this, 'emails_per_minute_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
 			/**
 			 * Action to register settings
 			 *
@@ -784,8 +788,60 @@ if (! class_exists('CWG_Instock_Settings')) {
 			<?php
 		}
 
+		public function fcfs_enable_field() {
+			$options = get_option('cwginstocksettings');
+			?>
+			<input type='checkbox' name='cwginstocksettings[enable_fcfs_notification]' <?php isset($options['enable_fcfs_notification']) ? checked($options['enable_fcfs_notification'], 1) : ''; ?> value="1" />
+			<i>
+				<p><?php esc_html_e('When a product is restocked with only a few units, notify just the earliest subscribers instead of everyone. For example: 100 subscribers are waiting and you restock 5 units, only the first 5 subscribers are notified. The remaining 95 stay on the waitlist and are notified automatically on the next restock, they do not need to subscribe again.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+				<p><?php esc_html_e('Subscribers who already received a notification are moved to the end of the line, so everyone gets a fair turn. Applies only to automatic instock emails for products that manage stock quantity. Manual and bulk sends are never limited.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function fcfs_per_unit_field() {
+			$options  = get_option('cwginstocksettings');
+			$per_unit = isset($options['fcfs_subscribers_per_unit']) && absint($options['fcfs_subscribers_per_unit']) > 0 ? absint($options['fcfs_subscribers_per_unit']) : 1;
+			?>
+			<input type='number' style='width: 400px;' name='cwginstocksettings[fcfs_subscribers_per_unit]'
+				value="<?php echo esc_attr($per_unit); ?>" min="1" max="100" step="1" />
+			<i>
+				<p><?php esc_html_e('How many subscribers to notify for each unit in stock. Default is 1, so restocking 5 units notifies the first 5 subscribers. Increase this if you expect that not every notified subscriber will buy. For example: set 2 and restocking 5 units notifies the first 10 subscribers. Used only when Fair Sending above is enabled.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
 		public function background_process_heading() {
 			esc_html_e('Please select background process engine, this is important to send a mail in background by default it is WP Background Process and you can also choose WooCommerce Background Process', 'back-in-stock-notifier-for-woocommerce');
+		}
+
+		public function email_throttle_field() {
+			$options = get_option('cwginstocksettings');
+			?>
+			<input type='checkbox' name='cwginstocksettings[enable_email_throttle]' <?php isset($options['enable_email_throttle']) ? checked($options['enable_email_throttle'], 1) : ''; ?> value="1" />
+			<i>
+				<p><?php esc_html_e('Send automatic instock emails gradually instead of all at once. Useful when your hosting provider or SMTP service limits how many emails you can send per minute or hour. Emails over the limit are automatically sent in the following minutes, nothing is lost or skipped.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+				<p><?php esc_html_e('Applies only to automatic background emails. Manual sends, bulk sends and subscription confirmation emails are never delayed.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function emails_per_minute_field() {
+			$options = get_option('cwginstocksettings');
+			$rate    = isset($options['emails_per_minute']) && absint($options['emails_per_minute']) > 0 ? absint($options['emails_per_minute']) : 60;
+			?>
+			<input type='number' style='width: 400px;' name='cwginstocksettings[emails_per_minute]'
+				value="<?php echo esc_attr($rate); ?>" min="1" max="500" step="1" />
+			<i>
+				<p><?php esc_html_e('Maximum number of automatic instock emails to send per minute. Default is 60. Check your hosting or SMTP provider limits and set a slightly lower value. For example: a provider limit of 600 emails per hour means at most 10 per minute. Used only when Limit Email Sending Speed above is enabled.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
 		}
 
 		public function bgp_engine() {
@@ -831,7 +887,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 
 		public function default_value() {
 			$success_subscribe_message = __( 'Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_name} (#{product_id}). We will send you an email at {subscriber_email} as soon as this item is back in stock. You can review the product here: {product_link}.<br/><br/>Thanks for shopping with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
-			$instock_message           = __( 'Hello {subscriber_name},<br/><br/>Good news — {product_name} is now back in stock. You can view the item here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
+			$instock_message           = __( 'Hello {subscriber_name},<br/><br/>Good news! {product_name} is now back in stock. You can view the item here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
 			/**
 			 * Filter for modifying the array of default values
 			 *

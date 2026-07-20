@@ -63,17 +63,17 @@ class CWG_Instock_Subscription extends CWG_Instock_Mailer {
 	}
 
 	/**
-	 * Send method — delegates to WC email if available.
+	 * Send method - delegates to WC email if available.
 	 *
 	 * @since 7.0.0
 	 * @return bool
 	 */
 	public function send() {
-		// Try to use the WC email system first
+		// Use the WC email system when our email class is registered.
 		if ( function_exists( 'WC' ) && WC()->mailer() ) {
 			$wc_emails = WC()->mailer()->get_emails();
-			if ( isset( $wc_emails['WC_Email_BIS_Subscription'] ) ) {
-				$wc_email = $wc_emails['WC_Email_BIS_Subscription'];
+			$wc_email  = isset( $wc_emails['WC_Email_BIS_Subscription'] ) ? $wc_emails['WC_Email_BIS_Subscription'] : null;
+			if ( $wc_email instanceof WC_Email_BIS_Subscription ) {
 
 				// Check if enabled via WC settings
 				$wc_settings = get_option( 'woocommerce_cwg_bis_subscription_settings', array() );
@@ -84,21 +84,40 @@ class CWG_Instock_Subscription extends CWG_Instock_Mailer {
 				$old_enabled = isset( $old_option['enable_success_sub_mail'] ) ? $old_option['enable_success_sub_mail'] : '1';
 
 				if ( 'yes' === $is_enabled || '1' === $old_enabled ) {
-					$wc_email->trigger( $this->subscriber_id );
+					// trigger() returns true (sent), false (failed) or null (skipped).
+					$trigger_result = $wc_email->trigger( $this->subscriber_id );
 
-					// Handle copy mail functionality
+					// Copy mail (admin copy) is independent of the subscriber mail outcome.
 					$this->handle_copy_mail();
-					
 
+					if ( null === $trigger_result ) {
+						// Email disabled, nothing was attempted.
+						$this->last_send_status = 'disabled';
+						return false;
+					}
+
+					if ( $trigger_result ) {
+						$this->last_send_status = 'sent';
+						/**
+						 * Mail Sent Success
+						 *
+						 * @since 1.0.0
+						 */
+						do_action( 'cwg_' . $this->slug . '_mail_sent_success', $this->subscriber_id );
+						return true;
+					}
+
+					$this->last_send_status = 'failed';
 					/**
-					 * Mail Sent Success
+					 * Mail Sent Failure
 					 *
 					 * @since 1.0.0
 					 */
-					do_action( 'cwg_' . $this->slug . '_mail_sent_success', $this->subscriber_id );
-					return true;
+					do_action( 'cwg_' . $this->slug . '_mail_sent_failure', $this->subscriber_id );
+					return false;
 				}
 
+				$this->last_send_status = 'disabled';
 				return false;
 			}
 		}
@@ -117,15 +136,21 @@ class CWG_Instock_Subscription extends CWG_Instock_Mailer {
 		if ( ! empty( $option ) ) {
 			/**
 			 * Filter for modifying the subject
+			 *
+			 * @since 1.0.0
 			 */
 			$this->get_subject = apply_filters( 'cwgimail_raw_subject', $option['copy_sub_subject'], $this->subscriber_id );
 			/**
 			 * Filter for modifying the message
+			 *
+			 * @since 1.0.0
 			 */
 			$this->get_message = apply_filters( 'cwgimail_raw_message', nl2br( $option['copy_sub_message'] ), $this->subscriber_id );
 
 			/**
 			 * Additionally Send Subscription mail as a copy to specific email ids
+			 *
+			 * @since 1.0.0
 			 */
 			do_action( 'cwg_instock_mail_send_as_copy', $this->email, $this->get_subject(), $this->format_html_message() );
 		}

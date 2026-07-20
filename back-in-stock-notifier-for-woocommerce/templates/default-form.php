@@ -131,20 +131,18 @@
 							do_action( 'cwginstock_before_submit_button', $product_id, $variation_id );
 							$additional_class_name = isset( $get_option['btn_class'] ) && '' != $get_option['btn_class'] ? str_replace( ',', ' ', $get_option['btn_class'] ) : '';
 							?>
-							<input type="<?php echo $enable_accessibility_compliance ? 'button' : 'submit'; ?>" name="cwgstock_submit"
+							<?php						/**
+						 * Filter to add extra attributes to the submit input button.
+						 *
+						 * @since 1.0.0
+						 */							$submit_extra_attr = apply_filters( 'cwgstock_submit_attr', '', $product_id, $variation_id );
+							?>
+							<input type="submit" name="cwgstock_submit"
 								class="cwgstock_button <?php echo esc_attr( $additional_class_name ); ?>"
-								<?php 
-								if ( $enable_accessibility_compliance ) {
-									?>
-									aria-label="<?php echo esc_attr( $instock_api->sanitize_text_field( $button_label ) ); ?>"<?php } ?>
-																  <?php
-																	/**
-																	 * Submit Attribute
-																	 *
-																	 * @since 1.0.0
-																	 */
-																	echo do_shortcode( apply_filters( 'cwgstock_submit_attr', '', $product_id, $variation_id ) );
-																	?>
+								<?php if ( $enable_accessibility_compliance ) : ?>
+									aria-label="<?php echo esc_attr( $instock_api->sanitize_text_field( $button_label ) ); ?>"
+								<?php endif; ?>
+								<?php echo do_shortcode( $submit_extra_attr ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								value="<?php echo esc_attr( $instock_api->sanitize_text_field( $button_label ) ); ?>" />
 							<?php
 							/**

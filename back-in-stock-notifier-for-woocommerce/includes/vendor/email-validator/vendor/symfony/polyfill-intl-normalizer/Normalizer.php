@@ -17,8 +17,6 @@ namespace Symfony\Polyfill\Intl\Normalizer;
  * It has been validated with Unicode 6.3 Normalization Conformance Test.
  * See http://www.unicode.org/reports/tr15/ for detailed info about Unicode normalizations.
  *
- * @author Nicolas Grekas <p@tchwork.com>
- *
  * @internal
  */
 class Normalizer

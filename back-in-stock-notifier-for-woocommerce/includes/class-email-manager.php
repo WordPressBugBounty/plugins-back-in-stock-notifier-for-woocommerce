@@ -101,7 +101,7 @@ if ( ! class_exists( 'CWG_Instock_Email_Manager' ) ) {
 				return $address;
 			}
 
-			$instance = new self(); // ← your class name
+			$instance = new self();
 			return $instance->from_email();
 		}
 
@@ -147,6 +147,11 @@ if ( ! class_exists( 'CWG_Instock_Email_Manager' ) ) {
 		 * One-time migration of legacy plugin settings → WooCommerce email options.
 		 */
 		public function maybe_migrate_settings() {
+			// Run only once, re-running would overwrite fields a merchant cleared on purpose.
+			if ( get_option( self::MIGRATION_FLAG ) ) {
+				return;
+			}
+
 			$old = get_option( 'cwginstocksettings', array() );
 			if ( ! is_array( $old ) ) {
 				$old = array();
@@ -170,10 +175,6 @@ if ( ! class_exists( 'CWG_Instock_Email_Manager' ) ) {
 				|| empty( $ins_settings['subject'] )
 				|| empty( $ins_settings['heading'] )
 				|| empty( $ins_settings['additional_content'] );
-
-			if ( get_option( self::MIGRATION_FLAG ) && ! $needs_sub_migration && ! $needs_in_migration ) {
-				return;
-			}
 
 			// Migrate Subscription Email
 			if ( $needs_sub_migration ) {
@@ -205,13 +206,13 @@ if ( ! class_exists( 'CWG_Instock_Email_Manager' ) ) {
 						'enabled'            => ! empty( $old['enable_instock_mail'] ) ? 'yes' : 'no',
 						'subject'            => ! empty( $old['instock_mail_subject'] )
 							? sanitize_text_field( $old['instock_mail_subject'] )
-							: __( 'Good news — {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' ),
+							: __( 'Good news! {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' ),
 						'heading'            => ! empty( $old['instock_mail_subject'] )
 							? sanitize_text_field( $old['instock_mail_subject'] )
 							: __( 'Your subscribed item {product_name} is now available', 'back-in-stock-notifier-for-woocommerce' ),
 						'additional_content' => ! empty( $old['instock_mail_message'] )
 							? wp_kses_post( $old['instock_mail_message'] )
-							: __( 'Hello {subscriber_name},<br/><br/>Good news — {product_name} is now back in stock. You can view it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' ),
+							: __( 'Hello {subscriber_name},<br/><br/>Good news! {product_name} is now back in stock. You can view it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' ),
 						'email_type'         => 'html',
 					)
 				);

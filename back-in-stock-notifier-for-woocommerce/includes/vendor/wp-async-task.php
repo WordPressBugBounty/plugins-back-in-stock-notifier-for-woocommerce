@@ -128,6 +128,11 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 				$request_args = array(
 					'timeout' => 0.01,
 					'blocking' => false,
+					/**
+					 * Filter whether to verify SSL for local async task requests.
+					 *
+					 * @since 1.0.0
+					 */
 					'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
 					'body' => $this->_body_data,
 					'headers' => array(

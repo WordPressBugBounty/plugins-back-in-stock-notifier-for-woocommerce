@@ -6,8 +6,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 abstract class CWG_Instock_Mailer {
 
+	/**
+	 * Outcome of the last send() call: 'sent', 'failed' or 'disabled'.
+	 *
+	 * @since 7.3.0
+	 * @var string
+	 */
+	protected $last_send_status = '';
+
 	public function __construct() {
 
+	}
+
+	/**
+	 * Get the outcome of the last send() call.
+	 *
+	 * @since 7.3.0
+	 * @return string 'sent', 'failed', 'disabled' or '' when send() has not run yet.
+	 */
+	public function get_last_send_status() {
+		return $this->last_send_status;
 	}
 
 	public function from_email() {
@@ -175,6 +193,7 @@ abstract class CWG_Instock_Mailer {
 			do_action( 'cwg_instock_mail_send_as_copy', $to, $this->get_subject(), $this->format_html_message() );
 		}
 		if ( $sendmail ) {
+			$this->last_send_status = 'sent';
 			/**
 			 * Mail Sent Success
 			 *
@@ -183,6 +202,7 @@ abstract class CWG_Instock_Mailer {
 			do_action( 'cwg_' . $this->slug . '_mail_sent_success', $this->subscriber_id );
 			return true;
 		} else {
+			$this->last_send_status = 'failed';
 			/**
 			 * Mail Sent Failure
 			 *

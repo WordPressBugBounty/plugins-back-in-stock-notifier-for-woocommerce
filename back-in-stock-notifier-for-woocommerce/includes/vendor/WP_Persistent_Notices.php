@@ -52,7 +52,11 @@ if ( ! class_exists( 'WP_Persistent_Notices' ) ) {
 		}
 
 		public function admin_init() {
-			// add a filter and that returns true to replace or prevent the session initialization functionality
+			/**
+			 * Filter to replace or prevent the session initialization functionality.
+			 *
+			 * @since 1.0.0
+			 */
 			if ( ! apply_filters( 'wp_persistent_notices_replace_initialization', false ) ) {
 				if ( ! isset( $_SESSION ) ) {
 					session_start();
@@ -131,7 +135,11 @@ if ( ! class_exists( 'WP_Persistent_Notices' ) ) {
 		public function save_notices() {
 			$notices = $this->retrieve_notices( 'all' );
 			if ( isset( $notices ) ) {
-				// add a filter that returns true to replace the notice saving functionality
+				/**
+				 * Filter to replace the notice saving functionality. Return true to prevent default save.
+				 *
+				 * @since 1.0.0
+				 */
 				if ( apply_filters( 'wp_persistent_notices_replace_save_notices', false, $notices ) !== true ) {
 					$_SESSION[ $this->session_var ] = $notices;
 				}
@@ -141,9 +149,17 @@ if ( ! class_exists( 'WP_Persistent_Notices' ) ) {
 		private function retrieve_notices( $location = 'default' ) {
 			// note: once a notice is retrieved, it's gone
 			$notices = array();
-			// add a filter that returns true to prevent retrieving messages on specific pages
+			/**
+			 * Filter to prevent retrieving notices on specific pages. Return true to prevent retrieval.
+			 *
+			 * @since 1.0.0
+			 */
 			if ( ! apply_filters( 'wp_persistent_notices_prevent_retrieval', false ) ) {
-				// add a filter that returns notices or empty array() to replace the session retrieval functionality
+				/**
+				 * Filter to replace the session retrieval functionality. Return notices array or false.
+				 *
+				 * @since 1.0.0
+				 */
 				$raw_notices = apply_filters( 'wp_persistent_notices_replace_retrieve_notices', false );
 				if ( $raw_notices === false ) {
 					$raw_notices = array();
@@ -155,6 +171,11 @@ if ( ! class_exists( 'WP_Persistent_Notices' ) ) {
 					}
 				}
 				$raw_notices += $this->notices;
+				/**
+				 * Filter all raw notices before they are processed.
+				 *
+				 * @since 1.0.0
+				 */
 				$raw_notices = apply_filters( 'wp_persistent_notices', $raw_notices );
 				// clear all places notices are stored
 				if ( isset( $_SESSION[ $this->session_var ] ) ) {
@@ -178,7 +199,11 @@ if ( ! class_exists( 'WP_Persistent_Notices' ) ) {
 						$this->notices[] = $notice;
 					}
 				}
-				// attach a filter that returns true to disable grouping notices
+				/**
+				 * Filter to disable grouping/sorting notices. Return true to display ungrouped.
+				 *
+				 * @since 1.0.0
+				 */
 				if ( ! apply_filters( 'wp_persistent_notices_display_ungrouped', false ) ) {
 					usort( $notices, array( $this, 'compare_notices' ) );
 				}
@@ -187,7 +212,11 @@ if ( ! class_exists( 'WP_Persistent_Notices' ) ) {
 		}
 
 		private function compare_notices( $a, $b ) {
-			// attach a filter that returns an integer { -1, 0, 1 } to replace comparison function
+			/**
+			 * Filter to replace the notice comparison function. Return integer { -1, 0, 1 } or false.
+			 *
+			 * @since 1.0.0
+			 */
 			$compare = apply_filters( 'wp_persistent_notices_replace_comparison', false, $a, $b );
 			if ( $compare !== false ) {
 				return $compare;
@@ -210,19 +239,43 @@ if ( ! class_exists( 'WP_Persistent_Notices' ) ) {
 				$i = false;
 				switch ( $val ) {
 					case 'error':
+						/**
+						 * Filter the sort weight for error notices.
+						 *
+						 * @since 1.0.0
+						 */
 						$i = apply_filters( 'wp_persistent_notices_sort_error_weight', 0 );
 						break;
-					case 'warning':
+						case 'warning':
+						/**
+						 * Filter the sort weight for warning notices.
+						 *
+						 * @since 1.0.0
+						 */
 						$i = apply_filters( 'wp_persistent_notices_sort_warning_weight', 5 );
 						break;
-					case 'success':
+						case 'success':
+						/**
+						 * Filter the sort weight for success notices.
+						 *
+						 * @since 1.0.0
+						 */
 						$i = apply_filters( 'wp_persistent_notices_sort_success_weight', 10 );
 						break;
-					case 'info':
+						case 'info':
+						/**
+						 * Filter the sort weight for info notices.
+						 *
+						 * @since 1.0.0
+						 */
 						$i = apply_filters( 'wp_persistent_notices_sort_info_weight', 15 );
 						break;
-					default:
-						// use the val to determine weight
+						default:
+						/**
+						 * Filter the sort weight for custom notice types.
+						 *
+						 * @since 1.0.0
+						 */
 						$i = apply_filters( 'wp_persistent_notices_sort_custom_weight', 20, $val );
 				}
 				$results[] = $i;

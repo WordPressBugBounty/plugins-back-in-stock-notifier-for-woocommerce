@@ -1,9 +1,9 @@
 /**
- * Back In Stock Notifier — Promotions Page JS
+ * Back In Stock Notifier - Promotions Page JS
  *
  * Two-level filtering with styled buttons:
- *  Level 1: Type buttons — All / Add-ons / Pro Plugins
- *  Level 2: Subcategory buttons — context-switches based on active type
+ *  Level 1: Type buttons - All / Add-ons / Pro Plugins
+ *  Level 2: Subcategory buttons - context-switches based on active type
  *    - "All" type: shows addon subcats, filters only addon cards
  *    - "Add-ons" type: shows addon subcats (General, Utilities, etc.)
  *    - "Pro Plugins" type: shows pro subcats (auto-generated: Products, Pricing, etc.)
@@ -65,7 +65,7 @@
 				$addonSubcats.slideUp(150);
 				$proSubcats.slideDown(150);
 			} else {
-				// "all" or "addon" — show addon subcats
+				// "all" or "addon" - show addon subcats
 				$proSubcats.slideUp(150);
 				$addonSubcats.slideDown(150);
 			}
@@ -116,14 +116,18 @@
 		/* ── Feed refresh ────────────────────────────────────────── */
 		$('#cwg-refresh-feed').on('click', function () {
 			var $btn    = $(this),
-				$notice = $('#cwg-promo-notice');
+				$text   = $btn.find('.cwg-btn-text'),
+				$notice = $('#cwg-promo-notice'),
+				originalText = $text.text();
 
 			if ($btn.hasClass('refreshing')) {
 				return;
 			}
 
+			// Lock width to avoid layout jump while refreshing
+			$btn.css('min-width', $btn.outerWidth() + 'px');
 			$btn.addClass('refreshing').prop('disabled', true);
-			$btn.find('.cwg-btn-text').text(cwgPromotions.i18n.refreshing);
+			$text.text(cwgPromotions.i18n.refreshing);
 			$notice.hide();
 
 			$.ajax({
@@ -160,8 +164,8 @@
 					$notice.slideDown(200);
 				},
 				complete: function () {
-					$btn.removeClass('refreshing').prop('disabled', false);
-					$btn.find('.cwg-btn-text').text(cwgPromotions.i18n.refresh_feed);
+					$btn.removeClass('refreshing').prop('disabled', false).css('min-width', '');
+					$text.text(originalText);
 				}
 			});
 		});

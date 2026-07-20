@@ -46,6 +46,10 @@ class CWG_Instock_Mail_Process extends WP_Background_Process {
 					 */
 					$stop_send_email = apply_filters( 'cwginstock_stop_email', false, $each_id, $product_obj );
 					if ( ! $stop_send_email) {
+						if ( class_exists( 'CWG_Instock_Mail_Throttle' ) && ! CWG_Instock_Mail_Throttle::wait_for_slot() ) {
+							// Minute limit reached, keep this subscriber in the queue and retry on the next pass.
+							return $each_id;
+						}
 						$mailer    = new CWG_Instock_Mail( $each_id );
 						$send_mail = $mailer->send(); // mail sent
 						if ( $send_mail ) {
@@ -59,6 +63,10 @@ class CWG_Instock_Mail_Process extends WP_Background_Process {
 							 * @since 4.0.1
 							 */
 							do_action( 'cwginstock_auto_email_sent', $each_id, time() );
+						} elseif ( 'disabled' === $mailer->get_last_send_status() ) {
+							// Email disabled, keep the subscriber as-is until it is re-enabled.
+							$logger = new CWG_Instock_Logger( 'info', "Instock email notification is disabled - skipped mail for ID #$each_id with #$get_email (subscriber kept in queue)" );
+							$logger->record_log();
 						} else {
 							$api         = new CWG_Instock_API();
 							$mail_status = $api->mail_not_sent_status( $each_id );

@@ -161,21 +161,45 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 					$nonce = wp_create_nonce( 'cwginstock_test_email' );
 					wp_enqueue_script( 'jquery' );
 					$saved_info          = get_option( 'cwginstock_test_email_status' );
+					$test_recipient      = CWG_Instock_Test_Email::get_test_recipient();
 					$detailed_status_msg = '';
 					$status              = '';
 					if ( $saved_info && isset( $saved_info['status'] ) ) {
-						$status              = $saved_info['status'];
-						$status_format       = ucwords( $status );
-						$last_tested_on      = $saved_info['checked_on'];
-						$detailed_status_msg = 'failure' == $status ? __( 'Email sending Failed, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on" : __( 'Email sent successfully, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on";
+						$status         = $saved_info['status'];
+						$status_format  = ucwords( $status );
+						$last_tested_on = $saved_info['checked_on'];
+						$sent_to        = isset( $saved_info['email'] ) && '' !== $saved_info['email'] ? $saved_info['email'] : '';
+						if ( 'failure' == $status ) {
+							$detailed_status_msg = '' !== $sent_to
+								/* translators: %s: recipient email address */
+								? sprintf( __( 'Email sending Failed to %s, last tested on:', 'back-in-stock-notifier-for-woocommerce' ), $sent_to ) . " $last_tested_on"
+								: __( 'Email sending Failed, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on";
+						} else {
+							$detailed_status_msg = '' !== $sent_to
+								/* translators: %s: recipient email address */
+								? sprintf( __( 'Email sent successfully to %s, last tested on:', 'back-in-stock-notifier-for-woocommerce' ), $sent_to ) . " $last_tested_on"
+								: __( 'Email sent successfully, last tested on:', 'back-in-stock-notifier-for-woocommerce' ) . " $last_tested_on";
+						}
 					}
 					?>
 					<tr>
 						<th scope="row">Email Status</th>
 						<td>
 							<button id="submitForm" data-security="<?php echo do_shortcode( $nonce ); ?>"> Test Email</button>
+							<p class="cwginstock_test_email_target">
+								<?php
+								/* translators: %s: recipient email address */
+								printf( esc_html__( 'Test email will be sent to: %s', 'back-in-stock-notifier-for-woocommerce' ), '<strong>' . esc_html( $test_recipient ) . '</strong>' );
+								?>
+							</p>
+							<?php if ( function_exists( 'cwg_instock_smtp_plugin_active' ) && ! cwg_instock_smtp_plugin_active() ) : ?>
+							<p class="cwginstock_smtp_notice" style="color:#996800; max-width:600px;">
+								<span class="dashicons dashicons-warning"></span>
+								<?php esc_html_e( 'No SMTP plugin detected. Emails are sent using the server\'s PHP mail() function, so a "sent successfully" status only means your server accepted the email. Actual delivery to the inbox is not guaranteed. For reliable delivery, configure an SMTP plugin such as WP Mail SMTP or FluentSMTP.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+							</p>
+							<?php endif; ?>
 							<p class="cwginstock_test_email_info <?php echo do_shortcode( $status ); ?>">
-								<?php echo do_shortcode( $detailed_status_msg ); ?>
+								<?php echo esc_html( $detailed_status_msg ); ?>
 							</p>
 						</td>
 					</tr>
@@ -354,11 +378,13 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 			if ( $response ) {
 				update_option( 'cwginstock_test_email_status', array(
 					'status' => 'success',
+					'email' => $test_obj->get_recipient_email(),
 					'checked_on' => gmdate( 'Y-m-d h:i:s' ),
 				) );
 			} else {
 				update_option( 'cwginstock_test_email_status', array(
 					'status' => 'failure',
+					'email' => $test_obj->get_recipient_email(),
 					'checked_on' => gmdate( 'Y-m-d h:i:s' ),
 				) );
 			}
@@ -369,7 +395,8 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 				as_schedule_single_action( $timestamp, 'cwginstock_send_test_email', array(), 'back-in-stock-notifier-for-woocommerce' );
 				wp_send_json( array(
 					'status' => 'success',
-					'message' => __( 'The test email has been scheduled to send shortly.', 'back-in-stock-notifier-for-woocommerce' )
+					/* translators: %s: recipient email address */
+					'message' => sprintf( __( 'The test email has been scheduled and will be sent to %s shortly. Reload this page after a minute to see the result.', 'back-in-stock-notifier-for-woocommerce' ), CWG_Instock_Test_Email::get_test_recipient() )
 				) );
 			} else {
 				wp_send_json_error( array(

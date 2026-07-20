@@ -4,21 +4,21 @@
  *
  * Fetches product data from a remote CWG Feed Generator endpoint
  * using WooCommerce's Action Scheduler (as_schedule_recurring_action).
- * Data stored in wp_options — zero frontend impact.
+ * Data stored in wp_options - zero frontend impact.
  *
  * Flow:
  *  1. On plugin load (init), checks if recurring action is scheduled
  *  2. If not, schedules it via as_schedule_recurring_action (once per day)
  *  3. When action fires, fetches remote JSON feed
  *  4. Data is sanitized and stored in wp_options (permanent, autoload=false)
- *  5. get_products() reads only from wp_options — zero HTTP calls
+ *  5. get_products() reads only from wp_options - zero HTTP calls
  *  6. Manual "Refresh Feed" via AJAX triggers an immediate fetch
  *
  * Why Action Scheduler instead of WP Cron:
  *  - WP Cron is pseudo-cron and depends on site traffic
  *  - Action Scheduler (bundled with WooCommerce) provides reliable,
  *    background execution with built-in retry/failure handling
- *  - No admin_init overhead — schedule check uses a lightweight option flag
+ *  - No admin_init overhead - schedule check uses a lightweight option flag
  *
  * @package BackInStockNotifier
  * @since   7.1.0
@@ -59,7 +59,7 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 			// Register the Action Scheduler hook callback
 			add_action( self::AS_HOOK, array( $this, 'fetch_remote_feed' ) );
 
-			// Schedule recurring action (lightweight — uses option flag, not admin_init)
+			// Schedule recurring action (lightweight - uses option flag, not admin_init)
 			add_action( 'init', array( $this, 'maybe_schedule_action' ), 20 );
 
 			// AJAX refresh
@@ -167,6 +167,11 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 		 */
 		public static function get_feed_url() {
 			$url = self::CWG_PROMOTIONFEED_URL;
+			/**
+			 * Filter the remote feed URL.
+			 *
+			 * @since 7.0.0
+			 */
 			return apply_filters( 'cwg_bis_remote_feed_url', $url );
 		}
 

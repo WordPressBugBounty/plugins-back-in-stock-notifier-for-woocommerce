@@ -253,6 +253,10 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 			if ( $status ) {
 				$logger = new CWG_Instock_Logger( 'success', "Mail sent to #$get_email for successful subscription - #$id" );
 				$logger->record_log();
+			} elseif ( 'disabled' === $mailer->get_last_send_status() ) {
+				// Email disabled, nothing was attempted.
+				$logger = new CWG_Instock_Logger( 'info', "Subscription email notification is disabled - confirmation mail skipped for #$get_email - #$id" );
+				$logger->record_log();
 			} else {
 				$logger = new CWG_Instock_Logger( 'error', "Failed to send mail to #$get_email for successful subscription - #$id" );
 				$logger->record_log();

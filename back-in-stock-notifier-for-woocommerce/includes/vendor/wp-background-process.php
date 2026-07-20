@@ -21,7 +21,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 * (default value: 'background_process')
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $action = 'background_process';
 
@@ -31,7 +30,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 * (default value: 0)
 		 *
 		 * @var int
-		 * @access protected
 		 */
 		protected $start_time = 0;
 
@@ -39,7 +37,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 * Cron_hook_identifier
 		 *
 		 * @var mixed
-		 * @access protected
 		 */
 		protected $cron_hook_identifier;
 
@@ -47,7 +44,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 * Cron_interval_identifier
 		 *
 		 * @var mixed
-		 * @access protected
 		 */
 		protected $cron_interval_identifier;
 
@@ -67,7 +63,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		/**
 		 * Dispatch
 		 *
-		 * @access public
 		 * @return void
 		 */
 		public function dispatch() {
@@ -232,6 +227,11 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 			$this->start_time = time(); // Set start time of current process.
 
 			$lock_duration = ( property_exists( $this, 'queue_lock_time' ) ) ? $this->queue_lock_time : 60; // 1 minute
+			/**
+			 * Filter the queue lock duration in seconds.
+			 *
+			 * @since 1.0.0
+			 */
 			$lock_duration = apply_filters( $this->identifier . '_queue_lock_time', $lock_duration );
 
 			set_site_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
@@ -351,6 +351,11 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 				$return = true;
 			}
 
+			/**
+			 * Filter whether memory has been exceeded for the background process.
+			 *
+			 * @since 1.0.0
+			 */
 			return apply_filters( $this->identifier . '_memory_exceeded', $return );
 		}
 
@@ -384,6 +389,11 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 * @return bool
 		 */
 		protected function time_exceeded() {
+			/**
+			 * Filter the default time limit in seconds for the background process.
+			 *
+			 * @since 1.0.0
+			 */
 			$finish = $this->start_time + apply_filters( $this->identifier . '_default_time_limit', 20 ); // 20 seconds
 			$return = false;
 
@@ -391,6 +401,11 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 				$return = true;
 			}
 
+			/**
+			 * Filter whether the time limit has been exceeded for the background process.
+			 *
+			 * @since 1.0.0
+			 */
 			return apply_filters( $this->identifier . '_time_exceeded', $return );
 		}
 
@@ -408,11 +423,15 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		/**
 		 * Schedule cron healthcheck
 		 *
-		 * @access public
 		 * @param mixed $schedules Schedules.
 		 * @return mixed
 		 */
 		public function schedule_cron_healthcheck( $schedules ) {
+			/**
+			 * Filter the cron interval in minutes for the background process healthcheck.
+			 *
+			 * @since 1.0.0
+			 */
 			$interval = apply_filters( $this->identifier . '_cron_interval', 5 );
 
 			if ( property_exists( $this, 'cron_interval' ) ) {

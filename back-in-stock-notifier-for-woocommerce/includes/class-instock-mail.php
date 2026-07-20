@@ -36,8 +36,8 @@ class CWG_Instock_Mail extends CWG_Instock_Mailer {
 			$option = array();
 		}
 
-		$default_subject = __( 'Good news — {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' );
-		$default_message = __( 'Hello {subscriber_name},<br/><br/>Good news — {product_name} is now back in stock. You can view it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
+		$default_subject = __( 'Good news! {product_name} is back in stock', 'back-in-stock-notifier-for-woocommerce' );
+		$default_message = __( 'Hello {subscriber_name},<br/><br/>Good news! {product_name} is now back in stock. You can view it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}.', 'back-in-stock-notifier-for-woocommerce' );
 
 		$subject = isset( $option['instock_mail_subject'] ) && '' !== $option['instock_mail_subject']
 			? $option['instock_mail_subject']
@@ -62,17 +62,17 @@ class CWG_Instock_Mail extends CWG_Instock_Mailer {
 	}
 
 	/**
-	 * Send method — delegates to WC email if available.
+	 * Send method - delegates to WC email if available.
 	 *
 	 * @since 7.0.0
 	 * @return bool
 	 */
 	public function send() {
-		// Try to use the WC email system first
+		// Use the WC email system when our email class is registered.
 		if ( function_exists( 'WC' ) && WC()->mailer() ) {
 			$wc_emails = WC()->mailer()->get_emails();
-			if ( isset( $wc_emails['WC_Email_BIS_Instock'] ) ) {
-				$wc_email = $wc_emails['WC_Email_BIS_Instock'];
+			$wc_email  = isset( $wc_emails['WC_Email_BIS_Instock'] ) ? $wc_emails['WC_Email_BIS_Instock'] : null;
+			if ( $wc_email instanceof WC_Email_BIS_Instock ) {
 
 				// Check if enabled via WC settings
 				$wc_settings = get_option( 'woocommerce_cwg_bis_instock_settings', array() );
@@ -83,17 +83,37 @@ class CWG_Instock_Mail extends CWG_Instock_Mailer {
 				$old_enabled = isset( $old_option['enable_instock_mail'] ) ? $old_option['enable_instock_mail'] : '1';
 
 				if ( 'yes' === $is_enabled || '1' === $old_enabled ) {
-					$wc_email->trigger( $this->subscriber_id );
+					// trigger() returns true (sent), false (failed) or null (skipped).
+					$trigger_result = $wc_email->trigger( $this->subscriber_id );
 
+					if ( null === $trigger_result ) {
+						// Email disabled, nothing was attempted.
+						$this->last_send_status = 'disabled';
+						return false;
+					}
+
+					if ( $trigger_result ) {
+						$this->last_send_status = 'sent';
+						/**
+						 * Mail Sent Success
+						 *
+						 * @since 1.0.0
+						 */
+						do_action( 'cwg_' . $this->slug . '_mail_sent_success', $this->subscriber_id );
+						return true;
+					}
+
+					$this->last_send_status = 'failed';
 					/**
-					 * Mail Sent Success
+					 * Mail Sent Failure
 					 *
 					 * @since 1.0.0
 					 */
-					do_action( 'cwg_' . $this->slug . '_mail_sent_success', $this->subscriber_id );
-					return true;
+					do_action( 'cwg_' . $this->slug . '_mail_sent_failure', $this->subscriber_id );
+					return false;
 				}
 
+				$this->last_send_status = 'disabled';
 				return false;
 			}
 		}
