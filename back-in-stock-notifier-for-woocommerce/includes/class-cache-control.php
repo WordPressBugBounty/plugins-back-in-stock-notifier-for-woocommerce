@@ -21,12 +21,13 @@ if ( ! class_exists( 'CWG_Instock_Cache_Control' ) ) {
 				return;
 			}
 			//get the parent id if the product is variation
-			$product_obj = wc_get_product( $id ); //sometimes obj in parameter may return empty
+			// Load the product fresh, the $obj parameter can arrive empty when the
+			// stock hook is triggered externally, so use $product_obj (not $obj)
+			// to avoid calling methods on null.
+			$product_obj = wc_get_product( $id );
 			if ( $product_obj ) {
-				$get_type = 'variation' == $obj->get_type() ? true : false;
-				if ( $get_type ) {
-					$get_parent_id = $obj->get_parent_id();
-					$id            = $get_parent_id;
+				if ( $product_obj->is_type( 'variation' ) ) {
+					$id = $product_obj->get_parent_id();
 				}
 			}
 

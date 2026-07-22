@@ -11,8 +11,20 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 
 	class CWG_Instock_Post_Type {
 
+		/**
+		 * New subscribers since the admin's previous visit, captured when the
+		 * subscriber list loads so the "since last visit" notice can use it.
+		 *
+		 * @var int
+		 */
+		private $new_since_last_visit = 0;
 
-
+		/**
+		 * Previous visit time (GMT mysql string) shown in the notice.
+		 *
+		 * @var string
+		 */
+		private $last_visit_time = '';
 
 		/**
 		 * Construct the Class
@@ -44,6 +56,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			// send mail in bulk
 			add_action( 'cwginstocknotifier_handle_action_send_mail', array( $this, 'bulk_send_manual_email' ) );
 			add_action( 'admin_menu', array( $this, 'display_subscribers_count' ), 999 );
+			add_action( 'admin_notices', array( $this, 'show_new_subscribers_notice' ) );
 			add_filter( 'plugin_action_links_' . CWGSTOCKPLUGINBASENAME, array( $this, 'plugin_action_links' ) );
 			// add filter option in custom post type
 			add_action( 'restrict_manage_posts', array( $this, 'filter_by_subscribed_products' ) );
@@ -197,26 +210,130 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			);
 		}
 
+		/**
+		 * Show a badge on the Instock Notifier menu counting NEW subscribers
+		 * since this admin last opened the subscriber list. Opening the list
+		 * marks them as seen and clears the badge, it returns when new
+		 * subscribers arrive. Stored per user so each admin has their own count.
+		 */
 		public function display_subscribers_count() {
-			global $menu;
-			$count_posts = wp_count_posts( 'cwginstocknotifier' );
-			$get_option  = get_option( 'cwginstocksettings' );
-			if ( ! isset( $get_option['hide_subscribercount'] ) || '1' != $get_option['hide_subscribercount'] ) {
-				$count = $count_posts->cwg_subscribed;
-				// Code to be executed if $count is 1 or greater
-				if ( 1 <= $count ) {
-					foreach ( $menu as $key => $value ) {
-						if ( 'edit.php?post_type=cwginstocknotifier' == $menu[ $key ][2] ) {
+			global $menu, $pagenow, $wpdb;
 
-							// display a count or notification badge related to plugins or updates
-							// phpcs:ignore
-							$menu[ $key ][0] .= ' <span class="update-plugins"><span class="plugin-count">' . $count . '</span></span>';
+			$get_option = get_option( 'cwginstocksettings' );
+			if ( isset( $get_option['hide_subscribercount'] ) && '1' == $get_option['hide_subscribercount'] ) {
+				return;
+			}
 
-							return;
-						}
+			$user_id = get_current_user_id();
+			if ( ! $user_id ) {
+				return;
+			}
+
+			$meta_key  = 'cwg_bis_subscribers_last_seen';
+			$last_seen = get_user_meta( $user_id, $meta_key, true );
+
+			// First time: start from now so existing subscribers are not counted as new.
+			if ( empty( $last_seen ) ) {
+				$last_seen = current_time( 'mysql', true );
+				update_user_meta( $user_id, $meta_key, $last_seen );
+			}
+
+			// Are we viewing the subscriber list itself (not a submenu page)?
+			// Opening it marks everything as seen and shows no badge. This only
+			// reads $_GET to detect the current screen (a boolean gate); the value
+			// is never used in a query, so no nonce is required. is_string() guards
+			// against array input (e.g. post_type[]=) that would break sanitize_key.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$on_list = ( 'edit.php' === $pagenow
+				&& isset( $_GET['post_type'] ) && is_string( $_GET['post_type'] )
+				&& 'cwginstocknotifier' === sanitize_key( wp_unslash( $_GET['post_type'] ) )
+				&& ! isset( $_GET['page'] ) );
+
+			if ( $on_list ) {
+				// Capture how many are new since the previous visit (for the notice),
+				// then mark everything as seen.
+				$this->new_since_last_visit = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'cwginstocknotifier' AND post_status = 'cwg_subscribed' AND post_date_gmt > %s",
+						$last_seen
+					)
+				);
+				$this->last_visit_time = $last_seen;
+				update_user_meta( $user_id, $meta_key, current_time( 'mysql', true ) );
+				return;
+			}
+
+			// Count new subscribers created since the list was last opened.
+			$count = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'cwginstocknotifier' AND post_status = 'cwg_subscribed' AND post_date_gmt > %s",
+					$last_seen
+				)
+			);
+
+			if ( 1 <= $count ) {
+				foreach ( $menu as $key => $value ) {
+					if ( 'edit.php?post_type=cwginstocknotifier' == $menu[ $key ][2] ) {
+						// Standard WordPress menu count bubble.
+						// phpcs:ignore
+						$menu[ $key ][0] .= ' <span class="update-plugins"><span class="plugin-count">' . $count . '</span></span>';
+						return;
 					}
 				}
 			}
+		}
+
+		/**
+		 * On the subscriber list, show how many subscribers arrived since the
+		 * admin's previous visit, with that visit's date and time. Nothing is
+		 * shown when there are none, so it never adds noise.
+		 */
+		public function show_new_subscribers_notice() {
+			// Only populated when the current request is the subscriber list.
+			if ( $this->new_since_last_visit < 1 || empty( $this->last_visit_time ) ) {
+				return;
+			}
+
+			$timestamp = strtotime( $this->last_visit_time . ' UTC' );
+			if ( ! $timestamp ) {
+				return;
+			}
+
+			$date_format = get_option( 'date_format' );
+			$time_format = get_option( 'time_format' );
+			$date_format = $date_format ? $date_format : 'Y-m-d';
+			$time_format = $time_format ? $time_format : 'H:i';
+			$exact       = wp_date( $date_format . ' ' . $time_format, $timestamp );
+
+			// Friendly relative time reads better than an exact minute stamp.
+			$ago = human_time_diff( $timestamp, time() );
+
+			$count   = (int) $this->new_since_last_visit;
+			$message = sprintf(
+				/* translators: 1: number of new subscribers, 2: human readable time such as "2 hours" */
+				_n(
+					'%1$s new subscriber joined since your last visit, about %2$s ago.',
+					'%1$s new subscribers joined since your last visit, about %2$s ago.',
+					$count,
+					'back-in-stock-notifier-for-woocommerce'
+				),
+				number_format_i18n( $count ),
+				$ago
+			);
+
+			$view_url = admin_url( 'edit.php?post_type=cwginstocknotifier&post_status=cwg_subscribed' );
+			$cta      = __( 'Review subscribers', 'back-in-stock-notifier-for-woocommerce' );
+
+			/* translators: %s: exact date and time of the previous visit */
+			$tooltip = sprintf( __( 'Your last visit: %s', 'back-in-stock-notifier-for-woocommerce' ), $exact );
+
+			printf(
+				'<div class="notice notice-info is-dismissible cwg-new-subscribers-notice"><p><span class="dashicons dashicons-bell" style="color:#2271b1;vertical-align:middle;"></span> <strong title="%s" style="cursor:help;">%s</strong> <a href="%s" style="margin-left:6px;">%s &rarr;</a></p></div>',
+				esc_attr( $tooltip ),
+				esc_html( $message ),
+				esc_url( $view_url ),
+				esc_html( $cta )
+			);
 		}
 
 		public function add_columns( $columns ) {
@@ -1079,10 +1196,6 @@ add_action(
 					<strong>Pay Once, Benefit Forever</strong>: All Add-ons Included, No Monthly Commitment - Just $49! <a
 						href="https://propluginslab.com/shop/back-in-stock-notifier/bundle-add-ons/" target="_blank"><strong>Buy
 							Now Bundle Add-ons!</strong></a>
-				</p>
-				<p>
-					Your payment isn't just for a product - it's for progress. Buy now, or Support us directly - <a
-						href="https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00" target="_blank">Donate Now</a>
 				</p>
 			</div>
 					<?php

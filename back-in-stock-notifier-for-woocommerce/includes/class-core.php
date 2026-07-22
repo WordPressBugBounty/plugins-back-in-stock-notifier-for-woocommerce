@@ -60,9 +60,21 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 		public function trigger_instock_status( $id, $stockstatus, $obj ) {
 			global $wpdb;
 			// perform action or trigger dispatch process
-			if ( ! $obj ) {
+			if ( ! $obj instanceof WC_Product ) {
 				$obj = wc_get_product( $id );
 			}
+
+			// The triggering product may not exist. Another plugin or theme can
+			// fire the stock hook with a stale or deleted product id, which we
+			// cannot prevent. Verify the product is real before scanning for
+			// subscribers, otherwise the queued mail process would later call
+			// product methods (get_meta(), is_in_stock(), etc.) on null.
+			if ( ! $obj instanceof WC_Product ) {
+				$logger = new CWG_Instock_Logger( 'error', "Instock trigger skipped: product #$id does not exist or has been deleted" );
+				$logger->record_log();
+				return;
+			}
+
 			$queued_api = new CWG_BIS_Queue( $wpdb );
 
 			if ( $obj && ( $obj->is_type( 'variation' ) || $obj->is_type( 'variable' ) ) ) {

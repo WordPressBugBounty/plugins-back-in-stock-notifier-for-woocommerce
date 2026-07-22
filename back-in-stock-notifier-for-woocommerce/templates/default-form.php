@@ -137,13 +137,13 @@
 						 * @since 1.0.0
 						 */							$submit_extra_attr = apply_filters( 'cwgstock_submit_attr', '', $product_id, $variation_id );
 							?>
-							<input type="submit" name="cwgstock_submit"
+							<button type="submit" name="cwgstock_submit"
 								class="cwgstock_button <?php echo esc_attr( $additional_class_name ); ?>"
 								<?php if ( $enable_accessibility_compliance ) : ?>
 									aria-label="<?php echo esc_attr( $instock_api->sanitize_text_field( $button_label ) ); ?>"
 								<?php endif; ?>
 								<?php echo do_shortcode( $submit_extra_attr ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								value="<?php echo esc_attr( $instock_api->sanitize_text_field( $button_label ) ); ?>" />
+								value="<?php echo esc_attr( $instock_api->sanitize_text_field( $button_label ) ); ?>"><?php echo esc_html( $instock_api->sanitize_text_field( $button_label ) ); ?></button>
 							<?php
 							/**
 							 * Executed after the submit button

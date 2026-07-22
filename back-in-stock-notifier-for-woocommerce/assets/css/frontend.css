@@ -40,23 +40,18 @@ input.cwgstock_phone {
 	padding-top: 5px;
 	background: skyblue;
 	color: white;
-	/* Allow label text to wrap on narrow screens */
-	white-space: normal;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	word-break: break-word;
-	height: auto;
-	line-height: 1.4;
 }
 
+/* Allow the button label to wrap on narrow screens (button element supports this, input value did not) */
+.cwgstock_button,
 .cwg_popup_submit {
-	/* Allow label text to wrap on narrow screens */
 	white-space: normal;
-	word-wrap: break-word;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	height: auto;
 	line-height: 1.4;
+	text-align: center;
+	cursor: pointer;
 }
 
 .cwginstock-panel-body input[type=text],

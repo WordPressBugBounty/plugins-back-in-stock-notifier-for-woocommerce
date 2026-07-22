@@ -5,7 +5,7 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.3.0
+ * Version: 7.3.1
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.com
@@ -58,7 +58,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.3.0';
+		public $version = '7.3.1';
 
 		/**
 		 * Instance variable
@@ -137,6 +137,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-privacy.php';
 			include 'includes/admin/class-extra.php';
 			include 'includes/admin/class-promotions.php';
+			include 'includes/admin/class-pro-notice.php';
 			include 'includes/class-remote-feed.php';
 			include 'includes/class-email-manager.php';
 			include 'includes/class-troubleshoot.php';
@@ -161,6 +162,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-stock-arrival.php';
 			include 'includes/class-stock-arrival-settings.php';
 			include 'includes/class-queue.php';
+			include 'includes/class-queue-recovery.php';
 			include 'includes/class-mail-throttle.php';
 			include 'includes/class-partial-stock.php';
 			include 'includes/class-dashboard-widget.php';
@@ -227,7 +229,10 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			wp_register_script( 'sweetalert2', CWGINSTOCK_PLUGINURL . 'assets/js/sweetalert2.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
 			wp_register_script( 'cwginstock_popup', CWGINSTOCK_PLUGINURL . 'assets/js/cwg-popup.min.js', array( 'jquery', 'wc-jquery-blockui', 'sweetalert2' ), $this->version, true );
 
-			wp_register_style( 'cwginstock_frontend_css', CWGINSTOCK_PLUGINURL . 'assets/css/frontend.min.css', array(), $this->version, false );
+			// Version by file modification time so CSS updates always bust the browser cache.
+			$frontend_css_path = CWGINSTOCK_PLUGINDIR . 'assets/css/frontend.min.css';
+			$frontend_css_ver  = file_exists( $frontend_css_path ) ? (string) filemtime( $frontend_css_path ) : $this->version;
+			wp_register_style( 'cwginstock_frontend_css', CWGINSTOCK_PLUGINURL . 'assets/css/frontend.min.css', array(), $frontend_css_ver, false );
 			wp_register_style( 'cwginstock_frontend_guest', CWGINSTOCK_PLUGINURL . 'assets/css/guest.min.css', array(), $this->version, false );
 			wp_register_style( 'cwginstock_bootstrap', CWGINSTOCK_PLUGINURL . 'assets/css/bootstrap.min.css', array(), $this->version, false );
 			$get_option = get_option( 'cwginstocksettings' );
@@ -415,6 +420,11 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			// Clear remote feed daily cron
 			if ( class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 				CWG_Instock_Remote_Feed::deactivation_cleanup();
+			}
+
+			// Clear the queue recovery recurring action
+			if ( class_exists( 'CWG_Instock_Queue_Recovery' ) ) {
+				CWG_Instock_Queue_Recovery::unschedule();
 			}
 		}
 	}

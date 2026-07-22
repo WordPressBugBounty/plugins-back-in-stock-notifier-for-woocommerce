@@ -148,6 +148,10 @@ if (! class_exists('CWG_Instock_Settings')) {
 			add_settings_field('cwginstock_bgp_selection', __('Background Process Engine', 'back-in-stock-notifier-for-woocommerce'), array($this, 'bgp_engine'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
 			add_settings_field('cwg_instock_email_throttle', __('Limit Email Sending Speed', 'back-in-stock-notifier-for-woocommerce'), array($this, 'email_throttle_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
 			add_settings_field('cwg_instock_emails_per_minute', __('Maximum Emails per Minute', 'back-in-stock-notifier-for-woocommerce'), array($this, 'emails_per_minute_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
+			add_settings_field('cwg_instock_queue_recovery', __('Auto-retry Stuck Emails', 'back-in-stock-notifier-for-woocommerce'), array($this, 'queue_recovery_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
+			add_settings_field('cwg_instock_queue_recovery_frequency', __('Retry Frequency', 'back-in-stock-notifier-for-woocommerce'), array($this, 'queue_recovery_frequency_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
+			add_settings_field('cwg_instock_queue_recovery_attempts', __('Maximum Retry Attempts', 'back-in-stock-notifier-for-woocommerce'), array($this, 'queue_recovery_attempts_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
+			add_settings_field('cwg_instock_queue_recovery_status', __('Status After All Retries Fail', 'back-in-stock-notifier-for-woocommerce'), array($this, 'queue_recovery_status_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
 			/**
 			 * Action to register settings
 			 *
@@ -839,6 +843,75 @@ if (! class_exists('CWG_Instock_Settings')) {
 				value="<?php echo esc_attr($rate); ?>" min="1" max="500" step="1" />
 			<i>
 				<p><?php esc_html_e('Maximum number of automatic instock emails to send per minute. Default is 60. Check your hosting or SMTP provider limits and set a slightly lower value. For example: a provider limit of 600 emails per hour means at most 10 per minute. Used only when Limit Email Sending Speed above is enabled.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function queue_recovery_field() {
+			$options = get_option('cwginstocksettings');
+			// Off by default, only enable deliberately.
+			$enabled = isset($options['enable_queue_recovery']) && '1' == $options['enable_queue_recovery'];
+			?>
+			<input type='checkbox' name='cwginstocksettings[enable_queue_recovery]' <?php checked($enabled, true); ?> value="1" />
+			<i>
+				<p><?php esc_html_e('Subscribers are queued the moment a product is restocked, then emailed by a background task. If that task fails or never runs (for example when the server cron is not firing), those subscribers can get stuck without an email. When enabled, a recovery task periodically finds these stuck entries and tries to send their email again. Leave this off unless you actually see stuck entries, no background task is scheduled while it is off.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function queue_recovery_frequency_field() {
+			$options  = get_option('cwginstocksettings');
+			$selected = isset($options['queue_recovery_frequency']) && '' != $options['queue_recovery_frequency'] ? $options['queue_recovery_frequency'] : 'every_hour';
+			$choices  = array(
+				'every_hour'     => __('Every Hour', 'back-in-stock-notifier-for-woocommerce'),
+				'every_6_hours'  => __('Every 6 Hours', 'back-in-stock-notifier-for-woocommerce'),
+				'every_12_hours' => __('Every 12 Hours', 'back-in-stock-notifier-for-woocommerce'),
+				'every_day'      => __('Every Day', 'back-in-stock-notifier-for-woocommerce'),
+			);
+			?>
+			<select name="cwginstocksettings[queue_recovery_frequency]" style="width:400px;">
+				<?php foreach ($choices as $value => $label) : ?>
+					<option value="<?php echo esc_attr($value); ?>" <?php selected($selected, $value); ?>><?php echo esc_html($label); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<i>
+				<p><?php esc_html_e('How often the recovery task runs and how far apart the retries are spaced. For example, with "Every Hour" and 2 attempts, a stuck entry is retried at about 1 hour and again at 2 hours, then it stops. The minimum is 1 hour to keep the scheduled-action log tidy. Only applies when Auto-retry Stuck Emails is enabled.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function queue_recovery_attempts_field() {
+			$options  = get_option('cwginstocksettings');
+			$attempts = isset($options['queue_recovery_max_attempts']) && absint($options['queue_recovery_max_attempts']) > 0 ? absint($options['queue_recovery_max_attempts']) : 2;
+			?>
+			<input type='number' style='width: 400px;' name='cwginstocksettings[queue_recovery_max_attempts]'
+				value="<?php echo esc_attr($attempts); ?>" min="1" max="10" step="1" />
+			<i>
+				<p><?php esc_html_e('How many times to retry before giving up. For example, with a 5 hour interval and 2 attempts, the plugin retries at about 5 hours and again at 10 hours. After the last attempt fails, it stops and sets the status below. Default is 2.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function queue_recovery_status_field() {
+			$options = get_option('cwginstocksettings');
+			$current = isset($options['queue_recovery_final_status']) && '' != $options['queue_recovery_final_status'] ? $options['queue_recovery_final_status'] : 'cwg_mailnotsent';
+			$choices = array(
+				'cwg_mailnotsent' => __('Mail Not Sent (recommended)', 'back-in-stock-notifier-for-woocommerce'),
+				'cwg_subscribed'  => __('Subscribed (retry on next restock)', 'back-in-stock-notifier-for-woocommerce'),
+				'cwg_unsubscribed' => __('Unsubscribed', 'back-in-stock-notifier-for-woocommerce'),
+			);
+			?>
+			<select name="cwginstocksettings[queue_recovery_final_status]" style="width:400px;">
+				<?php foreach ($choices as $value => $label) : ?>
+					<option value="<?php echo esc_attr($value); ?>" <?php selected($current, $value); ?>><?php echo esc_html($label); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<i>
+				<p><?php esc_html_e('The status a stuck entry is set to after all retry attempts fail. "Mail Not Sent" keeps it visible so you can send manually later. "Subscribed" puts it back in the pool to be tried again on the next restock.', 'back-in-stock-notifier-for-woocommerce'); ?>
 				</p>
 			</i>
 			<?php

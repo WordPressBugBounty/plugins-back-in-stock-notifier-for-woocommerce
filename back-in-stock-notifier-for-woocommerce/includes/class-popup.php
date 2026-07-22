@@ -29,11 +29,11 @@ if ( ! class_exists( 'CWG_Sweetalert_Popup' ) ) {
 			 */
 			$popup_button_label_filter = apply_filters( 'cwginstock_popup_btn_label', $button_label, $product, $variation );
 			?>
-			<input type="button" data-security="<?php echo esc_attr( $nonce ); ?>"
+			<button type="button" data-security="<?php echo esc_attr( $nonce ); ?>"
 				data-variation_id="<?php echo esc_attr( $variation ? $variation->get_id() : '' ); ?>"
 				data-product_id="<?php echo esc_attr( $product ? $product->get_id() : '' ); ?>"
 				class="cwg_popup_submit <?php echo esc_attr( $additional_class_name ); ?>"
-				value="<?php echo esc_attr( $popup_button_label_filter ); ?>" />
+				value="<?php echo esc_attr( $popup_button_label_filter ); ?>"><?php echo esc_html( $popup_button_label_filter ); ?></button>
 			<?php
 		}
 

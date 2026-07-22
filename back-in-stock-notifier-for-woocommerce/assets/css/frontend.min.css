@@ -42,3 +42,4 @@ input.cwgstock_phone {
     background: #87ceeb;
     color: #fff
 }
+.cwgstock_button,.cwg_popup_submit{white-space:normal;overflow-wrap:break-word;word-break:break-word;height:auto;line-height:1.4;text-align:center;cursor:pointer}

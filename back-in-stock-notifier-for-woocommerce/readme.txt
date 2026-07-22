@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 7.3.0
+Stable tag: 7.3.1
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -213,6 +213,16 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.3.1 2026-07-22 =
+* New: Auto-retry for stuck emails. When a restock email is queued but its background task fails or never runs, an optional recovery task resends it. Configurable under Settings > Background Process Engine with a retry frequency (minimum 1 hour), maximum attempts, and the status to apply once attempts are exhausted. Off by default, no background task is scheduled until you enable it.
+* New: New-subscriber indicator. The Instock Notifier menu shows a badge counting subscribers added since you last opened the list, and the subscriber list shows how many arrived since your previous visit. The badge clears when you view the list. Respects the existing Hide Subscriber Count setting.
+* Fix: Prevented fatal errors when a stock change is triggered externally (by another plugin or theme) for a product that has been deleted. The product is now verified before subscribers are scanned.
+* Fix: Prevented a possible fatal in the W3TC cache auto-purge when the stock hook was fired with an empty product object.
+* Tweak: The subscribe button and the variation "notify me" button now use a button element instead of an input. Long labels and translations wrap correctly on mobile and can be styled with CSS. The button class, data attributes, reCAPTCHA/Turnstile handling and the submit behaviour are unchanged.
+* Tweak: Frontend and admin stylesheets are now cache-busted by file modification time, so style updates reach visitors without a manual version change.
+* Tweak: Dismissible Pro Plugins banner on the plugin admin screens, highlighting our other WooCommerce plugins. Each plugin links to its product page, it appears only on this plugin's pages (never site-wide), and dismissing it hides it for 30 days per user.
+* Note: If you targeted the subscribe button with element-qualified custom CSS such as "input.cwgstock_button" or "input[type=submit]", update it to the class selector ".cwgstock_button". Plain class selectors were unaffected.
+
 = 7.3.0 2026-07-20 =
 * New: Fair Sending (First-Come-First-Served) option. On a limited restock, notify only as many subscribers as units in stock, the remaining subscribers stay on the waitlist and are notified on the next restock.
 * New: Email speed limit option to send automatic instock emails gradually, matching your hosting or SMTP provider limits.
