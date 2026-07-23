@@ -1,11 +1,11 @@
 === Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro ===
-Contributors: codewoogeek, propluginslab
+Contributors: codewoogeek, propluginslab, heyvicky
 Tags: back in stock, waitlist, restock, out of stock, notification
 Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 7.3.1
+Stable tag: 7.3.2
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -213,6 +213,10 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.3.2 2026-07-23 =
+* Fix: On variable products, the Add to Cart button now correctly disables again when switching back to an out-of-stock variation (for example after viewing an in-stock one). Previously it could remain clickable, most noticeable with Turnstile or reCAPTCHA enabled.
+* Fix: With Cloudflare Turnstile enabled, the captcha now re-renders correctly each time you switch variations on a variable product. Previously it could go blank after switching, leaving the Subscribe button permanently disabled so visitors could not subscribe.
+
 = 7.3.1 2026-07-22 =
 * New: Auto-retry for stuck emails. When a restock email is queued but its background task fails or never runs, an optional recovery task resends it. Configurable under Settings > Background Process Engine with a retry frequency (minimum 1 hour), maximum attempts, and the status to apply once attempts are exhausted. Off by default, no background task is scheduled until you enable it.
 * New: New-subscriber indicator. The Instock Notifier menu shows a badge counting subscribers added since you last opened the list, and the subscriber list shows how many arrived since your previous visit. The badge clears when you view the list. Respects the existing Hide Subscriber Count setting.

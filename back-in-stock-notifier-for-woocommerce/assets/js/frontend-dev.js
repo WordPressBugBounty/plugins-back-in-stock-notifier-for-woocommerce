@@ -88,8 +88,22 @@ var instock_notifier = {
 		}
 		jQuery(document).on('click', '.cwgstock_button', this.submit_form);
 		jQuery(".single_variation_wrap").on("show_variation", this.perform_upon_show_variation);
+		jQuery(".variations_form").on("found_variation", this.reflect_stock_on_add_to_cart);
 		if (cwginstock_phone_field == '1') {
 			instock_notifier.initialize_phone();
+		}
+	},
+
+	reflect_stock_on_add_to_cart: function (event, variation) {
+		// WooCommerce does not always re-disable the Add to Cart button when
+		// switching directly between a purchasable in-stock variation and a
+		// purchasable out-of-stock one (the case where the back-in-stock form is
+		// shown). Keep the button state in sync with the selected variation.
+		var add_to_cart_button = jQuery(this).find('.single_add_to_cart_button');
+		if (variation && variation.is_in_stock === false) {
+			add_to_cart_button.addClass('disabled wc-variation-is-unavailable');
+		} else if (variation && variation.is_in_stock && variation.is_purchasable) {
+			add_to_cart_button.removeClass('disabled wc-variation-is-unavailable');
 		}
 	},
 
@@ -294,27 +308,38 @@ var instock_notifier = {
 		}
 	},
 	turnstilecallback: function () {
-		if (cwginstock_get_bot_type == 'turnstile') {
-			if (cwginstock_turnstile_enabled == '1') {
-				if (jQuery('#cwg-turnstile-captcha').length) {
-					if (cwginstock_turnstile_widget_id === null) {
-						cwginstock_turnstile_widget_id = turnstile.render(
-							'#cwg-turnstile-captcha',
-							{
-								sitekey: cwginstock_turnstile_site_key,
-								theme: 'light',
-								callback: this.turnstile_callback,
-							}
-						);
-					} else {
-						turnstile.reset(cwginstock_turnstile_widget_id);
-						this.turnstile_callback();
-						cwginstock_turnstile_widget_id = null;
-						instock_notifier.turnstilecallback();
-					}
-				}
-			}
+		if (cwginstock_get_bot_type != 'turnstile' || cwginstock_turnstile_enabled != '1') {
+			return;
 		}
+		if (typeof turnstile === 'undefined') {
+			return;
+		}
+		// Remove any previously rendered widget first. When a variation changes,
+		// WooCommerce replaces the availability markup (and the widget container),
+		// which otherwise leaves Turnstile stuck/blank and the subscribe button
+		// permanently disabled. Always render a fresh widget into the current
+		// container so it works on every variation switch.
+		if (cwginstock_turnstile_widget_id) {
+			try {
+				turnstile.remove(cwginstock_turnstile_widget_id);
+			} catch (e) { }
+			cwginstock_turnstile_widget_id = null;
+		}
+		var turnstile_container = document.getElementById('cwg-turnstile-captcha');
+		if (!turnstile_container) {
+			return;
+		}
+		turnstile_container.innerHTML = '';
+		try {
+			cwginstock_turnstile_widget_id = turnstile.render(
+				turnstile_container,
+				{
+					sitekey: cwginstock_turnstile_site_key,
+					theme: 'light',
+					callback: instock_notifier.turnstile_callback,
+				}
+			);
+		} catch (e) { }
 	},
 	resetcallback: function () {
 		if (cwginstock_get_bot_type == 'recaptcha') {

@@ -5,7 +5,7 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.3.1
+ * Version: 7.3.2
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.com
@@ -58,7 +58,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.3.1';
+		public $version = '7.3.2';
 
 		/**
 		 * Instance variable
@@ -225,7 +225,10 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			if ( ! $check_already_enqueued ) {
 				wp_register_script( 'wc-jquery-blockui', CWGINSTOCK_PLUGINURL . 'assets/js/jquery.blockUI.js', array( 'jquery' ), $this->version, true );
 			}
-			wp_register_script( 'cwginstock_js', CWGINSTOCK_PLUGINURL . 'assets/js/frontend-dev.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
+			// Version by file modification time so script updates always bust the browser cache.
+			$frontend_js_path = CWGINSTOCK_PLUGINDIR . 'assets/js/frontend-dev.min.js';
+			$frontend_js_ver  = file_exists( $frontend_js_path ) ? (string) filemtime( $frontend_js_path ) : $this->version;
+			wp_register_script( 'cwginstock_js', CWGINSTOCK_PLUGINURL . 'assets/js/frontend-dev.min.js', array( 'jquery', 'wc-jquery-blockui' ), $frontend_js_ver, true );
 			wp_register_script( 'sweetalert2', CWGINSTOCK_PLUGINURL . 'assets/js/sweetalert2.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
 			wp_register_script( 'cwginstock_popup', CWGINSTOCK_PLUGINURL . 'assets/js/cwg-popup.min.js', array( 'jquery', 'wc-jquery-blockui', 'sweetalert2' ), $this->version, true );
 
