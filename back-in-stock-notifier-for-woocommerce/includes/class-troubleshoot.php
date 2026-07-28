@@ -27,6 +27,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			add_settings_field( 'cwg_instock_enable_accessibility_compliance', __( 'Enable Accessibility Compliance for Subscribe Form', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'enable_accessibility_compliance' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_enable_button_troubleshoot', __( 'Additional Class Name for Subscribe Button(seperated by commas)', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'enable_button_for_class' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_hide_subscribecount', __( 'Hide Subscriber Count(Admin Side)', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'hide_subscribercount' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
+			add_settings_field( 'cwg_instock_subscriber_count_mode', __( 'Admin Menu Counter Shows', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'subscriber_count_mode' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_stock_update_from_thirdparty', __( 'Enable this option if you have updated the stock from a third-party inventory plugin', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'update_stock_third_party' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_stock_update_recurrence', __( 'Third-Party Stock Update Cron Recurrence', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'third_party_cron_recurrence' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
 			add_settings_field( 'cwg_instock_delete_subscriber_recurrence', __( 'Delete Subscriber Cron Recurrence', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'delete_subscribers_cron_recurrence' ), 'cwginstocknotifier_settings', 'cwginstock_section_troubleshoot' );
@@ -113,6 +114,24 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			<input type='checkbox' name='cwginstocksettings[hide_subscribercount]' <?php isset( $options['hide_subscribercount'] ) ? checked( $options['hide_subscribercount'], 1 ) : ''; ?> value="1" />
 			<p><i>
 					<?php esc_html_e( 'Select this option to hide subscriber count appeared in the admin menu', 'back-in-stock-notifier-for-woocommerce' ); ?>
+				</i></p>
+			<?php
+		}
+
+		public function subscriber_count_mode() {
+			$options  = get_option( 'cwginstocksettings' );
+			$selected = isset( $options['subscriber_count_mode'] ) && '' != $options['subscriber_count_mode'] ? $options['subscriber_count_mode'] : 'new_since_visit';
+			?>
+			<select name="cwginstocksettings[subscriber_count_mode]">
+				<option value="new_since_visit" <?php selected( $selected, 'new_since_visit' ); ?>>
+					<?php esc_html_e( 'New subscribers since your last visit', 'back-in-stock-notifier-for-woocommerce' ); ?>
+				</option>
+				<option value="total" <?php selected( $selected, 'total' ); ?>>
+					<?php esc_html_e( 'Total number of subscribers', 'back-in-stock-notifier-for-woocommerce' ); ?>
+				</option>
+			</select>
+			<p><i>
+					<?php esc_html_e( 'Choose what the number badge on the Instock Notifier menu means. "New subscribers since your last visit" shows how many arrived since you last opened the Subscribers list and clears when you view it. "Total number of subscribers" always shows the current subscriber count. This has no effect when the count is hidden above.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 				</i></p>
 			<?php
 		}

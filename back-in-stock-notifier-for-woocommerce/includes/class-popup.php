@@ -32,7 +32,7 @@ if ( ! class_exists( 'CWG_Sweetalert_Popup' ) ) {
 			<button type="button" data-security="<?php echo esc_attr( $nonce ); ?>"
 				data-variation_id="<?php echo esc_attr( $variation ? $variation->get_id() : '' ); ?>"
 				data-product_id="<?php echo esc_attr( $product ? $product->get_id() : '' ); ?>"
-				class="cwg_popup_submit <?php echo esc_attr( $additional_class_name ); ?>"
+				class="button cwg_popup_submit <?php echo esc_attr( $additional_class_name ); ?>"
 				value="<?php echo esc_attr( $popup_button_label_filter ); ?>"><?php echo esc_html( $popup_button_label_filter ); ?></button>
 			<?php
 		}

@@ -224,6 +224,27 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				return;
 			}
 
+			// Badge mode: 'new_since_visit' (default) or 'total'.
+			$mode = isset( $get_option['subscriber_count_mode'] ) && '' !== $get_option['subscriber_count_mode']
+				? $get_option['subscriber_count_mode']
+				: 'new_since_visit';
+
+			if ( 'total' === $mode ) {
+				// Classic behaviour: always show the current subscriber total.
+				$count_posts = wp_count_posts( 'cwginstocknotifier' );
+				$count       = isset( $count_posts->cwg_subscribed ) ? (int) $count_posts->cwg_subscribed : 0;
+				if ( 1 <= $count ) {
+					foreach ( $menu as $key => $value ) {
+						if ( 'edit.php?post_type=cwginstocknotifier' == $menu[ $key ][2] ) {
+							// phpcs:ignore
+							$menu[ $key ][0] .= ' <span class="update-plugins"><span class="plugin-count">' . $count . '</span></span>';
+							return;
+						}
+					}
+				}
+				return;
+			}
+
 			$user_id = get_current_user_id();
 			if ( ! $user_id ) {
 				return;
