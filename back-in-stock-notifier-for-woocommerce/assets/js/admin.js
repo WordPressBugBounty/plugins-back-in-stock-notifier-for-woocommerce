@@ -185,6 +185,26 @@ jQuery(
         }
         third_party_stock_update.init();
 
+        // Popup design only applies when the form is displayed as a popup.
+        var popup_design_visibility = {
+            init: function () {
+                popup_design_visibility.show_hide();
+                jQuery(document).on('change', '.cwg_form_display_type', function () {
+                    popup_design_visibility.show_hide();
+                });
+            },
+            show_hide: function () {
+                var mode = jQuery('.cwg_form_display_type').val();
+                var row  = jQuery('.cwg_popup_design').parent().parent();
+                if ('2' === String(mode)) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            }
+        }
+        popup_design_visibility.init();
+
         var trigger_variable_product_email = {
             init: function () {
                 var ele = '.cwginstock_trigger_variable_email';

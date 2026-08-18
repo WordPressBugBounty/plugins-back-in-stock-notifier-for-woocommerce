@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 7.3.3
+Stable tag: 7.4.0
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -47,6 +47,12 @@ Every out-of-stock product is a lost sale waiting to happen. <strong>Back In Sto
 <li>Option to show the subscribe form for <strong>backorder products</strong></li>
 <li><strong>Fair Sending (First-Come-First-Served)</strong>, on a limited restock notify only as many subscribers as units in stock, the rest stay on the waitlist for the next restock</li>
 <li><strong>Email speed limit</strong>, send automatic emails gradually to respect hosting and SMTP provider limits</li>
+<li><strong>Six subscribe form designs</strong> (Default, Card, Minimal, Compact, Bold, Outline) and <strong>six popup designs</strong> including five lightweight popups that need no extra library, all chosen from the settings page</li>
+<li><strong>Auto Coupon</strong>, optionally send each subscriber a unique discount code that only works on the exact product or variation they waited for, with full control over discount type, amount, expiry, usage limit, minimum spend and sale item rules</li>
+<li><strong>Product table placeholder</strong> for both emails, showing the subscribed product in a classic order style table with thumbnail, SKU, quantity and price</li>
+<li><strong>Stock status filter</strong> on the subscribers list, including "in stock but below your notification threshold" to find subscribers the automatic sender skipped</li>
+<li><strong>Auto-retry for stuck emails</strong>, an optional recovery task that resends notifications when a background job fails or never runs</li>
+<li><strong>New subscriber indicator</strong> on the admin menu and subscribers list, showing how many people signed up since your last visit</li>
 <li><strong>Bot protection</strong> with Google reCAPTCHA (v2/v3) and Cloudflare Turnstile</li>
 <li><strong>Subscriber management dashboard</strong> to view, sort, filter, and delete subscribers</li>
 <li>Manual and bulk <strong>send instock mail</strong> actions</li>
@@ -64,7 +70,7 @@ Every out-of-stock product is a lost sale waiting to happen. <strong>Back In Sto
 
 == Premium Add-ons ==
 
-Supercharge your waitlist with premium add-ons. Every purchase is a <strong>one-time payment with lifetime updates</strong>. No subscriptions, no recurring fees. You can browse and manage everything from your dashboard under <strong>Instock Notifier > Marketplace</strong>.
+Supercharge your waitlist with premium add-ons. Every purchase is a <strong>one-time payment with lifetime updates</strong>. No subscriptions, no recurring fees. You can browse and manage everything from your dashboard under <strong>Instock Notifier > Plugins & Add-ons</strong>.
 
 <strong>Best value:</strong> get <a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/bundle-add-ons/"><strong>Bundle Add-ons</strong></a>, all 15 add-ons plus every future add-on, for one discounted price.
 
@@ -89,17 +95,32 @@ Supercharge your waitlist with premium add-ons. Every purchase is a <strong>one-
 
 See the full catalog at <a href="https://propluginslab.com/product-category/back-in-stock-notifier/"><strong>propluginslab.com</strong></a>, with more add-ons coming soon.
 
-== Pro WooCommerce Plugins by ProPluginsLab ==
+== More Plugins by ProPluginsLab ==
 
-Six standalone premium WooCommerce plugins built by the same team, each a one-time payment with lifetime updates:
+= Free plugins =
+
+All available free on WordPress.org:
 
 <ol>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/multivendor-for-woocommerce/"><strong>Multivendor for WooCommerce</strong></a> - Turn your store into a complete multi-vendor marketplace with vendor dashboards, commissions, and payouts.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/advanced-shipment-tracking/"><strong>Advanced Shipment Tracking for WooCommerce</strong></a> - Complete fulfillment manager. Add tracking numbers to orders and keep customers informed with tracking details in order emails.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/composite-products-for-woocommerce/"><strong>Composite Products for WooCommerce</strong></a> - Let customers build their own kits, boxes, and product combos. Includes a built-in Product Bundle feature (2 in 1).</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/fees-for-woocommerce/"><strong>Extra Fees for WooCommerce</strong></a> - Add conditional fees and surcharges based on cart total, shipping method, payment gateway, product category, user role, and more.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/gift-cards-for-woocommerce/"><strong>Gift Cards for WooCommerce</strong></a> - Sell digital gift cards with customizable templates, scheduled delivery, and balance management.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/name-your-price-for-woocommerce/"><strong>Name Your Price for WooCommerce</strong></a> - Let customers choose their price. Perfect for donations, tipping, and pay-what-you-want campaigns.</li>
+<li><a href="https://wordpress.org/plugins/recovero-cart-recovery-for-woocommerce/"><strong>Recovero - Cart Recovery for WooCommerce</strong></a> - Recover abandoned carts automatically with reminder emails and win back lost revenue.</li>
+<li><a href="https://wordpress.org/plugins/affireo-affiliates-for-woocommerce/"><strong>Affireo - Affiliates for WooCommerce</strong></a> - Run your own affiliate program with referral tracking and commissions.</li>
+<li><a href="https://wordpress.org/plugins/christmas-snow-festive-snowfall-effect/"><strong>Christmas Snow - Festive Snowfall Effect</strong></a> - Add a festive snow effect to your site for the holiday season.</li>
+</ol>
+
+= Pro plugins =
+
+Nine standalone premium WooCommerce plugins, each a one-time payment with lifetime updates:
+
+<ol>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/vendero-multivendor-for-woocommerce/"><strong>Vendero - Multivendor for WooCommerce</strong></a> - Turn your store into a complete multi vendor marketplace with vendor dashboards, commissions and payouts.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/recovero-cart-recovery-for-woocommerce/"><strong>Recovero - Cart Abandonment Recovery for WooCommerce</strong></a> - Advanced abandoned cart recovery with automated follow up campaigns and detailed reporting.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/anticipo-pre-orders-for-woocommerce/"><strong>Anticipo - Pre-Orders for WooCommerce</strong></a> - Sell products before they are released and take payment upfront or on release.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/trackero-advanced-shipment-tracking/"><strong>Trackero - Advanced Shipment Tracking for WooCommerce</strong></a> - Complete fulfillment manager. Add tracking numbers to orders and keep customers informed in order emails.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/kitero-composite-products-for-woocommerce/"><strong>Kitero - Composite Products for WooCommerce</strong></a> - Let customers build their own kits, boxes and product combos, with a built in product bundle feature.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/giftero-gift-cards-for-woocommerce/"><strong>Giftero - Gift Cards for WooCommerce</strong></a> - Sell digital gift cards with customizable templates, scheduled delivery and balance management.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/plusero-extra-fees-for-woocommerce/"><strong>Plusero - Extra Fees for WooCommerce</strong></a> - Add conditional fees and surcharges based on cart total, shipping method, payment gateway, category, user role and more.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/inputo-name-your-price-for-woocommerce/"><strong>Inputo - Name Your Price for WooCommerce</strong></a> - Let customers choose their price. Perfect for donations, tipping and pay what you want campaigns.</li>
+<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/affireo-affiliates-for-woocommerce/"><strong>Affireo - Affiliates for WooCommerce</strong></a> - Full affiliate marketing suite with multi tier commissions, payouts and performance reports.</li>
 </ol>
 
 Visit <a href="https://propluginslab.com/"><strong>ProPluginsLab</strong></a> for all our premium WooCommerce plugins and solutions.
@@ -213,6 +234,15 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.4.0 2026-08-18 =
+* New: Subscribe form designs. Choose from six inline form designs (Default, Card, Minimal, Compact, Bold, Outline) under Settings > Frontend Form. "Default (classic)" keeps the existing look exactly as it is and loads no extra stylesheet.
+* New: Popup designs. Choose from six popup styles including the original SweetAlert popup plus five built-in lightweight popups (Centered, Slide Up, Side Drawer, Minimal, Card) that need no extra library.
+* New: Stock status filter on the Subscribers list. Filter subscribers by the current stock status of the product they signed up for: In stock, Out of stock, On backorder, Product deleted, and "In stock but below notification threshold" to quickly find and manually notify subscribers the automatic sender skipped.
+* New: Auto Coupon. Optionally generate a unique discount coupon for each subscriber in the back in stock email to encourage the purchase. Coupons are valid only for the exact product the person subscribed to and can be locked to their email address. Full control over discount type, amount, expiry, prefix, usage limit, minimum spend, free shipping, combining with other coupons, and skipping products already on sale. Off by default, and no coupon is ever created unless the email uses the {coupon_code}, {coupon_amount} or {coupon_expiry} placeholder.
+* New: {product_table} placeholder for both the subscription confirmation and back in stock emails, rendering the subscribed product in a classic order style table with Product, Quantity and Price columns, including the product thumbnail and SKU. It matches the WooCommerce order table used in your other store emails.
+* Tweak: All available placeholders, including the coupon and product table ones, are now listed in the email settings under WooCommerce > Settings > Emails.
+* Tweak: Tested up to WooCommerce v11.0.1.
+
 = 7.3.3 2026-07-28 =
 * New: Setting to choose what the Instock Notifier admin menu counter shows - "New subscribers since your last visit" (default) or "Total number of subscribers". Available under Settings > Troubleshoot. Choose "Total" to restore the classic running-total badge.
 

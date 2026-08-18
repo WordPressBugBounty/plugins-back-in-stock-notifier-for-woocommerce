@@ -66,7 +66,7 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 			$this->id             = 'cwg_bis_subscription';
 			$this->customer_email = true;
 			$this->title          = __( 'Back In Stock - Subscription Confirmation', 'back-in-stock-notifier-for-woocommerce' );
-			$this->description    = __( 'Sent to the subscriber immediately after they subscribe to a back-in-stock notification. <strong>Available placeholders:</strong> <code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>.', 'back-in-stock-notifier-for-woocommerce' );
+			$this->description    = __( 'Sent to the subscriber immediately after they subscribe to a back-in-stock notification. <strong>Available placeholders:</strong> <code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>. <strong>{product_table}</strong> renders an order style table for the subscribed product.', 'back-in-stock-notifier-for-woocommerce' );
 			$this->template_html  = 'emails/bis-subscription.php';
 			$this->template_plain = 'emails/plain/bis-subscription.php';
 
@@ -87,6 +87,7 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 				'{email_id}'             => '',
 				'{subscriber_phone}'     => '',
 				'{shopname}'             => $this->get_blogname(),
+				'{product_table}'        => '',
 			);
 
 			// Default values
@@ -100,6 +101,9 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 
 			// Keep a copy of the default placeholders to reset between sends.
 			$this->base_placeholders = $this->placeholders;
+
+			// Supply sample values for the WooCommerce email preview screen.
+			add_filter( 'woocommerce_email_preview_placeholders', array( $this, 'preview_placeholders' ), 10, 2 );
 		}
 
 		/**
@@ -148,6 +152,11 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 			$this->placeholders['{email_id}']             = $this->recipient; 
 			$this->placeholders['{subscriber_phone}']     = $api->get_subscriber_phone( $subscriber_id );
 			$this->placeholders['{shopname}']             = $this->get_blogname();
+
+			// Order style line item table for the subscribed product.
+			if ( function_exists( 'cwg_instock_get_product_table_html' ) ) {
+				$this->placeholders['{product_table}'] = cwg_instock_get_product_table_html( $subscriber_id, false );
+			}
 
 
 			$this->apply_legacy_shortcodes( $subscriber_id );
@@ -325,7 +334,91 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 		 *
 		 * @return string
 		 */
+
+		/**
+		 * Sample placeholder values for the WooCommerce email preview, so the
+		 * preview shows realistic content instead of empty or raw placeholders.
+		 *
+		 * @since 7.4.0
+		 * @param array  $placeholders Existing preview placeholders.
+		 * @param string $email_type   Email class being previewed.
+		 * @return array
+		 */
+		public function preview_placeholders( $placeholders, $email_type = '' ) {
+			if ( ! is_array( $placeholders ) ) {
+				$placeholders = array();
+			}
+
+			// Only touch the preview of this plugin's own email.
+			if ( $email_type && ! in_array( $email_type, array( get_class( $this ), 'cwg_bis_subscription' ), true ) ) {
+				return $placeholders;
+			}
+
+			$sample_product = __( 'Sample Product', 'back-in-stock-notifier-for-woocommerce' );
+			$sample_email   = 'customer@example.com';
+
+			$sample = array(
+				'{product_name}'         => $sample_product,
+				'{only_product_name}'    => $sample_product,
+				'{product_id}'           => '123',
+				'{product_link}'         => home_url( '/' ),
+				'{product_price}'        => function_exists( 'wc_price' ) ? wp_strip_all_tags( wc_price( 29 ) ) : '29',
+				'{only_product_sku}'     => 'SKU-1234',
+				'{cart_link}'            => home_url( '/' ),
+				'{product_image}'        => '',
+				'{subscriber_name}'      => __( 'Jane Doe', 'back-in-stock-notifier-for-woocommerce' ),
+				'{subscriber_firstname}' => __( 'Jane', 'back-in-stock-notifier-for-woocommerce' ),
+				'{subscriber_lastname}'  => __( 'Doe', 'back-in-stock-notifier-for-woocommerce' ),
+				'{subscriber_email}'     => $sample_email,
+				'{email_id}'             => $sample_email,
+				'{subscriber_phone}'     => '+1 555 0100',
+				'{shopname}'             => $this->get_blogname(),
+			);
+
+			if ( function_exists( 'cwg_instock_get_product_table_html' ) ) {
+				$sample['{product_table}'] = cwg_instock_get_product_table_html( 0, true );
+			}
+
+			return array_merge( $placeholders, $sample );
+		}
+
+
+		/**
+		 * Render the email template with sample data for the preview screen.
+		 *
+		 * @since 7.4.0
+		 * @return string
+		 */
+		protected function get_preview_content_html() {
+			cwg_bis_remove_villa_header_override();
+			return wc_get_template_html(
+				$this->template_html,
+				array(
+					'email_heading'      => $this->get_heading(),
+					'additional_content' => $this->get_additional_content(),
+					'subscriber_id'      => 0,
+					'subscriber_name'    => __( 'Jane Doe', 'back-in-stock-notifier-for-woocommerce' ),
+					'product_name'       => __( 'Sample Product', 'back-in-stock-notifier-for-woocommerce' ),
+					'product_link'       => home_url( '/' ),
+					'product_price'      => function_exists( 'wc_price' ) ? wc_price( 29 ) : '29',
+					'cart_link'          => home_url( '/' ),
+					'product_id'         => 123,
+					'blogname'           => $this->get_blogname(),
+					'sent_to_admin'      => false,
+					'plain_text'         => false,
+					'email'              => $this,
+				),
+				'',
+				$this->template_base
+			);
+		}
+
 		public function get_content_html() {
+			// Preview mode has no real subscriber, so render sample values.
+			if ( function_exists( 'cwg_instock_is_email_preview' ) && cwg_instock_is_email_preview() && ! $this->subscriber_id ) {
+				return $this->get_preview_content_html();
+			}
+
 			cwg_bis_remove_villa_header_override();
 			return wc_get_template_html(
 				$this->template_html,
@@ -380,7 +473,7 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 			/* translators: %s: list of shortcodes */
 			$placeholder_text = sprintf(
 				__( 'Available shortcodes: %s', 'back-in-stock-notifier-for-woocommerce' ),
-				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>'
+				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>'
 			);
 
 			$this->form_fields = array(

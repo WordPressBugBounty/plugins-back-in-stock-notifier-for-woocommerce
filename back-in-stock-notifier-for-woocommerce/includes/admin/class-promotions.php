@@ -35,13 +35,45 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'add_menu' ), 1000 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+			add_action( 'admin_head', array( $this, 'menu_highlight_css' ) );
+		}
+
+		/**
+		 * Menu and page title. Filterable so the wording can be changed
+		 * without touching the plugin files.
+		 *
+		 * @since 7.4.0
+		 * @return string
+		 */
+		public static function get_page_title() {
+			return apply_filters( 'cwginstock_extensions_page_title', __( 'Plugins & Add-ons', 'back-in-stock-notifier-for-woocommerce' ) );
+		}
+
+		/**
+		 * Highlight the extensions menu item in green so it stands out.
+		 *
+		 * @since 7.4.0
+		 */
+		public function menu_highlight_css() {
+			?>
+			<style>
+				#adminmenu .wp-submenu a .cwg-extensions-menu {
+					color: #00a32a;
+					font-weight: 600;
+				}
+				#adminmenu .wp-submenu a:hover .cwg-extensions-menu,
+				#adminmenu .wp-submenu li.current a .cwg-extensions-menu {
+					color: #00ba37;
+				}
+			</style>
+			<?php
 		}
 
 		public function add_menu() {
 			add_submenu_page(
 				'edit.php?post_type=cwginstocknotifier',
-				__( 'Marketplace - Pro Plugins & Add-ons', 'back-in-stock-notifier-for-woocommerce' ),
-				__( 'Marketplace', 'back-in-stock-notifier-for-woocommerce' ),
+				self::get_page_title(),
+				'<span class="cwg-extensions-menu">' . esc_html( self::get_page_title() ) . '</span>',
 				'manage_woocommerce',
 				self::PAGE_SLUG,
 				array( $this, 'render_page' )
@@ -74,17 +106,29 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				true
 			);
 
+			// WordPress core installer, powers the one click install button.
+			if ( current_user_can( 'install_plugins' ) ) {
+				wp_enqueue_script( 'updates' );
+			}
+
 			wp_localize_script(
 				'cwg-bis-promotions',
 				'cwgPromotions',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'can_install' => current_user_can( 'install_plugins' ),
 					'nonce'    => wp_create_nonce( CWG_Instock_Remote_Feed::NONCE_ACTION ),
 					'action'   => CWG_Instock_Remote_Feed::AJAX_ACTION,
 					'i18n'     => array(
 						'refreshing'   => __( 'Refreshing...', 'back-in-stock-notifier-for-woocommerce' ),
 						'refresh_feed' => __( 'Refresh Feed', 'back-in-stock-notifier-for-woocommerce' ),
 						'error'        => __( 'Something went wrong. Please try again.', 'back-in-stock-notifier-for-woocommerce' ),
+						'installing'   => __( 'Installing...', 'back-in-stock-notifier-for-woocommerce' ),
+						'installed'    => __( 'Installed', 'back-in-stock-notifier-for-woocommerce' ),
+						'activate'     => __( 'Activate', 'back-in-stock-notifier-for-woocommerce' ),
+						'install_fail' => __( 'Installation failed', 'back-in-stock-notifier-for-woocommerce' ),
+						'already_installed' => __( 'Already installed', 'back-in-stock-notifier-for-woocommerce' ),
+						'copied'       => __( 'Copied!', 'back-in-stock-notifier-for-woocommerce' ),
 					),
 				)
 			);
@@ -285,9 +329,13 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				}
 			}
 
-			$btn_label = ( 'pro' === $type )
-				? __( 'Get Plugin', 'back-in-stock-notifier-for-woocommerce' )
-				: __( 'Get Add-on', 'back-in-stock-notifier-for-woocommerce' );
+			if ( 'pro' === $type ) {
+				$btn_label = __( 'Get Plugin', 'back-in-stock-notifier-for-woocommerce' );
+			} elseif ( 'free' === $type ) {
+				$btn_label = __( 'View Details', 'back-in-stock-notifier-for-woocommerce' );
+			} else {
+				$btn_label = __( 'Get Add-on', 'back-in-stock-notifier-for-woocommerce' );
+			}
 
 			$classes = array( 'cwg-promo-card' );
 			if ( 'pro' === $type ) {
@@ -390,11 +438,213 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						?>
 					</span>
 					<?php else : ?>
-					<a href="<?php echo esc_url( $product_url ); ?>" target="_blank" rel="noopener noreferrer" class="cwg-promo-card-btn cwg-promo-card-btn--<?php echo esc_attr( $type ); ?>">
-						<?php echo esc_html( $btn_label ); ?>
-						<span class="dashicons dashicons-arrow-right-alt"></span>
-					</a>
+						<?php
+						$wporg_slug = isset( $product['wporg_slug'] ) ? sanitize_title( $product['wporg_slug'] ) : '';
+						$install    = ( 'free' === $type && $wporg_slug ) ? $this->get_free_plugin_state( $wporg_slug, $product ) : null;
+						?>
+						<?php if ( $install && 'install' === $install['state'] ) : ?>
+						<button type="button" class="cwg-promo-card-btn cwg-promo-card-btn--free cwg-install-plugin"
+							data-slug="<?php echo esc_attr( $wporg_slug ); ?>"
+							data-activate-url="<?php echo esc_url( $install['activate_url'] ); ?>">
+							<span class="dashicons dashicons-download"></span>
+							<?php esc_html_e( 'Install Now', 'back-in-stock-notifier-for-woocommerce' ); ?>
+						</button>
+						<?php elseif ( $install && 'active' === $install['state'] ) : ?>
+						<span class="cwg-promo-active-label">
+							<span class="dashicons dashicons-saved"></span>
+							<?php esc_html_e( 'Installed & Active', 'back-in-stock-notifier-for-woocommerce' ); ?>
+						</span>
+						<?php elseif ( $install && 'activate' === $install['state'] ) : ?>
+						<a href="<?php echo esc_url( $install['activate_url'] ); ?>" class="cwg-promo-card-btn cwg-promo-card-btn--free">
+							<span class="dashicons dashicons-yes"></span>
+							<?php esc_html_e( 'Activate', 'back-in-stock-notifier-for-woocommerce' ); ?>
+						</a>
+						<?php else : ?>
+						<a href="<?php echo esc_url( $product_url ); ?>" target="_blank" rel="noopener noreferrer" class="cwg-promo-card-btn cwg-promo-card-btn--<?php echo esc_attr( $type ); ?>">
+							<?php echo esc_html( $btn_label ); ?>
+							<span class="dashicons dashicons-arrow-right-alt"></span>
+						</a>
+						<?php endif; ?>
 					<?php endif; ?>
+				</div>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Candidate slugs used when looking for an installed copy of a plugin.
+		 *
+		 * Shop product slugs often carry a marketing suffix such as "-free"
+		 * that the real WordPress.org slug does not have, so try both.
+		 *
+		 * @since 7.4.0
+		 * @param string $wporg_slug WordPress.org plugin slug.
+		 * @return array
+		 */
+		private function get_slug_candidates( $wporg_slug ) {
+			$candidates = array( $wporg_slug );
+
+			foreach ( array( '-free', '-lite' ) as $suffix ) {
+				if ( substr( $wporg_slug, -strlen( $suffix ) ) === $suffix ) {
+					$candidates[] = substr( $wporg_slug, 0, -strlen( $suffix ) );
+				}
+			}
+
+			/**
+			 * Filter the slugs used to detect an installed plugin.
+			 *
+			 * @since 7.4.0
+			 */
+			return array_values( array_unique( array_filter( apply_filters( 'cwginstock_plugin_slug_candidates', $candidates, $wporg_slug ) ) ) );
+		}
+
+		/**
+		 * Find an installed plugin file for a product.
+		 *
+		 * Matches on the explicit plugin file from the feed, then the plugin
+		 * folder, then the text domain, so a plugin installed under a slightly
+		 * different folder name is still recognised.
+		 *
+		 * @since 7.4.0
+		 * @param string $wporg_slug WordPress.org plugin slug.
+		 * @param array  $product    Feed product entry.
+		 * @return string Plugin file, or empty string when not installed.
+		 */
+		private function find_installed_plugin_file( $wporg_slug, $product = array() ) {
+			if ( ! function_exists( 'get_plugins' ) ) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+
+			$all_plugins = get_plugins();
+
+			// 1. Explicit plugin file from the feed wins.
+			if ( ! empty( $product['plugin_file'] ) && isset( $all_plugins[ $product['plugin_file'] ] ) ) {
+				return $product['plugin_file'];
+			}
+
+			$candidates = $this->get_slug_candidates( $wporg_slug );
+
+			// 2. Folder name, then 3. text domain.
+			foreach ( $all_plugins as $file => $data ) {
+				$folder = dirname( $file );
+				if ( in_array( $folder, $candidates, true ) ) {
+					return $file;
+				}
+			}
+
+			foreach ( $all_plugins as $file => $data ) {
+				$text_domain = isset( $data['TextDomain'] ) ? $data['TextDomain'] : '';
+				if ( $text_domain && in_array( $text_domain, $candidates, true ) ) {
+					return $file;
+				}
+			}
+
+			return '';
+		}
+
+		/**
+		 * Work out whether a free WordPress.org plugin can be installed or
+		 * activated from this screen.
+		 *
+		 * @since 7.4.0
+		 * @param string $wporg_slug WordPress.org plugin slug.
+		 * @param array  $product    Feed product entry.
+		 * @return array|null state: install|activate|active, plus an activate url.
+		 */
+		private function get_free_plugin_state( $wporg_slug, $product = array() ) {
+			if ( ! current_user_can( 'install_plugins' ) && ! current_user_can( 'activate_plugins' ) ) {
+				return null;
+			}
+
+			$installed_file = $this->find_installed_plugin_file( $wporg_slug, $product );
+
+			if ( '' === $installed_file ) {
+				return current_user_can( 'install_plugins' )
+					? array(
+						'state'        => 'install',
+						'activate_url' => '',
+					)
+					: null;
+			}
+
+			if ( is_plugin_active( $installed_file ) ) {
+				return array(
+					'state'        => 'active',
+					'activate_url' => '',
+				);
+			}
+
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				return null;
+			}
+
+			return array(
+				'state'        => 'activate',
+				'activate_url' => wp_nonce_url(
+					self_admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $installed_file ) ),
+					'activate-plugin_' . $installed_file
+				),
+			);
+		}
+
+		/**
+		 * Site wide promotion banner, driven by the remote feed.
+		 * Renders nothing when there is no active promotion.
+		 *
+		 * @since 7.4.0
+		 */
+		private function render_promotion_banner() {
+			if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
+				return;
+			}
+
+			$promo = CWG_Instock_Remote_Feed::get_promotion();
+			if ( empty( $promo['code'] ) ) {
+				return;
+			}
+
+			$headline = ! empty( $promo['headline'] )
+				? $promo['headline']
+				: __( 'Limited time offer', 'back-in-stock-notifier-for-woocommerce' );
+
+			$link = ! empty( $promo['url'] ) ? $promo['url'] : 'https://propluginslab.com/';
+			$link = $this->add_utm_params( $link, 'promotion-banner' );
+
+			$expires_label = '';
+			if ( ! empty( $promo['expires'] ) ) {
+				$ts = strtotime( $promo['expires'] . ' 23:59:59' );
+				if ( $ts ) {
+					/* translators: %s: human readable date */
+					$expires_label = sprintf( __( 'Ends %s', 'back-in-stock-notifier-for-woocommerce' ), wp_date( get_option( 'date_format' ), $ts ) );
+				}
+			}
+			?>
+			<div class="cwg-promo-offer">
+				<div class="cwg-promo-offer-left">
+					<span class="cwg-promo-offer-icon dashicons dashicons-tag"></span>
+					<div class="cwg-promo-offer-text">
+						<strong>
+							<?php if ( ! empty( $promo['discount'] ) ) : ?>
+								<span class="cwg-promo-offer-discount"><?php echo esc_html( $promo['discount'] ); ?></span>
+							<?php endif; ?>
+							<?php echo esc_html( $headline ); ?>
+						</strong>
+						<?php if ( ! empty( $promo['description'] ) ) : ?>
+							<span class="cwg-promo-offer-desc"><?php echo esc_html( $promo['description'] ); ?></span>
+						<?php endif; ?>
+					</div>
+				</div>
+
+				<div class="cwg-promo-offer-right">
+					<span class="cwg-promo-offer-code" title="<?php esc_attr_e( 'Click to copy', 'back-in-stock-notifier-for-woocommerce' ); ?>" data-code="<?php echo esc_attr( $promo['code'] ); ?>">
+						<?php echo esc_html( $promo['code'] ); ?>
+					</span>
+					<?php if ( $expires_label ) : ?>
+						<span class="cwg-promo-offer-expiry"><?php echo esc_html( $expires_label ); ?></span>
+					<?php endif; ?>
+					<a href="<?php echo esc_url( $link ); ?>" target="_blank" rel="noopener noreferrer" class="cwg-promo-offer-btn">
+						<?php esc_html_e( 'Shop now', 'back-in-stock-notifier-for-woocommerce' ); ?>
+					</a>
 				</div>
 			</div>
 			<?php
@@ -417,30 +667,39 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 
 			if ( $has_products ) {
 				$pro_products   = array();
+				$free_products  = array();
 				$addon_products = array();
 
 				foreach ( $all_products as $product ) {
 					$type = isset( $product['type'] ) ? $product['type'] : 'addon';
 
-					if ( 'pro' === $type ) {
+					if ( 'free' === $type ) {
+						$free_products[] = $product;
+					} elseif ( 'pro' === $type ) {
 						$pro_products[] = $product;
 					} else {
 						$addon_products[] = $product;
 					}
 				}
 
-				$all_products = array_merge( $pro_products, $addon_products );
+				$all_products = array_merge( $pro_products, $free_products, $addon_products );
 			}
 
 			// ── Classify products and build category counts ──
 			$addon_count = 0;
 			$pro_count   = 0;
+			$free_count  = 0;
 			$addon_cats  = array();  // slug => count
 			$pro_cats    = array();  // slug => count
 
 			foreach ( $all_products as $idx => $product ) {
 				$type = isset( $product['type'] ) ? $product['type'] : 'addon';
 				$cat  = ! empty( $product['category'] ) ? $product['category'] : 'general';
+
+				if ( 'free' === $type ) {
+					$free_count++;
+					continue;
+				}
 
 				if ( 'pro' === $type ) {
 					// Auto-categorize pro plugins from product name
@@ -493,9 +752,9 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				<!-- Header -->
 				<div class="cwg-promo-header">
 					<div class="cwg-promo-header-left">
-						<h1><?php esc_html_e( 'Marketplace', 'back-in-stock-notifier-for-woocommerce' ); ?></h1>
+						<h1><?php echo esc_html( self::get_page_title() ); ?></h1>
 						<p class="cwg-promo-subtitle">
-							<?php esc_html_e( 'Supercharge your Back In Stock Notifier with powerful add-ons and premium plugins.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Extend your store with our WooCommerce plugins and Back In Stock Notifier add-ons.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						</p>
 						<div class="cwg-promo-value-pill">
 							<span class="dashicons dashicons-yes-alt"></span>
@@ -599,12 +858,19 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				</div>
 				<?php else : ?>
 
+				<?php $this->render_promotion_banner(); ?>
+
 				<!-- ═══════ TYPE FILTER BUTTONS ═══════ -->
 				<div class="cwg-promo-type-buttons">
 					<button type="button" class="cwg-type-btn cwg-type-btn--all active" data-type="all">
 						<span class="dashicons dashicons-screenoptions"></span>
 						<?php esc_html_e( 'All', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<span class="cwg-btn-count"><?php echo count( $all_products ); ?></span>
+					</button>
+					<button type="button" class="cwg-type-btn cwg-type-btn--free" data-type="free">
+						<span class="dashicons dashicons-download"></span>
+						<?php esc_html_e( 'Free Plugins', 'back-in-stock-notifier-for-woocommerce' ); ?>
+						<span class="cwg-btn-count"><?php echo absint( $free_count ); ?></span>
 					</button>
 					<button type="button" class="cwg-type-btn cwg-type-btn--pro" data-type="pro">
 						<span class="dashicons dashicons-star-filled"></span>

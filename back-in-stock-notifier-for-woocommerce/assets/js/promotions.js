@@ -61,7 +61,11 @@
 
 		/* ── Switch subcategory panels based on type ─────────── */
 		function switchSubcatPanels() {
-			if (activeType === 'pro') {
+			if (activeType === 'free') {
+				// Free plugins have no subcategories of their own.
+				$addonSubcats.slideUp(150);
+				$proSubcats.slideUp(150);
+			} else if (activeType === 'pro') {
 				$addonSubcats.slideUp(150);
 				$proSubcats.slideDown(150);
 			} else {
@@ -111,6 +115,110 @@
 			}
 
 			applyFilters();
+		});
+
+		/* ── One click install for free WordPress.org plugins ────── */
+
+		// Core marks itself busy during an install and warns on navigation.
+		// Clear that before we move the user, otherwise the browser shows
+		// "Leave site? Changes you made may not be saved".
+		function cwgReleaseUpdateLock() {
+			if (typeof wp !== 'undefined' && wp.updates) {
+				wp.updates.ajaxLocked = false;
+				if (wp.updates.queue) {
+					wp.updates.queue = [];
+				}
+			}
+			$(window).off('beforeunload');
+		}
+
+		function cwgSetActivateButton($btn, activateUrl) {
+			var $link = $('<a/>', {
+				'class': 'cwg-promo-card-btn cwg-promo-card-btn--free',
+				href: activateUrl
+			}).html('<span class="dashicons dashicons-yes"></span> ' + cwgPromotions.i18n.activate);
+			$btn.replaceWith($link);
+		}
+
+		$(document).on('click', '.cwg-install-plugin', function (e) {
+			e.preventDefault();
+
+			var $btn = $(this),
+				slug = $btn.data('slug');
+
+			if (!slug || $btn.hasClass('cwg-installing')) {
+				return;
+			}
+			if (typeof wp === 'undefined' || !wp.updates || !wp.updates.installPlugin) {
+				window.location.href = 'plugin-install.php?s=' + encodeURIComponent(slug) + '&tab=search&type=term';
+				return;
+			}
+
+			$btn.addClass('cwg-installing').prop('disabled', true)
+				.html('<span class="dashicons dashicons-update"></span> ' + cwgPromotions.i18n.installing);
+
+			wp.updates.installPlugin({
+				slug: slug,
+				success: function (response) {
+					cwgReleaseUpdateLock();
+					$btn.removeClass('cwg-installing');
+
+					var activateUrl = (response && response.activateUrl) ? response.activateUrl : $btn.data('activate-url');
+					if (activateUrl) {
+						// Let the user click Activate instead of redirecting for
+						// them, which is what WordPress itself does.
+						cwgSetActivateButton($btn, activateUrl);
+					} else {
+						$btn.html('<span class="dashicons dashicons-yes"></span> ' + cwgPromotions.i18n.installed);
+					}
+				},
+				error: function (response) {
+					cwgReleaseUpdateLock();
+					$btn.removeClass('cwg-installing');
+
+					var msg = (response && response.errorMessage) ? String(response.errorMessage) : '';
+					var alreadyThere = /already exists|already installed|destination folder/i.test(msg);
+					var activateUrl  = $btn.data('activate-url');
+
+					if (alreadyThere && activateUrl) {
+						// Installed under a different folder name, offer Activate.
+						cwgSetActivateButton($btn, activateUrl);
+						return;
+					}
+					if (alreadyThere) {
+						$btn.prop('disabled', false)
+							.html('<span class="dashicons dashicons-info"></span> ' + cwgPromotions.i18n.already_installed);
+						return;
+					}
+
+					$btn.prop('disabled', false)
+						.html('<span class="dashicons dashicons-warning"></span> ' + cwgPromotions.i18n.install_fail);
+					if (msg) {
+						window.console && window.console.log(msg);
+					}
+				}
+			});
+		});
+
+		/* ── Click to copy the promotion code ────────────────────── */
+		$(document).on('click', '.cwg-promo-offer-code', function () {
+			var $el  = $(this),
+				code = $el.data('code'),
+				original = $el.text();
+
+			function done() {
+				$el.addClass('cwg-copied').text(cwgPromotions.i18n.copied);
+				setTimeout(function () { $el.removeClass('cwg-copied').text(original); }, 1600);
+			}
+
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				navigator.clipboard.writeText(code).then(done);
+				return;
+			}
+			// Fallback for browsers without the clipboard API.
+			var $tmp = $('<input>').val(code).appendTo('body').select();
+			try { document.execCommand('copy'); done(); } catch (e) { }
+			$tmp.remove();
 		});
 
 		/* ── Feed refresh ────────────────────────────────────────── */

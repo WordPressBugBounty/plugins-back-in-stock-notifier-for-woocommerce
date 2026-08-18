@@ -100,6 +100,76 @@ var popup_notifier = {
 			);
 		}
 	},
+	/**
+	 * Render the returned form inside a native modal (no SweetAlert).
+	 * Used when a custom popup design is selected in settings.
+	 *
+	 * @since 7.4.0
+	 */
+	render_native_modal: function (html, design) {
+		// Remove any modal left over from a previous open.
+		jQuery('.cwg-modal-overlay').remove();
+
+		var skin = 'cwg-modal-' + String(design).replace('modal_', '');
+		var overlay = document.createElement('div');
+		overlay.className = 'cwg-modal-overlay ' + skin;
+		overlay.setAttribute('role', 'dialog');
+		overlay.setAttribute('aria-modal', 'true');
+
+		var box = document.createElement('div');
+		box.className = 'cwg-modal-box';
+
+		var close = document.createElement('button');
+		close.type = 'button';
+		close.className = 'cwg-modal-close';
+		close.innerHTML = '&times;';
+		close.setAttribute('aria-label', (typeof cwginstock !== 'undefined' && cwginstock.popup_close_label) ? cwginstock.popup_close_label : 'Close');
+
+		var content = document.createElement('div');
+		content.className = 'cwg-modal-content';
+		content.innerHTML = html;
+
+		box.appendChild(close);
+		box.appendChild(content);
+		overlay.appendChild(box);
+		document.body.appendChild(overlay);
+
+		function closeModal() {
+			overlay.classList.remove('cwg-modal-visible');
+			jQuery(document).trigger('cwginstock_popup_close_callback');
+			setTimeout(function () { jQuery(overlay).remove(); }, 250);
+			document.removeEventListener('keydown', onKey);
+		}
+		function onKey(e) { if (e.key === 'Escape') { closeModal(); } }
+
+		close.addEventListener('click', closeModal);
+		overlay.addEventListener('click', function (e) { if (e.target === overlay) { closeModal(); } });
+		document.addEventListener('keydown', onKey);
+
+		// Render bot protection widgets inside the modal, same as the SweetAlert flow.
+		if ('recaptcha' == get_bot_type) {
+			if ('1' == recaptcha_enabled) {
+				jQuery(overlay).find('.g-recaptcha').before('<div id="cwg-google-recaptcha"></div>');
+				jQuery(overlay).find('.g-recaptcha').remove();
+			}
+		} else if ('1' == turnstile_enabled && typeof turnstile !== 'undefined') {
+			try {
+				turnstile.render(
+					jQuery(overlay).find('.cf-turnstile')[0],
+					{
+						sitekey: turnstile_site_key,
+						theme: 'light',
+						callback: function (token) { cwginstock_turnstile_callback(token); }
+					}
+				);
+			} catch (e) { }
+		}
+
+		// Trigger the transition on the next frame so it animates in.
+		requestAnimationFrame(function () { overlay.classList.add('cwg-modal-visible'); });
+		jQuery(document).trigger('cwginstock_popup_open_callback');
+	},
+
 	perform_ajax: function (data) {
 		jQuery.ajax(
 			{
@@ -108,6 +178,11 @@ var popup_notifier = {
 				data: data,
 				success: function (msg) {
 					jQuery.unblockUI();
+					var popup_design = (typeof cwginstock !== 'undefined' && cwginstock.popup_design) ? cwginstock.popup_design : 'sweetalert';
+					if (popup_design !== 'sweetalert') {
+						popup_notifier.render_native_modal(msg, popup_design);
+						return;
+					}
 					Swal.fire(
 						{
 							html: msg,

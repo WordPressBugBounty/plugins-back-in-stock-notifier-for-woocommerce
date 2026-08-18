@@ -34,6 +34,7 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 
 		const FEED_URL_OPTION      = 'cwg_bis_remote_feed_url';
 		const PRODUCTS_OPTION      = 'cwg_bis_feed_products';
+		const PROMOTION_OPTION     = 'cwg_bis_feed_promotion';
 		const LAST_FETCH_OPTION    = 'cwg_bis_feed_last_fetch';
 		const AS_HOOK              = 'cwg_bis_daily_feed_fetch';
 		const SCHEDULE_FLAG_OPTION = 'cwg_bis_feed_scheduled';
@@ -273,6 +274,10 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 			update_option( self::PRODUCTS_OPTION, $clean_products, false );
 			update_option( self::LAST_FETCH_OPTION, time(), false );
 
+			// Site wide promotion is served from its own endpoint, so the
+			// products endpoint keeps its original shape.
+			$this->fetch_promotion();
+
 			delete_transient( $lock_key );
 
 			return true;
@@ -313,6 +318,89 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 		/**
 		 * Sanitize a single product from remote feed.
 		 */
+		/**
+		 * Fetch the site wide promotion. Failures are non fatal, the previous
+		 * promotion is simply left in place.
+		 *
+		 * @since 7.4.0
+		 * @return bool
+		 */
+		public function fetch_promotion() {
+			$url = str_replace( '/products', '/promotion', self::get_feed_url() );
+			if ( empty( $url ) ) {
+				return false;
+			}
+
+			$response = wp_remote_get(
+				esc_url_raw( $url ),
+				array(
+					'timeout'   => 15,
+					'sslverify' => true,
+					'headers'   => array( 'Accept' => 'application/json' ),
+				)
+			);
+
+			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+				return false;
+			}
+
+			$data = json_decode( wp_remote_retrieve_body( $response ), true );
+			if ( ! is_array( $data ) ) {
+				$data = array();
+			}
+
+			update_option( self::PROMOTION_OPTION, self::sanitize_promotion( $data ), false );
+			return true;
+		}
+
+		/**
+		 * Sanitize a promotion payload.
+		 *
+		 * @since 7.4.0
+		 * @param array $raw Raw promotion data.
+		 * @return array
+		 */
+		private static function sanitize_promotion( $raw ) {
+			if ( ! is_array( $raw ) || empty( $raw['code'] ) ) {
+				return array();
+			}
+
+			return array(
+				'code'        => sanitize_text_field( $raw['code'] ),
+				'headline'    => isset( $raw['headline'] ) ? sanitize_text_field( $raw['headline'] ) : '',
+				'description' => isset( $raw['description'] ) ? sanitize_textarea_field( $raw['description'] ) : '',
+				'discount'    => isset( $raw['discount'] ) ? sanitize_text_field( $raw['discount'] ) : '',
+				'url'         => isset( $raw['url'] ) ? esc_url_raw( $raw['url'] ) : '',
+				'expires'     => isset( $raw['expires'] ) ? sanitize_text_field( $raw['expires'] ) : '',
+				'applies_to'  => isset( $raw['applies_to'] ) ? sanitize_key( $raw['applies_to'] ) : 'all',
+			);
+		}
+
+		/**
+		 * Get the stored promotion, or an empty array when there is none or it
+		 * has passed its end date.
+		 *
+		 * @since 7.4.0
+		 * @return array
+		 */
+		public static function get_promotion() {
+			$promo = get_option( self::PROMOTION_OPTION, array() );
+			if ( ! is_array( $promo ) || empty( $promo['code'] ) ) {
+				return array();
+			}
+
+			// Respect the end date locally too, in case the store has not
+			// refreshed the feed since the promotion ended.
+			if ( ! empty( $promo['expires'] ) ) {
+				$expires_ts = strtotime( $promo['expires'] . ' 23:59:59' );
+				if ( $expires_ts && $expires_ts < time() ) {
+					return array();
+				}
+			}
+
+			return $promo;
+		}
+
 		private static function sanitize_product( $raw ) {
 			if ( ! is_array( $raw ) ) {
 				return array();
@@ -333,6 +421,7 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 				'icon_url'        => isset( $raw['icon_url'] ) ? esc_url_raw( $raw['icon_url'] ) : '',
 				'sort_order'      => isset( $raw['sort_order'] ) ? absint( $raw['sort_order'] ) : 0,
 				'plugin_file'     => isset( $raw['plugin_file'] ) ? sanitize_text_field( $raw['plugin_file'] ) : '',
+				'wporg_slug'      => isset( $raw['wporg_slug'] ) ? sanitize_title( $raw['wporg_slug'] ) : '',
 			);
 		}
 

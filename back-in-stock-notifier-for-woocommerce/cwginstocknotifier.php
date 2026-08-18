@@ -5,14 +5,14 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.3.3
+ * Version: 7.4.0
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.com
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 10.9.4
+ * WC tested up to: 11.0.1
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      propluginslab
  * @copyright   2026 CodeWooGeek, LLC (USA) and CodeWooGeek Softwares Private Limited (India). All rights reserved.
@@ -58,7 +58,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.3.3';
+		public $version = '7.4.0';
 
 		/**
 		 * Instance variable
@@ -137,7 +137,6 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-privacy.php';
 			include 'includes/admin/class-extra.php';
 			include 'includes/admin/class-promotions.php';
-			include 'includes/admin/class-pro-notice.php';
 			include 'includes/class-remote-feed.php';
 			include 'includes/class-email-manager.php';
 			include 'includes/class-troubleshoot.php';
@@ -165,6 +164,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-queue-recovery.php';
 			include 'includes/class-mail-throttle.php';
 			include 'includes/class-partial-stock.php';
+			include 'includes/class-auto-coupon.php';
 			include 'includes/class-dashboard-widget.php';
 			include 'includes/class-cache-control.php';
 		}
@@ -230,7 +230,9 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			$frontend_js_ver  = file_exists( $frontend_js_path ) ? (string) filemtime( $frontend_js_path ) : $this->version;
 			wp_register_script( 'cwginstock_js', CWGINSTOCK_PLUGINURL . 'assets/js/frontend-dev.min.js', array( 'jquery', 'wc-jquery-blockui' ), $frontend_js_ver, true );
 			wp_register_script( 'sweetalert2', CWGINSTOCK_PLUGINURL . 'assets/js/sweetalert2.min.js', array( 'jquery', 'wc-jquery-blockui' ), $this->version, true );
-			wp_register_script( 'cwginstock_popup', CWGINSTOCK_PLUGINURL . 'assets/js/cwg-popup.min.js', array( 'jquery', 'wc-jquery-blockui', 'sweetalert2' ), $this->version, true );
+			$popup_js_path = CWGINSTOCK_PLUGINDIR . 'assets/js/cwg-popup.min.js';
+			$popup_js_ver  = file_exists( $popup_js_path ) ? (string) filemtime( $popup_js_path ) : $this->version;
+			wp_register_script( 'cwginstock_popup', CWGINSTOCK_PLUGINURL . 'assets/js/cwg-popup.min.js', array( 'jquery', 'wc-jquery-blockui', 'sweetalert2' ), $popup_js_ver, true );
 
 			// Version by file modification time so CSS updates always bust the browser cache.
 			$frontend_css_path = CWGINSTOCK_PLUGINDIR . 'assets/css/frontend.min.css';
@@ -245,6 +247,16 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'wc-jquery-blockui' );
 				wp_enqueue_style( 'cwginstock_frontend_css' );
+
+				// Load the design stylesheet only when a non-default form or popup
+				// design is selected, so classic installs load nothing extra.
+				$form_design  = function_exists( 'cwg_instock_get_form_design' ) ? cwg_instock_get_form_design() : 'default';
+				$popup_design = function_exists( 'cwg_instock_get_popup_design' ) ? cwg_instock_get_popup_design() : 'sweetalert';
+				if ( 'default' !== $form_design || 'sweetalert' !== $popup_design ) {
+					$designs_path = CWGINSTOCK_PLUGINDIR . 'assets/css/form-designs.min.css';
+					$designs_ver  = file_exists( $designs_path ) ? (string) filemtime( $designs_path ) : $this->version;
+					wp_enqueue_style( 'cwginstock_form_designs', CWGINSTOCK_PLUGINURL . 'assets/css/form-designs.min.css', array( 'cwginstock_frontend_css' ), $designs_ver, false );
+				}
 				wp_enqueue_style( 'cwginstock_bootstrap' );
 				$phone_field_visibility = isset( $get_option['show_phone_field'] ) && '' != $get_option['show_phone_field'] ? true : false;
 				if ( $phone_field_visibility ) {
@@ -277,6 +289,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 					array(
 						'ajax_url'                   => $form_submission_mode ? rest_url() . 'back-in-stock/v1/subscriber/create/' : admin_url( 'admin-ajax.php' ),
 						'default_ajax_url'           => admin_url( 'admin-ajax.php' ),
+						'popup_design'               => function_exists( 'cwg_instock_get_popup_design' ) ? cwg_instock_get_popup_design() : 'sweetalert',
+						'popup_close_label'          => __( 'Close', 'back-in-stock-notifier-for-woocommerce' ),
 						'security'                   => $form_submission_mode ? wp_create_nonce( 'wp_rest' ) : wp_create_nonce( 'cwg_subscribe_product' ),
 						'user_id'                    => get_current_user_id(),
 						'security_error'             => __( 'Something went wrong, please try after sometime', 'back-in-stock-notifier-for-woocommerce' ),

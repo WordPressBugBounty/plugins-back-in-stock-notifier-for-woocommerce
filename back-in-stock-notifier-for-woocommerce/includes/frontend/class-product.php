@@ -216,6 +216,16 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 			}
 			$dynamic_wrapper_class = 'cwginstock-' . $stock_quantity . $stock_status;
 
+			// Append the selected form design class. Empty for the default design
+			// so existing installs render exactly as before. Added here (instead of
+			// in the template) so overridden theme templates get the design too.
+			if ( function_exists( 'cwg_instock_get_form_design_class' ) ) {
+				$design_class = cwg_instock_get_form_design_class();
+				if ( '' !== $design_class ) {
+					$dynamic_wrapper_class .= ' ' . $design_class;
+				}
+			}
+
 			// wp_enqueue_script('cwginstock_jquery_validation');
 			/**
 			 * Before Subscribe form

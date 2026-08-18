@@ -1,0 +1,155 @@
+/**
+ * Back In Stock Notifier - Subscribe form designs
+ *
+ * Loaded only when a non-default design is selected, so stores using the
+ * classic form are completely unaffected.
+ *
+ * @since 7.4.0
+ */
+
+/* Shared reset for all custom designs */
+.cwg-design .cwginstock-panel-primary { border: 0; box-shadow: none; background: transparent; }
+.cwg-design .cwginstock-panel-heading { border: 0; }
+.cwg-design .cwginstock-panel-body { padding: 0; }
+.cwg-design .cwgstock_button { width: 100%; cursor: pointer; }
+.cwg-design input[type="text"],
+.cwg-design input[type="email"],
+.cwg-design input[type="tel"] { width: 100%; box-sizing: border-box; }
+
+/* 1. Card */
+.cwg-design-card .cwginstock-panel-primary {
+	background: #fff; border-radius: 12px; overflow: hidden;
+	box-shadow: 0 4px 18px rgba(0,0,0,.08); border: 1px solid #ececec;
+}
+.cwg-design-card .cwginstock-panel-heading { background: #f7f8fa; padding: 14px 18px; }
+.cwg-design-card .cwginstock-panel-heading h4 { margin: 0; font-size: 16px; font-weight: 600; color: #1f2933; }
+.cwg-design-card .cwginstock-panel-body { padding: 18px; }
+.cwg-design-card input[type="text"],
+.cwg-design-card input[type="email"],
+.cwg-design-card input[type="tel"] {
+	border: 1px solid #dfe3e8; border-radius: 8px; padding: 11px 13px; margin-bottom: 12px; background: #fff;
+}
+.cwg-design-card input:focus { border-color: #2f80ed; outline: none; box-shadow: 0 0 0 3px rgba(47,128,237,.12); }
+.cwg-design-card .cwgstock_button { background: #2f80ed; color: #fff; border: 0; border-radius: 8px; padding: 12px 16px; font-weight: 600; }
+.cwg-design-card .cwgstock_button:hover { background: #1c6fd8; }
+
+/* 2. Minimal */
+.cwg-design-minimal .cwginstock-panel-heading { padding: 0 0 10px; }
+.cwg-design-minimal .cwginstock-panel-heading h4 { margin: 0; font-size: 15px; font-weight: 600; color: #222; text-align: left !important; }
+.cwg-design-minimal input[type="text"],
+.cwg-design-minimal input[type="email"],
+.cwg-design-minimal input[type="tel"] {
+	border: 0; border-bottom: 2px solid #e2e2e2; border-radius: 0; padding: 10px 2px;
+	margin-bottom: 14px; background: transparent;
+}
+.cwg-design-minimal input:focus { border-bottom-color: #111; outline: none; }
+.cwg-design-minimal .cwgstock_button {
+	background: #111; color: #fff; border: 0; border-radius: 0; padding: 12px 16px;
+	letter-spacing: .04em; text-transform: uppercase; font-size: 13px;
+}
+.cwg-design-minimal .cwgstock_button:hover { background: #333; }
+
+/* 3. Compact (single row on wider screens) */
+.cwg-design-compact .cwginstock-panel-heading { padding: 0 0 8px; }
+.cwg-design-compact .cwginstock-panel-heading h4 { margin: 0; font-size: 14px; font-weight: 600; text-align: left !important; }
+.cwg-design-compact input[type="text"],
+.cwg-design-compact input[type="email"],
+.cwg-design-compact input[type="tel"] {
+	border: 1px solid #d9d9d9; border-radius: 6px; padding: 10px 12px; margin-bottom: 8px;
+}
+.cwg-design-compact .cwgstock_button { background: #0f9d58; color: #fff; border: 0; border-radius: 6px; padding: 11px 16px; font-weight: 600; }
+.cwg-design-compact .cwgstock_button:hover { background: #0c7f46; }
+@media (min-width: 720px) {
+	.cwg-design-compact .cwginstock-subscribe-form__form { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+	.cwg-design-compact .cwginstock-subscribe-form__form > * { flex: 1 1 180px; margin-bottom: 0; }
+	.cwg-design-compact input { margin-bottom: 0 !important; }
+	.cwg-design-compact .cwgstock_button { width: auto; flex: 0 0 auto; }
+}
+
+/* 4. Bold */
+.cwg-design-bold .cwginstock-panel-primary { border-radius: 14px; overflow: hidden; box-shadow: 0 8px 26px rgba(102,51,204,.18); }
+.cwg-design-bold .cwginstock-panel-heading {
+	background: linear-gradient(135deg,#7f54b3,#9b6fd4); padding: 18px; text-align: center;
+}
+.cwg-design-bold .cwginstock-panel-heading h4 { margin: 0; color: #fff; font-size: 17px; font-weight: 700; }
+.cwg-design-bold .cwginstock-panel-body { background: #fff; padding: 20px; }
+.cwg-design-bold input[type="text"],
+.cwg-design-bold input[type="email"],
+.cwg-design-bold input[type="tel"] {
+	border: 2px solid #efeaf7; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; background: #faf8fd;
+}
+.cwg-design-bold input:focus { border-color: #7f54b3; outline: none; background: #fff; }
+.cwg-design-bold .cwgstock_button {
+	background: linear-gradient(135deg,#7f54b3,#9b6fd4); color: #fff; border: 0; border-radius: 10px;
+	padding: 14px 18px; font-weight: 700; font-size: 15px;
+}
+.cwg-design-bold .cwgstock_button:hover { filter: brightness(1.07); }
+
+/* 5. Outline */
+.cwg-design-outline .cwginstock-panel-primary { border: 2px solid #222; border-radius: 4px; background: #fff; }
+.cwg-design-outline .cwginstock-panel-heading { background: transparent; border-bottom: 2px solid #222; padding: 12px 16px; }
+.cwg-design-outline .cwginstock-panel-heading h4 { margin: 0; font-size: 15px; font-weight: 700; color: #222; }
+.cwg-design-outline .cwginstock-panel-body { padding: 16px; }
+.cwg-design-outline input[type="text"],
+.cwg-design-outline input[type="email"],
+.cwg-design-outline input[type="tel"] {
+	border: 1px solid #222; border-radius: 3px; padding: 10px 12px; margin-bottom: 10px; background: #fff;
+}
+.cwg-design-outline input:focus { outline: 2px solid #222; outline-offset: 1px; }
+.cwg-design-outline .cwgstock_button {
+	background: transparent; color: #222; border: 2px solid #222; border-radius: 3px;
+	padding: 11px 16px; font-weight: 700;
+}
+.cwg-design-outline .cwgstock_button:hover { background: #222; color: #fff; }
+
+/* ---------------------------------------------------------------
+ * Native popup designs (used when popup design is not SweetAlert)
+ * --------------------------------------------------------------- */
+.cwg-modal-overlay {
+	position: fixed; inset: 0; background: rgba(0,0,0,.55);
+	display: flex; z-index: 999999; opacity: 0; transition: opacity .2s ease;
+	padding: 16px; box-sizing: border-box; overflow-y: auto;
+}
+.cwg-modal-overlay.cwg-modal-visible { opacity: 1; }
+.cwg-modal-box {
+	background: #fff; position: relative; width: 100%; max-width: 440px;
+	margin: auto; box-sizing: border-box; transition: transform .25s ease;
+}
+.cwg-modal-close {
+	position: absolute; top: 8px; right: 10px; border: 0; background: transparent;
+	font-size: 26px; line-height: 1; cursor: pointer; color: #888; padding: 4px 8px; z-index: 2;
+}
+.cwg-modal-close:hover { color: #111; }
+
+/* Centered modal */
+.cwg-modal-center .cwg-modal-box { border-radius: 12px; padding: 22px; box-shadow: 0 18px 50px rgba(0,0,0,.25); transform: scale(.96); }
+.cwg-modal-center.cwg-modal-visible .cwg-modal-box { transform: scale(1); }
+
+/* Slide up (mobile friendly) */
+.cwg-modal-slide { padding: 0; align-items: flex-end; }
+.cwg-modal-slide .cwg-modal-box {
+	max-width: 100%; border-radius: 16px 16px 0 0; padding: 24px 20px 28px;
+	transform: translateY(100%); box-shadow: 0 -8px 30px rgba(0,0,0,.2); margin: 0;
+}
+.cwg-modal-slide.cwg-modal-visible .cwg-modal-box { transform: translateY(0); }
+@media (min-width: 720px) { .cwg-modal-slide .cwg-modal-box { max-width: 520px; margin: 0 auto; } }
+
+/* Side drawer */
+.cwg-modal-side { padding: 0; justify-content: flex-end; }
+.cwg-modal-side .cwg-modal-box {
+	max-width: 400px; height: 100%; border-radius: 0; padding: 28px 22px;
+	transform: translateX(100%); overflow-y: auto; margin: 0;
+}
+.cwg-modal-side.cwg-modal-visible .cwg-modal-box { transform: translateX(0); }
+
+/* Minimal modal */
+.cwg-modal-minimal .cwg-modal-box { border-radius: 0; padding: 26px 22px; max-width: 380px; border: 1px solid #e5e5e5; transform: translateY(-8px); }
+.cwg-modal-minimal.cwg-modal-visible .cwg-modal-box { transform: translateY(0); }
+
+/* Card modal */
+.cwg-modal-card .cwg-modal-box {
+	border-radius: 16px; padding: 0; overflow: hidden; max-width: 460px;
+	box-shadow: 0 20px 60px rgba(0,0,0,.28); transform: translateY(12px);
+}
+.cwg-modal-card.cwg-modal-visible .cwg-modal-box { transform: translateY(0); }
+.cwg-modal-card .cwg-modal-box .cwginstock-subscribe-form { padding: 22px; display: block; }

@@ -72,6 +72,8 @@ if (! class_exists('CWG_Instock_Settings')) {
 			register_setting('cwginstocknotifier_settings', 'cwginstocksettings', array($this, 'sanitize_data'));
 			add_settings_section('cwginstock_section', __('Frontend Form', 'back-in-stock-notifier-for-woocommerce'), array($this, 'section_heading'), 'cwginstocknotifier_settings');
 			add_settings_field('cwg_frontend_displayform_type', __('Frontend Subscribe Form Display Type', 'back-in-stock-notifier-for-woocommerce'), array($this, 'cwg_frontend_displayform'), 'cwginstocknotifier_settings', 'cwginstock_section');
+			add_settings_field('cwg_instock_form_design', __('Subscribe Form Design', 'back-in-stock-notifier-for-woocommerce'), array($this, 'form_design_field'), 'cwginstocknotifier_settings', 'cwginstock_section');
+			add_settings_field('cwg_instock_popup_design', __('Popup Design', 'back-in-stock-notifier-for-woocommerce'), array($this, 'popup_design_field'), 'cwginstocknotifier_settings', 'cwginstock_section');
 			add_settings_field('cwg_instock_form_title', __('Title for Subscribe Form', 'back-in-stock-notifier-for-woocommerce'), array($this, 'form_title'), 'cwginstocknotifier_settings', 'cwginstock_section');
 			add_settings_field('cwg_instock_name_placeholder', __('Placeholder for Name Field', 'back-in-stock-notifier-for-woocommerce'), array($this, 'form_name_placeholder'), 'cwginstocknotifier_settings', 'cwginstock_section');
 
@@ -144,6 +146,21 @@ if (! class_exists('CWG_Instock_Settings')) {
 			add_settings_field('cwg_instock_fcfs_per_unit', __('Fair Sending: Subscribers to Notify per Unit in Stock', 'back-in-stock-notifier-for-woocommerce'), array($this, 'fcfs_per_unit_field'), 'cwginstocknotifier_settings', 'cwginstock_section_mail');
 
 
+			// ── Auto Coupon ──
+			add_settings_section('cwginstock_section_coupon', __('Auto Coupon', 'back-in-stock-notifier-for-woocommerce'), array($this, 'auto_coupon_heading'), 'cwginstocknotifier_settings');
+			add_settings_field('cwg_instock_enable_auto_coupon', __('Enable Auto Coupon', 'back-in-stock-notifier-for-woocommerce'), array($this, 'enable_auto_coupon_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_discount_type', __('Discount Type', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_discount_type_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_amount', __('Coupon Amount', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_amount_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_expiry_days', __('Coupon Valid For (days)', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_expiry_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_prefix', __('Coupon Code Prefix', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_prefix_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_usage_limit', __('Usage Limit per Coupon', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_usage_limit_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_minimum_amount', __('Minimum Spend', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_minimum_amount_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_skip_when_on_sale', __('Do Not Create Coupon for Products on Sale', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_skip_sale_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_exclude_sale_items', __('Coupon Cannot Be Used on Sale Items', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_exclude_sale_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_individual_use', __('Cannot Be Combined with Other Coupons', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_individual_use_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_restrict_email', __('Restrict Coupon to Subscriber Email', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_restrict_email_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_free_shipping', __('Allow Free Shipping', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_free_shipping_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+
 			add_settings_section('cwginstock_section_bgprocess', __('Background Process Engine - Advanced Settings', 'back-in-stock-notifier-for-woocommerce'), array($this, 'background_process_heading'), 'cwginstocknotifier_settings');
 			add_settings_field('cwginstock_bgp_selection', __('Background Process Engine', 'back-in-stock-notifier-for-woocommerce'), array($this, 'bgp_engine'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
 			add_settings_field('cwg_instock_email_throttle', __('Limit Email Sending Speed', 'back-in-stock-notifier-for-woocommerce'), array($this, 'email_throttle_field'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
@@ -172,7 +189,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 				'2' => __('Pop-Up Subscribe Form', 'back-in-stock-notifier-for-woocommerce'),
 			);
 			?>
-			<select name="cwginstocksettings[mode]">
+			<select class="cwg_form_display_type" name="cwginstocksettings[mode]">
 				<?php
 				if (is_array($array_of_modes) && ! empty($array_of_modes)) {
 					foreach ($array_of_modes as $each_key => $each_value) {
@@ -186,6 +203,38 @@ if (! class_exists('CWG_Instock_Settings')) {
 				}
 				?>
 			</select>
+			<?php
+		}
+
+		public function form_design_field() {
+			$current = function_exists('cwg_instock_get_form_design') ? cwg_instock_get_form_design() : 'default';
+			$designs = function_exists('cwg_instock_get_form_designs') ? cwg_instock_get_form_designs() : array();
+			?>
+			<select name="cwginstocksettings[form_design]" style="width:400px;">
+				<?php foreach ($designs as $key => $label) : ?>
+					<option value="<?php echo esc_attr($key); ?>" <?php selected($current, $key); ?>><?php echo esc_html($label); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<i>
+				<p><?php esc_html_e('Choose how the inline subscribe form looks on the product page. "Default (classic)" keeps the original look exactly as it is, and loads no extra stylesheet. The other designs restyle the same form, so all your settings, fields and add-ons keep working.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function popup_design_field() {
+			$current = function_exists('cwg_instock_get_popup_design') ? cwg_instock_get_popup_design() : 'sweetalert';
+			$designs = function_exists('cwg_instock_get_popup_designs') ? cwg_instock_get_popup_designs() : array();
+			?>
+			<select class="cwg_popup_design" name="cwginstocksettings[popup_design]" style="width:400px;">
+				<?php foreach ($designs as $key => $label) : ?>
+					<option value="<?php echo esc_attr($key); ?>" <?php selected($current, $key); ?>><?php echo esc_html($label); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<i>
+				<p><?php esc_html_e('Choose the popup style used when the subscribe form is shown in a popup. "SweetAlert (default)" is the original popup. The other options use a built-in lightweight popup with no extra library. Applies only when the Frontend Subscribe Form Display Type is set to popup.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
 			<?php
 		}
 
@@ -815,6 +864,135 @@ if (! class_exists('CWG_Instock_Settings')) {
 				<p><?php esc_html_e('How many subscribers to notify for each unit in stock. Default is 1, so restocking 5 units notifies the first 5 subscribers. Increase this if you expect that not every notified subscriber will buy. For example: set 2 and restocking 5 units notifies the first 10 subscribers. Used only when Fair Sending above is enabled.', 'back-in-stock-notifier-for-woocommerce'); ?>
 				</p>
 			</i>
+			<?php
+		}
+
+		public function auto_coupon_heading() {
+			$placeholders = '<code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>';
+			echo wp_kses_post(
+				sprintf(
+					/* translators: %s: list of coupon placeholders */
+					__( 'Automatically create a unique discount coupon for each subscriber when their back in stock email is sent, to encourage them to buy. Coupons are valid only for the exact product that person subscribed to. Nothing is created while this is disabled. To use it, add %s to your Back In Stock email under WooCommerce > Settings > Emails. A coupon is generated only when one of these placeholders is present in the email.', 'back-in-stock-notifier-for-woocommerce' ),
+					$placeholders
+				)
+			);
+		}
+
+		public function enable_auto_coupon_field() {
+			$options = get_option('cwginstocksettings');
+			$enabled = isset($options['enable_auto_coupon']) && '1' == $options['enable_auto_coupon'];
+			?>
+			<input type='checkbox' name='cwginstocksettings[enable_auto_coupon]' <?php checked($enabled, true); ?> value="1" />
+			<i>
+				<p><?php esc_html_e('Off by default. When enabled, each subscriber receives their own single use coupon code in the back in stock email. Coupons are never created for stores that do not use the coupon placeholders in the email.', 'back-in-stock-notifier-for-woocommerce'); ?>
+				</p>
+			</i>
+			<?php
+		}
+
+		public function coupon_discount_type_field() {
+			$options = get_option('cwginstocksettings');
+			$current = isset($options['coupon_discount_type']) && '' != $options['coupon_discount_type'] ? $options['coupon_discount_type'] : 'percent';
+			$types   = array(
+				'percent'       => __('Percentage discount', 'back-in-stock-notifier-for-woocommerce'),
+				'fixed_product' => __('Fixed product discount', 'back-in-stock-notifier-for-woocommerce'),
+				'fixed_cart'    => __('Fixed cart discount', 'back-in-stock-notifier-for-woocommerce'),
+			);
+			?>
+			<select name="cwginstocksettings[coupon_discount_type]" style="width:400px;">
+				<?php foreach ($types as $key => $label) : ?>
+					<option value="<?php echo esc_attr($key); ?>" <?php selected($current, $key); ?>><?php echo esc_html($label); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<i><p><?php esc_html_e('Same discount types as WooCommerce coupons.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_amount_field() {
+			$options = get_option('cwginstocksettings');
+			$amount  = isset($options['coupon_amount']) && '' != $options['coupon_amount'] ? $options['coupon_amount'] : 10;
+			?>
+			<input type='number' style='width: 400px;' name='cwginstocksettings[coupon_amount]' value="<?php echo esc_attr($amount); ?>" min="0" step="0.01" />
+			<i><p><?php esc_html_e('The discount value. For a percentage discount enter 10 for 10%. Set 0 to disable coupon creation.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_expiry_field() {
+			$options = get_option('cwginstocksettings');
+			$days    = isset($options['coupon_expiry_days']) && '' != $options['coupon_expiry_days'] ? $options['coupon_expiry_days'] : 7;
+			?>
+			<input type='number' style='width: 400px;' name='cwginstocksettings[coupon_expiry_days]' value="<?php echo esc_attr($days); ?>" min="0" step="1" />
+			<i><p><?php esc_html_e('How many days the coupon stays valid after it is created. A short window such as 3 to 7 days creates urgency. Enter 0 for no expiry.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_prefix_field() {
+			$options = get_option('cwginstocksettings');
+			$prefix  = isset($options['coupon_prefix']) && '' != $options['coupon_prefix'] ? $options['coupon_prefix'] : 'BIS';
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[coupon_prefix]' value="<?php echo esc_attr($prefix); ?>" />
+			<i><p><?php esc_html_e('Codes look like PREFIX-XXXXXXXX. Letters, numbers, dash and underscore only.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_usage_limit_field() {
+			$options = get_option('cwginstocksettings');
+			$limit   = isset($options['coupon_usage_limit']) && '' != $options['coupon_usage_limit'] ? $options['coupon_usage_limit'] : 1;
+			?>
+			<input type='number' style='width: 400px;' name='cwginstocksettings[coupon_usage_limit]' value="<?php echo esc_attr($limit); ?>" min="1" step="1" />
+			<i><p><?php esc_html_e('How many times a single generated coupon can be used. Keep this at 1 so each code belongs to one customer.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_minimum_amount_field() {
+			$options = get_option('cwginstocksettings');
+			$min     = isset($options['coupon_minimum_amount']) && '' != $options['coupon_minimum_amount'] ? $options['coupon_minimum_amount'] : '';
+			?>
+			<input type='number' style='width: 400px;' name='cwginstocksettings[coupon_minimum_amount]' value="<?php echo esc_attr($min); ?>" min="0" step="0.01" />
+			<i><p><?php esc_html_e('Optional minimum cart total required to use the coupon. Leave empty or 0 for no minimum.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_skip_sale_field() {
+			$options = get_option('cwginstocksettings');
+			?>
+			<input type='checkbox' name='cwginstocksettings[coupon_skip_when_on_sale]' <?php isset($options['coupon_skip_when_on_sale']) ? checked($options['coupon_skip_when_on_sale'], 1) : ''; ?> value="1" />
+			<i><p><?php esc_html_e('When enabled, no coupon is created at all if the restocked product is already on sale, so you never discount twice. The email is still sent, just without a coupon code.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_exclude_sale_field() {
+			$options = get_option('cwginstocksettings');
+			$checked = ! isset($options['coupon_exclude_sale_items']) || '1' == $options['coupon_exclude_sale_items'];
+			?>
+			<input type='checkbox' name='cwginstocksettings[coupon_exclude_sale_items]' <?php checked($checked, true); ?> value="1" />
+			<i><p><?php esc_html_e('Standard WooCommerce coupon rule. When enabled the coupon will not apply to items that are on sale at checkout time.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_individual_use_field() {
+			$options = get_option('cwginstocksettings');
+			$checked = ! isset($options['coupon_individual_use']) || '1' == $options['coupon_individual_use'];
+			?>
+			<input type='checkbox' name='cwginstocksettings[coupon_individual_use]' <?php checked($checked, true); ?> value="1" />
+			<i><p><?php esc_html_e('Prevents this coupon being combined with your other coupons.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_restrict_email_field() {
+			$options = get_option('cwginstocksettings');
+			$checked = ! isset($options['coupon_restrict_email']) || '1' == $options['coupon_restrict_email'];
+			?>
+			<input type='checkbox' name='cwginstocksettings[coupon_restrict_email]' <?php checked($checked, true); ?> value="1" />
+			<i><p><?php esc_html_e('Locks the coupon to the subscriber email address so a forwarded code cannot be used by someone else. Recommended.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_free_shipping_field() {
+			$options = get_option('cwginstocksettings');
+			?>
+			<input type='checkbox' name='cwginstocksettings[coupon_free_shipping]' <?php isset($options['coupon_free_shipping']) ? checked($options['coupon_free_shipping'], 1) : ''; ?> value="1" />
+			<i><p><?php esc_html_e('Also grants free shipping, if your shipping settings allow a free shipping method with a coupon.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
 			<?php
 		}
 

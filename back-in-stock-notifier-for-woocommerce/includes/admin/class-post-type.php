@@ -74,6 +74,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			add_filter( 'post_date_column_time', array( $this, 'alter_subscribed_date' ), 10, 2 );
 			add_filter( 'pre_get_posts', array( $this, 'display_all_statuses_in_cpt' ), 10, 1 );
 			add_filter( 'posts_clauses', array( $this, 'fix_mail_sent_sorting' ), 20, 2 );
+			add_filter( 'posts_clauses', array( $this, 'filter_clauses_by_stock_status' ), 21, 2 );
 
 		}
 
@@ -794,8 +795,113 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 						?>
 					</select>
 					<?php
+					$this->render_stock_status_filter();
 				}
 			}
+		}
+
+		/**
+		 * Dropdown to filter subscribers by the current stock status of the
+		 * product they subscribed to.
+		 *
+		 * @since 7.4.0
+		 */
+		public function render_stock_status_filter() {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$selected = isset( $_GET['cwg_filter_stock_status'] ) ? sanitize_key( wp_unslash( $_GET['cwg_filter_stock_status'] ) ) : '';
+			$options  = self::get_stock_status_filter_options();
+			?>
+			<select name="cwg_filter_stock_status" style="width:220px;">
+				<option value=""><?php esc_html_e( 'Filter by stock status', 'back-in-stock-notifier-for-woocommerce' ); ?></option>
+				<?php foreach ( $options as $value => $label ) : ?>
+					<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $selected, $value ); ?>><?php echo esc_html( $label ); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<?php
+		}
+
+		/**
+		 * Available stock status filter choices.
+		 *
+		 * @since 7.4.0
+		 * @return array
+		 */
+		public static function get_stock_status_filter_options() {
+			return array(
+				'instock'         => __( 'In stock', 'back-in-stock-notifier-for-woocommerce' ),
+				'below_threshold' => __( 'In stock but below notification threshold', 'back-in-stock-notifier-for-woocommerce' ),
+				'outofstock'      => __( 'Out of stock', 'back-in-stock-notifier-for-woocommerce' ),
+				'onbackorder'     => __( 'On backorder', 'back-in-stock-notifier-for-woocommerce' ),
+				'deleted'         => __( 'Product deleted / not found', 'back-in-stock-notifier-for-woocommerce' ),
+			);
+		}
+
+		/**
+		 * Apply the stock status filter by joining WooCommerce's own indexed
+		 * product lookup table against the subscriber's product id.
+		 *
+		 * @since 7.4.0
+		 * @param array    $clauses Query clauses.
+		 * @param WP_Query $query   Current query.
+		 * @return array
+		 */
+		public function filter_clauses_by_stock_status( $clauses, $query ) {
+			global $wpdb, $pagenow;
+
+			if ( ! is_admin() || ! $query->is_main_query() || 'edit.php' !== $pagenow ) {
+				return $clauses;
+			}
+			if ( 'cwginstocknotifier' !== $query->get( 'post_type' ) ) {
+				return $clauses;
+			}
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( ! isset( $_GET['cwg_filter_stock_status'] ) || '' === $_GET['cwg_filter_stock_status'] ) {
+				return $clauses;
+			}
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$status  = sanitize_key( wp_unslash( $_GET['cwg_filter_stock_status'] ) );
+			$allowed = self::get_stock_status_filter_options();
+			if ( ! isset( $allowed[ $status ] ) ) {
+				return $clauses;
+			}
+
+			$lookup = $wpdb->prefix . 'wc_product_meta_lookup';
+
+			// Join the subscriber's product id (variation id when present) to the lookup table.
+			$clauses['join'] .= "
+				LEFT JOIN {$wpdb->postmeta} cwgpidmeta
+					ON ( {$wpdb->posts}.ID = cwgpidmeta.post_id AND cwgpidmeta.meta_key = 'cwginstock_pid' )
+				LEFT JOIN {$lookup} cwglookup
+					ON ( cwglookup.product_id = CAST( cwgpidmeta.meta_value AS UNSIGNED ) )
+			";
+
+			switch ( $status ) {
+				case 'deleted':
+					$clauses['where'] .= ' AND cwglookup.product_id IS NULL ';
+					break;
+
+				case 'below_threshold':
+					$options   = get_option( 'cwginstocksettings', array() );
+					$threshold = isset( $options['set_stock_quantity_for_instock_mail'] ) ? (float) $options['set_stock_quantity_for_instock_mail'] : 0;
+					if ( $threshold > 0 ) {
+						$clauses['where'] .= $wpdb->prepare(
+							" AND cwglookup.stock_status = 'instock' AND cwglookup.stock_quantity IS NOT NULL AND cwglookup.stock_quantity < %f ",
+							$threshold
+						);
+					} else {
+						// No threshold configured, show in stock items so the list is not silently empty.
+						$clauses['where'] .= " AND cwglookup.stock_status = 'instock' ";
+					}
+					break;
+
+				default:
+					$clauses['where'] .= $wpdb->prepare( ' AND cwglookup.stock_status = %s ', $status );
+					break;
+			}
+
+			$clauses['groupby'] = "{$wpdb->posts}.ID";
+
+			return $clauses;
 		}
 
 		// for parse query based on filter by product selection

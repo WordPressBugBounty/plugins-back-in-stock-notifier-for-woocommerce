@@ -950,3 +950,65 @@
 		border-bottom: none;
 	}
 }
+
+/* Free Plugins type button */
+.cwg-type-btn--free.active {
+	background: #e7f3ff;
+	border-color: #2271b1;
+	color: #0a4b78;
+}
+.cwg-type-btn--free.active .dashicons { color: #2271b1; }
+
+/* One click install button state */
+.cwg-promo-card-btn--free {
+	background: #00a32a;
+	border-color: #00a32a;
+	color: #fff;
+}
+.cwg-promo-card-btn--free:hover { background: #008a20; color: #fff; }
+.cwg-install-plugin { cursor: pointer; border: 0; font: inherit; }
+.cwg-install-plugin.cwg-installing { opacity: .75; cursor: default; }
+.cwg-install-plugin.cwg-installing .dashicons { animation: cwg-spin 1s linear infinite; }
+
+/* ── Site wide promotion banner ─────────────────────────────── */
+.cwg-promo-offer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+	background: linear-gradient(135deg, #1e1e2e, #3a2d5c);
+	border-radius: 8px;
+	padding: 16px 20px;
+	margin-bottom: 20px;
+	color: #fff;
+}
+.cwg-promo-offer-left { display: flex; align-items: center; gap: 14px; }
+.cwg-promo-offer-icon {
+	font-size: 26px; width: 26px; height: 26px; color: #ffd166; flex-shrink: 0;
+}
+.cwg-promo-offer-text { display: flex; flex-direction: column; gap: 3px; }
+.cwg-promo-offer-text strong { font-size: 15px; font-weight: 600; color: #fff; }
+.cwg-promo-offer-discount {
+	display: inline-block; background: #ffd166; color: #1e1e2e;
+	padding: 2px 9px; border-radius: 4px; font-weight: 700; margin-right: 8px; font-size: 13px;
+}
+.cwg-promo-offer-desc { font-size: 12px; color: #c9c6d6; }
+.cwg-promo-offer-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cwg-promo-offer-code {
+	display: inline-block; border: 1px dashed #ffd166; color: #ffd166;
+	padding: 7px 14px; border-radius: 5px; font-family: monospace; font-size: 14px;
+	font-weight: 700; letter-spacing: .06em; cursor: pointer; background: rgba(255,209,102,.08);
+	transition: background .15s ease;
+}
+.cwg-promo-offer-code:hover { background: rgba(255,209,102,.18); }
+.cwg-promo-offer-code.cwg-copied { background: #00a32a; border-color: #00a32a; color: #fff; }
+.cwg-promo-offer-expiry { font-size: 12px; color: #c9c6d6; }
+.cwg-promo-offer-btn {
+	background: #ffd166; color: #1e1e2e; padding: 9px 18px; border-radius: 5px;
+	font-weight: 700; font-size: 13px; text-decoration: none; white-space: nowrap;
+}
+.cwg-promo-offer-btn:hover { background: #ffc233; color: #1e1e2e; }
+@media screen and (max-width: 782px) {
+	.cwg-promo-offer { flex-direction: column; align-items: flex-start; }
+}
