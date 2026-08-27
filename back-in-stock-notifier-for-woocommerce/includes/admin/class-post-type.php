@@ -596,13 +596,27 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			return $actions;
 		}
 
+		/**
+		 * Use the Email column as the primary column for the subscribers list.
+		 *
+		 * WordPress hides every non primary column on narrow screens and shows
+		 * them behind a toggle, so the primary column is what a phone user
+		 * actually sees, and it carries the row actions.
+		 *
+		 * This list has no title column, so without this filter WordPress falls
+		 * back to the first non checkbox column, which is the avatar image. That
+		 * left phone users with the row actions attached to a 32px image. The
+		 * email address is the meaningful identifier on every screen size, so it
+		 * is used for all devices and the responsive behaviour is left to
+		 * WordPress's own width based CSS rather than user agent sniffing.
+		 *
+		 * @param string $default Default primary column.
+		 * @param string $screen  Current screen id.
+		 * @return string
+		 */
 		public function list_table_primary_column( $default, $screen ) {
 			if ( 'edit-cwginstocknotifier' === $screen ) {
-				$detect    = new \CWG_Detection\MobileDetect();
-				$is_mobile = ( $detect->isMobile() ? true : false );
-				if ( ! $is_mobile ) {
-					$default = 'email';
-				}
+				$default = 'email';
 			}
 			return $default;
 		}

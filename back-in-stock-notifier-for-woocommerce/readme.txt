@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 7.4.0
+Stable tag: 7.4.1
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -234,12 +234,19 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.4.1 2026-08-27 =
+* Fix: PHP 8.4 deprecation notice "Implicitly marking parameter $httpHeaders as nullable is deprecated". The bundled Mobile Detect library that caused it has been removed, and the plugin now runs notice free on PHP 7.4 through 8.4.
+* Fix: On phones the Subscribers list attached the row actions and the details toggle to the small avatar column. The Email column is now the primary column on every screen size, so the subscriber address and its actions are always visible.
+* Tweak: Removed 70KB of library code that was parsed on every frontend and admin request, including a table of 225 device matching rules that were only used to pick one admin column.
+
 = 7.4.0 2026-08-18 =
 * New: Subscribe form designs. Choose from six inline form designs (Default, Card, Minimal, Compact, Bold, Outline) under Settings > Frontend Form. "Default (classic)" keeps the existing look exactly as it is and loads no extra stylesheet.
 * New: Popup designs. Choose from six popup styles including the original SweetAlert popup plus five built-in lightweight popups (Centered, Slide Up, Side Drawer, Minimal, Card) that need no extra library.
-* New: Stock status filter on the Subscribers list. Filter subscribers by the current stock status of the product they signed up for: In stock, Out of stock, On backorder, Product deleted, and "In stock but below notification threshold" to quickly find and manually notify subscribers the automatic sender skipped.
-* New: Auto Coupon. Optionally generate a unique discount coupon for each subscriber in the back in stock email to encourage the purchase. Coupons are valid only for the exact product the person subscribed to and can be locked to their email address. Full control over discount type, amount, expiry, prefix, usage limit, minimum spend, free shipping, combining with other coupons, and skipping products already on sale. Off by default, and no coupon is ever created unless the email uses the {coupon_code}, {coupon_amount} or {coupon_expiry} placeholder.
+* New: Auto Coupon. Optionally generate a unique discount coupon for each subscriber in the back in stock email to encourage the purchase. Coupons are valid only for the exact product or variation the person subscribed to and can be locked to their email address. Full control over discount type, amount, expiry, prefix, usage limit, minimum spend, free shipping, combining with other coupons, and skipping products already on sale. Off by default, and no coupon is ever created unless the email uses the {coupon_code}, {coupon_amount} or {coupon_expiry} placeholder.
 * New: {product_table} placeholder for both the subscription confirmation and back in stock emails, rendering the subscribed product in a classic order style table with Product, Quantity and Price columns, including the product thumbnail and SKU. It matches the WooCommerce order table used in your other store emails.
+* New: Stock status filter on the Subscribers list. Filter subscribers by the current stock status of the product they signed up for: In stock, Out of stock, On backorder, Product deleted, and "In stock but below notification threshold" to quickly find and manually notify subscribers the automatic sender skipped.
+* New: The WooCommerce email preview now shows sample content for both plugin emails, so you can check the layout without waiting for a real subscriber instead of seeing empty or raw placeholders.
+* Tweak: The Popup Design setting is now shown only when Frontend Subscribe Form Display Type is set to Pop-Up Subscribe Form, so it is no longer misleading for stores using the inline form.
 * Tweak: All available placeholders, including the coupon and product table ones, are now listed in the email settings under WooCommerce > Settings > Emails.
 * Tweak: Tested up to WooCommerce v11.0.1.
 

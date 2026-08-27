@@ -61,8 +61,8 @@
 
 		/* ── Switch subcategory panels based on type ─────────── */
 		function switchSubcatPanels() {
-			if (activeType === 'free') {
-				// Free plugins have no subcategories of their own.
+			if (activeType === 'free' || activeType === 'codecanyon') {
+				// These types have no subcategories of their own.
 				$addonSubcats.slideUp(150);
 				$proSubcats.slideUp(150);
 			} else if (activeType === 'pro') {

@@ -333,6 +333,8 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				$btn_label = __( 'Get Plugin', 'back-in-stock-notifier-for-woocommerce' );
 			} elseif ( 'free' === $type ) {
 				$btn_label = __( 'View Details', 'back-in-stock-notifier-for-woocommerce' );
+			} elseif ( 'codecanyon' === $type ) {
+				$btn_label = __( 'View on CodeCanyon', 'back-in-stock-notifier-for-woocommerce' );
 			} else {
 				$btn_label = __( 'Get Add-on', 'back-in-stock-notifier-for-woocommerce' );
 			}
@@ -666,9 +668,10 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 			$has_products  = ! empty( $all_products );
 
 			if ( $has_products ) {
-				$pro_products   = array();
-				$free_products  = array();
-				$addon_products = array();
+				$pro_products        = array();
+				$free_products       = array();
+				$codecanyon_products = array();
+				$addon_products      = array();
 
 				foreach ( $all_products as $product ) {
 					$type = isset( $product['type'] ) ? $product['type'] : 'addon';
@@ -677,18 +680,21 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						$free_products[] = $product;
 					} elseif ( 'pro' === $type ) {
 						$pro_products[] = $product;
+					} elseif ( 'codecanyon' === $type ) {
+						$codecanyon_products[] = $product;
 					} else {
 						$addon_products[] = $product;
 					}
 				}
 
-				$all_products = array_merge( $pro_products, $free_products, $addon_products );
+				$all_products = array_merge( $pro_products, $codecanyon_products, $free_products, $addon_products );
 			}
 
 			// ── Classify products and build category counts ──
 			$addon_count = 0;
 			$pro_count   = 0;
 			$free_count  = 0;
+			$codecanyon_count = 0;
 			$addon_cats  = array();  // slug => count
 			$pro_cats    = array();  // slug => count
 
@@ -698,6 +704,11 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 
 				if ( 'free' === $type ) {
 					$free_count++;
+					continue;
+				}
+
+				if ( 'codecanyon' === $type ) {
+					$codecanyon_count++;
 					continue;
 				}
 
@@ -876,6 +887,11 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						<span class="dashicons dashicons-star-filled"></span>
 						<?php esc_html_e( 'Pro Plugins', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<span class="cwg-btn-count"><?php echo absint( $pro_count ); ?></span>
+					</button>
+					<button type="button" class="cwg-type-btn cwg-type-btn--codecanyon" data-type="codecanyon">
+						<span class="dashicons dashicons-cart"></span>
+						<?php esc_html_e( 'CodeCanyon Plugins', 'back-in-stock-notifier-for-woocommerce' ); ?>
+						<span class="cwg-btn-count"><?php echo absint( $codecanyon_count ); ?></span>
 					</button>
 					<button type="button" class="cwg-type-btn cwg-type-btn--addon" data-type="addon">
 						<span class="dashicons dashicons-admin-plugins"></span>

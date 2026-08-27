@@ -215,28 +215,65 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 		 * Uses a transient lock to prevent concurrent fetches.
 		 * Stores data with autoload=false (no frontend impact).
 		 */
-		public function fetch_remote_feed() {
+		/**
+		 * Arguments for a feed request that must not be served from a cache.
+		 *
+		 * The feed is a plain GET on a public REST route, so page caches and
+		 * CDNs happily store it. Without this a refresh can return a response
+		 * that is hours old, and the merchant sees stale product counts.
+		 *
+		 * @since 7.4.0
+		 * @param int $timeout Request timeout in seconds.
+		 * @return array
+		 */
+		private static function no_cache_request_args( $timeout = 30 ) {
+			return array(
+				'timeout'   => $timeout,
+				'sslverify' => true,
+				'headers'   => array(
+					'Accept'        => 'application/json',
+					'Cache-Control' => 'no-cache, no-store, max-age=0',
+					'Pragma'        => 'no-cache',
+				),
+			);
+		}
+
+		/**
+		 * Append a unique parameter so intermediate caches treat every fetch
+		 * as a new URL.
+		 *
+		 * @since 7.4.0
+		 * @param string $url Endpoint.
+		 * @return string
+		 */
+		private static function bust_cache_url( $url ) {
+			return add_query_arg( 'cwg_ts', time(), $url );
+		}
+
+		/**
+		 * Fetch the product feed.
+		 *
+		 * @param bool $force Skip the concurrency lock. Used when an admin
+		 *                    presses Refresh, which must always run now.
+		 * @return bool
+		 */
+		public function fetch_remote_feed( $force = false ) {
 			$feed_url = self::get_feed_url();
 			if ( empty( $feed_url ) ) {
 				return false;
 			}
 
-			// Prevent concurrent runs with a 5-minute lock
+			// Prevent overlapping automatic runs with a short lock. A manual
+			// refresh passes $force and always goes through.
 			$lock_key = 'cwg_bis_feed_fetch_lock';
-			if ( get_transient( $lock_key ) ) {
+			if ( ! $force && get_transient( $lock_key ) ) {
 				return false;
 			}
 			set_transient( $lock_key, 1, 5 * MINUTE_IN_SECONDS );
 
 			$response = wp_remote_get(
-				esc_url_raw( $feed_url ),
-				array(
-					'timeout'   => 30,
-					'sslverify' => true,
-					'headers'   => array(
-						'Accept' => 'application/json',
-					),
-				)
+				esc_url_raw( self::bust_cache_url( $feed_url ) ),
+				self::no_cache_request_args( 30 )
 			);
 
 			if ( is_wp_error( $response ) ) {
@@ -293,7 +330,8 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 				wp_send_json_error( array( 'message' => __( 'Permission denied.', 'back-in-stock-notifier-for-woocommerce' ) ), 403 );
 			}
 
-			$result = $this->fetch_remote_feed();
+			// Manual refresh: ignore the lock and any upstream cache.
+			$result = $this->fetch_remote_feed( true );
 
 			if ( ! $result ) {
 				wp_send_json_error(
@@ -332,12 +370,8 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 			}
 
 			$response = wp_remote_get(
-				esc_url_raw( $url ),
-				array(
-					'timeout'   => 15,
-					'sslverify' => true,
-					'headers'   => array( 'Accept' => 'application/json' ),
-				)
+				esc_url_raw( self::bust_cache_url( $url ) ),
+				self::no_cache_request_args( 15 )
 			);
 
 			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
