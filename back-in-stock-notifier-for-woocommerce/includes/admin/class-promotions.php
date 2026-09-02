@@ -663,6 +663,36 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 
 			$bundle_active = $this->is_bundle_active();
 			$all_products  = CWG_Instock_Remote_Feed::get_products();
+
+			/**
+			 * Whether to list individual add-ons on this page.
+			 *
+			 * Once the bundle is active every add-on is already owned, so listing
+			 * them alongside a discount banner offers the operator a second chance
+			 * to buy what they have. They are dropped from the grid, which also
+			 * removes the Add-ons filter, its subcategory row and its counts. The
+			 * green "Bundle Add-ons Active" panel above the grid explains why they
+			 * are not there. Plugins are untouched, because those are separate
+			 * products the bundle does not cover.
+			 *
+			 * @since 7.4.2
+			 *
+			 * @param bool $show          Whether to list add-ons.
+			 * @param bool $bundle_active Whether the bundle is active.
+			 */
+			if ( ! apply_filters( 'cwginstock_show_addon_listings', ! $bundle_active, $bundle_active ) ) {
+				$all_products = array_values(
+					array_filter(
+						(array) $all_products,
+						function ( $product ) {
+							$type = isset( $product['type'] ) ? $product['type'] : 'addon';
+
+							return 'addon' !== $type;
+						}
+					)
+				);
+			}
+
 			$feed_url      = CWG_Instock_Remote_Feed::get_feed_url();
 			$last_fetch    = CWG_Instock_Remote_Feed::get_last_fetch_time();
 			$has_products  = ! empty( $all_products );
@@ -790,6 +820,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 							<?php
 							echo esc_html(
 								sprintf(
+									/* translators: %s: human readable time difference, for example "5 minutes". */
 									__( 'Updated %s ago', 'back-in-stock-notifier-for-woocommerce' ),
 									human_time_diff( $last_fetch, time() )
 								)
@@ -893,11 +924,13 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						<?php esc_html_e( 'CodeCanyon Plugins', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<span class="cwg-btn-count"><?php echo absint( $codecanyon_count ); ?></span>
 					</button>
+					<?php if ( $addon_count > 0 ) : ?>
 					<button type="button" class="cwg-type-btn cwg-type-btn--addon" data-type="addon">
 						<span class="dashicons dashicons-admin-plugins"></span>
 						<?php esc_html_e( 'Add-ons', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<span class="cwg-btn-count"><?php echo absint( $addon_count ); ?></span>
 					</button>
+					<?php endif; ?>
 				</div>
 
 				<!-- ═══════ SUBCATEGORY FILTER BUTTONS (Add-ons) ═══════ -->

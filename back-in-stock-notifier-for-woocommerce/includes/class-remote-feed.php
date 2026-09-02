@@ -345,6 +345,7 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 			wp_send_json_success(
 				array(
 					'message' => sprintf(
+						/* translators: %d: number of products loaded from the feed. */
 						__( 'Feed refreshed successfully! %d products loaded.', 'back-in-stock-notifier-for-woocommerce' ),
 						count( $products )
 					),

@@ -75,6 +75,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			add_filter( 'pre_get_posts', array( $this, 'display_all_statuses_in_cpt' ), 10, 1 );
 			add_filter( 'posts_clauses', array( $this, 'fix_mail_sent_sorting' ), 20, 2 );
 			add_filter( 'posts_clauses', array( $this, 'filter_clauses_by_stock_status' ), 21, 2 );
+			add_filter( 'posts_clauses', array( $this, 'filter_clauses_by_product_category' ), 22, 2 );
 
 		}
 
@@ -809,9 +810,100 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 						?>
 					</select>
 					<?php
+					$this->render_product_category_filter();
 					$this->render_stock_status_filter();
 				}
 			}
+		}
+
+		/**
+		 * Dropdown to filter subscribers by the category of the product they
+		 * subscribed to. Handy on large catalogs where filtering product by
+		 * product is impractical.
+		 *
+		 * @since 7.4.2
+		 */
+		public function render_product_category_filter() {
+			if ( ! taxonomy_exists( 'product_cat' ) ) {
+				return;
+			}
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$selected = isset( $_GET['cwg_filter_product_cat'] ) ? absint( $_GET['cwg_filter_product_cat'] ) : 0;
+
+			wp_dropdown_categories(
+				array(
+					'show_option_all' => __( 'Filter by product category', 'back-in-stock-notifier-for-woocommerce' ),
+					'taxonomy'        => 'product_cat',
+					'name'            => 'cwg_filter_product_cat',
+					'orderby'         => 'name',
+					'selected'        => $selected,
+					'hierarchical'    => true,
+					'depth'           => 3,
+					'show_count'      => false,
+					'hide_empty'      => false,
+					'value_field'     => 'term_id',
+				)
+			);
+		}
+
+		/**
+		 * Restrict the list to subscribers whose product is in the chosen
+		 * category. Child categories are included, and the subscriber's parent
+		 * product id is used so variation subscriptions match their product's
+		 * categories.
+		 *
+		 * @since 7.4.2
+		 * @param array    $clauses Query clauses.
+		 * @param WP_Query $query   Current query.
+		 * @return array
+		 */
+		public function filter_clauses_by_product_category( $clauses, $query ) {
+			global $wpdb, $pagenow;
+
+			if ( ! is_admin() || ! $query->is_main_query() || 'edit.php' !== $pagenow ) {
+				return $clauses;
+			}
+			if ( 'cwginstocknotifier' !== $query->get( 'post_type' ) ) {
+				return $clauses;
+			}
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$term_id = isset( $_GET['cwg_filter_product_cat'] ) ? absint( $_GET['cwg_filter_product_cat'] ) : 0;
+			if ( ! $term_id ) {
+				return $clauses;
+			}
+
+			$term = get_term( $term_id, 'product_cat' );
+			if ( ! $term || is_wp_error( $term ) ) {
+				return $clauses;
+			}
+
+			// Include the category and everything beneath it.
+			$term_ids = array_map( 'absint', array_merge( array( $term_id ), (array) get_term_children( $term_id, 'product_cat' ) ) );
+			$term_ids = array_filter( array_unique( $term_ids ) );
+			if ( empty( $term_ids ) ) {
+				return $clauses;
+			}
+			$placeholders = implode( ',', array_fill( 0, count( $term_ids ), '%d' ) );
+
+			// cwginstock_product_id is always the parent product, which is what
+			// carries the product categories.
+			$clauses['join'] .= "
+				INNER JOIN {$wpdb->postmeta} cwgcatmeta
+					ON ( {$wpdb->posts}.ID = cwgcatmeta.post_id AND cwgcatmeta.meta_key = 'cwginstock_product_id' )
+				INNER JOIN {$wpdb->term_relationships} cwgcattr
+					ON ( cwgcattr.object_id = CAST( cwgcatmeta.meta_value AS UNSIGNED ) )
+				INNER JOIN {$wpdb->term_taxonomy} cwgcattt
+					ON ( cwgcattt.term_taxonomy_id = cwgcattr.term_taxonomy_id AND cwgcattt.taxonomy = 'product_cat' )
+			";
+
+			// $placeholders is built only from %d tokens counted off $term_ids, and every
+			// id is bound through prepare(), so no user value reaches the SQL directly.
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$clauses['where']  .= $wpdb->prepare( " AND cwgcattt.term_id IN ($placeholders) ", $term_ids );
+			$clauses['groupby'] = "{$wpdb->posts}.ID";
+
+			return $clauses;
 		}
 
 		/**
@@ -1331,6 +1423,22 @@ add_action(
 			add_action(
 				'all_admin_notices',
 				function () {
+					/**
+					 * Whether to show the bundle promotion.
+					 *
+					 * Returned false by the Bundle Add-ons plugin, so a customer
+					 * who has already bought the bundle is not advertised it on
+					 * every visit to the subscriber list. Standalone add-on
+					 * owners still see it, since the bundle is a genuine upgrade
+					 * for them.
+					 *
+					 * @since 7.4.2
+					 *
+					 * @param bool $show Whether to show the promotion.
+					 */
+					if ( ! apply_filters( 'cwginstock_show_bundle_promotion', true ) ) {
+						return;
+					}
 					?>
 			<div class="notice notice-success cwg_marketing_notice">
 				<p>

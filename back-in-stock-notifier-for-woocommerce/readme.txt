@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 7.4.1
+Stable tag: 7.4.2
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -234,6 +234,9 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.4.2 2026-09-01 =
+* New: Filter by product category on the Subscribers list. Pick a category to see everyone waiting on products in it, without filtering one product at a time. Subcategories are included, and it works alongside the existing product and stock status filters.
+
 = 7.4.1 2026-08-27 =
 * Fix: PHP 8.4 deprecation notice "Implicitly marking parameter $httpHeaders as nullable is deprecated". The bundled Mobile Detect library that caused it has been removed, and the plugin now runs notice free on PHP 7.4 through 8.4.
 * Fix: On phones the Subscribers list attached the row actions and the details toggle to the small avatar column. The Email column is now the primary column on every screen size, so the subscriber address and its actions are always visible.
