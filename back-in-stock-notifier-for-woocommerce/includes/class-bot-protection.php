@@ -96,11 +96,13 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 				}
 			} else {
 				if ( '1' == self::is_turnstile_enabled() ) {
-					// phpcs:ignore
-					wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), CWGINSTOCK_VERSION, array(
-						'strategy' => 'defer',
-						'in_footer' => false, // Note: This is the default value.
-					) );
+					// api.js is shared with other plugins (Fluent Forms, Contact Form 7 and
+					// others). Cloudflare's turnstile.ready() throws when the script is
+					// loaded with async or defer, so it is loaded as a plain footer script,
+					// which still does not block rendering. No version is appended so the
+					// URL stays exactly as Cloudflare publishes it.
+					// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+					wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true );
 				}
 			}
 		}

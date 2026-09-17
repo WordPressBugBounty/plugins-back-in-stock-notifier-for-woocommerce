@@ -10,6 +10,14 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 
 		protected $process_mail;
 
+		/**
+		 * Variable products restocked in this request whose variations inherit
+		 * the parent's stock, keyed by parent id.
+		 *
+		 * @var array
+		 */
+		protected $pending_parent_restock = array();
+
 		public function __construct() {
 			add_action( 'plugins_loaded', array( $this, 'initialize' ) );
 			$this->initialize();
@@ -27,6 +35,8 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 			add_filter( 'cwg_before_process_instock_email', array( $this, 'product_visibility_check' ), 10, 3 );
 			add_filter( 'cwg_before_process_instock_email', array( $this, 'minimum_stock_quantity_check' ), 999, 3 );
 			add_action( 'cwginstock_auto_email_sent', array( $this, 'instock_mail_sent' ), 999, 2 );
+			add_action( 'woocommerce_after_product_object_save', array( $this, 'trigger_parent_managed_variations' ), 999, 1 );
+			add_action( 'shutdown', array( $this, 'flush_pending_parent_restock' ), 5 );
 		}
 
 		public function initialize() {
@@ -77,16 +87,23 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 
 			$queued_api = new CWG_BIS_Queue( $wpdb );
 
+			if ( $obj->is_type( 'variable' ) ) {
+				// Subscribers are stored against variations. When stock is managed on
+				// the parent, WooCommerce fires only this parent hook and copies the
+				// new status to the variations after it, so they are handled once the
+				// save has finished.
+				if ( $obj->get_manage_stock() ) {
+					$this->pending_parent_restock[ $obj->get_id() ] = true;
+				}
+				return;
+			}
+
 			if ( $obj && ( $obj->is_type( 'variation' ) || $obj->is_type( 'variable' ) ) ) {
 				$main_obj                           = $obj->is_type( 'variable' ) ? new CWG_Instock_API( $id, 0 ) : new CWG_Instock_API( 0, $id, '', 0 );
 				$options                            = get_option( 'cwginstocksettings' );
 				$variable_any_variation_backinstock = ( isset( $options['variable_any_variation_backinstock'] ) && '1' == $options['variable_any_variation_backinstock'] ) ? true : false;
 				$get_type                           = 'variation' == $obj->get_type() ? true : false;
 				$list_of_subscribers                = $main_obj->get_list_of_subscribers();
-
-				if ( $obj && ( $obj->is_type( 'variable' ) ) ) {
-					return; // Variable product rely on variation so direct restock not required
-				}
 
 				if ( $get_type && $variable_any_variation_backinstock ) {
 
@@ -152,6 +169,50 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				$queued_api->update_post_statuses( $get_posts, 'cwg_queued' );
 				$this->background_process_core( $get_posts, false, $id );
 			}
+		}
+
+		/**
+		 * Run the restock for variations that inherit a restocked parent's stock.
+		 * Hooked after the product save, when WooCommerce has already copied the
+		 * parent's stock status to those variations.
+		 *
+		 * @since 7.4.3
+		 * @param WC_Product $product Saved product.
+		 */
+		public function trigger_parent_managed_variations( $product ) {
+			if ( ! $product instanceof WC_Product ) {
+				return;
+			}
+			$parent_id = $product->get_id();
+			if ( empty( $this->pending_parent_restock[ $parent_id ] ) ) {
+				return;
+			}
+			unset( $this->pending_parent_restock[ $parent_id ] );
+
+			foreach ( $product->get_children() as $child_id ) {
+				$variation = wc_get_product( $child_id );
+				// Variations managing their own stock fire their own hook.
+				if ( ! $variation instanceof WC_Product_Variation || 'parent' !== $variation->get_manage_stock() ) {
+					continue;
+				}
+				$this->action_based_on_stock_status( $child_id, $variation->get_stock_status(), $variation );
+			}
+		}
+
+		/**
+		 * Fallback for a parent stock hook fired without a product save, for
+		 * example by code calling the action directly.
+		 *
+		 * @since 7.4.3
+		 */
+		public function flush_pending_parent_restock() {
+			foreach ( array_keys( $this->pending_parent_restock ) as $parent_id ) {
+				$product = wc_get_product( $parent_id );
+				if ( $product ) {
+					$this->trigger_parent_managed_variations( $product );
+				}
+			}
+			$this->pending_parent_restock = array();
 		}
 
 		public function alter_data_when_sync_variation_stock( $get_data, $id ) {

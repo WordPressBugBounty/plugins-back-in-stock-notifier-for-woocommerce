@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 7.4.2\n"
+"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 7.4.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/back-in-stock-notifier-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-01T17:38:33+00:00\n"
+"POT-Creation-Date: 2026-09-17T17:12:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: back-in-stock-notifier-for-woocommerce\n"
@@ -1587,115 +1587,115 @@ msgstr ""
 msgid "After a certain number of days, delete subscribers from the following statuses: MAIL SENT, UNSUBSCRIBED, and PURCHASED"
 msgstr ""
 
-#: includes/class-bot-protection.php:109
+#: includes/class-bot-protection.php:111
 msgid "Bot Protection"
 msgstr ""
 
-#: includes/class-bot-protection.php:110
+#: includes/class-bot-protection.php:112
 msgid "Bot Protection through"
 msgstr ""
 
-#: includes/class-bot-protection.php:112
+#: includes/class-bot-protection.php:114
 msgid "Enable Google reCAPTCHA in Subscribe Form"
 msgstr ""
 
-#: includes/class-bot-protection.php:113
+#: includes/class-bot-protection.php:115
 msgid "Select Google reCAPTCHA version"
 msgstr ""
 
-#: includes/class-bot-protection.php:114
+#: includes/class-bot-protection.php:116
 msgid "Google reCAPTCHA v2 Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:115
+#: includes/class-bot-protection.php:117
 msgid "Verify Google reCAPTCHA response in Server Side - this will ignore nonce validation"
 msgstr ""
 
-#: includes/class-bot-protection.php:116
+#: includes/class-bot-protection.php:118
 msgid "Google reCAPTCHA v2 Secret Key(this is required when you want to verify reCAPTCHA response in server side)"
 msgstr ""
 
-#: includes/class-bot-protection.php:119
+#: includes/class-bot-protection.php:121
 msgid "Google reCAPTCHA v3 Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:120
+#: includes/class-bot-protection.php:122
 msgid "Google reCAPTCHA v3 Secret Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:121
+#: includes/class-bot-protection.php:123
 msgid "Hide Google v3 reCAPTCHA badge in website"
 msgstr ""
 
-#: includes/class-bot-protection.php:124
+#: includes/class-bot-protection.php:126
 msgid "Enable Turnstile in Subscribe Form"
 msgstr ""
 
-#: includes/class-bot-protection.php:125
+#: includes/class-bot-protection.php:127
 msgid "Turnstile Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:126
+#: includes/class-bot-protection.php:128
 msgid "Turnstile Secret Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:134
+#: includes/class-bot-protection.php:136
 msgid "Google reCAPTCHA"
 msgstr ""
 
-#: includes/class-bot-protection.php:137
+#: includes/class-bot-protection.php:139
 msgid "Turnstile"
 msgstr ""
 
-#: includes/class-bot-protection.php:144
+#: includes/class-bot-protection.php:146
 msgid "Add Google reCAPTCHA to the Subscribe Form - Check this link for more information: https://www.google.com/recaptcha/ about Google reCAPTCHA. Or add Cloudflare Turnstile Captcha to the Subscribe Form - check this link for more information: https://www.cloudflare.com/products/turnstile/"
 msgstr ""
 
-#: includes/class-bot-protection.php:145
+#: includes/class-bot-protection.php:147
 msgid "Additionally, enabling Bot Protection via either \"Google reCAPTCHA\" or \"Turnstile\" will resolve the \"Something went wrong, please try again after some time\" error.<br><i>Note: Server-side validation is required for Google reCAPTCHA v2 and Turnstile to ensure proper functionality and security of the Bot Protection mechanism.</i>"
 msgstr ""
 
-#: includes/class-bot-protection.php:155
+#: includes/class-bot-protection.php:157
 msgid "Select this option to enable reCAPTCHA in Subscribe Form(site key required for this option)"
 msgstr ""
 
-#: includes/class-bot-protection.php:166
+#: includes/class-bot-protection.php:168
 msgid "v2"
 msgstr ""
 
-#: includes/class-bot-protection.php:169
+#: includes/class-bot-protection.php:171
 msgid "v3"
 msgstr ""
 
-#: includes/class-bot-protection.php:181
+#: includes/class-bot-protection.php:183
 msgid "By Default this option is unchecked means reCAPTCHA verified in client side and WP Nonce Verification in server side, if you check this option then reCAPTCHA Verification can take place in both Client/Server Side(validate again client reCAPTCHA response) and ignore WP Nonce"
 msgstr ""
 
-#: includes/class-bot-protection.php:202
+#: includes/class-bot-protection.php:204
 msgid "reCAPTCHA Secret Key required only when you enabled this option - 'Verify reCAPTCHA response in Server Side', otherwise it is optional"
 msgstr ""
 
-#: includes/class-bot-protection.php:311
+#: includes/class-bot-protection.php:313
 msgid "This site is protected by reCAPTCHA and the Google"
 msgstr ""
 
-#: includes/class-bot-protection.php:313
+#: includes/class-bot-protection.php:315
 msgid "Privacy Policy"
 msgstr ""
 
-#: includes/class-bot-protection.php:314
+#: includes/class-bot-protection.php:316
 msgid "and"
 msgstr ""
 
-#: includes/class-bot-protection.php:316
+#: includes/class-bot-protection.php:318
 msgid "Terms of Service"
 msgstr ""
 
-#: includes/class-bot-protection.php:317
+#: includes/class-bot-protection.php:319
 msgid "apply."
 msgstr ""
 
-#: includes/class-bot-protection.php:331
+#: includes/class-bot-protection.php:333
 msgid "Select this option to enable Turnstile in Subscribe Form(site key required for this option)"
 msgstr ""
 
@@ -1715,7 +1715,7 @@ msgstr ""
 msgid "Subscription Info:<br> {subscriber_name} <br> {subscriber_email} <br> {product_name}"
 msgstr ""
 
-#: includes/class-core.php:102
+#: includes/class-core.php:119
 msgid "Transient for Parent Variable Product is present try after 3 minutes"
 msgstr ""
 
@@ -2251,35 +2251,35 @@ msgstr ""
 msgid "Select how often to run the delete subscribers cron job."
 msgstr ""
 
-#: includes/class-troubleshoot.php:254
+#: includes/class-troubleshoot.php:250
 msgid "Enable this option to prevent multiple emails from being sent to variable product subscribers when any variation is back in stock."
 msgstr ""
 
-#: includes/class-troubleshoot.php:264
+#: includes/class-troubleshoot.php:260
 msgid "Select this option to ignore the loading of subscribe form template from theme"
 msgstr ""
 
-#: includes/class-troubleshoot.php:274
+#: includes/class-troubleshoot.php:270
 msgid "Select this option to add a cache buster to the \"add-to-cart\" link in the in-stock email"
 msgstr ""
 
-#: includes/class-troubleshoot.php:285
+#: includes/class-troubleshoot.php:281
 msgid "Select this option to show \"Subscribers Count\" column in product list table (Admin Dashboard>Products) "
 msgstr ""
 
-#: includes/class-troubleshoot.php:295
+#: includes/class-troubleshoot.php:291
 msgid "Enable this option to disable email notifications when sites are accessed on staging domains that mirror the production site. This prevents unnecessary alerts from a testing environment, ensuring the production email flow remains unaffected"
 msgstr ""
 
-#: includes/class-troubleshoot.php:306
+#: includes/class-troubleshoot.php:302
 msgid "Enter your starting domain(s) of the staging environment. This option is comma-separated (e.g., \"dev.\", \"test.\", \"staging.\", \"demo\", etc.)"
 msgstr ""
 
-#: includes/class-troubleshoot.php:315
+#: includes/class-troubleshoot.php:311
 msgid "Enable this option to prevent the subscription form from auto-filling the name and email fields for logged-in users."
 msgstr ""
 
-#: includes/class-troubleshoot.php:324
+#: includes/class-troubleshoot.php:320
 msgid "Enable this option to automatically trash the subscriber(s) associated with a product or variation when they are deleted"
 msgstr ""
 

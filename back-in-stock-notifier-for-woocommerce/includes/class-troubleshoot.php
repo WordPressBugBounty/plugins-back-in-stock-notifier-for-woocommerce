@@ -189,7 +189,10 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 
 
 		public function get_third_party_cron_interval_seconds( $recurrence ) {
+			return self::recurrence_to_seconds( $recurrence );
+		}
 
+		public static function recurrence_to_seconds( $recurrence ) {
 			switch ( $recurrence ) {
 				case 'every_5_minutes':
 					return 5 * MINUTE_IN_SECONDS;
@@ -203,17 +206,10 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 		}
 
 		public function maybe_update_third_party_cron( $old_value, $new_value ) {
-			$old_recurrence = isset( $old_value['third_party_cron_recurrence'] ) ? $old_value['third_party_cron_recurrence'] : 'every_5_minutes';
-			$new_recurrence = isset( $new_value['third_party_cron_recurrence'] ) ? $new_value['third_party_cron_recurrence'] : 'every_5_minutes';
-
-			if ( $old_recurrence !== $new_recurrence ) {
-				// Recurrence has changed, so update the scheduled action
-				$time_to_set = $this->get_third_party_cron_interval_seconds( $new_recurrence );
-				as_unschedule_all_actions( 'cwginstock_third_party' );
-				if ( ! as_next_scheduled_action( 'cwginstock_third_party' ) ) {
-					as_schedule_recurring_action( time(), $time_to_set, 'cwginstock_third_party' );
-				}
-			}
+			// Scheduling lives in CWG_Instock_Third_Party_Support::maybe_schedule(),
+			// which runs on the next request (the redirect after saving) and
+			// covers enabling, disabling and a changed recurrence.
+			delete_transient( 'cwginstock_third_party_verified' );
 		}
 
 		public function maybe_update_delete_subscriber_cron( $old_value, $new_value ) {

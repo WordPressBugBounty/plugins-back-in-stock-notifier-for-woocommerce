@@ -3,14 +3,73 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-if ( ! class_exists( ' CWG_Instock_Third_Party_Support' ) ) {
+if ( ! class_exists( 'CWG_Instock_Third_Party_Support' ) ) {
 
 	class CWG_Instock_Third_Party_Support {
 
+		const AS_HOOK = 'cwginstock_third_party';
+
+		const INTERVAL_OPTION = 'cwginstock_third_party_interval';
+
+		const VERIFY_TRANSIENT = 'cwginstock_third_party_verified';
+
 		public function __construct() {
-			add_action( 'cwginstock_third_party', array( $this, 'retrive_product_ids' ) );
+			add_action( self::AS_HOOK, array( $this, 'retrive_product_ids' ) );
 			add_action( 'cwg_backward_stock_check', array( $this, 'backward_stock_check' ) );
-			register_activation_hook( CWGINSTOCK_FILE, array( $this, 'register_schedule' ) );
+			add_action( 'init', array( $this, 'maybe_schedule' ), 20 );
+		}
+
+		public static function is_enabled() {
+			$options = get_option( 'cwginstocksettings' );
+			return isset( $options['update_stock_third_party'] ) && '1' == $options['update_stock_third_party'];
+		}
+
+		/**
+		 * Keep the stock check task in line with the settings. It only exists
+		 * while the option is enabled, runs at the chosen recurrence, and is
+		 * recreated if it goes missing.
+		 *
+		 * @since 7.4.3
+		 */
+		public function maybe_schedule() {
+			if ( ! function_exists( 'as_schedule_recurring_action' ) ) {
+				return;
+			}
+
+			$scheduled = (int) get_option( self::INTERVAL_OPTION, 0 );
+
+			if ( ! self::is_enabled() ) {
+				if ( $scheduled ) {
+					self::unschedule();
+				}
+				return;
+			}
+
+			$options  = get_option( 'cwginstocksettings' );
+			$interval = CWG_Instock_Troubleshoot::recurrence_to_seconds( isset( $options['third_party_cron_recurrence'] ) ? $options['third_party_cron_recurrence'] : 'every_5_minutes' );
+
+			if ( $scheduled === $interval ) {
+				// Confirm the task still exists twice a day rather than on every request.
+				if ( get_transient( self::VERIFY_TRANSIENT ) ) {
+					return;
+				}
+				set_transient( self::VERIFY_TRANSIENT, 1, 12 * HOUR_IN_SECONDS );
+				if ( as_next_scheduled_action( self::AS_HOOK ) ) {
+					return;
+				}
+			}
+
+			as_unschedule_all_actions( self::AS_HOOK );
+			as_schedule_recurring_action( time() + $interval, $interval, self::AS_HOOK );
+			update_option( self::INTERVAL_OPTION, $interval, false );
+		}
+
+		public static function unschedule() {
+			if ( function_exists( 'as_unschedule_all_actions' ) ) {
+				as_unschedule_all_actions( self::AS_HOOK );
+			}
+			delete_option( self::INTERVAL_OPTION );
+			delete_transient( self::VERIFY_TRANSIENT );
 		}
 
 		public function retrive_product_ids() {
@@ -94,11 +153,12 @@ if ( ! class_exists( ' CWG_Instock_Third_Party_Support' ) ) {
 			}
 		}
 
+		/**
+		 * Kept for backward compatibility with code that calls it directly.
+		 */
 		public function register_schedule() {
-			as_unschedule_all_actions( 'cwginstock_third_party' );
-			if ( ! as_next_scheduled_action( 'cwginstock_third_party' ) ) {
-				as_schedule_recurring_action( time(), DAY_IN_SECONDS, 'cwginstock_third_party' );
-			}
+			delete_option( self::INTERVAL_OPTION );
+			$this->maybe_schedule();
 		}
 
 	}

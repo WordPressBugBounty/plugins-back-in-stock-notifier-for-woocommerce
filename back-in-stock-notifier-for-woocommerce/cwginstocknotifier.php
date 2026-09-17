@@ -5,14 +5,14 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.4.2
+ * Version: 7.4.3
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.com
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 11.0.1
+ * WC tested up to: 11.1.0
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      propluginslab
  * @copyright   2026 CodeWooGeek, LLC (USA) and CodeWooGeek Softwares Private Limited (India). All rights reserved.
@@ -55,7 +55,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.4.2';
+		public $version = '7.4.3';
 
 		/**
 		 * Instance variable
@@ -429,6 +429,11 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 				if ( as_next_scheduled_action( $each_event ) ) {
 					as_unschedule_all_actions( $each_event );
 				}
+			}
+
+			// Forget the stock check schedule so it is recreated on reactivation.
+			if ( class_exists( 'CWG_Instock_Third_Party_Support' ) ) {
+				CWG_Instock_Third_Party_Support::unschedule();
 			}
 
 			// Clear remote feed daily cron
