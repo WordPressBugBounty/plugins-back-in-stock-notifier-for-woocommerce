@@ -44,6 +44,11 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 		}
 
 		public function action_based_on_stock_status( $id, $stockstatus, $obj = '' ) {
+			if ( 'instock' !== $stockstatus ) {
+				// The next return to stock is a new restock for everyone waiting.
+				CWG_Instock_Restock_Guard::mark_out_of_stock( $id, $obj instanceof WC_Product ? $obj : null );
+			}
+
 			/**
 			 * Action 'cwginstock_before_trigger_status' before processing stock status.
 			 * 
@@ -148,6 +153,11 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				 * @since 1.0.0
 				 */
 				$get_posts = apply_filters( 'cwginstock_trigger_status_variation', $list_of_subscribers, $id );
+
+				// One notification per subscriber per restock, whatever state their
+				// entry is left in afterwards.
+				CWG_Instock_Restock_Guard::mark_restock( $id );
+				$get_posts = CWG_Instock_Restock_Guard::filter_pending( $get_posts, $id );
 				//change the status to queued so that it is easy for us to detect and check
 				// for variable product
 				// Update the post status to 'cwg_queued' for all subscribers
@@ -162,6 +172,9 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 				 * @since 1.0.0
 				 */
 				$get_posts = apply_filters( 'cwginstock_trigger_status_product', $main_obj->get_list_of_subscribers(), $id );
+
+				CWG_Instock_Restock_Guard::mark_restock( $id );
+				$get_posts = CWG_Instock_Restock_Guard::filter_pending( $get_posts, $id );
 				//change the status to queued so that it is easy for us to detect and check
 				// for simple product
 				// Update the post status to 'cwg_queued' for all subscribers
@@ -342,6 +355,11 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 					$product_obj = wc_get_product( $pid );
 					if ( $product_obj && $product_obj->is_in_stock() ) {
 						if ( 'cwg_subscribed' == $get_post_status || 'cwg_queued' == $get_post_status ) {
+							// Already emailed for this restock, so do not send again. The
+							// entry can be back in the subscribed state legitimately.
+							if ( CWG_Instock_Restock_Guard::already_notified( $each_id, $pid ) ) {
+								continue;
+							}
 							$get_email  = get_post_meta( $each_id, 'cwginstock_subscriber_email', true );
 							$option     = get_option( 'cwginstocksettings' );
 							$is_enabled = isset( $option['enable_instock_mail'] ) ? $option['enable_instock_mail'] : 0;
@@ -366,6 +384,7 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 								$send_mail = $mailer->send(); // mail sent
 								if ( $send_mail ) {
 									$api         = new CWG_Instock_API();
+									CWG_Instock_Restock_Guard::record_notified( $each_id, $pid );
 									$mail_status = $api->mail_sent_status( $each_id ); // update mail sent status
 									$logger      = new CWG_Instock_Logger( 'info', "Automatic Instock Mail Triggered for ID #$each_id with #$get_email" );
 									$logger->record_log();

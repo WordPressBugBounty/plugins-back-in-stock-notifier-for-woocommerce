@@ -31,20 +31,6 @@ if (! class_exists('CWG_Instock_Settings')) {
 				<h1>
 					<?php esc_html_e('Back In Stock Notifier for WooCommerce Settings', 'back-in-stock-notifier-for-woocommerce'); ?>
 				</h1>
-				<div class="notice notice-success cwg_marketing_notice">
-					<p>
-						<strong><?php esc_html_e( 'Supercharge your store!', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
-						<?php
-						echo wp_kses_post(
-							sprintf(
-								/* translators: %s: URL to extensions page */
-								__( 'Check out our <a href="%s"><strong>Extensions & Add-ons</strong></a> to unlock more features.', 'back-in-stock-notifier-for-woocommerce' ),
-								esc_url( admin_url( 'edit.php?post_type=cwginstocknotifier&page=cwg-instock-extensions' ) )
-							)
-						);
-						?>
-					</p>
-				</div>
 				<?php
 				settings_fields('cwginstocknotifier_settings');
 				/**

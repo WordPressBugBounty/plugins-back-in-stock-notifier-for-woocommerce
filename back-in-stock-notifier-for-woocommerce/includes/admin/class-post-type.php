@@ -776,7 +776,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			$action_links = array(
 				'settings' => '<a href="' . esc_url( get_admin_url( null, 'edit.php?post_type=cwginstocknotifier&page=cwg-instock-mailer' ) ) . '">Settings</a>',
 				'add-ons' => '<a href="' . esc_url( get_admin_url( null, 'edit.php?post_type=cwginstocknotifier&page=cwg-instock-extensions' ) ) . '">Add-ons</a>',
-				'support' => '<a href="https://propluginslab.com" target="_blank">Custom Development and Support</a>',
+				'support' => '<a href="https://propluginslab.io/contact-us/" target="_blank">Custom Development and Support</a>',
 			);
 			return array_merge( $action_links, $links );
 		}
@@ -1410,46 +1410,3 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 
 	new CWG_Instock_Post_Type();
 }
-
-add_action(
-	'load-edit.php',
-	function () {
-
-		$screen = get_current_screen();
-
-		// Only edit post screen:
-		if ( 'edit-cwginstocknotifier' === $screen->id || 'edit-cwginstock_arrival' === $screen->id ) {
-			// Before:
-			add_action(
-				'all_admin_notices',
-				function () {
-					/**
-					 * Whether to show the bundle promotion.
-					 *
-					 * Returned false by the Bundle Add-ons plugin, so a customer
-					 * who has already bought the bundle is not advertised it on
-					 * every visit to the subscriber list. Standalone add-on
-					 * owners still see it, since the bundle is a genuine upgrade
-					 * for them.
-					 *
-					 * @since 7.4.2
-					 *
-					 * @param bool $show Whether to show the promotion.
-					 */
-					if ( ! apply_filters( 'cwginstock_show_bundle_promotion', true ) ) {
-						return;
-					}
-					?>
-			<div class="notice notice-success cwg_marketing_notice">
-				<p>
-					<strong>Pay Once, Benefit Forever</strong>: All Add-ons Included, No Monthly Commitment - Just $49! <a
-						href="https://propluginslab.com/shop/back-in-stock-notifier/bundle-add-ons/" target="_blank"><strong>Buy
-							Now Bundle Add-ons!</strong></a>
-				</p>
-			</div>
-					<?php
-				}
-			);
-		}
-	}
-);

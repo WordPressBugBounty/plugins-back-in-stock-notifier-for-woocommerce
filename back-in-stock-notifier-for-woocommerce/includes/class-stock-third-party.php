@@ -13,6 +13,11 @@ if ( ! class_exists( 'CWG_Instock_Third_Party_Support' ) ) {
 
 		const VERIFY_TRANSIENT = 'cwginstock_third_party_verified';
 
+		/**
+		 * Stock status this check last saw for a product.
+		 */
+		const LAST_SEEN_META = '_cwg_last_seen_stock_status';
+
 		public function __construct() {
 			add_action( self::AS_HOOK, array( $this, 'retrive_product_ids' ) );
 			add_action( 'cwg_backward_stock_check', array( $this, 'backward_stock_check' ) );
@@ -104,7 +109,21 @@ if ( ! class_exists( 'CWG_Instock_Third_Party_Support' ) ) {
 					$select_Query = $wpdb->get_col( $prepared_query );
 
 					if ( is_array( $select_Query ) && ! empty( $select_Query ) ) {
-						$array = array_unique( $select_Query );
+						$array = array_values( array_unique( $select_Query ) );
+
+						/**
+						 * Most products one run of this check may process.
+						 *
+						 * @since 7.4.4
+						 */
+						$limit = max( 1, (int) apply_filters( 'cwginstock_third_party_max_products_per_run', 100 ) );
+						if ( count( $array ) > $limit ) {
+							$total  = count( $array );
+							$array  = array_slice( $array, 0, $limit );
+							$logger = new CWG_Instock_Logger( 'info', "Third Party Stock Check: $total products waiting, processing $limit this run and the rest on the next run" );
+							$logger->record_log();
+						}
+
 						$chunk = array_chunk( $array, 5 );
 						foreach ( $chunk as $each_array ) {
 							as_schedule_single_action( time(), 'cwg_backward_stock_check', array( 'pid' => $each_array ) );
@@ -139,16 +158,46 @@ if ( ! class_exists( 'CWG_Instock_Third_Party_Support' ) ) {
 			}
 		}
 
+		/**
+		 * Compare each product against the stock status this check last saw, and
+		 * notify only when it has actually come back into stock. Checking the
+		 * current status alone would notify every waiting subscriber on every
+		 * run for as long as a product stays in stock.
+		 *
+		 * @param array $ids Product or variation ids.
+		 */
 		public function backward_stock_check( $ids ) {
-			if ( is_array( $ids ) && ! empty( $ids ) ) {
-				foreach ( $ids as $key => $value ) {
-					$product = wc_get_product( $value );
-					if ( $product ) {
-						$stock_status = $product->get_stock_status();
-						if ( 'instock' == $stock_status ) {
-							$this->action_based_on_stock_status( $value, $stock_status, $product );
-						}
-					}
+			if ( ! is_array( $ids ) || empty( $ids ) ) {
+				return;
+			}
+
+			foreach ( $ids as $value ) {
+				$product = wc_get_product( $value );
+				if ( ! $product ) {
+					continue;
+				}
+
+				$stock_status = $product->get_stock_status();
+				$last_seen    = get_post_meta( $value, self::LAST_SEEN_META, true );
+
+				// Remember what we saw before deciding anything, so a run that
+				// fails later still moves the baseline forward.
+				update_post_meta( $value, self::LAST_SEEN_META, $stock_status );
+
+				if ( '' === $last_seen ) {
+					// First time this product is seen. Record the baseline only,
+					// so enabling the option never notifies a backlog of
+					// subscribers for stock that was already there.
+					continue;
+				}
+
+				if ( 'instock' !== $stock_status ) {
+					CWG_Instock_Restock_Guard::mark_out_of_stock( $value, $product );
+					continue;
+				}
+
+				if ( 'instock' !== $last_seen ) {
+					$this->action_based_on_stock_status( $value, $stock_status, $product );
 				}
 			}
 		}

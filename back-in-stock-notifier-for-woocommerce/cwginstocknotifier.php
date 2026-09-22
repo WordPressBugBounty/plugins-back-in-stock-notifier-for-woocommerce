@@ -3,16 +3,16 @@
 /*
  *
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
- * Plugin URI: https://propluginslab.com/shop/free-plugins/back-in-stock-notifier/
+ * Plugin URI: https://propluginslab.io/shop/plugins/free-plugins/back-in-stock-notifier-for-woocommerce/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.4.3
+ * Version: 7.4.4
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
- * Author URI: https://propluginslab.com
+ * Author URI: https://propluginslab.io
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 11.1.0
+ * WC tested up to: 11.1.1
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      propluginslab
  * @copyright   2026 CodeWooGeek, LLC (USA) and CodeWooGeek Softwares Private Limited (India). All rights reserved.
@@ -55,7 +55,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.4.3';
+		public $version = '7.4.4';
 
 		/**
 		 * Instance variable
@@ -134,6 +134,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-privacy.php';
 			include 'includes/admin/class-extra.php';
 			include 'includes/admin/class-promotions.php';
+			include 'includes/admin/class-addons-banner.php';
 			include 'includes/class-remote-feed.php';
 			include 'includes/class-email-manager.php';
 			include 'includes/class-troubleshoot.php';
@@ -158,6 +159,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-stock-arrival.php';
 			include 'includes/class-stock-arrival-settings.php';
 			include 'includes/class-queue.php';
+			include 'includes/class-restock-guard.php';
 			include 'includes/class-queue-recovery.php';
 			include 'includes/class-mail-throttle.php';
 			include 'includes/class-partial-stock.php';

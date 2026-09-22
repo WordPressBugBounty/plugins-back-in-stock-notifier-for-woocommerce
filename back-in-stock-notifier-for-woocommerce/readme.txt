@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 7.4.3
+Stable tag: 7.4.4
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -15,7 +15,7 @@ Show a waitlist form on out-of-stock products and automatically email subscriber
 
 Every out-of-stock product is a lost sale waiting to happen. <strong>Back In Stock Notifier for WooCommerce</strong> captures those visitors instead of losing them. It shows an email subscription form on out-of-stock products, then automatically emails every subscriber the moment the product is restocked.
 
-[<strong>Try the Live Demo</strong>](https://demo.propluginslab.com/back-in-stock-notifier-for-woocommerce/) | [<strong>Documentation & Support</strong>](https://propluginslab.com/) | [<strong>Browse Add-ons</strong>](https://propluginslab.com/product-category/back-in-stock-notifier/)
+[<strong>Documentation & Support</strong>](https://propluginslab.io/contact-us/) | [<strong>Browse Add-ons</strong>](https://propluginslab.io/product-category/back-in-stock-notifier/)
 
 = Why store owners choose this plugin =
 
@@ -68,88 +68,91 @@ Every out-of-stock product is a lost sale waiting to happen. <strong>Back In Sto
 <li><strong>Translation ready</strong></li>
 </ul>
 
-== Premium Add-ons ==
+== Add-ons ==
 
 Supercharge your waitlist with premium add-ons. Every purchase is a <strong>one-time payment with lifetime updates</strong>. No subscriptions, no recurring fees. You can browse and manage everything from your dashboard under <strong>Instock Notifier > Plugins & Add-ons</strong>.
 
-<strong>Best value:</strong> get <a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/bundle-add-ons/"><strong>Bundle Add-ons</strong></a>, all 26 add-ons in one plugin with one licence key, plus every future add-on, for one discounted price. Switch each add-on on or off individually.
+<strong>Best value:</strong> get <a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/bundle-add-ons/"><strong>Bundle Add-ons</strong></a>, all 26 add-ons in one plugin with one licence key, plus every future add-on, for one discounted price. Switch each add-on on or off individually.
 
 = Subscriber experience =
 
 <ol>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/doubleoptin/"><strong>Double Opt-In</strong></a> - Subscribers confirm by email before joining the waitlist. Keeps your list clean and compliant, and unconfirmed entries are auto-deleted after X days.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/unsubscribe/"><strong>Unsubscribe</strong></a> - Adds an unsubscribe link to emails, and members can manage their waitlists from My Account.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/demand-signals/"><strong>Demand Signals</strong></a> - Show how many people are already waiting for an out of stock product, and where a new subscriber sits in the queue.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/priority/"><strong>Priority</strong></a> - Decide who hears first when stock is limited by ordering the queue by signup time, spend, or customer role.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/reminders/"><strong>Reminders</strong></a> - Follow up with people who were told a product is back but have not bought it yet, while it is still in stock.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/never-restock/"><strong>Never Restock</strong></a> - Product discontinued? Point waiting subscribers to an alternative product and notify them when it becomes available, so no waitlist goes to waste.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/twilio-sms/"><strong>Twilio SMS</strong></a> - Send restock alerts by SMS in addition to email, so customers never miss a restock.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/custom-css/"><strong>Custom CSS</strong></a> - Style the subscribe form with color, size, and custom CSS options. No coding needed.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/doubleoptin/"><strong>Double Opt-In</strong></a> - Subscribers confirm by email before joining the waitlist. Keeps your list clean and compliant, and unconfirmed entries are auto-deleted after X days.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/unsubscribe/"><strong>Unsubscribe</strong></a> - Adds an unsubscribe link to emails, and members can manage their waitlists from My Account.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/demand-signals/"><strong>Demand Signals</strong></a> - Show how many people are already waiting for an out of stock product, and where a new subscriber sits in the queue.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/priority/"><strong>Priority</strong></a> - Decide who hears first when stock is limited by ordering the queue by signup time, spend, or customer role.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/reminders/"><strong>Reminders</strong></a> - Follow up with people who were told a product is back but have not bought it yet, while it is still in stock.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/never-restock/"><strong>Never Restock</strong></a> - Product discontinued? Point waiting subscribers to an alternative product and notify them when it becomes available, so no waitlist goes to waste.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/twilio-sms/"><strong>Twilio SMS</strong></a> - Send restock alerts by SMS in addition to email, so customers never miss a restock.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/custom-css/"><strong>Custom CSS</strong></a> - Style the subscribe form with color, size, and custom CSS options. No coding needed.</li>
 </ol>
 
 = Email marketing integrations =
 
 <ol>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/klaviyo/"><strong>Klaviyo</strong></a> - Sync subscribers to Klaviyo and trigger Klaviyo Flows for Back In Stock and Successful Subscription events, so you can build advanced automations and campaigns.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/mailchimp/"><strong>Mailchimp</strong></a> - Automatically sync waitlist subscribers to your Mailchimp audience in the background.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/brevo/"><strong>Brevo</strong></a> - Sync waitlist subscribers into a Brevo list with product attributes, and optionally send a Brevo transactional template as the restock notification.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/omnisend/"><strong>Omnisend</strong></a> - Sync waitlist subscribers into Omnisend as tagged contacts and fire a custom event on signup and restock.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/mailerlite/"><strong>MailerLite</strong></a> - Sync waitlist subscribers into a MailerLite group, with the product they are waiting for saved in custom fields for automations.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/constant-contact/"><strong>Constant Contact</strong></a> - Sync waitlist subscribers into a Constant Contact list over OAuth, with tokens refreshed automatically and the product they are waiting for recorded.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/active-campaign/"><strong>ActiveCampaign</strong></a> - Sync subscribers to ActiveCampaign automatically.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/klaviyo/"><strong>Klaviyo</strong></a> - Sync subscribers to Klaviyo and trigger Klaviyo Flows for Back In Stock and Successful Subscription events, so you can build advanced automations and campaigns.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/mailchimp/"><strong>Mailchimp</strong></a> - Automatically sync waitlist subscribers to your Mailchimp audience in the background.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/brevo/"><strong>Brevo</strong></a> - Sync waitlist subscribers into a Brevo list with product attributes, and optionally send a Brevo transactional template as the restock notification.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/omnisend/"><strong>Omnisend</strong></a> - Sync waitlist subscribers into Omnisend as tagged contacts and fire a custom event on signup and restock.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/mailerlite/"><strong>MailerLite</strong></a> - Sync waitlist subscribers into a MailerLite group, with the product they are waiting for saved in custom fields for automations.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/constant-contact/"><strong>Constant Contact</strong></a> - Sync waitlist subscribers into a Constant Contact list over OAuth, with tokens refreshed automatically and the product they are waiting for recorded.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/active-campaign/"><strong>ActiveCampaign</strong></a> - Sync subscribers to ActiveCampaign automatically.</li>
 </ol>
 
 = Multilingual =
 
 <ol>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/wpml/"><strong>WPML</strong></a> - Send every email in the subscriber's own language using WPML string translation.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/polylang/"><strong>Polylang</strong></a> - Send subscription and restock emails in the subscriber's chosen Polylang language.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/weglot/"><strong>Weglot</strong></a> - Remembers the language each person was browsing in when they subscribed, and sends their restock notification in that language.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/translatepress/"><strong>TranslatePress</strong></a> - Remembers the language each person was browsing in when they subscribed, so their emails arrive in that language.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/wpml/"><strong>WPML</strong></a> - Send every email in the subscriber's own language using WPML string translation.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/polylang/"><strong>Polylang</strong></a> - Send subscription and restock emails in the subscriber's chosen Polylang language.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/weglot/"><strong>Weglot</strong></a> - Remembers the language each person was browsing in when they subscribed, and sends their restock notification in that language.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/translatepress/"><strong>TranslatePress</strong></a> - Remembers the language each person was browsing in when they subscribed, so their emails arrive in that language.</li>
 </ol>
 
 = Insights and team =
 
 <ol>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/analytics/"><strong>Analytics</strong></a> - Turn the waitlist into a buying signal: demand ranked by product, conversion and revenue per restock, notification outcomes, and signup trends.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/track-sales/"><strong>Track Sales</strong></a> - See which subscribers purchased after receiving a restock email and measure the revenue your waitlist recovers.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/team-alerts/"><strong>Team Alerts</strong></a> - Push waitlist signals to Slack, Discord, Microsoft Teams or any webhook, with demand threshold alerts and restock summaries.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/analytics/"><strong>Analytics</strong></a> - Turn the waitlist into a buying signal: demand ranked by product, conversion and revenue per restock, notification outcomes, and signup trends.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/track-sales/"><strong>Track Sales</strong></a> - See which subscribers purchased after receiving a restock email and measure the revenue your waitlist recovers.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/team-alerts/"><strong>Team Alerts</strong></a> - Push waitlist signals to Slack, Discord, Microsoft Teams or any webhook, with demand threshold alerts and restock summaries.</li>
 </ol>
 
 = Subscriber management =
 
 <ol>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/ban-emails/"><strong>Ban Emails</strong></a> - Block disposable email domains (mailinator and similar), public domains, and specific addresses to stop fake signups.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/edit-subscribers/"><strong>Edit Subscribers</strong></a> - Correct or update existing subscriber entries directly from the admin.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/import-csv/"><strong>Import CSV</strong></a> - Import subscribers from a CSV file when migrating from another platform or store.</li>
-<li><a href="https://propluginslab.com/shop/add-ons/back-in-stock-notifier/export-csv/"><strong>Export CSV</strong></a> - Export subscriber lists to CSV for records, newsletters, or promotions.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/ban-emails/"><strong>Ban Emails</strong></a> - Block disposable email domains (mailinator and similar), public domains, and specific addresses to stop fake signups.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/edit-subscribers/"><strong>Edit Subscribers</strong></a> - Correct or update existing subscriber entries directly from the admin.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/import-csv/"><strong>Import CSV</strong></a> - Import subscribers from a CSV file when migrating from another platform or store.</li>
+<li><a href="https://propluginslab.io/shop/add-ons/back-in-stock-notifier/export-csv/"><strong>Export CSV</strong></a> - Export subscriber lists to CSV for records, newsletters, or promotions.</li>
 </ol>
 
-See the full catalog at <a href="https://propluginslab.com/product-category/back-in-stock-notifier/"><strong>propluginslab.com</strong></a>, with more add-ons coming soon.
+See the full catalog at <a href="https://propluginslab.io/product-category/back-in-stock-notifier/"><strong>propluginslab.io</strong></a>, with more add-ons coming soon.
 
-== More Plugins by ProPluginsLab ==
+== More plugins from ProPluginsLab ==
 
-= Free plugins =
+Free on WordPress.org:
 
-Browse all our free plugins on our <a href="https://profiles.wordpress.org/propluginslab/#content-plugins"><strong>WordPress.org profile</strong></a>.
+* [Recovero - Cart Recovery for WooCommerce](https://wordpress.org/plugins/recovero-cart-recovery-for-woocommerce/) - Recover abandoned carts with automated emails.
+* [Anticipo - Pre-Orders for WooCommerce](https://wordpress.org/plugins/anticipo-pre-orders-for-woocommerce/) - Take pre-orders before a product launches.
+* [Affireo - Affiliates for WooCommerce](https://wordpress.org/plugins/affireo-affiliates-for-woocommerce/) - Run an affiliate and referral program.
+* [Storefold - Multivendor Marketplace for WooCommerce](https://wordpress.org/plugins/storefold-multivendor-for-woocommerce/) - Turn your store into a multivendor marketplace.
+* [Dispatchio - Shipment Tracking for WooCommerce](https://wordpress.org/plugins/dispatchio-shipment-tracking-for-woocommerce/) - Add tracking numbers and shipment updates to orders.
+* [Presentero - Gift Cards for WooCommerce](https://wordpress.org/plugins/presentero-gift-cards-for-woocommerce/) - Sell and redeem digital gift cards.
+* [Kitero - Product Configurator for WooCommerce](https://wordpress.org/plugins/kitero-product-configurator-for-woocommerce/) - Build composite products and kits.
+* [Plusero - Extra Fees for WooCommerce](https://wordpress.org/plugins/plusero-extra-fees-for-woocommerce/) - Add conditional checkout fees and surcharges.
+* [Inputo - Name Your Price for WooCommerce](https://wordpress.org/plugins/inputo-name-your-price-for-woocommerce/) - Let customers choose what they pay.
+* [Christmas Snow - Festive Snowfall Effect](https://wordpress.org/plugins/christmas-snow-festive-snowfall-effect/) - Add a lightweight snowfall effect to any site.
 
-= Pro plugins =
+Pro plugins at [propluginslab.io](https://propluginslab.io/product-category/pro-plugins/):
 
-Nine standalone premium WooCommerce plugins, each a one-time payment with lifetime updates:
-
-<ol>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/storefold-multivendor-for-woocommerce/"><strong>Storefold - Multivendor Marketplace for WooCommerce</strong></a> - Turn your store into a complete multi vendor marketplace with vendor dashboards, commissions and payouts.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/recovero-cart-recovery-for-woocommerce/"><strong>Recovero - Cart Abandonment Recovery for WooCommerce</strong></a> - Capture every abandoned cart, including guests, and win customers back with automated multi step email sequences.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/anticipo-pre-orders-for-woocommerce/"><strong>Anticipo - Pre-Orders for WooCommerce</strong></a> - Take pre-orders with pay now, deposit or pay on release billing, and cap how many you promise.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/dispatchio-advanced-shipment-tracking-for-woocommerce/"><strong>Dispatchio - Advanced Shipment Tracking for WooCommerce</strong></a> - Complete fulfillment manager with unlimited tracking numbers, 55+ carriers and custom order statuses such as Shipped, Partially Shipped and Delivered.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/kitero-product-configurator-for-woocommerce/"><strong>Kitero - Composite Products for WooCommerce</strong></a> - Build customizable products with a composite builder and bundle mode, live pricing and logic rules.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/presentero-gift-cards-for-woocommerce/"><strong>Presentero - Gift Cards for WooCommerce</strong></a> - Sell gift cards with a live card designer, bulk generation, scheduled email delivery and secure balance management.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/plusero-extra-fees-for-woocommerce/"><strong>Plusero - Extra Fees for WooCommerce</strong></a> - Add conditional product, cart, checkout, shipping and payment fees with a guided wizard and live preview.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/inputo-name-your-price-for-woocommerce/"><strong>Inputo - Name Your Price for WooCommerce</strong></a> - Let customers choose their price with minimum limits and suggested prices. Perfect for donations, tipping and pay what you want campaigns.</li>
-<li><a href="https://propluginslab.com/shop/plugins/pro-plugins/affireo-affiliates-for-woocommerce/"><strong>Affireo - Affiliates for WooCommerce</strong></a> - Run a complete affiliate program where affiliates share a personal link and you approve and pay them from one page.</li>
-</ol>
-
-Visit <a href="https://propluginslab.com/"><strong>ProPluginsLab</strong></a> for all our premium WooCommerce plugins and solutions.
+* [Recovero Pro](https://propluginslab.io/shop/plugins/pro-plugins/recovero-cart-recovery-for-woocommerce/)
+* [Anticipo Pro](https://propluginslab.io/shop/plugins/pro-plugins/anticipo-pre-orders-for-woocommerce/)
+* [Affireo Pro](https://propluginslab.io/shop/plugins/pro-plugins/affireo-affiliates-for-woocommerce/)
+* [Storefold Pro](https://propluginslab.io/shop/plugins/pro-plugins/storefold-multivendor-for-woocommerce/)
+* [Dispatchio Pro](https://propluginslab.io/shop/plugins/pro-plugins/dispatchio-advanced-shipment-tracking-for-woocommerce/)
+* [Presentero Pro](https://propluginslab.io/shop/plugins/pro-plugins/presentero-gift-cards-for-woocommerce/)
+* [Kitero Pro](https://propluginslab.io/shop/plugins/pro-plugins/kitero-product-configurator-for-woocommerce/)
+* [Plusero Pro](https://propluginslab.io/shop/plugins/pro-plugins/plusero-extra-fees-for-woocommerce/)
+* [Inputo Pro](https://propluginslab.io/shop/plugins/pro-plugins/inputo-name-your-price-for-woocommerce/)
 
 == Installation ==
 
@@ -236,7 +239,7 @@ We created documentation for the REST API, which you can check here [https://doc
 
 = How to contact your support? =
 
-You can contact us via the support Forum of WordPress or by creating a support ticket from our site [https://propluginslab.com/](https://propluginslab.com/)
+You can contact us via the support Forum of WordPress or by creating a support ticket from our site [https://propluginslab.io/contact-us/](https://propluginslab.io/contact-us/)
 
 
 == Screenshots ==
@@ -260,6 +263,18 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.4.4 2026-09-22 =
+* Fix: Subscribers could receive the same back in stock notification repeatedly. The third-party stock check notified everyone waiting for a product that was in stock, on every run, instead of only when a product came back into stock. On sites using "Keep Subscription Entry to Subscribed Status even Instock Email Sent", or auto-retry with its final status set to Subscribed, entries returned to the waiting state after each send and were notified again on the next run.
+* Fix: The third-party stock check now acts only on a genuine change from out of stock to in stock. The first run after enabling it records the current stock status of each product and sends nothing, so enabling the option never notifies subscribers for stock that was already there.
+* Fix: A subscriber is now notified at most once per restock, whatever state their entry is left in afterwards. A later genuine restock notifies them again.
+* Fix: An entry finalized by auto-retry no longer has its retry counter cleared, which could give it a fresh set of retries on every cycle.
+* Tweak: The third-party stock check processes at most 100 products per run, continuing on the next run, and records this in the logs.
+* Tweak: Added a description to the third-party stock update setting explaining when it is needed and that it is not required when stock is updated through WooCommerce.
+* New: Add-ons banner on the plugin's own admin screens (subscriber list, Settings, Status, Estimate Stock Arrival) featuring Bundle Add-ons and a link to the Plugins & Add-ons page. It is not shown on the dashboard, the Plugins screen or the Plugins & Add-ons page, is hidden when Bundle Add-ons is active, and can be dismissed per user for 30 days. It replaces the previous promotion notices on the subscriber list and Settings page.
+* Tweak: Links moved to propluginslab.io, including the add-ons feed on the Plugins & Add-ons page and the support links.
+* Tweak: Removed the live demo link from the plugin description.
+* Tested with WordPress 7.1.1 and WooCommerce 11.1.1.
+
 = 7.4.3 2026-09-17 =
 * Fix: Back in stock emails were never sent for variable products whose stock is managed on the parent product (Inventory set on the main product, not on each variation). WooCommerce only reports the stock change for the parent, so subscribers to its variations were never queued and nothing was logged. Restocking the parent now notifies the subscribers of every variation that uses the parent's stock, whether stock is changed from Quick Edit, the product edit screen, or an order cancellation or refund.
 * Fix: The third-party stock update check did not run after enabling it. Its scheduled task was only created on plugin activation (always daily) or when the recurrence was changed, so the chosen recurrence was ignored. It is now created as soon as the option is enabled, follows the selected recurrence, is removed when the option is disabled, and is recreated if it goes missing.

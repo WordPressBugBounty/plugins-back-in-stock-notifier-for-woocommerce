@@ -296,7 +296,10 @@ if ( ! class_exists( 'CWG_Instock_Queue_Recovery' ) ) {
 					break;
 			}
 
-			delete_post_meta( $subscriber_id, self::ATTEMPTS_META );
+			// The attempt counter is deliberately kept. Clearing it here would give
+			// an entry finalized back to the subscribed state a fresh retry budget
+			// every cycle. It is cleared in CWG_BIS_Queue when the entry is queued
+			// again for a genuinely new restock.
 			delete_post_meta( $subscriber_id, self::LAST_META );
 
 			/**

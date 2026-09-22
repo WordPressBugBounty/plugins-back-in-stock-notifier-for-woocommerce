@@ -316,7 +316,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 			$has_sale    = ! empty( $product['discount_active'] );
 			$sale_price  = $has_sale && ! empty( $product['discount_price'] ) ? $product['discount_price'] : '';
 			$badge_text  = ! empty( $product['badge'] ) ? $product['badge'] : '';
-			$base_url    = ! empty( $product['url'] ) ? $product['url'] : 'https://propluginslab.com/';
+			$base_url    = ! empty( $product['url'] ) ? $product['url'] : 'https://propluginslab.io/';
 			$type        = isset( $product['type'] ) ? $product['type'] : 'addon';
 			$category    = ! empty( $product['category'] ) ? $product['category'] : 'general';
 			$product_url = $this->add_utm_params( $base_url, isset( $product['name'] ) ? $product['name'] : 'product' );
@@ -609,7 +609,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				? $promo['headline']
 				: __( 'Limited time offer', 'back-in-stock-notifier-for-woocommerce' );
 
-			$link = ! empty( $promo['url'] ) ? $promo['url'] : 'https://propluginslab.com/';
+			$link = ! empty( $promo['url'] ) ? $promo['url'] : 'https://propluginslab.io/';
 			$link = $this->add_utm_params( $link, 'promotion-banner' );
 
 			$expires_label = '';
@@ -894,7 +894,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 							<?php esc_html_e( 'Products will be loaded automatically via daily sync. Click "Refresh" above to load now, or visit our website.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<?php endif; ?>
 					</p>
-					<a href="<?php echo esc_url( $this->add_utm_params( 'https://propluginslab.com/', 'empty-state' ) ); ?>" target="_blank" class="button button-primary button-hero">
+					<a href="<?php echo esc_url( $this->add_utm_params( 'https://propluginslab.io/', 'empty-state' ) ); ?>" target="_blank" class="button button-primary button-hero">
 						<?php esc_html_e( 'Visit ProPluginsLab', 'back-in-stock-notifier-for-woocommerce' ); ?>
 					</a>
 				</div>
@@ -982,7 +982,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 				<div class="cwg-promo-footer">
 					<p>
 						<?php esc_html_e( 'Need help? Visit', 'back-in-stock-notifier-for-woocommerce' ); ?>
-					<a href="<?php echo esc_url( $this->add_utm_params( 'https://support.codewoogeek.online', 'footer-support' ) ); ?>" target="_blank"><?php esc_html_e( 'ProPluginsLab Support', 'back-in-stock-notifier-for-woocommerce' ); ?></a>
+					<a href="<?php echo esc_url( $this->add_utm_params( 'https://propluginslab.io/contact-us/', 'footer-support' ) ); ?>" target="_blank"><?php esc_html_e( 'ProPluginsLab Support', 'back-in-stock-notifier-for-woocommerce' ); ?></a>
 				</p>
 			</div>
 

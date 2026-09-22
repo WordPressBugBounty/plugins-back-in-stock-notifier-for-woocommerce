@@ -62,7 +62,7 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 		}
 
 		public function troubleshoot_settings_heading() {
-			$troubleshoot_heading = __( 'If frontend Subscribe Form layout breaks/input field overlap? then enable below checkbox option to troubleshoot this issue. If it is not work out then please open a support ticket with us https://codewoogeek.online', 'back-in-stock-notifier-for-woocommerce' );
+			$troubleshoot_heading = __( 'If frontend Subscribe Form layout breaks/input field overlap? then enable below checkbox option to troubleshoot this issue. If it is not work out then please open a support ticket with us https://propluginslab.io/contact-us/', 'back-in-stock-notifier-for-woocommerce' );
 			echo do_shortcode( $troubleshoot_heading );
 		}
 
@@ -141,6 +141,9 @@ if ( ! class_exists( 'CWG_Instock_Troubleshoot' ) ) {
 			?>
 			<input class='cwg_thirdparty_stock_update' type='checkbox' name='cwginstocksettings[update_stock_third_party]' <?php isset( $options['update_stock_third_party'] ) ? checked( $options['update_stock_third_party'], 1 ) : ''; ?>
 				value="1" />
+			<p class="description">
+				<?php esc_html_e( 'Only needed when stock is updated outside WooCommerce, for example by an ERP or inventory system writing straight to the database, where WooCommerce fires no stock event. Subscribers are notified when a product changes from out of stock to in stock, checked at the recurrence below. Leave this off if you update stock through WooCommerce.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+			</p>
 			<?php
 		}
 

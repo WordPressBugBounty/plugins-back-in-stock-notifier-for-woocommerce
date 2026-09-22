@@ -44,7 +44,7 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 		/** Recurrence interval: 1 day in seconds */
 		const INTERVAL_SECONDS = DAY_IN_SECONDS;
 
-		const CWG_PROMOTIONFEED_URL = 'https://propluginslab.com/wp-json/cwg-feed/v1/products';
+		const CWG_PROMOTIONFEED_URL = 'https://propluginslab.io/wp-json/cwg-feed/v1/products';
 
 		/** @var self|null */
 		private static $instance = null;
