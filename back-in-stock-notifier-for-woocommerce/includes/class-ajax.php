@@ -25,6 +25,10 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 		}
 
 		public function perform_ajax_subscription() {
+			if ( function_exists( 'cwg_instock_apply_request_language' ) ) {
+				cwg_instock_apply_request_language();
+			}
+
 			$this->ajax_subscription();
 		}
 
@@ -361,6 +365,12 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 		}
 
 		public function cwg_ajax_verification() {
+			// The popup form is built here, so the visitor's language has to be
+			// applied before any string is produced.
+			if ( function_exists( 'cwg_instock_apply_request_language' ) ) {
+				cwg_instock_apply_request_language();
+			}
+
 			if ( ! isset( $_POST['security'] ) || ( isset( $_POST['security'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['security'] ) ), 'cwg_trigger_popup_ajax' ) ) ) {
 				if ( '1' == CWG_Instock_Bot_Protection::is_recaptcha_enabled() && CWG_Instock_Bot_Protection::is_recaptcha_v3() ) {
 					$verify_gresponse = $this->verify_recaptcha_client_response( $_REQUEST, false );

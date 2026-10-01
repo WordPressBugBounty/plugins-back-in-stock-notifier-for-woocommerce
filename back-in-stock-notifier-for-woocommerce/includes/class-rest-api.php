@@ -63,6 +63,12 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 		}
 
 		public function create_subscriber( WP_REST_Request $request ) {
+			// Messages returned here are shown on the form, so they must be in the
+			// language the visitor is browsing in.
+			if ( function_exists( "cwg_instock_apply_request_language" ) ) {
+				cwg_instock_apply_request_language();
+			}
+
 			/*
 												 * SAMPLE JSON REQUEST
 												 * {

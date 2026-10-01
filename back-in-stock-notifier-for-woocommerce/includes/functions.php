@@ -274,3 +274,385 @@ function cwg_instock_get_product_table_html( $subscriber_id, $preview = false ) 
 	 */
 	return apply_filters( 'cwginstock_product_table_html', $html, $subscriber_id, $preview );
 }
+
+/**
+ * Blend a hex colour with white to get a soft tint.
+ *
+ * The coupon panel uses a tint of the store's email colour rather than a fixed
+ * shade, so it suits a black, blue or purple email palette equally.
+ *
+ * @since 7.4.5
+ * @param string $hex    Hex colour, with or without the leading hash.
+ * @param float  $weight How much white to mix in, 0 to 1.
+ * @return string Hex colour.
+ */
+function cwg_instock_tint_colour( $hex, $weight = 0.94 ) {
+	$hex = ltrim( (string) $hex, '#' );
+	if ( 3 === strlen( $hex ) ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+	if ( 6 !== strlen( $hex ) || ! ctype_xdigit( $hex ) ) {
+		return '#f7f7f7';
+	}
+
+	$weight   = min( 1, max( 0, (float) $weight ) );
+	$out      = '#';
+	$channels = array();
+	foreach ( array( 0, 2, 4 ) as $offset ) {
+		$channel    = hexdec( substr( $hex, $offset, 2 ) );
+		$mixed      = (int) round( $channel + ( 255 - $channel ) * $weight );
+		$mixed      = max( 0, min( 255, $mixed ) );
+		$channels[] = $mixed;
+		$out       .= str_pad( dechex( $mixed ), 2, '0', STR_PAD_LEFT );
+	}
+
+	// A very light store colour tints to near white, which would leave the panel
+	// invisible against the email background. Fall back to a neutral grey.
+	if ( min( $channels ) > 249 ) {
+		return '#f7f7f7';
+	}
+
+	return $out;
+}
+
+/**
+ * The site's own brand colour, read from the active theme.
+ *
+ * Block themes expose a palette through theme.json, and classic themes commonly
+ * store one in the customizer. Used when the coupon block is set to follow the
+ * website colour.
+ *
+ * @since 7.4.5
+ * @return string Hex colour, empty when the theme exposes none.
+ */
+function cwg_instock_get_site_colour() {
+	$colour = '';
+
+	// Block themes: the theme.json palette.
+	if ( function_exists( 'wp_get_global_settings' ) ) {
+		$palette = wp_get_global_settings( array( 'color', 'palette' ) );
+		$entries = array();
+		// Only the theme's own palette and the user's custom colours count. The
+		// default WordPress palette is not a brand colour.
+		foreach ( array( 'custom', 'theme' ) as $origin ) {
+			if ( ! empty( $palette[ $origin ] ) && is_array( $palette[ $origin ] ) ) {
+				$entries = array_merge( $entries, $palette[ $origin ] );
+			}
+		}
+		// Prefer the slug a theme would use for its brand colour.
+		foreach ( array( 'primary', 'accent', 'brand', 'secondary', 'contrast' ) as $slug ) {
+			foreach ( $entries as $entry ) {
+				if ( isset( $entry['slug'], $entry['color'] ) && $slug === $entry['slug'] ) {
+					$colour = $entry['color'];
+					break 2;
+				}
+			}
+		}
+	}
+
+	// Classic themes: common customizer settings.
+	if ( '' === $colour ) {
+		foreach ( array( 'accent_color', 'primary_color', 'link_color', 'header_textcolor' ) as $mod ) {
+			$value = get_theme_mod( $mod );
+			if ( is_string( $value ) && '' !== $value && 'blank' !== $value ) {
+				$colour = '#' === substr( $value, 0, 1 ) ? $value : '#' . $value;
+				break;
+			}
+		}
+	}
+
+	$colour = is_string( $colour ) ? trim( $colour ) : '';
+
+	// Only plain hex is usable in an email, so ignore CSS variables and such.
+	if ( '' !== $colour && ! preg_match( '/^#([0-9a-f]{3}|[0-9a-f]{6})$/i', $colour ) ) {
+		$colour = '';
+	}
+
+	/**
+	 * Filter the detected site colour.
+	 *
+	 * @since 7.4.5
+	 */
+	return (string) apply_filters( 'cwginstock_site_colour', $colour );
+}
+
+/**
+ * Colours for the coupon block, from the Auto Coupon settings.
+ *
+ * @since 7.4.5
+ * @return array {
+ *     @type string $accent Accent colour for the heading, border and button.
+ *     @type string $panel  Panel background.
+ *     @type string $button Button text colour, chosen for contrast.
+ * }
+ */
+function cwg_instock_get_coupon_box_colours() {
+	$options = get_option( 'cwginstocksettings', array() );
+	$mode    = isset( $options['coupon_box_color_mode'] ) ? $options['coupon_box_color_mode'] : 'email';
+	$fallback = '#7f54b3';
+
+	switch ( $mode ) {
+		case 'site':
+			$accent = cwg_instock_get_site_colour();
+			break;
+
+		case 'custom':
+			$accent = isset( $options['coupon_box_accent'] ) ? $options['coupon_box_accent'] : '';
+			break;
+
+		case 'email':
+		default:
+			$accent = get_option( 'woocommerce_email_base_color', $fallback );
+			break;
+	}
+
+	$accent = is_string( $accent ) ? trim( $accent ) : '';
+	if ( ! preg_match( '/^#([0-9a-f]{3}|[0-9a-f]{6})$/i', $accent ) ) {
+		// Chosen source gave nothing usable, so fall back to the email colour.
+		$accent = get_option( 'woocommerce_email_base_color', $fallback );
+		if ( ! preg_match( '/^#([0-9a-f]{3}|[0-9a-f]{6})$/i', (string) $accent ) ) {
+			$accent = $fallback;
+		}
+	}
+
+	$panel = isset( $options['coupon_box_panel'] ) ? trim( (string) $options['coupon_box_panel'] ) : '';
+	if ( ! preg_match( '/^#([0-9a-f]{3}|[0-9a-f]{6})$/i', $panel ) ) {
+		$panel = cwg_instock_tint_colour( $accent );
+	}
+
+	// Keep the button label readable whatever the accent is.
+	$button = function_exists( 'wc_hex_is_light' ) && wc_hex_is_light( $accent ) ? '#2b2b2b' : '#ffffff';
+
+	/**
+	 * Filter the coupon block colours.
+	 *
+	 * @since 7.4.5
+	 */
+	return apply_filters(
+		'cwginstock_coupon_box_colours',
+		array(
+			'accent' => $accent,
+			'panel'  => $panel,
+			'button' => $button,
+		)
+	);
+}
+/**
+ * Ready made coupon block for the back in stock email.
+ *
+ * Gives store owners a presentable coupon section from a single placeholder,
+ * so no HTML knowledge is needed to show a discount clearly. Built from tables
+ * with inline styles, which is what email clients reliably support, and it
+ * picks up the WooCommerce email base colour so it matches the rest of the
+ * email.
+ *
+ * @since 7.4.5
+ * @param string $code    Coupon code.
+ * @param string $amount  Formatted discount, for example 10% or $10.
+ * @param string $expiry  Formatted expiry date, empty when the coupon does not expire.
+ * @param string $link    Optional shop link for the button.
+ * @param bool   $preview True when rendering sample content for the email preview.
+ * @return string
+ */
+function cwg_instock_get_coupon_box_html( $code, $amount, $expiry = '', $link = '', $preview = false ) {
+	$code = trim( (string) $code );
+	if ( '' === $code ) {
+		return '';
+	}
+
+	$font   = "'Helvetica Neue',Helvetica,Roboto,Arial,sans-serif";
+	$colours = cwg_instock_get_coupon_box_colours();
+	$accent  = $colours['accent'];
+	$panel   = $colours['panel'];
+	$on_accent = $colours['button'];
+
+	/**
+	 * Wording used in the coupon block.
+	 *
+	 * @since 7.4.5
+	 */
+	$options = get_option( 'cwginstocksettings', array() );
+	$custom  = array(
+		'heading' => isset( $options['coupon_box_heading'] ) ? trim( (string) $options['coupon_box_heading'] ) : '',
+		'intro'   => isset( $options['coupon_box_intro'] ) ? trim( (string) $options['coupon_box_intro'] ) : '',
+		'expiry'  => isset( $options['coupon_box_expiry'] ) ? trim( (string) $options['coupon_box_expiry'] ) : '',
+		'button'  => isset( $options['coupon_box_button'] ) ? trim( (string) $options['coupon_box_button'] ) : '',
+	);
+
+	// Store wording can use the same placeholders as the rest of the email.
+	$tokens = array(
+		'{coupon_amount}' => $amount,
+		'{coupon_code}'   => $code,
+		'{coupon_expiry}' => $expiry,
+		'{shopname}'      => wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ),
+	);
+	foreach ( $custom as $key => $text ) {
+		if ( '' !== $text ) {
+			$custom[ $key ] = str_replace( array_keys( $tokens ), array_values( $tokens ), $text );
+		}
+	}
+
+	$strings = apply_filters(
+		'cwginstock_coupon_box_strings',
+		array(
+			/* translators: %s: discount amount, for example 10% or $10. */
+			'heading' => '' !== $custom['heading'] ? $custom['heading'] : ( '' !== $amount ? sprintf( __( 'Here is %s off your order', 'back-in-stock-notifier-for-woocommerce' ), $amount ) : __( 'Here is a discount for your order', 'back-in-stock-notifier-for-woocommerce' ) ),
+			'intro'   => '' !== $custom['intro'] ? $custom['intro'] : __( 'Use this code at checkout', 'back-in-stock-notifier-for-woocommerce' ),
+			/* translators: %s: expiry date. */
+			'expiry'  => '' === $expiry ? '' : ( '' !== $custom['expiry'] ? $custom['expiry'] : sprintf( __( 'Valid until %s', 'back-in-stock-notifier-for-woocommerce' ), $expiry ) ),
+			'button'  => '' !== $custom['button'] ? $custom['button'] : __( 'Shop now', 'back-in-stock-notifier-for-woocommerce' ),
+		),
+		$code,
+		$amount,
+		$expiry,
+		$preview
+	);
+
+	ob_start();
+	?>
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:16px 0;border-collapse:separate;">
+		<tr>
+			<td align="center" style="padding:24px 20px;background-color:<?php echo esc_attr( $panel ); ?>;border:2px dashed <?php echo esc_attr( $accent ); ?>;border-radius:6px;font-family:<?php echo esc_attr( $font ); ?>;">
+				<p style="margin:0 0 6px;font-family:<?php echo esc_attr( $font ); ?>;font-size:18px;line-height:24px;font-weight:bold;color:<?php echo esc_attr( $accent ); ?>;"><?php echo esc_html( $strings['heading'] ); ?></p>
+				<p style="margin:0 0 14px;font-family:<?php echo esc_attr( $font ); ?>;font-size:14px;line-height:20px;color:#636363;"><?php echo esc_html( $strings['intro'] ); ?></p>
+				<p style="margin:0;font-family:<?php echo esc_attr( $font ); ?>;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:3px;color:#2b2b2b;"><?php echo esc_html( $code ); ?></p>
+				<?php if ( '' !== $strings['expiry'] ) { ?>
+					<p style="margin:12px 0 0;font-family:<?php echo esc_attr( $font ); ?>;font-size:13px;line-height:18px;color:#8a8a8a;"><?php echo esc_html( $strings['expiry'] ); ?></p>
+				<?php } ?>
+				<?php if ( '' !== $link ) { ?>
+					<table border="0" cellpadding="0" cellspacing="0" style="margin:18px auto 0;">
+						<tr>
+							<td align="center" bgcolor="<?php echo esc_attr( $accent ); ?>" style="padding:0;border-radius:4px;"><a href="<?php echo esc_url( $link ); ?>" style="display:inline-block;padding:12px 28px;font-family:<?php echo esc_attr( $font ); ?>;font-size:15px;line-height:18px;font-weight:bold;color:<?php echo esc_attr( $on_accent ); ?>;text-decoration:none;"><?php echo esc_html( $strings['button'] ); ?></a></td>
+						</tr>
+					</table>
+				<?php } ?>
+			</td>
+		</tr>
+	</table>
+	<?php
+	$html = ob_get_clean();
+
+	// WooCommerce runs the email body through wpautop, which turns any line break
+	// between these tags into a <br> and breaks the layout.
+	$html = preg_replace( '/>\s+</', '><', trim( $html ) );
+
+	/**
+	 * Filter the coupon block used in the email.
+	 *
+	 * @since 7.4.5
+	 */
+	return apply_filters( 'cwginstock_coupon_box_html', $html, $code, $amount, $expiry, $link, $preview );
+}
+
+/**
+ * Language the visitor is browsing in.
+ *
+ * Reads from WPML or Polylang when either is active.
+ *
+ * @since 7.4.5
+ * @return string Language code, empty when the site is not multilingual.
+ */
+function cwg_instock_current_language() {
+	$language = '';
+
+	if ( defined( 'ICL_SITEPRESS_VERSION' ) || has_filter( 'wpml_current_language' ) ) {
+		$language = apply_filters( 'wpml_current_language', null );
+	}
+
+	if ( ! $language && function_exists( 'pll_current_language' ) ) {
+		$language = pll_current_language( 'slug' );
+	}
+
+	$language = is_string( $language ) ? $language : '';
+
+	/**
+	 * Filter the detected language.
+	 *
+	 * @since 7.4.5
+	 */
+	return (string) apply_filters( 'cwginstock_current_language', $language );
+}
+
+/**
+ * Put the request into the language the visitor was browsing in.
+ *
+ * Form markup and messages are produced during AJAX and REST requests, where a
+ * translation plugin usually cannot tell which language the visitor is on, so
+ * everything comes back in the site's default language. The language travels
+ * with the request and is applied here before any string is produced.
+ *
+ * @since 7.4.5
+ * @param string $language Language code, read from the request when empty.
+ * @return string The language applied, empty when none was usable.
+ */
+function cwg_instock_apply_request_language( $language = '' ) {
+	if ( '' === $language ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+		$candidates = array();
+		foreach ( array( 'cwg_lang', 'lang' ) as $field ) {
+			if ( isset( $_REQUEST[ $field ] ) && is_string( $_REQUEST[ $field ] ) ) {
+				$candidates[] = sanitize_text_field( wp_unslash( $_REQUEST[ $field ] ) );
+			}
+		}
+
+		// The subscribe form posts the whole localisation object back, which is
+		// where a translation add-on puts the language.
+		if ( isset( $_REQUEST['dataobj'] ) && is_array( $_REQUEST['dataobj'] ) ) {
+			foreach ( array( 'current_lang', 'wpml_current_lang', 'polylang_current_lang' ) as $key ) {
+				if ( isset( $_REQUEST['dataobj'][ $key ] ) && is_string( $_REQUEST['dataobj'][ $key ] ) ) {
+					$candidates[] = sanitize_text_field( wp_unslash( $_REQUEST['dataobj'][ $key ] ) );
+				}
+			}
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+
+		foreach ( $candidates as $candidate ) {
+			if ( preg_match( '/^[a-z]{2,3}(-[a-zA-Z0-9]{2,8})?$/', $candidate ) ) {
+				$language = $candidate;
+				break;
+			}
+		}
+	}
+
+	if ( '' === $language ) {
+		return '';
+	}
+
+	// Already in that language, nothing to do.
+	if ( cwg_instock_current_language() === $language ) {
+		return $language;
+	}
+
+	$switched = false;
+
+	if ( has_action( 'wpml_switch_language' ) || defined( 'ICL_SITEPRESS_VERSION' ) ) {
+		// This also reloads the text domains, which switching the global alone
+		// would not do.
+		do_action( 'wpml_switch_language', $language );
+		$switched = true;
+	}
+
+	if ( function_exists( 'PLL' ) && function_exists( 'pll_current_language' ) ) {
+		$polylang = PLL();
+		if ( isset( $polylang->model ) && is_object( $polylang->model ) ) {
+			$object = $polylang->model->get_language( $language );
+			if ( $object ) {
+				$polylang->curlang = $object;
+				if ( ! empty( $object->locale ) ) {
+					switch_to_locale( $object->locale );
+				}
+				$switched = true;
+			}
+		}
+	}
+
+	/**
+	 * Fires when the request has been put into the visitor's language, for
+	 * translation add-ons to follow.
+	 *
+	 * @since 7.4.5
+	 */
+	do_action( 'cwginstock_switch_language', $language, $switched );
+
+	return $language;
+}

@@ -9,6 +9,10 @@ var turnstile_site_key = cwginstock.turnstile_site_key;
 
 var gtoken = '';
 
+// Language the visitor is browsing in, so the form built over AJAX comes back
+// in that language instead of the site default.
+var cwg_popup_language = cwginstock.current_lang || cwginstock.wpml_current_lang || cwginstock.polylang_current_lang || '';
+
 if (typeof wc_bulk_variations_params !== 'undefined') {
 	document.addEventListener(
 		'click',
@@ -28,7 +32,8 @@ if (typeof wc_bulk_variations_params !== 'undefined') {
 					product_id: product_id,
 					variation_id: variation_id,
 					quantity: quantity,
-					security: security
+					security: security,
+					cwg_lang: cwg_popup_language
 				};
 				if (get_bot_type == 'recaptcha' && recaptcha_enabled == '1' && is_v3_recaptcha == 'yes') {
 					popup_notifier.popup_generate_v3_response(this);
@@ -61,7 +66,8 @@ var popup_notifier = {
 					product_id: product_id,
 					variation_id: variation_id,
 					quantity: quantity,
-					security: security
+					security: security,
+					cwg_lang: cwg_popup_language
 				};
 				if (get_bot_type == 'recaptcha' && recaptcha_enabled == '1' && is_v3_recaptcha == 'yes') {
 					popup_notifier.popup_generate_v3_response(this);

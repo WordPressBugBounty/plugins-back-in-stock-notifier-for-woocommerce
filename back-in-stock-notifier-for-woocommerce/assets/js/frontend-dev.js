@@ -246,6 +246,7 @@ var instock_notifier = {
 				user_id: cwginstock_userid,
 				security: security,
 				dataobj: cwginstock,
+				cwg_lang: cwginstock.current_lang || cwginstock.wpml_current_lang || cwginstock.polylang_current_lang || '',
 				custom_quantity: quantity
 			};
 

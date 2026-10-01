@@ -58,7 +58,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 			$this->id             = 'cwg_bis_instock';
 			$this->customer_email = true;
 			$this->title          = __( 'Back In Stock - Product Available', 'back-in-stock-notifier-for-woocommerce' );
-			$this->description    = __( 'Sent to subscribers when a product they subscribed to is back in stock. <strong>Available placeholders:</strong> <code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>, <code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>. <strong>{product_table}</strong> renders an order style table for the subscribed product. The coupon placeholders require Auto Coupon to be enabled under Instock Notifier &gt; Settings &gt; Auto Coupon, and a coupon is only created when one of them is used here.', 'back-in-stock-notifier-for-woocommerce' );
+			$this->description    = __( 'Sent to subscribers when a product they subscribed to is back in stock. <strong>Available placeholders:</strong> <code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>, <code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>, <code>{coupon_box}</code>. <strong>{coupon_box}</strong> renders a complete, ready styled coupon section with the code, the discount, the expiry date and a shop button, so no HTML is needed to present the coupon well. <strong>{product_table}</strong> renders an order style table for the subscribed product. The coupon placeholders require Auto Coupon to be enabled under Instock Notifier &gt; Settings &gt; Auto Coupon, and a coupon is only created when one of them is used here.', 'back-in-stock-notifier-for-woocommerce' );
 			$this->template_html  = 'emails/bis-instock.php';
 			$this->template_plain = 'emails/plain/bis-instock.php';
 
@@ -80,6 +80,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 				'{subscriber_phone}'     => '',
 				'{shopname}'             => $this->get_blogname(),
 				'{product_table}'        => '',
+				'{coupon_box}'           => '',
 			);
 
 			$this->heading = __( 'Your subscribed item {product_name} is now available', 'back-in-stock-notifier-for-woocommerce' );
@@ -357,6 +358,9 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 			$sample['{coupon_code}']   = 'SAMPLE-COUPON';
 			$sample['{coupon_amount}'] = class_exists( 'CWG_Instock_Auto_Coupon' ) ? CWG_Instock_Auto_Coupon::format_amount() : '10%';
 			$sample['{coupon_expiry}'] = wp_date( get_option( 'date_format' ), time() + WEEK_IN_SECONDS );
+			if ( function_exists( 'cwg_instock_get_coupon_box_html' ) ) {
+				$sample['{coupon_box}'] = cwg_instock_get_coupon_box_html( $sample['{coupon_code}'], $sample['{coupon_amount}'], $sample['{coupon_expiry}'], home_url( '/' ), true );
+			}
 
 			return array_merge( $placeholders, $sample );
 		}
@@ -460,7 +464,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 			$placeholder_text = sprintf(
 				/* translators: %s: comma separated list of shortcodes. */
 				__( 'Available shortcodes: %s', 'back-in-stock-notifier-for-woocommerce' ),
-				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>, <code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>'
+				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>, <code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>, <code>{coupon_box}</code>'
 			);
 
 			$this->form_fields = array(

@@ -340,7 +340,7 @@ if ( ! class_exists( 'CWG_Instock_Auto_Coupon' ) ) {
 		 * @return array
 		 */
 		public static function get_placeholder_tokens() {
-			return array( '{coupon_code}', '{coupon_amount}', '{coupon_expiry}' );
+			return array( '{coupon_code}', '{coupon_amount}', '{coupon_expiry}', '{coupon_box}' );
 		}
 
 		/**
@@ -390,6 +390,22 @@ if ( ! class_exists( 'CWG_Instock_Auto_Coupon' ) ) {
 			$expires = (int) get_post_meta( $subscriber_id, self::EXPIRY_META, true );
 			if ( $expires ) {
 				$placeholders['{coupon_expiry}'] = wp_date( get_option( 'date_format' ), $expires );
+			}
+
+			// Ready made block for stores that would rather not build their own
+			// coupon markup.
+			if ( function_exists( 'cwg_instock_get_coupon_box_html' ) ) {
+				$link = '';
+				if ( class_exists( 'CWG_Instock_API' ) ) {
+					$api  = new CWG_Instock_API();
+					$link = (string) $api->display_product_link( $subscriber_id );
+				}
+				$placeholders['{coupon_box}'] = cwg_instock_get_coupon_box_html(
+					$code,
+					$placeholders['{coupon_amount}'],
+					$placeholders['{coupon_expiry}'],
+					$link
+				);
 			}
 
 			return $placeholders;

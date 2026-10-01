@@ -146,6 +146,13 @@ if (! class_exists('CWG_Instock_Settings')) {
 			add_settings_field('cwg_instock_coupon_individual_use', __('Cannot Be Combined with Other Coupons', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_individual_use_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
 			add_settings_field('cwg_instock_coupon_restrict_email', __('Restrict Coupon to Subscriber Email', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_restrict_email_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
 			add_settings_field('cwg_instock_coupon_free_shipping', __('Allow Free Shipping', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_free_shipping_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_box_heading', __('Coupon Block Heading', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_box_heading_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_box_intro', __('Coupon Block Subtext', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_box_intro_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_box_expiry', __('Coupon Block Expiry Line', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_box_expiry_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_box_button', __('Coupon Block Button Label', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_box_button_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_box_color_mode', __('Coupon Block Colour', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_box_color_mode_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_box_accent', __('Custom Accent Colour', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_box_accent_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
+			add_settings_field('cwg_instock_coupon_box_panel', __('Coupon Block Background', 'back-in-stock-notifier-for-woocommerce'), array($this, 'coupon_box_panel_field'), 'cwginstocknotifier_settings', 'cwginstock_section_coupon');
 
 			add_settings_section('cwginstock_section_bgprocess', __('Background Process Engine - Advanced Settings', 'back-in-stock-notifier-for-woocommerce'), array($this, 'background_process_heading'), 'cwginstocknotifier_settings');
 			add_settings_field('cwginstock_bgp_selection', __('Background Process Engine', 'back-in-stock-notifier-for-woocommerce'), array($this, 'bgp_engine'), 'cwginstocknotifier_settings', 'cwginstock_section_bgprocess');
@@ -854,7 +861,7 @@ if (! class_exists('CWG_Instock_Settings')) {
 		}
 
 		public function auto_coupon_heading() {
-			$placeholders = '<code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>';
+			$placeholders = '<code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>, <code>{coupon_box}</code>';
 			echo wp_kses_post(
 				sprintf(
 					/* translators: %s: list of coupon placeholders */
@@ -891,6 +898,103 @@ if (! class_exists('CWG_Instock_Settings')) {
 				<?php endforeach; ?>
 			</select>
 			<i><p><?php esc_html_e('Same discount types as WooCommerce coupons.', 'back-in-stock-notifier-for-woocommerce'); ?></p></i>
+			<?php
+		}
+
+		public function coupon_box_heading_field() {
+			$options = get_option('cwginstocksettings');
+			$value   = isset($options['coupon_box_heading']) ? $options['coupon_box_heading'] : '';
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[coupon_box_heading]'
+				value="<?php echo esc_attr($value); ?>" placeholder="<?php esc_attr_e('Here is {coupon_amount} off your order', 'back-in-stock-notifier-for-woocommerce'); ?>" />
+			<p class="description">
+				<?php
+				printf(
+					/* translators: %s: list of placeholders. */
+					esc_html__('Leave empty for the default wording. You can use %s.', 'back-in-stock-notifier-for-woocommerce'),
+					'<code>{coupon_amount}</code>, <code>{coupon_code}</code>, <code>{coupon_expiry}</code>, <code>{shopname}</code>'
+				);
+				?>
+			</p>
+			<?php
+		}
+
+		public function coupon_box_intro_field() {
+			$options = get_option('cwginstocksettings');
+			$value   = isset($options['coupon_box_intro']) ? $options['coupon_box_intro'] : '';
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[coupon_box_intro]'
+				value="<?php echo esc_attr($value); ?>" placeholder="<?php esc_attr_e('Use this code at checkout', 'back-in-stock-notifier-for-woocommerce'); ?>" />
+			<?php
+		}
+
+		public function coupon_box_expiry_field() {
+			$options = get_option('cwginstocksettings');
+			$value   = isset($options['coupon_box_expiry']) ? $options['coupon_box_expiry'] : '';
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[coupon_box_expiry]'
+				value="<?php echo esc_attr($value); ?>" placeholder="<?php esc_attr_e('Valid until {coupon_expiry}', 'back-in-stock-notifier-for-woocommerce'); ?>" />
+			<p class="description"><?php esc_html_e('Shown only when the coupon has an expiry date.', 'back-in-stock-notifier-for-woocommerce'); ?></p>
+			<?php
+		}
+
+		public function coupon_box_button_field() {
+			$options = get_option('cwginstocksettings');
+			$value   = isset($options['coupon_box_button']) ? $options['coupon_box_button'] : '';
+			?>
+			<input type='text' style='width: 400px;' name='cwginstocksettings[coupon_box_button]'
+				value="<?php echo esc_attr($value); ?>" placeholder="<?php esc_attr_e('Shop now', 'back-in-stock-notifier-for-woocommerce'); ?>" />
+			<p class="description"><?php esc_html_e('Leave empty for the default label. The button links to the product that came back in stock.', 'back-in-stock-notifier-for-woocommerce'); ?></p>
+			<?php
+		}
+
+		public function coupon_box_color_mode_field() {
+			$options  = get_option('cwginstocksettings');
+			$mode     = isset($options['coupon_box_color_mode']) ? $options['coupon_box_color_mode'] : 'email';
+			$email    = get_option('woocommerce_email_base_color', '#7f54b3');
+			$site     = function_exists('cwg_instock_get_site_colour') ? cwg_instock_get_site_colour() : '';
+			?>
+			<select class='cwg_coupon_box_color_mode' name='cwginstocksettings[coupon_box_color_mode]'>
+				<option value="email" <?php selected($mode, 'email'); ?>>
+					<?php
+					/* translators: %s: hex colour. */
+					printf(esc_html__('Match my WooCommerce email colour (%s)', 'back-in-stock-notifier-for-woocommerce'), esc_html($email));
+					?>
+				</option>
+				<option value="site" <?php selected($mode, 'site'); ?> <?php disabled('' === $site); ?>>
+					<?php
+					if ('' === $site) {
+						esc_html_e('Match my website colour (none detected in this theme)', 'back-in-stock-notifier-for-woocommerce');
+					} else {
+						/* translators: %s: hex colour. */
+						printf(esc_html__('Match my website colour (%s)', 'back-in-stock-notifier-for-woocommerce'), esc_html($site));
+					}
+					?>
+				</option>
+				<option value="custom" <?php selected($mode, 'custom'); ?>><?php esc_html_e('Use the custom colour below', 'back-in-stock-notifier-for-woocommerce'); ?></option>
+			</select>
+			<p class="description">
+				<?php esc_html_e('Colour of the {coupon_box} heading, border and button in the back in stock email. Use the Preview button on the email to see it.', 'back-in-stock-notifier-for-woocommerce'); ?>
+			</p>
+			<?php
+		}
+
+		public function coupon_box_accent_field() {
+			$options = get_option('cwginstocksettings');
+			$value   = isset($options['coupon_box_accent']) ? $options['coupon_box_accent'] : '';
+			?>
+			<input type='text' class='cwg-colour-field' data-default-color='#7f54b3'
+				name='cwginstocksettings[coupon_box_accent]' value="<?php echo esc_attr($value); ?>" placeholder="#7f54b3" />
+			<p class="description"><?php esc_html_e('Used when the setting above is set to the custom colour.', 'back-in-stock-notifier-for-woocommerce'); ?></p>
+			<?php
+		}
+
+		public function coupon_box_panel_field() {
+			$options = get_option('cwginstocksettings');
+			$value   = isset($options['coupon_box_panel']) ? $options['coupon_box_panel'] : '';
+			?>
+			<input type='text' class='cwg-colour-field' name='cwginstocksettings[coupon_box_panel]' value="<?php echo esc_attr($value); ?>" />
+			<p class="description"><?php esc_html_e('Leave empty for a soft shade of the colour above, which suits most emails.', 'back-in-stock-notifier-for-woocommerce'); ?></p>
 			<?php
 		}
 

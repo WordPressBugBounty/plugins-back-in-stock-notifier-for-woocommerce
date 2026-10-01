@@ -5,7 +5,7 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.io/shop/plugins/free-plugins/back-in-stock-notifier-for-woocommerce/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.4.4
+ * Version: 7.4.5
  * Author: ProPluginsLab by CodeWooGeek
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.io
@@ -55,7 +55,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.4.4';
+		public $version = '7.4.5';
 
 		/**
 		 * Instance variable
@@ -287,6 +287,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 					'cwginstock_localization_array',
 					array(
 						'ajax_url'                   => $form_submission_mode ? rest_url() . 'back-in-stock/v1/subscriber/create/' : admin_url( 'admin-ajax.php' ),
+						'current_lang'               => function_exists( 'cwg_instock_current_language' ) ? cwg_instock_current_language() : '',
 						'default_ajax_url'           => admin_url( 'admin-ajax.php' ),
 						'popup_design'               => function_exists( 'cwg_instock_get_popup_design' ) ? cwg_instock_get_popup_design() : 'sweetalert',
 						'popup_close_label'          => __( 'Close', 'back-in-stock-notifier-for-woocommerce' ),
@@ -358,6 +359,11 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 					)
 				);
 				wp_enqueue_script( 'cwginstock_admin_js' );
+
+				// Colour fields in the Auto Coupon settings.
+				wp_enqueue_style( 'wp-color-picker' );
+				wp_enqueue_script( 'wp-color-picker' );
+				wp_add_inline_script( 'wp-color-picker', "jQuery(function(\$){ \$('.cwg-colour-field').wpColorPicker(); });" );
 			}
 		}
 

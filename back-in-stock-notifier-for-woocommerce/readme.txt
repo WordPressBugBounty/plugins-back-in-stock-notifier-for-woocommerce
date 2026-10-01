@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 4.7
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 7.4.4
+Stable tag: 7.4.5
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -15,7 +15,7 @@ Show a waitlist form on out-of-stock products and automatically email subscriber
 
 Every out-of-stock product is a lost sale waiting to happen. <strong>Back In Stock Notifier for WooCommerce</strong> captures those visitors instead of losing them. It shows an email subscription form on out-of-stock products, then automatically emails every subscriber the moment the product is restocked.
 
-[<strong>Documentation & Support</strong>](https://propluginslab.io/contact-us/) | [<strong>Browse Add-ons</strong>](https://propluginslab.io/product-category/back-in-stock-notifier/)
+[<strong>Try the Live Demo</strong>](https://demo.propluginslab.io/back-in-stock-notifier-for-woocommerce) | [<strong>Documentation</strong>](https://docs.propluginslab.io/back-in-stock-notifier-for-woocommerce) | [<strong>Support</strong>](https://propluginslab.io/contact-us/) | [<strong>Browse Add-ons</strong>](https://propluginslab.io/product-category/back-in-stock-notifier/)
 
 = Why store owners choose this plugin =
 
@@ -239,7 +239,7 @@ We created documentation for the REST API, which you can check here [https://doc
 
 = How to contact your support? =
 
-You can contact us via the support Forum of WordPress or by creating a support ticket from our site [https://propluginslab.io/contact-us/](https://propluginslab.io/contact-us/)
+Start with the documentation at [https://docs.propluginslab.io/back-in-stock-notifier-for-woocommerce](https://docs.propluginslab.io/back-in-stock-notifier-for-woocommerce), which covers setup, the email placeholders and the most common questions. If you still need help, you can contact us via the support Forum of WordPress or by creating a support ticket from our site [https://propluginslab.io/contact-us/](https://propluginslab.io/contact-us/)
 
 
 == Screenshots ==
@@ -263,6 +263,12 @@ You can contact us via the support Forum of WordPress or by creating a support t
 
 
 == Changelog ==
+= 7.4.5 2026-10-01 =
+* New: {coupon_box} placeholder for the back in stock email. One tag renders a complete coupon section with the discount, the code, the expiry date and a shop button, so no HTML is needed. It appears in the WooCommerce email preview with sample content.
+* New: Coupon block colours, under Instock Notifier > Settings > Auto Coupon. Follow your WooCommerce email colour, follow your website colour when the theme provides one, or set your own. The background and the button text colour follow automatically so the block stays readable.
+* New: Coupon block wording, under the same settings. The heading, subtext, expiry line and button label can each be changed and accept the {coupon_amount}, {coupon_code}, {coupon_expiry} and {shopname} placeholders. Empty fields keep the default wording.
+* Fix: On multilingual sites the popup subscribe form and the validation and success messages appeared in the site default language instead of the visitor's language. These load over AJAX, where a translation plugin cannot tell which language the visitor is on, so the language now travels with the request and is applied before any text is produced. Tested with WPML and Polylang. If you translate the plugin settings with our WPML or Polylang add-on, update that add-on as well.
+
 = 7.4.4 2026-09-22 =
 * Fix: Subscribers could receive the same back in stock notification repeatedly. The third-party stock check notified everyone waiting for a product that was in stock, on every run, instead of only when a product came back into stock. On sites using "Keep Subscription Entry to Subscribed Status even Instock Email Sent", or auto-retry with its final status set to Subscribed, entries returned to the waiting state after each send and were notified again on the next run.
 * Fix: The third-party stock check now acts only on a genuine change from out of stock to in stock. The first run after enabling it records the current stock status of each product and sends nothing, so enabling the option never notifies subscribers for stock that was already there.
