@@ -10,7 +10,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'add_settings_menu' ) );
-			add_action( 'admin_head', array( $this, 'hide_notice' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'hide_notice' ) );
 			add_action( 'wp_ajax_cwginstock_test_email', array( $this, 'schedule_test_email_callback' ) );
 			add_action( 'cwginstock_send_test_email', array( $this, 'send_scheduled_test_email' ) );
 			add_action( 'wp_ajax_cwginstock_backend_ui', array( $this, 'change_backend_ui' ) );
@@ -362,13 +362,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 				}
 			}
 			if ( $is_active ) {
-				?>
-				<style type='text/css'>
-					.cwg_marketing_notice {
-						display: none;
-					}
-				</style>
-				<?php
+				cwg_instock_add_inline_css( 'cwginstock-admin-notice', '.cwg_marketing_notice { display: none; }' );
 			}
 		}
 		public function send_scheduled_test_email() {
@@ -390,7 +384,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 			}
 		}
 		public function schedule_test_email_callback() {
-			if ( isset( $_POST['security'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['security'] ) ), 'cwginstock_test_email' ) ) {
+			if ( current_user_can( 'manage_woocommerce' ) && isset( $_POST['security'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['security'] ) ), 'cwginstock_test_email' ) ) {
 				$timestamp = time() + 10;
 				as_schedule_single_action( $timestamp, 'cwginstock_send_test_email', array(), 'back-in-stock-notifier-for-woocommerce' );
 				wp_send_json( array(
@@ -411,7 +405,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 		public function change_backend_ui() {
 			if ( isset( $_POST ) ) {
 				// nonce validation
-				if ( isset( $_POST['security'], $_POST['cwginstock_view'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['security'] ) ), 'cwginstock_backend_ui' ) ) {
+				if ( current_user_can( 'manage_woocommerce' ) && isset( $_POST['security'], $_POST['cwginstock_view'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['security'] ) ), 'cwginstock_backend_ui' ) ) {
 					update_option( 'cwginstock_backend_ui', sanitize_text_field( wp_unslash( $_POST['cwginstock_view'] ) ) );
 					$status_info = array(
 						'status' => 'success',
@@ -439,6 +433,7 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 			global $wpdb;
 
 			// Get all post IDs of type 'cwginstocknotifier'
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$post_ids = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s",
@@ -460,11 +455,11 @@ if ( ! class_exists( 'CWG_Instock_Status' ) ) {
 				$wpdb->posts => 'ID',
 			);
 
+			// Table and column names come from the fixed list above, never from input,
+			// and every id is bound through prepare().
 			foreach ( $tables_and_columns as $table => $column ) {
-				$sql  = "DELETE FROM {$table} WHERE {$column} IN ($placeholders)";
-				$args = array_merge( array( $sql ), $post_ids );
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-				$wpdb->query( call_user_func_array( array( $wpdb, 'prepare' ), $args ) );
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				$wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE {$column} IN ($placeholders)", $post_ids ) );
 			}
 
 			wp_send_json_success( array( 'message' => esc_html__( 'All subscription posts and related data deleted successfully.', 'back-in-stock-notifier-for-woocommerce' ) ) );

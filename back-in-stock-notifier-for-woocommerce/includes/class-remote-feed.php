@@ -28,6 +28,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Public function, class, hook and template variable names below are part of the
+// plugin's published API (themes and add-ons use them), so they keep their names.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+
 if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 
 	class CWG_Instock_Remote_Feed {
@@ -40,6 +44,12 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 		const SCHEDULE_FLAG_OPTION = 'cwg_bis_feed_scheduled';
 		const AJAX_ACTION          = 'cwg_bis_refresh_feed';
 		const NONCE_ACTION         = 'cwg_bis_feed_nonce';
+
+		/**
+		 * Key inside the cwginstocksettings option that turns on the daily
+		 * catalogue refresh. Off unless the administrator ticks it.
+		 */
+		const DAILY_SYNC_SETTING = 'remote_feed_daily_sync';
 
 		/** Recurrence interval: 1 day in seconds */
 		const INTERVAL_SECONDS = DAY_IN_SECONDS;
@@ -68,6 +78,7 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 
 			// Register settings
 			add_action( 'admin_init', array( $this, 'register_settings' ) );
+			add_action( 'cwginstock_register_settings', array( $this, 'add_settings_field' ), 1001 );
 
 			// Reschedule when feed URL changes
 			add_action( 'update_option_' . self::FEED_URL_OPTION, array( $this, 'on_feed_url_change' ), 10, 2 );
@@ -89,6 +100,50 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 		}
 
 		/**
+		 * Has the administrator turned on the daily catalogue refresh?
+		 *
+		 * The catalogue on the Plugins & Add-ons page comes from propluginslab.io.
+		 * It is fetched when an administrator presses Refresh on that page, and
+		 * once a day only when this setting is on.
+		 *
+		 * @since 7.5.0
+		 * @return bool
+		 */
+		public static function is_daily_sync_enabled() {
+			$options = get_option( 'cwginstocksettings' );
+			return is_array( $options ) && isset( $options[ self::DAILY_SYNC_SETTING ] ) && '1' === (string) $options[ self::DAILY_SYNC_SETTING ];
+		}
+
+		/**
+		 * Register the opt in checkbox in the Troubleshoot Settings section.
+		 *
+		 * @since 7.5.0
+		 */
+		public function add_settings_field() {
+			add_settings_field(
+				'cwg_instock_remote_feed_daily_sync',
+				__( 'Refresh the Plugins & Add-ons catalogue daily', 'back-in-stock-notifier-for-woocommerce' ),
+				array( $this, 'render_settings_field' ),
+				'cwginstocknotifier_settings',
+				'cwginstock_section_troubleshoot'
+			);
+		}
+
+		/**
+		 * Settings checkbox.
+		 *
+		 * @since 7.5.0
+		 */
+		public function render_settings_field() {
+			?>
+			<input type="checkbox" name="cwginstocksettings[<?php echo esc_attr( self::DAILY_SYNC_SETTING ); ?>]" value="1" <?php checked( self::is_daily_sync_enabled() ); ?> />
+			<p><i>
+					<?php esc_html_e( 'Off by default. When on, the list of plugins and add-ons shown on the Plugins & Add-ons page is downloaded from propluginslab.io once a day. No data about your store or customers is sent. When off, the list is only downloaded when you press Refresh on that page.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+				</i></p>
+			<?php
+		}
+
+		/**
 		 * Schedule the recurring action if not already scheduled.
 		 *
 		 * Uses an option flag so we don't call as_next_scheduled_action()
@@ -102,8 +157,13 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 			}
 
 			$feed_url = self::get_feed_url();
-			if ( empty( $feed_url ) ) {
-				$this->unschedule_action();
+			if ( empty( $feed_url ) || ! self::is_daily_sync_enabled() ) {
+				// Remove a queued daily action: one left by an earlier version
+				// (checked once), or one from before the setting was turned off.
+				if ( get_option( self::SCHEDULE_FLAG_OPTION, false ) || ! get_option( 'cwg_bis_feed_optin_checked', false ) ) {
+					$this->unschedule_action();
+					update_option( 'cwg_bis_feed_optin_checked', 1, false );
+				}
 				return;
 			}
 
@@ -145,7 +205,7 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 			// Clear existing schedule
 			$this->unschedule_action();
 
-			if ( ! empty( $new_value ) ) {
+			if ( ! empty( $new_value ) && self::is_daily_sync_enabled() ) {
 				// Re-schedule (flag was cleared above, so maybe_schedule_action will pick it up)
 				if ( function_exists( 'as_schedule_recurring_action' ) ) {
 					as_schedule_recurring_action(
@@ -260,6 +320,11 @@ if ( ! class_exists( 'CWG_Instock_Remote_Feed' ) ) {
 		public function fetch_remote_feed( $force = false ) {
 			$feed_url = self::get_feed_url();
 			if ( empty( $feed_url ) ) {
+				return false;
+			}
+
+			// Automatic runs need the opt in. A manual refresh passes $force.
+			if ( ! $force && ! self::is_daily_sync_enabled() ) {
 				return false;
 			}
 

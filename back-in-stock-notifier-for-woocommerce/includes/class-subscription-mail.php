@@ -9,6 +9,14 @@
  * @package BackInStockNotifier
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Public function, class, hook and template variable names below are part of the
+// plugin's published API (themes and add-ons use them), so they keep their names.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+
 class CWG_Instock_Subscription extends CWG_Instock_Mailer {
 
 	protected $slug;

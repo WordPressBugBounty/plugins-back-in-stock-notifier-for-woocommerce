@@ -470,8 +470,8 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 		 * Lists ALL available shortcodes for Subject and Heading.
 		 */
 		public function init_form_fields() {
-			/* translators: %s: list of shortcodes */
 			$placeholder_text = sprintf(
+				/* translators: %s: list of shortcodes */
 				__( 'Available shortcodes: %s', 'back-in-stock-notifier-for-woocommerce' ),
 				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>'
 			);

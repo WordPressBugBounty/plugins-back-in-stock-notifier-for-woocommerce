@@ -194,7 +194,7 @@
 					$btn.prop('disabled', false)
 						.html('<span class="dashicons dashicons-warning"></span> ' + cwgPromotions.i18n.install_fail);
 					if (msg) {
-						window.console && window.console.log(msg);
+						window.console && window.console.warn(msg);
 					}
 				}
 			});

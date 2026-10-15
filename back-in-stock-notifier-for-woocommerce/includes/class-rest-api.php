@@ -48,7 +48,7 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 				array(
 					'methods' => 'GET',
 					'callback' => array( $this, 'delete_subscriber' ),
-					'permission_callback' => array( $this, 'check_permission' ),
+					'permission_callback' => array( $this, 'check_delete_permission' ),
 				)
 			);
 			register_rest_route(
@@ -99,11 +99,10 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 				}
 			}
 
-			$product_id   = $body_decode_json['product_id'];
+			$product_id   = isset( $body_decode_json['product_id'] ) ? absint( $body_decode_json['product_id'] ) : 0;
 			$variation_id = isset( $body_decode_json['variation_id'] ) && $body_decode_json['variation_id'] > 0 ? (int) $body_decode_json['variation_id'] : 0;
-			$email_id     = $body_decode_json['email'];
-			$name         = $body_decode_json['name'];
-			$status       = $body_decode_json['status'];
+			$email_id     = isset( $body_decode_json['email'] ) ? sanitize_email( $body_decode_json['email'] ) : '';
+			$status       = isset( $body_decode_json['status'] ) ? sanitize_key( $body_decode_json['status'] ) : '';
 
 			$is_valid_email = is_email( $email_id ) ? true : false;
 			if ( ! $is_valid_email ) {
@@ -164,9 +163,27 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 			return rest_ensure_response( $data );
 		}
 
+		/**
+		 * Creating or updating a subscriber. Subscriber records hold customer
+		 * email addresses, so only store managers may change them.
+		 *
+		 * @return true|WP_Error
+		 */
 		public function check_create_permission() {
-			if ( ! wc_rest_check_post_permissions( $this->post_type, 'create' ) ) {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
 				return new WP_Error( 'woocommerce_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => rest_authorization_required_code() ) );
+			}
+			return true;
+		}
+
+		/**
+		 * Deleting a subscriber. Before 7.5.0 this route only needed read access.
+		 *
+		 * @return true|WP_Error
+		 */
+		public function check_delete_permission() {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
+				return new WP_Error( 'woocommerce_rest_cannot_delete', __( 'Sorry, you are not allowed to delete resources.', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => rest_authorization_required_code() ) );
 			}
 			return true;
 		}
@@ -208,8 +225,14 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 			return rest_ensure_response( $data );
 		}
 
+		/**
+		 * Reading or listing subscribers, which exposes customer email
+		 * addresses: store managers only.
+		 *
+		 * @return true|WP_Error
+		 */
 		public function check_permission() {
-			if ( ! wc_rest_check_post_permissions( $this->post_type, 'read' ) ) {
+			if ( ! current_user_can( 'manage_woocommerce' ) ) {
 				return new WP_Error( 'woocommerce_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => rest_authorization_required_code() ) );
 			}
 			return true;
@@ -246,11 +269,10 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 				}
 			}
 
-			$product_id     = $body_decode_json['product_id'];
+			$product_id     = isset( $body_decode_json['product_id'] ) ? absint( $body_decode_json['product_id'] ) : 0;
 			$variation_id   = isset( $body_decode_json['variation_id'] ) && $body_decode_json['variation_id'] > 0 ? (int) $body_decode_json['variation_id'] : 0;
-			$email_id       = $body_decode_json['email'];
-			$name           = $body_decode_json['name'];
-			$status         = $body_decode_json['status'];
+			$email_id       = isset( $body_decode_json['email'] ) ? sanitize_email( $body_decode_json['email'] ) : '';
+			$status         = isset( $body_decode_json['status'] ) ? sanitize_key( $body_decode_json['status'] ) : '';
 			$is_valid_email = is_email( $email_id ) ? true : false;
 			if ( ! $is_valid_email ) {
 				return new WP_Error( 'woocommerce_rest_cannot_view', __( 'Sorry invalid email in your given request', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => '403' ) );
@@ -260,7 +282,10 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 			if ( $product_obj ) {
 				// insert subscriber
 				$obj = new CWG_Instock_API( $product_id, $variation_id, $email_id );
-				$id  = $body_decode_json['ID'];
+				$id  = isset( $body_decode_json['ID'] ) ? absint( $body_decode_json['ID'] ) : 0;
+				if ( ! $id || 'cwginstocknotifier' !== get_post_type( $id ) ) {
+					return new WP_Error( 'woocommerce_rest_cannot_view', __( 'Requested ID is not a Subscriber ID', 'back-in-stock-notifier-for-woocommerce' ), array( 'status' => '404' ) );
+				}
 				$id  = $obj->update_subscriber( $id, $status );
 				if ( $id ) {
 					// perform the insertion of data for a subscriber into the database
@@ -319,8 +344,8 @@ if ( ! class_exists( 'CWG_REST_API_Instock_Notifier' ) ) {
 												 */
 			$body             = $request->get_body();
 			$body_decode_json = json_decode( $body, true );
-			$status           = isset( $body_decode_json['status'] ) ? $body_decode_json['status'] : 'any';
-			$product_id       = isset( $body_decode_json['p_ids'] ) ? $body_decode_json['p_ids'] : array();
+			$status           = isset( $body_decode_json['status'] ) ? map_deep( $body_decode_json['status'], 'sanitize_key' ) : 'any';
+			$product_id       = isset( $body_decode_json['p_ids'] ) ? array_map( 'absint', (array) $body_decode_json['p_ids'] ) : array();
 			$args             = array(
 				'numberposts' => -1,
 				'post_type' => 'cwginstocknotifier',

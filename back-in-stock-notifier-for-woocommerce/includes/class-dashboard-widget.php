@@ -19,6 +19,45 @@ if ( ! class_exists( 'CWG_Back_In_Stock_Dashboard_Widget' ) ) {
 				return;
 			}
 
+			// wp_dashboard_setup runs before the admin head is printed, so the
+			// widget styles go through the style queue.
+			cwg_instock_add_inline_css(
+				'cwginstock-dashboard-widget',
+				'
+		.cwg-dashboard-widget {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 12px;
+		}
+		.cwg-stat-box {
+			background: #f8f9fa;
+			border-left: 4px solid #2271b1;
+			padding: 12px 16px;
+			border-radius: 4px;
+			font-size: 13px;
+			line-height: 1.6;
+		}
+		.cwg-stat-box strong {
+			display: block;
+			font-size: 18px;
+			margin-top: 4px;
+		}
+		.cwg-stat-icon {
+			font-size: 18px;
+			margin-right: 6px;
+		}
+		.cwg-stat-top {
+			grid-column: span 2;
+			background: #fff4e5;
+			border-left-color: #ff9900;
+		}
+		.cwg-filter {
+			margin-bottom: 10px;
+		}
+	
+				'
+			);
+
 			wp_add_dashboard_widget(
 				'cwg_back_in_stock_widget',
 				__( '📊 Back In Stock Notifier for WooCommerce', 'back-in-stock-notifier-for-woocommerce' ),
@@ -43,48 +82,20 @@ if ( ! class_exists( 'CWG_Back_In_Stock_Dashboard_Widget' ) ) {
 			$top_products    = self::get_top_products_list( 5, $range );
 			?>
 
-			<style>
-				.cwg-dashboard-widget {
-					display: grid;
-					grid-template-columns: 1fr 1fr;
-					gap: 12px;
-				}
-				.cwg-stat-box {
-					background: #f8f9fa;
-					border-left: 4px solid #2271b1;
-					padding: 12px 16px;
-					border-radius: 4px;
-					font-size: 13px;
-					line-height: 1.6;
-				}
-				.cwg-stat-box strong {
-					display: block;
-					font-size: 18px;
-					margin-top: 4px;
-				}
-				.cwg-stat-icon {
-					font-size: 18px;
-					margin-right: 6px;
-				}
-				.cwg-stat-top {
-					grid-column: span 2;
-					background: #fff4e5;
-					border-left-color: #ff9900;
-				}
-				.cwg-filter {
-					margin-bottom: 10px;
-				}
-			</style>
 
 			<form method="get" class="cwg-filter">
 				<?php
 				wp_nonce_field( self::NONCE_ACTION, '_cwg_nonce' );
 
-				foreach ( $_GET as $key => $value ) {
-					if ( in_array( $key, array( 'cwg_range', '_cwg_nonce' ), true ) ) {
+				// Keep the other query arguments of the current screen. Only plain
+				// string values are carried over, sanitized as they are read.
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$cwg_query_args = isset( $_GET ) && is_array( $_GET ) ? wp_unslash( $_GET ) : array();
+				foreach ( $cwg_query_args as $key => $value ) {
+					if ( ! is_string( $key ) || ! is_string( $value ) || in_array( $key, array( 'cwg_range', '_cwg_nonce' ), true ) ) {
 						continue;
 					}
-					echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( wp_unslash( $value ) ) . '" />';
+					echo '<input type="hidden" name="' . esc_attr( sanitize_key( $key ) ) . '" value="' . esc_attr( sanitize_text_field( $value ) ) . '" />';
 				}
 				?>
 				<select name="cwg_range" onchange="this.form.submit()">

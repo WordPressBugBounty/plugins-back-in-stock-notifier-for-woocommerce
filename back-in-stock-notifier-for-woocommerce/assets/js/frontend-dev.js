@@ -59,7 +59,6 @@ function cwgdetectTurnstileByHiddenInput(timeout = 4000) {
 
 		if (input) {
 			clearInterval(checker);
-			console.log('Turnstile rendered');
 		} else if (waited >= timeout) {
 			clearInterval(checker);
 
@@ -192,11 +191,9 @@ var instock_notifier = {
 		if (cwginstock_phone_field == '1') {
 			var subscriber_phone = cwginstock_iti.getNumber();// jQuery(this).closest('.cwginstock-subscribe-form').find('.cwgstock_phone').val();
 			cwginstock_phone_meta_data = cwginstock_iti.getSelectedCountryData();
-			//console.log(phone_meta_data);
 			if (!cwginstock_iti.isValidNumber()) {
 
 				var errorCode = cwginstock_iti.getValidationError();
-				console.log(errorCode);
 				var errorMsg = cwginstock_phone_error[errorCode];
 				if (errorCode == -99) {
 					errorMsg = cwginstock_phone_error[0];

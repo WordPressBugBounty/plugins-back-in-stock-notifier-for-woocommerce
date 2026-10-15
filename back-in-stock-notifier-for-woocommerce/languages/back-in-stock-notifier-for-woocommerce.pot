@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 7.4.5\n"
+"Project-Id-Version: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro 7.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/back-in-stock-notifier-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-01T08:05:52+00:00\n"
+"POT-Creation-Date: 2026-10-15T15:57:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: back-in-stock-notifier-for-woocommerce\n"
@@ -39,52 +39,52 @@ msgstr ""
 msgid "https://propluginslab.io"
 msgstr ""
 
-#: cwginstocknotifier.php:268
-#: includes/admin/class-settings.php:594
-#: includes/admin/class-settings.php:1253
+#: cwginstocknotifier.php:278
+#: includes/admin/class-settings.php:598
+#: includes/admin/class-settings.php:1257
 msgid "Name cannot be empty"
 msgstr ""
 
-#: cwginstocknotifier.php:269
+#: cwginstocknotifier.php:279
 #: includes/class-quantity-field.php:83
 msgid "Quantity cannot be empty"
 msgstr ""
 
-#: cwginstocknotifier.php:270
-#: includes/admin/class-settings.php:1243
+#: cwginstocknotifier.php:280
+#: includes/admin/class-settings.php:1247
 msgid "Email Address cannot be empty"
 msgstr ""
 
-#: cwginstocknotifier.php:271
+#: cwginstocknotifier.php:281
 #: includes/class-ajax.php:144
 msgid "Please Enter Valid Email Address"
 msgstr ""
 
-#: cwginstocknotifier.php:274
+#: cwginstocknotifier.php:284
 msgid "Phone Number cannot be empty"
 msgstr ""
 
-#: cwginstocknotifier.php:275
-#: includes/admin/class-settings.php:619
-#: includes/admin/class-settings.php:1254
+#: cwginstocknotifier.php:285
+#: includes/admin/class-settings.php:623
+#: includes/admin/class-settings.php:1258
 msgid "Please enter valid Phone Number"
 msgstr ""
 
-#: cwginstocknotifier.php:276
-#: includes/admin/class-settings.php:628
+#: cwginstocknotifier.php:286
+#: includes/admin/class-settings.php:632
 msgid "Phone Number too short"
 msgstr ""
 
-#: cwginstocknotifier.php:277
-#: includes/admin/class-settings.php:637
+#: cwginstocknotifier.php:287
+#: includes/admin/class-settings.php:641
 msgid "Phone Number too long"
 msgstr ""
 
-#: cwginstocknotifier.php:293
+#: cwginstocknotifier.php:303
 msgid "Close"
 msgstr ""
 
-#: cwginstocknotifier.php:296
+#: cwginstocknotifier.php:306
 msgid "Something went wrong, please try after sometime"
 msgstr ""
 
@@ -149,144 +149,144 @@ msgid "Sorry, you are not allowed to do that."
 msgstr ""
 
 #: includes/admin/class-extra.php:15
-#: includes/admin/class-promotions.php:930
+#: includes/admin/class-promotions.php:921
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin/class-post-type.php:87
+#: includes/admin/class-post-type.php:91
 msgctxt "All Subscribers"
 msgid "Subscribers"
 msgstr ""
 
-#: includes/admin/class-post-type.php:88
+#: includes/admin/class-post-type.php:92
 msgctxt "All Subscribers"
 msgid "All Subscribers"
 msgstr ""
 
-#: includes/admin/class-post-type.php:89
+#: includes/admin/class-post-type.php:93
 msgctxt "Instock Notifier"
 msgid "Instock Notifier"
 msgstr ""
 
-#: includes/admin/class-post-type.php:90
+#: includes/admin/class-post-type.php:94
 msgctxt "Name in Admin Bar"
 msgid "Instock Notifier"
 msgstr ""
 
-#: includes/admin/class-post-type.php:91
+#: includes/admin/class-post-type.php:95
 msgctxt "add new in menu"
 msgid "Add New Subscriber"
 msgstr ""
 
-#: includes/admin/class-post-type.php:92
+#: includes/admin/class-post-type.php:96
 msgid "Add New Subscriber"
 msgstr ""
 
-#: includes/admin/class-post-type.php:93
+#: includes/admin/class-post-type.php:97
 msgid "New Subscriber"
 msgstr ""
 
-#: includes/admin/class-post-type.php:94
+#: includes/admin/class-post-type.php:98
 msgid "Edit Subscriber"
 msgstr ""
 
-#: includes/admin/class-post-type.php:95
+#: includes/admin/class-post-type.php:99
 msgid "View Subscriber"
 msgstr ""
 
-#: includes/admin/class-post-type.php:96
+#: includes/admin/class-post-type.php:100
 msgid "All Subscribers"
 msgstr ""
 
-#: includes/admin/class-post-type.php:97
+#: includes/admin/class-post-type.php:101
 msgid "Search Subscribers"
 msgstr ""
 
-#: includes/admin/class-post-type.php:98
+#: includes/admin/class-post-type.php:102
 #: includes/class-stock-arrival.php:62
 msgid "Parent:"
 msgstr ""
 
-#: includes/admin/class-post-type.php:99
+#: includes/admin/class-post-type.php:103
 msgid "No Subscriber Found"
 msgstr ""
 
-#: includes/admin/class-post-type.php:100
+#: includes/admin/class-post-type.php:104
 msgid "No Subscriber found in Trash"
 msgstr ""
 
-#: includes/admin/class-post-type.php:139
+#: includes/admin/class-post-type.php:143
 msgctxt "post"
 msgid "Mail Sent"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:145
+#: includes/admin/class-post-type.php:149
 #, php-format
 msgid "Mail Sent <span class=\"count\">(%s)</span>"
 msgid_plural "Mail Sent <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-post-type.php:152
+#: includes/admin/class-post-type.php:156
 msgctxt "post"
 msgid "Failed"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:158
+#: includes/admin/class-post-type.php:162
 #, php-format
 msgid "Failed <span class=\"count\">(%s)</span>"
 msgid_plural "Failed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-post-type.php:165
+#: includes/admin/class-post-type.php:169
 msgctxt "post"
 msgid "Subscribed"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:171
+#: includes/admin/class-post-type.php:175
 #, php-format
 msgid "Subscribed <span class=\"count\">(%s)</span>"
 msgid_plural "Subscribed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-post-type.php:178
+#: includes/admin/class-post-type.php:182
 msgctxt "post"
 msgid "Unsubscribed"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:184
+#: includes/admin/class-post-type.php:188
 #, php-format
 msgid "Unsubscribed <span class=\"count\">(%s)</span>"
 msgid_plural "Unsubscribed <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-post-type.php:191
+#: includes/admin/class-post-type.php:195
 msgctxt "post"
 msgid "Purchased"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:197
+#: includes/admin/class-post-type.php:201
 #, php-format
 msgid "Purchased <span class=\"count\">(%s)</span>"
 msgid_plural "Purchased <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-post-type.php:204
+#: includes/admin/class-post-type.php:208
 msgctxt "post"
 msgid "Queued"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:210
+#: includes/admin/class-post-type.php:214
 #, php-format
 msgid "Queued <span class=\"count\">(%s)</span>"
 msgid_plural "Queued <span class=\"count\">(%s)</span>"
@@ -294,962 +294,986 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: number of new subscribers, 2: human readable time such as "2 hours"
-#: includes/admin/class-post-type.php:337
+#: includes/admin/class-post-type.php:342
 #, php-format
 msgid "%1$s new subscriber joined since your last visit, about %2$s ago."
 msgid_plural "%1$s new subscribers joined since your last visit, about %2$s ago."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-post-type.php:348
+#: includes/admin/class-post-type.php:353
 msgid "Review subscribers"
 msgstr ""
 
 #. translators: %s: exact date and time of the previous visit
-#: includes/admin/class-post-type.php:351
+#: includes/admin/class-post-type.php:356
 #, php-format
 msgid "Your last visit: %s"
 msgstr ""
 
-#: includes/admin/class-post-type.php:365
+#: includes/admin/class-post-type.php:370
 msgid "Avatar"
 msgstr ""
 
-#: includes/admin/class-post-type.php:366
+#: includes/admin/class-post-type.php:371
 msgid "Email"
 msgstr ""
 
-#: includes/admin/class-post-type.php:367
+#: includes/admin/class-post-type.php:372
 #: includes/admin/class-status.php:20
 msgid "Status"
 msgstr ""
 
-#: includes/admin/class-post-type.php:368
-#: includes/functions.php:238
+#: includes/admin/class-post-type.php:373
+#: includes/functions.php:242
 msgid "Product"
 msgstr ""
 
-#: includes/admin/class-post-type.php:369
+#: includes/admin/class-post-type.php:374
 msgid "Registered User"
 msgstr ""
 
-#: includes/admin/class-post-type.php:370
-#: includes/admin/class-post-type.php:479
+#: includes/admin/class-post-type.php:375
+#: includes/admin/class-post-type.php:484
 msgid "Subscribed on"
 msgstr ""
 
-#: includes/admin/class-post-type.php:371
+#: includes/admin/class-post-type.php:376
 msgid "Mail Sent on "
 msgstr ""
 
-#: includes/admin/class-post-type.php:411
+#: includes/admin/class-post-type.php:416
 msgid "In Stock"
 msgstr ""
 
-#: includes/admin/class-post-type.php:412
+#: includes/admin/class-post-type.php:417
 msgid "Out of Stock"
 msgstr ""
 
-#: includes/admin/class-post-type.php:413
+#: includes/admin/class-post-type.php:418
 msgid "On Backorder"
 msgstr ""
 
-#: includes/admin/class-post-type.php:418
+#: includes/admin/class-post-type.php:423
 msgid "Current Stock Status:"
 msgstr ""
 
-#: includes/admin/class-post-type.php:421
+#: includes/admin/class-post-type.php:426
 msgid "Available Quantity:"
 msgstr ""
 
 #. translators: %d is the id of deleted product.
-#: includes/admin/class-post-type.php:428
+#: includes/admin/class-post-type.php:433
 #, php-format
 msgid "Product #%d (deleted or not exists)"
 msgstr ""
 
-#: includes/admin/class-post-type.php:438
+#: includes/admin/class-post-type.php:443
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/class-post-type.php:440
+#: includes/admin/class-post-type.php:445
 msgid "No"
 msgstr ""
 
-#: includes/admin/class-post-type.php:464
+#: includes/admin/class-post-type.php:469
 msgid "---"
 msgstr ""
 
-#: includes/admin/class-post-type.php:505
+#: includes/admin/class-post-type.php:510
 msgid "Subscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:509
+#: includes/admin/class-post-type.php:514
 msgid "Mail Sent"
 msgstr ""
 
-#: includes/admin/class-post-type.php:513
-#: includes/admin/class-settings.php:1173
+#: includes/admin/class-post-type.php:518
+#: includes/admin/class-settings.php:1177
 msgid "Unsubscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:517
+#: includes/admin/class-post-type.php:522
 msgid "Purchased"
 msgstr ""
 
-#: includes/admin/class-post-type.php:521
+#: includes/admin/class-post-type.php:526
 msgid "Failed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:525
+#: includes/admin/class-post-type.php:530
 msgid "Waiting for Confirmation"
 msgstr ""
 
-#: includes/admin/class-post-type.php:529
+#: includes/admin/class-post-type.php:534
 msgid "Queued"
 msgstr ""
 
-#: includes/admin/class-post-type.php:553
+#: includes/admin/class-post-type.php:558
 msgid "ID:"
 msgstr ""
 
-#: includes/admin/class-post-type.php:569
+#: includes/admin/class-post-type.php:574
 msgid "Send Instock Mail"
 msgstr ""
 
-#: includes/admin/class-post-type.php:594
+#: includes/admin/class-post-type.php:599
 msgid "View Subscribers"
 msgstr ""
 
-#: includes/admin/class-post-type.php:641
-#: includes/admin/class-post-type.php:1164
+#: includes/admin/class-post-type.php:646
+#: includes/admin/class-post-type.php:1172
 msgid "Instock mail sent to {email_id} successfully"
 msgstr ""
 
-#: includes/admin/class-post-type.php:644
+#: includes/admin/class-post-type.php:649
 msgid "Note: no SMTP plugin detected, so delivery depends on your server mail configuration. If the email does not arrive, configure an SMTP plugin."
 msgstr ""
 
-#: includes/admin/class-post-type.php:663
+#: includes/admin/class-post-type.php:668
 msgid "Instock mail was not sent because the \"Back In Stock - Product Available\" email notification is disabled. Enable it under WooCommerce → Settings → Emails."
 msgstr ""
 
-#: includes/admin/class-post-type.php:673
-#: includes/admin/class-post-type.php:1176
+#: includes/admin/class-post-type.php:678
+#: includes/admin/class-post-type.php:1184
 msgid "Unable to send Instock mail to this {email_id}"
 msgstr ""
 
-#: includes/admin/class-post-type.php:686
-#: includes/admin/class-post-type.php:1184
+#: includes/admin/class-post-type.php:691
+#: includes/admin/class-post-type.php:1192
 msgid "Unable to send Instock mail to this {email_id} as stock product does not exists/deleted !!!"
 msgstr ""
 
-#: includes/admin/class-post-type.php:701
+#: includes/admin/class-post-type.php:706
 msgid "Security Check Failed, Please try later"
 msgstr ""
 
-#: includes/admin/class-post-type.php:748
+#: includes/admin/class-post-type.php:756
 msgid "Change status to Mail Sent"
 msgstr ""
 
-#: includes/admin/class-post-type.php:749
+#: includes/admin/class-post-type.php:757
 msgid "Change status to Subscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:750
+#: includes/admin/class-post-type.php:758
 msgid "Change status to Unsubscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:751
+#: includes/admin/class-post-type.php:759
 msgid "Send Email"
 msgstr ""
 
-#: includes/admin/class-post-type.php:796
+#: includes/admin/class-post-type.php:804
 msgid "Filter by products"
 msgstr ""
 
-#: includes/admin/class-post-type.php:836
+#: includes/admin/class-post-type.php:844
 msgid "Filter by product category"
 msgstr ""
 
-#: includes/admin/class-post-type.php:921
+#: includes/admin/class-post-type.php:929
 msgid "Filter by stock status"
 msgstr ""
 
-#: includes/admin/class-post-type.php:937
+#: includes/admin/class-post-type.php:945
 msgid "In stock"
 msgstr ""
 
-#: includes/admin/class-post-type.php:938
+#: includes/admin/class-post-type.php:946
 msgid "In stock but below notification threshold"
 msgstr ""
 
-#: includes/admin/class-post-type.php:939
+#: includes/admin/class-post-type.php:947
 msgid "Out of stock"
 msgstr ""
 
-#: includes/admin/class-post-type.php:940
+#: includes/admin/class-post-type.php:948
 msgid "On backorder"
 msgstr ""
 
-#: includes/admin/class-post-type.php:941
+#: includes/admin/class-post-type.php:949
 msgid "Product deleted / not found"
 msgstr ""
 
 #. translators: %s:
-#: includes/admin/class-post-type.php:1084
+#: includes/admin/class-post-type.php:1092
 #, php-format
 msgid "%s - Data(s) Manually marked status to Mail Sent"
 msgstr ""
 
 #. translators: %s:
-#: includes/admin/class-post-type.php:1110
+#: includes/admin/class-post-type.php:1118
 #, php-format
 msgid "%s - Data(s) Manually marked status to Subscribed"
 msgstr ""
 
 #. translators: %s: count
-#: includes/admin/class-post-type.php:1136
+#: includes/admin/class-post-type.php:1144
 #, php-format
 msgid "%s - Data(s) Manually marked status to Unsubscribed"
 msgstr ""
 
-#: includes/admin/class-post-type.php:1192
+#: includes/admin/class-post-type.php:1200
 msgid "Bulk Email: "
 msgstr ""
 
-#: includes/admin/class-post-type.php:1199
+#: includes/admin/class-post-type.php:1207
 msgid "Note: no SMTP plugin detected, so delivery depends on your server mail configuration."
 msgstr ""
 
-#: includes/admin/class-post-type.php:1220
+#: includes/admin/class-post-type.php:1228
 msgid "Subscribers Count"
+msgstr ""
+
+#: includes/admin/class-product-waitlist-box.php:64
+msgid "Show Waitlist Summary on Product Edit Screen"
+msgstr ""
+
+#: includes/admin/class-product-waitlist-box.php:78
+msgid "Select this option to show a \"Back In Stock Waitlist\" box on the product edit screen (Admin Dashboard > Products > Edit). It shows how many people are waiting for the product and each of its variations, how many were already notified, and links to those subscribers."
+msgstr ""
+
+#: includes/admin/class-product-waitlist-box.php:98
+msgid "Back In Stock Waitlist"
+msgstr ""
+
+#: includes/admin/class-product-waitlist-box.php:209
+msgid "Nobody has joined the waitlist for this product yet."
+msgstr ""
+
+#: includes/admin/class-product-waitlist-box.php:250
+msgid "Waiting per variation"
+msgstr ""
+
+#: includes/admin/class-product-waitlist-box.php:266
+msgid "View all subscribers"
 msgstr ""
 
 #: includes/admin/class-promotions.php:49
 msgid "Plugins & Add-ons"
 msgstr ""
 
-#: includes/admin/class-promotions.php:123
+#: includes/admin/class-promotions.php:117
 msgid "Refreshing..."
 msgstr ""
 
-#: includes/admin/class-promotions.php:124
+#: includes/admin/class-promotions.php:118
 msgid "Refresh Feed"
 msgstr ""
 
-#: includes/admin/class-promotions.php:125
+#: includes/admin/class-promotions.php:119
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: includes/admin/class-promotions.php:126
+#: includes/admin/class-promotions.php:120
 msgid "Installing..."
 msgstr ""
 
-#: includes/admin/class-promotions.php:127
+#: includes/admin/class-promotions.php:121
 msgid "Installed"
 msgstr ""
 
-#: includes/admin/class-promotions.php:128
-#: includes/admin/class-promotions.php:462
+#: includes/admin/class-promotions.php:122
+#: includes/admin/class-promotions.php:453
 msgid "Activate"
 msgstr ""
 
-#: includes/admin/class-promotions.php:129
+#: includes/admin/class-promotions.php:123
 msgid "Installation failed"
 msgstr ""
 
-#: includes/admin/class-promotions.php:130
+#: includes/admin/class-promotions.php:124
 msgid "Already installed"
 msgstr ""
 
-#: includes/admin/class-promotions.php:131
+#: includes/admin/class-promotions.php:125
 msgid "Copied!"
 msgstr ""
 
-#: includes/admin/class-promotions.php:186
+#: includes/admin/class-promotions.php:180
 msgid "Bundle"
 msgstr ""
 
-#: includes/admin/class-promotions.php:187
+#: includes/admin/class-promotions.php:181
 msgid "Integrations"
 msgstr ""
 
-#: includes/admin/class-promotions.php:188
+#: includes/admin/class-promotions.php:182
 msgid "Notifications"
 msgstr ""
 
-#: includes/admin/class-promotions.php:189
+#: includes/admin/class-promotions.php:183
 msgid "Compliance & Privacy"
 msgstr ""
 
-#: includes/admin/class-promotions.php:190
+#: includes/admin/class-promotions.php:184
 msgid "Utilities"
 msgstr ""
 
-#: includes/admin/class-promotions.php:191
+#: includes/admin/class-promotions.php:185
 msgid "Analytics"
 msgstr ""
 
-#: includes/admin/class-promotions.php:192
+#: includes/admin/class-promotions.php:186
 msgid "Design"
 msgstr ""
 
-#: includes/admin/class-promotions.php:193
+#: includes/admin/class-promotions.php:187
 msgid "Multilingual"
 msgstr ""
 
-#: includes/admin/class-promotions.php:194
-#: includes/admin/class-promotions.php:272
+#: includes/admin/class-promotions.php:188
+#: includes/admin/class-promotions.php:266
 msgid "General"
 msgstr ""
 
-#: includes/admin/class-promotions.php:266
+#: includes/admin/class-promotions.php:260
 msgid "Products"
 msgstr ""
 
-#: includes/admin/class-promotions.php:267
+#: includes/admin/class-promotions.php:261
 msgid "Pricing"
 msgstr ""
 
-#: includes/admin/class-promotions.php:268
+#: includes/admin/class-promotions.php:262
 msgid "Marketing"
 msgstr ""
 
-#: includes/admin/class-promotions.php:269
+#: includes/admin/class-promotions.php:263
 msgid "Checkout"
 msgstr ""
 
-#: includes/admin/class-promotions.php:270
+#: includes/admin/class-promotions.php:264
 msgid "Shipping"
 msgstr ""
 
-#: includes/admin/class-promotions.php:271
+#: includes/admin/class-promotions.php:265
 msgid "Inventory"
 msgstr ""
 
-#: includes/admin/class-promotions.php:333
+#: includes/admin/class-promotions.php:327
 msgid "Get Plugin"
 msgstr ""
 
-#: includes/admin/class-promotions.php:335
+#: includes/admin/class-promotions.php:329
 msgid "View Details"
 msgstr ""
 
-#: includes/admin/class-promotions.php:337
+#: includes/admin/class-promotions.php:331
 msgid "View on CodeCanyon"
 msgstr ""
 
-#: includes/admin/class-promotions.php:339
+#: includes/admin/class-promotions.php:333
 msgid "Get Add-on"
 msgstr ""
 
-#: includes/admin/class-promotions.php:360
+#: includes/admin/class-promotions.php:354
 msgid "Pro Plugin"
 msgstr ""
 
-#: includes/admin/class-promotions.php:367
-#: includes/admin/class-promotions.php:813
+#: includes/admin/class-promotions.php:361
+#: includes/admin/class-promotions.php:804
 msgid "Active"
 msgstr ""
 
-#: includes/admin/class-promotions.php:369
+#: includes/admin/class-promotions.php:363
 msgid "Bundle Activated"
 msgstr ""
 
-#: includes/admin/class-promotions.php:379
+#: includes/admin/class-promotions.php:373
 msgid "Sale"
 msgstr ""
 
-#: includes/admin/class-promotions.php:411
-#: includes/admin/class-promotions.php:425
+#: includes/admin/class-promotions.php:402
+#: includes/admin/class-promotions.php:416
 msgid "From"
 msgstr ""
 
-#: includes/admin/class-promotions.php:420
-#: includes/admin/class-promotions.php:610
+#: includes/admin/class-promotions.php:411
+#: includes/admin/class-promotions.php:601
 msgid "Limited time offer"
 msgstr ""
 
-#: includes/admin/class-promotions.php:436
-#: includes/admin/class-promotions.php:457
+#: includes/admin/class-promotions.php:427
+#: includes/admin/class-promotions.php:448
 msgid "Installed & Active"
 msgstr ""
 
-#: includes/admin/class-promotions.php:438
+#: includes/admin/class-promotions.php:429
 msgid "Included in Bundle"
 msgstr ""
 
-#: includes/admin/class-promotions.php:452
+#: includes/admin/class-promotions.php:443
 msgid "Install Now"
 msgstr ""
 
 #. translators: %s: human readable date
-#: includes/admin/class-promotions.php:620
+#: includes/admin/class-promotions.php:611
 #, php-format
 msgid "Ends %s"
 msgstr ""
 
-#: includes/admin/class-promotions.php:641
+#: includes/admin/class-promotions.php:632
 msgid "Click to copy"
 msgstr ""
 
-#: includes/admin/class-promotions.php:648
-#: includes/admin/class-settings.php:946
-#: includes/functions.php:503
+#: includes/admin/class-promotions.php:639
+#: includes/admin/class-settings.php:950
+#: includes/functions.php:507
 msgid "Shop now"
 msgstr ""
 
-#: includes/admin/class-promotions.php:661
+#: includes/admin/class-promotions.php:652
 msgid "You do not have permission to access this page."
 msgstr ""
 
-#: includes/admin/class-promotions.php:798
+#: includes/admin/class-promotions.php:789
 msgid "Extend your store with our WooCommerce plugins and Back In Stock Notifier add-ons."
 msgstr ""
 
-#: includes/admin/class-promotions.php:802
+#: includes/admin/class-promotions.php:793
 msgid "One-time payment &nbsp;·&nbsp; No subscriptions &nbsp;·&nbsp; Buy once, use forever"
 msgstr ""
 
-#: includes/admin/class-promotions.php:809
+#: includes/admin/class-promotions.php:800
 msgid "Total"
 msgstr ""
 
 #. translators: %s: human readable time difference, for example "5 minutes".
-#: includes/admin/class-promotions.php:824
+#: includes/admin/class-promotions.php:815
 #, php-format
 msgid "Updated %s ago"
 msgstr ""
 
-#: includes/admin/class-promotions.php:834
+#: includes/admin/class-promotions.php:825
 msgid "Refresh"
 msgstr ""
 
-#: includes/admin/class-promotions.php:845
+#: includes/admin/class-promotions.php:836
 msgid "One-Time Payment"
 msgstr ""
 
-#: includes/admin/class-promotions.php:846
+#: includes/admin/class-promotions.php:837
 msgid "No recurring fees, ever"
 msgstr ""
 
-#: includes/admin/class-promotions.php:852
+#: includes/admin/class-promotions.php:843
 msgid "Lifetime Updates"
 msgstr ""
 
-#: includes/admin/class-promotions.php:853
+#: includes/admin/class-promotions.php:844
 msgid "Always on the latest version"
 msgstr ""
 
-#: includes/admin/class-promotions.php:859
+#: includes/admin/class-promotions.php:850
 msgid "14-Day Refund Policy"
 msgstr ""
 
-#: includes/admin/class-promotions.php:860
+#: includes/admin/class-promotions.php:851
 msgid "Risk-free purchase"
 msgstr ""
 
-#: includes/admin/class-promotions.php:866
+#: includes/admin/class-promotions.php:857
 msgid "Priority Support"
 msgstr ""
 
-#: includes/admin/class-promotions.php:867
+#: includes/admin/class-promotions.php:858
 msgid "Fast expert help"
 msgstr ""
 
-#: includes/admin/class-promotions.php:880
+#: includes/admin/class-promotions.php:871
 msgid "Bundle Add-ons Active"
 msgstr ""
 
-#: includes/admin/class-promotions.php:881
+#: includes/admin/class-promotions.php:872
 msgid "All individual add-ons are included in your bundle and ready to use."
 msgstr ""
 
-#: includes/admin/class-promotions.php:889
+#: includes/admin/class-promotions.php:880
 msgid "No extensions loaded yet"
 msgstr ""
 
-#: includes/admin/class-promotions.php:892
+#: includes/admin/class-promotions.php:883
 msgid "The remote feed URL is not configured. Please set it in Settings, or browse extensions on our website."
 msgstr ""
 
-#: includes/admin/class-promotions.php:894
-msgid "Products will be loaded automatically via daily sync. Click \"Refresh\" above to load now, or visit our website."
+#: includes/admin/class-promotions.php:885
+msgid "Click \"Refresh\" above to load the list from propluginslab.io, or visit our website. A daily automatic refresh can be turned on in Settings > Troubleshoot Settings."
 msgstr ""
 
-#: includes/admin/class-promotions.php:898
+#: includes/admin/class-promotions.php:889
 msgid "Visit ProPluginsLab"
 msgstr ""
 
-#: includes/admin/class-promotions.php:909
-#: includes/admin/class-promotions.php:940
-#: includes/admin/class-promotions.php:957
+#: includes/admin/class-promotions.php:900
+#: includes/admin/class-promotions.php:931
+#: includes/admin/class-promotions.php:948
 msgid "All"
 msgstr ""
 
-#: includes/admin/class-promotions.php:914
+#: includes/admin/class-promotions.php:905
 msgid "Free Plugins"
 msgstr ""
 
-#: includes/admin/class-promotions.php:919
+#: includes/admin/class-promotions.php:910
 msgid "Pro Plugins"
 msgstr ""
 
-#: includes/admin/class-promotions.php:924
+#: includes/admin/class-promotions.php:915
 msgid "CodeCanyon Plugins"
 msgstr ""
 
-#: includes/admin/class-promotions.php:984
+#: includes/admin/class-promotions.php:975
 msgid "Need help? Visit"
 msgstr ""
 
-#: includes/admin/class-promotions.php:985
+#: includes/admin/class-promotions.php:976
 msgid "ProPluginsLab Support"
 msgstr ""
 
-#: includes/admin/class-settings.php:22
+#: includes/admin/class-settings.php:26
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:32
+#: includes/admin/class-settings.php:36
 msgid "Back In Stock Notifier for WooCommerce Settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:59
+#: includes/admin/class-settings.php:63
 msgid "Frontend Form"
 msgstr ""
 
-#: includes/admin/class-settings.php:60
+#: includes/admin/class-settings.php:64
 msgid "Frontend Subscribe Form Display Type"
 msgstr ""
 
-#: includes/admin/class-settings.php:61
+#: includes/admin/class-settings.php:65
 msgid "Subscribe Form Design"
 msgstr ""
 
-#: includes/admin/class-settings.php:62
+#: includes/admin/class-settings.php:66
 msgid "Popup Design"
 msgstr ""
 
-#: includes/admin/class-settings.php:63
+#: includes/admin/class-settings.php:67
 msgid "Title for Subscribe Form"
 msgstr ""
 
-#: includes/admin/class-settings.php:64
+#: includes/admin/class-settings.php:68
 msgid "Placeholder for Name Field"
 msgstr ""
 
-#: includes/admin/class-settings.php:66
+#: includes/admin/class-settings.php:70
 msgid "Placeholder for Email Field"
 msgstr ""
 
-#: includes/admin/class-settings.php:67
+#: includes/admin/class-settings.php:71
 msgid "Button Label"
 msgstr ""
 
-#: includes/admin/class-settings.php:69
+#: includes/admin/class-settings.php:73
 msgid "Visibility Settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:70
+#: includes/admin/class-settings.php:74
 msgid "Hide Name"
 msgstr ""
 
-#: includes/admin/class-settings.php:72
+#: includes/admin/class-settings.php:76
 msgid "Show Phone"
 msgstr ""
 
-#: includes/admin/class-settings.php:73
+#: includes/admin/class-settings.php:77
 msgid "Phone field optional"
 msgstr ""
 
-#: includes/admin/class-settings.php:74
+#: includes/admin/class-settings.php:78
 msgid "Default Country for Phone Field"
 msgstr ""
 
-#: includes/admin/class-settings.php:75
+#: includes/admin/class-settings.php:79
 msgid "Default Country for Phone Field Placeholder"
 msgstr ""
 
-#: includes/admin/class-settings.php:76
-#: includes/admin/class-settings.php:332
+#: includes/admin/class-settings.php:80
+#: includes/admin/class-settings.php:336
 msgid "Custom Placeholder"
 msgstr ""
 
-#: includes/admin/class-settings.php:77
+#: includes/admin/class-settings.php:81
 msgid "Hide Country Placeholder"
 msgstr ""
 
-#: includes/admin/class-settings.php:79
+#: includes/admin/class-settings.php:83
 msgid "Hide Subscribe Form for Guests"
 msgstr ""
 
-#: includes/admin/class-settings.php:81
-#: includes/admin/class-settings.php:372
+#: includes/admin/class-settings.php:85
+#: includes/admin/class-settings.php:376
 msgid "Message to display when the subscribe form is hidden for non logged-in Users"
 msgstr ""
 
-#: includes/admin/class-settings.php:83
+#: includes/admin/class-settings.php:87
 msgid "Hide Subscribe Form for Members"
 msgstr ""
 
-#: includes/admin/class-settings.php:85
+#: includes/admin/class-settings.php:89
 msgid "Show Subscribe Form on Backorders"
 msgstr ""
 
-#: includes/admin/class-settings.php:86
+#: includes/admin/class-settings.php:90
 msgid "Show Subscribe Now Button in Catalog Page(shop/category)"
 msgstr ""
 
-#: includes/admin/class-settings.php:87
+#: includes/admin/class-settings.php:91
 msgid "Hide Read more Button in Catalog Page(shop/category)"
 msgstr ""
 
-#: includes/admin/class-settings.php:89
+#: includes/admin/class-settings.php:93
 msgid "Show/Hide Subscribe Form for specific products"
 msgstr ""
 
-#: includes/admin/class-settings.php:90
+#: includes/admin/class-settings.php:94
 msgid "Show/Hide Subscribe Form for specific categories"
 msgstr ""
 
-#: includes/admin/class-settings.php:91
+#: includes/admin/class-settings.php:95
 msgid "Show/Hide Subscribe Form for specific tags"
 msgstr ""
 
-#: includes/admin/class-settings.php:93
-#: includes/admin/class-settings.php:573
+#: includes/admin/class-settings.php:97
+#: includes/admin/class-settings.php:577
 msgid "Hide Subscribe Form on Regular Products out of stock"
 msgstr ""
 
-#: includes/admin/class-settings.php:94
-#: includes/admin/class-settings.php:521
+#: includes/admin/class-settings.php:98
+#: includes/admin/class-settings.php:525
 msgid "Hide Subscribe Form on Sale Products out of stock"
 msgstr ""
 
-#: includes/admin/class-settings.php:96
-#: includes/admin/class-settings.php:583
+#: includes/admin/class-settings.php:100
+#: includes/admin/class-settings.php:587
 msgid "Hide Subscribe Form on Free or Zero Price Out of Stock Products"
 msgstr ""
 
-#: includes/admin/class-settings.php:98
+#: includes/admin/class-settings.php:102
 msgid "Don't overwrite disabled out of stock variations from theme configuration"
 msgstr ""
 
-#: includes/admin/class-settings.php:99
+#: includes/admin/class-settings.php:103
 msgid "Ignore WooCommerce Out of Stock Visibility Settings for Variation"
 msgstr ""
 
-#: includes/admin/class-settings.php:101
+#: includes/admin/class-settings.php:105
 msgid "Message Settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:102
+#: includes/admin/class-settings.php:106
 msgid "Success Subscription Message"
 msgstr ""
 
-#: includes/admin/class-settings.php:103
+#: includes/admin/class-settings.php:107
 msgid "Email Already Subscribed Message"
 msgstr ""
 
-#: includes/admin/class-settings.php:105
+#: includes/admin/class-settings.php:109
 msgid "Name Field Empty Error"
 msgstr ""
 
-#: includes/admin/class-settings.php:106
+#: includes/admin/class-settings.php:110
 msgid "Email Field Empty Error"
 msgstr ""
 
-#: includes/admin/class-settings.php:107
+#: includes/admin/class-settings.php:111
 msgid "Invalid Email Error"
 msgstr ""
 
-#: includes/admin/class-settings.php:108
+#: includes/admin/class-settings.php:112
 msgid "Invalid Phone Number Error"
 msgstr ""
 
-#: includes/admin/class-settings.php:109
+#: includes/admin/class-settings.php:113
 msgid "Phone Number too short error"
 msgstr ""
 
-#: includes/admin/class-settings.php:110
+#: includes/admin/class-settings.php:114
 msgid "Phone Number too long error"
 msgstr ""
 
-#: includes/admin/class-settings.php:112
+#: includes/admin/class-settings.php:116
 msgid "Mail Settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:114
+#: includes/admin/class-settings.php:118
 msgid "Email Notifications"
 msgstr ""
 
-#: includes/admin/class-settings.php:116
+#: includes/admin/class-settings.php:120
 msgid "From Name"
 msgstr ""
 
-#: includes/admin/class-settings.php:117
+#: includes/admin/class-settings.php:121
 msgid "From Email"
 msgstr ""
 
-#: includes/admin/class-settings.php:118
+#: includes/admin/class-settings.php:122
 msgid "Reply To Email"
 msgstr ""
 
-#: includes/admin/class-settings.php:120
+#: includes/admin/class-settings.php:124
 msgid "Additionally Send this Subscription mail as a copy to specific email ids"
 msgstr ""
 
-#: includes/admin/class-settings.php:121
+#: includes/admin/class-settings.php:125
 msgid "Enter Email Ids separated by commas that you want to receive subscription copy mail"
 msgstr ""
 
-#: includes/admin/class-settings.php:128
+#: includes/admin/class-settings.php:132
 msgid "Consider Only Published Product Status"
 msgstr ""
 
-#: includes/admin/class-settings.php:129
+#: includes/admin/class-settings.php:133
 msgid "Minimum stock quantity threshold value"
 msgstr ""
 
-#: includes/admin/class-settings.php:130
+#: includes/admin/class-settings.php:134
 msgid "Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)"
 msgstr ""
 
-#: includes/admin/class-settings.php:131
+#: includes/admin/class-settings.php:135
 msgid "Fair Sending: Notify only as many Subscribers as Units in Stock"
 msgstr ""
 
-#: includes/admin/class-settings.php:132
+#: includes/admin/class-settings.php:136
 msgid "Fair Sending: Subscribers to Notify per Unit in Stock"
 msgstr ""
 
-#: includes/admin/class-settings.php:136
+#: includes/admin/class-settings.php:140
 msgid "Auto Coupon"
 msgstr ""
 
-#: includes/admin/class-settings.php:137
+#: includes/admin/class-settings.php:141
 msgid "Enable Auto Coupon"
 msgstr ""
 
-#: includes/admin/class-settings.php:138
+#: includes/admin/class-settings.php:142
 msgid "Discount Type"
 msgstr ""
 
-#: includes/admin/class-settings.php:139
+#: includes/admin/class-settings.php:143
 msgid "Coupon Amount"
 msgstr ""
 
-#: includes/admin/class-settings.php:140
+#: includes/admin/class-settings.php:144
 msgid "Coupon Valid For (days)"
 msgstr ""
 
-#: includes/admin/class-settings.php:141
+#: includes/admin/class-settings.php:145
 msgid "Coupon Code Prefix"
 msgstr ""
 
-#: includes/admin/class-settings.php:142
+#: includes/admin/class-settings.php:146
 msgid "Usage Limit per Coupon"
 msgstr ""
 
-#: includes/admin/class-settings.php:143
+#: includes/admin/class-settings.php:147
 msgid "Minimum Spend"
 msgstr ""
 
-#: includes/admin/class-settings.php:144
+#: includes/admin/class-settings.php:148
 msgid "Do Not Create Coupon for Products on Sale"
 msgstr ""
 
-#: includes/admin/class-settings.php:145
+#: includes/admin/class-settings.php:149
 msgid "Coupon Cannot Be Used on Sale Items"
 msgstr ""
 
-#: includes/admin/class-settings.php:146
+#: includes/admin/class-settings.php:150
 msgid "Cannot Be Combined with Other Coupons"
 msgstr ""
 
-#: includes/admin/class-settings.php:147
+#: includes/admin/class-settings.php:151
 msgid "Restrict Coupon to Subscriber Email"
 msgstr ""
 
-#: includes/admin/class-settings.php:148
+#: includes/admin/class-settings.php:152
 msgid "Allow Free Shipping"
 msgstr ""
 
-#: includes/admin/class-settings.php:149
+#: includes/admin/class-settings.php:153
 msgid "Coupon Block Heading"
 msgstr ""
 
-#: includes/admin/class-settings.php:150
+#: includes/admin/class-settings.php:154
 msgid "Coupon Block Subtext"
 msgstr ""
 
-#: includes/admin/class-settings.php:151
+#: includes/admin/class-settings.php:155
 msgid "Coupon Block Expiry Line"
 msgstr ""
 
-#: includes/admin/class-settings.php:152
+#: includes/admin/class-settings.php:156
 msgid "Coupon Block Button Label"
 msgstr ""
 
-#: includes/admin/class-settings.php:153
+#: includes/admin/class-settings.php:157
 msgid "Coupon Block Colour"
 msgstr ""
 
-#: includes/admin/class-settings.php:154
+#: includes/admin/class-settings.php:158
 msgid "Custom Accent Colour"
 msgstr ""
 
-#: includes/admin/class-settings.php:155
+#: includes/admin/class-settings.php:159
 msgid "Coupon Block Background"
 msgstr ""
 
-#: includes/admin/class-settings.php:157
+#: includes/admin/class-settings.php:161
 msgid "Background Process Engine - Advanced Settings"
 msgstr ""
 
-#: includes/admin/class-settings.php:158
+#: includes/admin/class-settings.php:162
 msgid "Background Process Engine"
 msgstr ""
 
-#: includes/admin/class-settings.php:159
+#: includes/admin/class-settings.php:163
 msgid "Limit Email Sending Speed"
 msgstr ""
 
-#: includes/admin/class-settings.php:160
+#: includes/admin/class-settings.php:164
 msgid "Maximum Emails per Minute"
 msgstr ""
 
-#: includes/admin/class-settings.php:161
+#: includes/admin/class-settings.php:165
 msgid "Auto-retry Stuck Emails"
 msgstr ""
 
-#: includes/admin/class-settings.php:162
+#: includes/admin/class-settings.php:166
 msgid "Retry Frequency"
 msgstr ""
 
-#: includes/admin/class-settings.php:163
+#: includes/admin/class-settings.php:167
 msgid "Maximum Retry Attempts"
 msgstr ""
 
-#: includes/admin/class-settings.php:164
+#: includes/admin/class-settings.php:168
 msgid "Status After All Retries Fail"
 msgstr ""
 
-#: includes/admin/class-settings.php:174
+#: includes/admin/class-settings.php:178
 msgid "Customize the Frontend Subscribe Form when Product become out of stock"
 msgstr ""
 
-#: includes/admin/class-settings.php:181
+#: includes/admin/class-settings.php:185
 msgid "Inline Subscribe Form"
 msgstr ""
 
-#: includes/admin/class-settings.php:182
+#: includes/admin/class-settings.php:186
 msgid "Pop-Up Subscribe Form"
 msgstr ""
 
-#: includes/admin/class-settings.php:212
+#: includes/admin/class-settings.php:216
 msgid "Choose how the inline subscribe form looks on the product page. \"Default (classic)\" keeps the original look exactly as it is, and loads no extra stylesheet. The other designs restyle the same form, so all your settings, fields and add-ons keep working."
 msgstr ""
 
-#: includes/admin/class-settings.php:228
+#: includes/admin/class-settings.php:232
 msgid "Choose the popup style used when the subscribe form is shown in a popup. \"SweetAlert (default)\" is the original popup. The other options use a built-in lightweight popup with no extra library. Applies only when the Frontend Subscribe Form Display Type is set to popup."
 msgstr ""
 
-#: includes/admin/class-settings.php:244
-#: includes/admin/class-settings.php:1240
-#: includes/frontend/class-product.php:239
+#: includes/admin/class-settings.php:248
+#: includes/admin/class-settings.php:1244
+#: includes/frontend/class-product.php:243
 msgid "Your Name"
 msgstr ""
 
-#: includes/admin/class-settings.php:268
+#: includes/admin/class-settings.php:272
 msgid "Visibility Settings for Subscriber Form Frontend"
 msgstr ""
 
-#: includes/admin/class-settings.php:276
+#: includes/admin/class-settings.php:280
 msgid "Hide name field in Subscribe Form"
 msgstr ""
 
-#: includes/admin/class-settings.php:286
+#: includes/admin/class-settings.php:290
 msgid "Show phone field in Subscribe Form"
 msgstr ""
 
-#: includes/admin/class-settings.php:296
+#: includes/admin/class-settings.php:300
 msgid "Enable this option to make phone field as optional"
 msgstr ""
 
-#: includes/admin/class-settings.php:329
+#: includes/admin/class-settings.php:333
 msgid "Default/Automatic"
 msgstr ""
 
-#: includes/admin/class-settings.php:351
+#: includes/admin/class-settings.php:355
 msgid "Enable this option to hide the placeholder for the phone field in the front-end subscribe form"
 msgstr ""
 
-#: includes/admin/class-settings.php:361
+#: includes/admin/class-settings.php:365
 msgid "Hide Subscribe Form for non logged-in Users"
 msgstr ""
 
-#: includes/admin/class-settings.php:382
+#: includes/admin/class-settings.php:386
 msgid "Hide Subscribe Form for logged-in Users"
 msgstr ""
 
-#: includes/admin/class-settings.php:392
+#: includes/admin/class-settings.php:396
 msgid "Display Subscribe Form for Back Order"
 msgstr ""
 
-#: includes/admin/class-settings.php:403
+#: includes/admin/class-settings.php:407
 msgid "Display Subscribe Now Button in Catalog Page"
 msgstr ""
 
-#: includes/admin/class-settings.php:413
+#: includes/admin/class-settings.php:417
 msgid "Hide Read more button in catalog page(shop/category)"
 msgstr ""
 
-#: includes/admin/class-settings.php:422
+#: includes/admin/class-settings.php:426
 #: includes/class-stock-arrival.php:165
 msgid "Select Products"
-msgstr ""
-
-#: includes/admin/class-settings.php:439
-#: includes/admin/class-settings.php:472
-#: includes/admin/class-settings.php:504
-msgid "Show"
 msgstr ""
 
 #: includes/admin/class-settings.php:443
 #: includes/admin/class-settings.php:476
 #: includes/admin/class-settings.php:508
+msgid "Show"
+msgstr ""
+
+#: includes/admin/class-settings.php:447
+#: includes/admin/class-settings.php:480
+#: includes/admin/class-settings.php:512
 msgid "Hide"
 msgstr ""
 
-#: includes/admin/class-settings.php:446
-#: includes/admin/class-settings.php:479
-#: includes/admin/class-settings.php:511
+#: includes/admin/class-settings.php:450
+#: includes/admin/class-settings.php:483
+#: includes/admin/class-settings.php:515
 msgid "By Default this field will empty means subscribe form will shown to all out of stock products by default"
 msgstr ""
 
-#: includes/admin/class-settings.php:455
+#: includes/admin/class-settings.php:459
 msgid "Select Categories"
 msgstr ""
 
-#: includes/admin/class-settings.php:488
+#: includes/admin/class-settings.php:492
 msgid "Select Product Tags"
 msgstr ""
 
-#: includes/admin/class-settings.php:531
+#: includes/admin/class-settings.php:535
 msgid ""
 "Some themes disable variation out of stock by default and some by an option, when activate our plugin it overwrite\n"
 "                theme configuration(disabled variation become selectable), so by enable this option our plugin settings will not\n"
 "                overwrite theme configuration"
 msgstr ""
 
-#: includes/admin/class-settings.php:541
+#: includes/admin/class-settings.php:545
 msgid "Enable this option to not overwrite disabled out of stock variation settings from themes(some themes)"
 msgstr ""
 
-#: includes/admin/class-settings.php:551
+#: includes/admin/class-settings.php:555
 msgid ""
 "WooCommerce has an option to hide out of stock products from catalog(WooCommerce->Products->Inventory->Out of stock\n"
 "                visibililty),when you enable/enabled this option will hide out of stock products from shop page/category page, but\n"
@@ -1257,331 +1281,331 @@ msgid ""
 "                woocommerce out of stock visibility settings only for variable products"
 msgstr ""
 
-#: includes/admin/class-settings.php:563
+#: includes/admin/class-settings.php:567
 msgid "Enable this option to ignore WooCommerce Out of stock Visibility Settings for Variations"
 msgstr ""
 
-#: includes/admin/class-settings.php:589
+#: includes/admin/class-settings.php:593
 msgid "Customize Error Message and its Visibility"
 msgstr ""
 
-#: includes/admin/class-settings.php:645
+#: includes/admin/class-settings.php:649
 msgid "Email notifications are now managed through WooCommerce Email Templates for better customization. Use the buttons below to configure each email template."
 msgstr ""
 
-#: includes/admin/class-settings.php:662
+#: includes/admin/class-settings.php:666
 msgid "Customize Subscription Confirmation Email"
 msgstr ""
 
-#: includes/admin/class-settings.php:666
+#: includes/admin/class-settings.php:670
 msgid "Customize Back In Stock Email"
 msgstr ""
 
-#: includes/admin/class-settings.php:671
+#: includes/admin/class-settings.php:675
 msgid "These email templates are fully integrated with WooCommerce. You can customize the subject, heading, content, and email type directly through the WooCommerce email settings interface. Your existing settings have been automatically migrated."
 msgstr ""
 
 #. translators: %s: URL to WooCommerce emails settings
-#: includes/admin/class-settings.php:677
+#: includes/admin/class-settings.php:681
 #, php-format
 msgid "You can also find them under <a href=\"%s\">WooCommerce → Settings → Emails</a>."
 msgstr ""
 
-#: includes/admin/class-settings.php:724
+#: includes/admin/class-settings.php:728
 msgid "If you want to set Reply-To email address then enter email id otherwise keep it empty"
 msgstr ""
 
-#: includes/admin/class-settings.php:740
+#: includes/admin/class-settings.php:744
 msgid "For Example: If admin/shop owner want to receive email copy of subcribers then enable this option followed by enter their email ids"
 msgstr ""
 
-#: includes/admin/class-settings.php:779
+#: includes/admin/class-settings.php:783
 msgid "By enable this option, instock email will be send to the published product. Status with private/draft product status will not be considered."
 msgstr ""
 
-#: includes/admin/class-settings.php:809
+#: includes/admin/class-settings.php:813
 msgid ""
 "Using this option Instock Email trigger can be controllable, when you manage product stock by quantity. For Ex:\n"
 "                    If you set 5 in this option, you have to update product stock more than or equal to 5 in product stock quantity\n"
 "                    in order to trigger instock email"
 msgstr ""
 
-#: includes/admin/class-settings.php:826
+#: includes/admin/class-settings.php:830
 msgid "Not recommended"
 msgstr ""
 
-#: includes/admin/class-settings.php:829
+#: includes/admin/class-settings.php:833
 msgid "Using this option prevents subscribers from having to repeatedly sign up for notifications when a product becomes available in limited quantities after going out of stock. For instance, if there are 100 subscribers signed up for notifications and only 10 units are expected to be restocked at a time, enabling this option ensures that those subscribers won't need to re-register for notifications each time the product is restocked"
 msgstr ""
 
-#: includes/admin/class-settings.php:831
+#: includes/admin/class-settings.php:835
 msgid "Note: Enabling this option repeatedly sends instock notifications whenever a product becomes available until the subscribed product is \"purchased\" or \"unsubscribed.\""
 msgstr ""
 
-#: includes/admin/class-settings.php:842
+#: includes/admin/class-settings.php:846
 msgid "When a product is restocked with only a few units, notify just the earliest subscribers instead of everyone. For example: 100 subscribers are waiting and you restock 5 units, only the first 5 subscribers are notified. The remaining 95 stay on the waitlist and are notified automatically on the next restock, they do not need to subscribe again."
 msgstr ""
 
-#: includes/admin/class-settings.php:844
+#: includes/admin/class-settings.php:848
 msgid "Subscribers who already received a notification are moved to the end of the line, so everyone gets a fair turn. Applies only to automatic instock emails for products that manage stock quantity. Manual and bulk sends are never limited."
 msgstr ""
 
-#: includes/admin/class-settings.php:857
+#: includes/admin/class-settings.php:861
 msgid "How many subscribers to notify for each unit in stock. Default is 1, so restocking 5 units notifies the first 5 subscribers. Increase this if you expect that not every notified subscriber will buy. For example: set 2 and restocking 5 units notifies the first 10 subscribers. Used only when Fair Sending above is enabled."
 msgstr ""
 
 #. translators: %s: list of coupon placeholders
-#: includes/admin/class-settings.php:868
+#: includes/admin/class-settings.php:872
 #, php-format
 msgid "Automatically create a unique discount coupon for each subscriber when their back in stock email is sent, to encourage them to buy. Coupons are valid only for the exact product that person subscribed to. Nothing is created while this is disabled. To use it, add %s to your Back In Stock email under WooCommerce > Settings > Emails. A coupon is generated only when one of these placeholders is present in the email."
 msgstr ""
 
-#: includes/admin/class-settings.php:880
+#: includes/admin/class-settings.php:884
 msgid "Off by default. When enabled, each subscriber receives their own single use coupon code in the back in stock email. Coupons are never created for stores that do not use the coupon placeholders in the email."
 msgstr ""
 
-#: includes/admin/class-settings.php:890
+#: includes/admin/class-settings.php:894
 msgid "Percentage discount"
 msgstr ""
 
-#: includes/admin/class-settings.php:891
+#: includes/admin/class-settings.php:895
 msgid "Fixed product discount"
 msgstr ""
 
-#: includes/admin/class-settings.php:892
+#: includes/admin/class-settings.php:896
 msgid "Fixed cart discount"
 msgstr ""
 
-#: includes/admin/class-settings.php:900
+#: includes/admin/class-settings.php:904
 msgid "Same discount types as WooCommerce coupons."
 msgstr ""
 
-#: includes/admin/class-settings.php:909
+#: includes/admin/class-settings.php:913
 msgid "Here is {coupon_amount} off your order"
 msgstr ""
 
 #. translators: %s: list of placeholders.
-#: includes/admin/class-settings.php:914
+#: includes/admin/class-settings.php:918
 #, php-format
 msgid "Leave empty for the default wording. You can use %s."
 msgstr ""
 
-#: includes/admin/class-settings.php:927
-#: includes/functions.php:500
+#: includes/admin/class-settings.php:931
+#: includes/functions.php:504
 msgid "Use this code at checkout"
 msgstr ""
 
-#: includes/admin/class-settings.php:936
+#: includes/admin/class-settings.php:940
 msgid "Valid until {coupon_expiry}"
 msgstr ""
 
-#: includes/admin/class-settings.php:937
+#: includes/admin/class-settings.php:941
 msgid "Shown only when the coupon has an expiry date."
 msgstr ""
 
-#: includes/admin/class-settings.php:947
+#: includes/admin/class-settings.php:951
 msgid "Leave empty for the default label. The button links to the product that came back in stock."
 msgstr ""
 
 #. translators: %s: hex colour.
-#: includes/admin/class-settings.php:961
+#: includes/admin/class-settings.php:965
 #, php-format
 msgid "Match my WooCommerce email colour (%s)"
 msgstr ""
 
-#: includes/admin/class-settings.php:967
+#: includes/admin/class-settings.php:971
 msgid "Match my website colour (none detected in this theme)"
 msgstr ""
 
 #. translators: %s: hex colour.
-#: includes/admin/class-settings.php:970
+#: includes/admin/class-settings.php:974
 #, php-format
 msgid "Match my website colour (%s)"
 msgstr ""
 
-#: includes/admin/class-settings.php:974
+#: includes/admin/class-settings.php:978
 msgid "Use the custom colour below"
 msgstr ""
 
-#: includes/admin/class-settings.php:977
+#: includes/admin/class-settings.php:981
 msgid "Colour of the {coupon_box} heading, border and button in the back in stock email. Use the Preview button on the email to see it."
 msgstr ""
 
-#: includes/admin/class-settings.php:988
+#: includes/admin/class-settings.php:992
 msgid "Used when the setting above is set to the custom colour."
 msgstr ""
 
-#: includes/admin/class-settings.php:997
+#: includes/admin/class-settings.php:1001
 msgid "Leave empty for a soft shade of the colour above, which suits most emails."
 msgstr ""
 
-#: includes/admin/class-settings.php:1006
+#: includes/admin/class-settings.php:1010
 msgid "The discount value. For a percentage discount enter 10 for 10%. Set 0 to disable coupon creation."
 msgstr ""
 
-#: includes/admin/class-settings.php:1015
+#: includes/admin/class-settings.php:1019
 msgid "How many days the coupon stays valid after it is created. A short window such as 3 to 7 days creates urgency. Enter 0 for no expiry."
 msgstr ""
 
-#: includes/admin/class-settings.php:1024
+#: includes/admin/class-settings.php:1028
 msgid "Codes look like PREFIX-XXXXXXXX. Letters, numbers, dash and underscore only."
 msgstr ""
 
-#: includes/admin/class-settings.php:1033
+#: includes/admin/class-settings.php:1037
 msgid "How many times a single generated coupon can be used. Keep this at 1 so each code belongs to one customer."
 msgstr ""
 
-#: includes/admin/class-settings.php:1042
+#: includes/admin/class-settings.php:1046
 msgid "Optional minimum cart total required to use the coupon. Leave empty or 0 for no minimum."
 msgstr ""
 
-#: includes/admin/class-settings.php:1050
+#: includes/admin/class-settings.php:1054
 msgid "When enabled, no coupon is created at all if the restocked product is already on sale, so you never discount twice. The email is still sent, just without a coupon code."
 msgstr ""
 
-#: includes/admin/class-settings.php:1059
+#: includes/admin/class-settings.php:1063
 msgid "Standard WooCommerce coupon rule. When enabled the coupon will not apply to items that are on sale at checkout time."
 msgstr ""
 
-#: includes/admin/class-settings.php:1068
+#: includes/admin/class-settings.php:1072
 msgid "Prevents this coupon being combined with your other coupons."
 msgstr ""
 
-#: includes/admin/class-settings.php:1077
+#: includes/admin/class-settings.php:1081
 msgid "Locks the coupon to the subscriber email address so a forwarded code cannot be used by someone else. Recommended."
 msgstr ""
 
-#: includes/admin/class-settings.php:1085
+#: includes/admin/class-settings.php:1089
 msgid "Also grants free shipping, if your shipping settings allow a free shipping method with a coupon."
 msgstr ""
 
-#: includes/admin/class-settings.php:1090
+#: includes/admin/class-settings.php:1094
 msgid "Please select background process engine, this is important to send a mail in background by default it is WP Background Process and you can also choose WooCommerce Background Process"
 msgstr ""
 
-#: includes/admin/class-settings.php:1098
+#: includes/admin/class-settings.php:1102
 msgid "Send automatic instock emails gradually instead of all at once. Useful when your hosting provider or SMTP service limits how many emails you can send per minute or hour. Emails over the limit are automatically sent in the following minutes, nothing is lost or skipped."
 msgstr ""
 
-#: includes/admin/class-settings.php:1100
+#: includes/admin/class-settings.php:1104
 msgid "Applies only to automatic background emails. Manual sends, bulk sends and subscription confirmation emails are never delayed."
 msgstr ""
 
-#: includes/admin/class-settings.php:1113
+#: includes/admin/class-settings.php:1117
 msgid "Maximum number of automatic instock emails to send per minute. Default is 60. Check your hosting or SMTP provider limits and set a slightly lower value. For example: a provider limit of 600 emails per hour means at most 10 per minute. Used only when Limit Email Sending Speed above is enabled."
 msgstr ""
 
-#: includes/admin/class-settings.php:1126
+#: includes/admin/class-settings.php:1130
 msgid "Subscribers are queued the moment a product is restocked, then emailed by a background task. If that task fails or never runs (for example when the server cron is not firing), those subscribers can get stuck without an email. When enabled, a recovery task periodically finds these stuck entries and tries to send their email again. Leave this off unless you actually see stuck entries, no background task is scheduled while it is off."
 msgstr ""
 
-#: includes/admin/class-settings.php:1136
+#: includes/admin/class-settings.php:1140
 msgid "Every Hour"
 msgstr ""
 
-#: includes/admin/class-settings.php:1137
+#: includes/admin/class-settings.php:1141
 msgid "Every 6 Hours"
 msgstr ""
 
-#: includes/admin/class-settings.php:1138
+#: includes/admin/class-settings.php:1142
 #: includes/class-troubleshoot.php:159
 #: includes/class-troubleshoot.php:180
 msgid "Every 12 Hours"
 msgstr ""
 
-#: includes/admin/class-settings.php:1139
+#: includes/admin/class-settings.php:1143
 #: includes/class-troubleshoot.php:162
 #: includes/class-troubleshoot.php:183
 msgid "Every Day"
 msgstr ""
 
-#: includes/admin/class-settings.php:1148
+#: includes/admin/class-settings.php:1152
 msgid "How often the recovery task runs and how far apart the retries are spaced. For example, with \"Every Hour\" and 2 attempts, a stuck entry is retried at about 1 hour and again at 2 hours, then it stops. The minimum is 1 hour to keep the scheduled-action log tidy. Only applies when Auto-retry Stuck Emails is enabled."
 msgstr ""
 
-#: includes/admin/class-settings.php:1161
+#: includes/admin/class-settings.php:1165
 msgid "How many times to retry before giving up. For example, with a 5 hour interval and 2 attempts, the plugin retries at about 5 hours and again at 10 hours. After the last attempt fails, it stops and sets the status below. Default is 2."
 msgstr ""
 
-#: includes/admin/class-settings.php:1171
+#: includes/admin/class-settings.php:1175
 msgid "Mail Not Sent (recommended)"
 msgstr ""
 
-#: includes/admin/class-settings.php:1172
+#: includes/admin/class-settings.php:1176
 msgid "Subscribed (retry on next restock)"
 msgstr ""
 
-#: includes/admin/class-settings.php:1182
+#: includes/admin/class-settings.php:1186
 msgid "The status a stuck entry is set to after all retry attempts fail. \"Mail Not Sent\" keeps it visible so you can send manually later. \"Subscribed\" puts it back in the pool to be tried again on the next restock."
 msgstr ""
 
-#: includes/admin/class-settings.php:1193
+#: includes/admin/class-settings.php:1197
 msgid "WooCommerce Background Process"
 msgstr ""
 
-#: includes/admin/class-settings.php:1196
+#: includes/admin/class-settings.php:1200
 msgid "Default Background Process"
 msgstr ""
 
-#: includes/admin/class-settings.php:1209
-#: includes/admin/class-settings.php:1223
+#: includes/admin/class-settings.php:1213
+#: includes/admin/class-settings.php:1227
 msgid "Supported Shortcodes {product_name}, {only_product_name}"
 msgstr ""
 
-#: includes/admin/class-settings.php:1230
+#: includes/admin/class-settings.php:1234
 msgid "Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_name} (#{product_id}). We will send you an email at {subscriber_email} as soon as this item is back in stock. You can review the product here: {product_link}.<br/><br/>Thanks for shopping with {shopname}."
 msgstr ""
 
-#: includes/admin/class-settings.php:1231
+#: includes/admin/class-settings.php:1235
 msgid "Hello {subscriber_name},<br/><br/>Good news! {product_name} is now back in stock. You can view the item here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}."
 msgstr ""
 
-#: includes/admin/class-settings.php:1239
-#: templates/default-form.php:17
+#: includes/admin/class-settings.php:1243
+#: templates/default-form.php:30
 msgid "Email when stock available"
 msgstr ""
 
-#: includes/admin/class-settings.php:1241
-#: includes/frontend/class-product.php:240
+#: includes/admin/class-settings.php:1245
+#: includes/frontend/class-product.php:244
 msgid "Your Email Address"
 msgstr ""
 
-#: includes/admin/class-settings.php:1242
-#: includes/class-popup.php:23
-#: includes/frontend/class-product.php:241
+#: includes/admin/class-settings.php:1246
+#: includes/class-popup.php:27
+#: includes/frontend/class-product.php:245
 msgid "Subscribe Now"
 msgstr ""
 
-#: includes/admin/class-settings.php:1244
+#: includes/admin/class-settings.php:1248
 msgid "Please enter valid Email Address"
 msgstr ""
 
-#: includes/admin/class-settings.php:1246
+#: includes/admin/class-settings.php:1250
 #: includes/class-email-manager.php:187
-#: includes/class-subscription-mail.php:40
+#: includes/class-subscription-mail.php:48
 #: includes/emails/class-wc-email-bis-subscription.php:95
 msgid "You subscribed to {product_name} at {shopname}"
 msgstr ""
 
-#: includes/admin/class-settings.php:1249
+#: includes/admin/class-settings.php:1253
 msgid "Product {product_name} is back in stock"
 msgstr ""
 
-#: includes/admin/class-settings.php:1251
+#: includes/admin/class-settings.php:1255
 #: includes/class-ajax.php:154
 msgid "You have successfully subscribed, we will inform you when this product back in stock"
 msgstr ""
 
-#: includes/admin/class-settings.php:1252
+#: includes/admin/class-settings.php:1256
 #: includes/class-ajax.php:225
 msgid "Seems like you have already subscribed to this product"
 msgstr ""
 
-#: includes/admin/class-settings.php:1255
+#: includes/admin/class-settings.php:1259
 msgid "Phone number is too short"
 msgstr ""
 
-#: includes/admin/class-settings.php:1256
+#: includes/admin/class-settings.php:1260
 msgid "Phone number is too long"
 msgstr ""
 
@@ -1672,35 +1696,35 @@ msgid "No SMTP plugin detected. Emails are sent using the server's PHP mail() fu
 msgstr ""
 
 #. translators: %s: recipient email address
-#: includes/admin/class-status.php:399
+#: includes/admin/class-status.php:393
 #, php-format
 msgid "The test email has been scheduled and will be sent to %s shortly. Reload this page after a minute to see the result."
 msgstr ""
 
-#: includes/admin/class-status.php:404
+#: includes/admin/class-status.php:398
 msgid "Unable to verify details, please try again later."
 msgstr ""
 
-#: includes/admin/class-status.php:418
+#: includes/admin/class-status.php:412
 msgid "Settings UI changed successfully"
 msgstr ""
 
-#: includes/admin/class-status.php:422
-#: includes/class-ajax.php:378
-#: includes/class-ajax.php:383
-#: includes/class-ajax.php:389
+#: includes/admin/class-status.php:416
+#: includes/class-ajax.php:382
+#: includes/class-ajax.php:387
+#: includes/class-ajax.php:393
 msgid "Unable to verify details, please try again after some time"
 msgstr ""
 
-#: includes/admin/class-status.php:436
+#: includes/admin/class-status.php:430
 msgid "Unauthorized request."
 msgstr ""
 
-#: includes/admin/class-status.php:450
+#: includes/admin/class-status.php:445
 msgid "No posts found to delete."
 msgstr ""
 
-#: includes/admin/class-status.php:470
+#: includes/admin/class-status.php:465
 msgid "All subscription posts and related data deleted successfully."
 msgstr ""
 
@@ -1726,115 +1750,115 @@ msgstr ""
 msgid "After a certain number of days, delete subscribers from the following statuses: MAIL SENT, UNSUBSCRIBED, and PURCHASED"
 msgstr ""
 
-#: includes/class-bot-protection.php:111
+#: includes/class-bot-protection.php:114
 msgid "Bot Protection"
 msgstr ""
 
-#: includes/class-bot-protection.php:112
+#: includes/class-bot-protection.php:115
 msgid "Bot Protection through"
 msgstr ""
 
-#: includes/class-bot-protection.php:114
+#: includes/class-bot-protection.php:117
 msgid "Enable Google reCAPTCHA in Subscribe Form"
 msgstr ""
 
-#: includes/class-bot-protection.php:115
+#: includes/class-bot-protection.php:118
 msgid "Select Google reCAPTCHA version"
 msgstr ""
 
-#: includes/class-bot-protection.php:116
+#: includes/class-bot-protection.php:119
 msgid "Google reCAPTCHA v2 Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:117
+#: includes/class-bot-protection.php:120
 msgid "Verify Google reCAPTCHA response in Server Side - this will ignore nonce validation"
 msgstr ""
 
-#: includes/class-bot-protection.php:118
+#: includes/class-bot-protection.php:121
 msgid "Google reCAPTCHA v2 Secret Key(this is required when you want to verify reCAPTCHA response in server side)"
 msgstr ""
 
-#: includes/class-bot-protection.php:121
+#: includes/class-bot-protection.php:124
 msgid "Google reCAPTCHA v3 Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:122
+#: includes/class-bot-protection.php:125
 msgid "Google reCAPTCHA v3 Secret Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:123
+#: includes/class-bot-protection.php:126
 msgid "Hide Google v3 reCAPTCHA badge in website"
 msgstr ""
 
-#: includes/class-bot-protection.php:126
+#: includes/class-bot-protection.php:129
 msgid "Enable Turnstile in Subscribe Form"
 msgstr ""
 
-#: includes/class-bot-protection.php:127
+#: includes/class-bot-protection.php:130
 msgid "Turnstile Site Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:128
+#: includes/class-bot-protection.php:131
 msgid "Turnstile Secret Key"
 msgstr ""
 
-#: includes/class-bot-protection.php:136
+#: includes/class-bot-protection.php:139
 msgid "Google reCAPTCHA"
 msgstr ""
 
-#: includes/class-bot-protection.php:139
+#: includes/class-bot-protection.php:142
 msgid "Turnstile"
 msgstr ""
 
-#: includes/class-bot-protection.php:146
+#: includes/class-bot-protection.php:151
 msgid "Add Google reCAPTCHA to the Subscribe Form - Check this link for more information: https://www.google.com/recaptcha/ about Google reCAPTCHA. Or add Cloudflare Turnstile Captcha to the Subscribe Form - check this link for more information: https://www.cloudflare.com/products/turnstile/"
 msgstr ""
 
-#: includes/class-bot-protection.php:147
+#: includes/class-bot-protection.php:152
 msgid "Additionally, enabling Bot Protection via either \"Google reCAPTCHA\" or \"Turnstile\" will resolve the \"Something went wrong, please try again after some time\" error.<br><i>Note: Server-side validation is required for Google reCAPTCHA v2 and Turnstile to ensure proper functionality and security of the Bot Protection mechanism.</i>"
 msgstr ""
 
-#: includes/class-bot-protection.php:157
+#: includes/class-bot-protection.php:162
 msgid "Select this option to enable reCAPTCHA in Subscribe Form(site key required for this option)"
 msgstr ""
 
-#: includes/class-bot-protection.php:168
+#: includes/class-bot-protection.php:173
 msgid "v2"
 msgstr ""
 
-#: includes/class-bot-protection.php:171
+#: includes/class-bot-protection.php:176
 msgid "v3"
 msgstr ""
 
-#: includes/class-bot-protection.php:183
+#: includes/class-bot-protection.php:188
 msgid "By Default this option is unchecked means reCAPTCHA verified in client side and WP Nonce Verification in server side, if you check this option then reCAPTCHA Verification can take place in both Client/Server Side(validate again client reCAPTCHA response) and ignore WP Nonce"
 msgstr ""
 
-#: includes/class-bot-protection.php:204
+#: includes/class-bot-protection.php:209
 msgid "reCAPTCHA Secret Key required only when you enabled this option - 'Verify reCAPTCHA response in Server Side', otherwise it is optional"
 msgstr ""
 
-#: includes/class-bot-protection.php:313
+#: includes/class-bot-protection.php:318
 msgid "This site is protected by reCAPTCHA and the Google"
 msgstr ""
 
-#: includes/class-bot-protection.php:315
+#: includes/class-bot-protection.php:320
 msgid "Privacy Policy"
 msgstr ""
 
-#: includes/class-bot-protection.php:316
+#: includes/class-bot-protection.php:321
 msgid "and"
 msgstr ""
 
-#: includes/class-bot-protection.php:318
+#: includes/class-bot-protection.php:323
 msgid "Terms of Service"
 msgstr ""
 
-#: includes/class-bot-protection.php:319
+#: includes/class-bot-protection.php:324
 msgid "apply."
 msgstr ""
 
-#: includes/class-bot-protection.php:333
+#: includes/class-bot-protection.php:338
 msgid "Select this option to enable Turnstile in Subscribe Form(site key required for this option)"
 msgstr ""
 
@@ -1854,51 +1878,51 @@ msgstr ""
 msgid "Subscription Info:<br> {subscriber_name} <br> {subscriber_email} <br> {product_name}"
 msgstr ""
 
-#: includes/class-core.php:124
+#: includes/class-core.php:128
 msgid "Transient for Parent Variable Product is present try after 3 minutes"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:24
+#: includes/class-dashboard-widget.php:63
 msgid "📊 Back In Stock Notifier for WooCommerce"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:91
+#: includes/class-dashboard-widget.php:102
 msgid "Last 7 Days"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:92
+#: includes/class-dashboard-widget.php:103
 msgid "Last 30 Days"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:93
+#: includes/class-dashboard-widget.php:104
 msgid "Last 90 Days"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:94
+#: includes/class-dashboard-widget.php:105
 msgid "All Time"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:101
+#: includes/class-dashboard-widget.php:112
 msgid "New Subscribers"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:107
+#: includes/class-dashboard-widget.php:118
 msgid "Emails Sent"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:113
+#: includes/class-dashboard-widget.php:124
 msgid "Converted"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:119
+#: includes/class-dashboard-widget.php:130
 msgid "Most Wanted Products"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:215
+#: includes/class-dashboard-widget.php:226
 msgid "No data for selected period"
 msgstr ""
 
-#: includes/class-dashboard-widget.php:227
+#: includes/class-dashboard-widget.php:238
 msgid "Variation"
 msgstr ""
 
@@ -1912,7 +1936,7 @@ msgid "Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_n
 msgstr ""
 
 #: includes/class-email-manager.php:209
-#: includes/class-instock-mail.php:39
+#: includes/class-instock-mail.php:47
 #: includes/emails/class-wc-email-bis-instock.php:87
 msgid "Good news! {product_name} is back in stock"
 msgstr ""
@@ -1923,31 +1947,31 @@ msgid "Your subscribed item {product_name} is now available"
 msgstr ""
 
 #: includes/class-email-manager.php:215
-#: includes/class-instock-mail.php:40
+#: includes/class-instock-mail.php:48
 msgid "Hello {subscriber_name},<br/><br/>Good news! {product_name} is now back in stock. You can view it here: {product_link} or add it directly to your cart: {cart_link}. We only have limited stock available, so please act quickly. Thanks for subscribing with {shopname}."
 msgstr ""
 
-#: includes/class-privacy-checkbox.php:28
+#: includes/class-privacy-checkbox.php:32
 msgid "I Agree Checkbox in Subscribe Form"
 msgstr ""
 
-#: includes/class-privacy-checkbox.php:29
+#: includes/class-privacy-checkbox.php:33
 msgid "Enable I Agree in Subscribe Form"
 msgstr ""
 
-#: includes/class-privacy-checkbox.php:30
+#: includes/class-privacy-checkbox.php:34
 msgid "Text for I Agree - this will appear next to the checkbox frontend"
 msgstr ""
 
-#: includes/class-privacy-checkbox.php:31
+#: includes/class-privacy-checkbox.php:35
 msgid "I Agree Error Message"
 msgstr ""
 
-#: includes/class-privacy-checkbox.php:35
+#: includes/class-privacy-checkbox.php:39
 msgid "I Agree Checkbox(GDPR Compliance) in Subscribe Form Frontend"
 msgstr ""
 
-#: includes/class-privacy-checkbox.php:43
+#: includes/class-privacy-checkbox.php:47
 msgid "Select this option to enable I Agree Checkbox in Subscribe Form(Ex: I Agree to the terms and privacy policy)"
 msgstr ""
 
@@ -1999,99 +2023,112 @@ msgid "Required Quantity"
 msgstr ""
 
 #: includes/class-quantity-field.php:156
-#: includes/functions.php:239
+#: includes/functions.php:243
 msgid "Quantity"
 msgstr ""
 
-#: includes/class-remote-feed.php:330
+#: includes/class-remote-feed.php:125
+msgid "Refresh the Plugins & Add-ons catalogue daily"
+msgstr ""
+
+#: includes/class-remote-feed.php:141
+msgid "Off by default. When on, the list of plugins and add-ons shown on the Plugins & Add-ons page is downloaded from propluginslab.io once a day. No data about your store or customers is sent. When off, the list is only downloaded when you press Refresh on that page."
+msgstr ""
+
+#: includes/class-remote-feed.php:395
 msgid "Permission denied."
 msgstr ""
 
-#: includes/class-remote-feed.php:339
+#: includes/class-remote-feed.php:404
 msgid "Failed to fetch products from the remote feed. Please verify the Feed URL in Settings or try again later."
 msgstr ""
 
 #. translators: %d: number of products loaded from the feed.
-#: includes/class-remote-feed.php:349
+#: includes/class-remote-feed.php:414
 #, php-format
 msgid "Feed refreshed successfully! %d products loaded."
 msgstr ""
 
 #: includes/class-rest-api.php:89
-#: includes/class-rest-api.php:236
+#: includes/class-rest-api.php:259
 msgid "Name field required to perform your request"
 msgstr ""
 
 #: includes/class-rest-api.php:90
-#: includes/class-rest-api.php:237
+#: includes/class-rest-api.php:260
 msgid "Email Address required to perform your request"
 msgstr ""
 
 #: includes/class-rest-api.php:91
-#: includes/class-rest-api.php:238
+#: includes/class-rest-api.php:261
 msgid "Product ID required to perform your request"
 msgstr ""
 
 #: includes/class-rest-api.php:92
-#: includes/class-rest-api.php:239
+#: includes/class-rest-api.php:262
 msgid "Valid Status required to perform your request"
 msgstr ""
 
 #: includes/class-rest-api.php:93
-#: includes/class-rest-api.php:240
+#: includes/class-rest-api.php:263
 msgid "Subscriber phone required to perform your request"
 msgstr ""
 
 #: includes/class-rest-api.php:94
-#: includes/class-rest-api.php:241
+#: includes/class-rest-api.php:264
 msgid "Quantity required to perform your request"
 msgstr ""
 
-#: includes/class-rest-api.php:110
-#: includes/class-rest-api.php:256
+#: includes/class-rest-api.php:109
+#: includes/class-rest-api.php:278
 msgid "Sorry invalid email in your given request"
 msgstr ""
 
-#: includes/class-rest-api.php:141
+#: includes/class-rest-api.php:140
 msgid "Unable to CREATE Subscriber please check your details valid"
 msgstr ""
 
-#: includes/class-rest-api.php:144
+#: includes/class-rest-api.php:143
 msgid "Seems like that email id has been already subscribed"
 msgstr ""
 
-#: includes/class-rest-api.php:147
-#: includes/class-rest-api.php:286
+#: includes/class-rest-api.php:146
+#: includes/class-rest-api.php:311
 msgid "Sorry invalid product/variation id in your given request"
 msgstr ""
 
-#: includes/class-rest-api.php:169
-#: includes/class-rest-api.php:213
+#: includes/class-rest-api.php:174
+#: includes/class-rest-api.php:236
 msgid "Sorry, you cannot list resources."
 msgstr ""
 
-#: includes/class-rest-api.php:178
+#: includes/class-rest-api.php:186
+msgid "Sorry, you are not allowed to delete resources."
+msgstr ""
+
+#: includes/class-rest-api.php:195
 msgid "No Data found for your requested subscriber id"
 msgstr ""
 
-#: includes/class-rest-api.php:180
+#: includes/class-rest-api.php:197
+#: includes/class-rest-api.php:287
 msgid "Requested ID is not a Subscriber ID"
 msgstr ""
 
-#: includes/class-rest-api.php:184
-#: includes/class-rest-api.php:306
+#: includes/class-rest-api.php:201
+#: includes/class-rest-api.php:331
 msgid "ID not present in your Request, please review your details and try again"
 msgstr ""
 
-#: includes/class-rest-api.php:235
+#: includes/class-rest-api.php:258
 msgid "Subscriber ID missing in your request"
 msgstr ""
 
-#: includes/class-rest-api.php:283
+#: includes/class-rest-api.php:308
 msgid "Unable to Update Subscriber please check your details valid"
 msgstr ""
 
-#: includes/class-rest-api.php:302
+#: includes/class-rest-api.php:327
 msgid "You cannot delete data other than Subscribers"
 msgstr ""
 
@@ -2249,7 +2286,7 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-#: includes/class-subscription-mail.php:41
+#: includes/class-subscription-mail.php:49
 msgid "Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_name}. We will notify {subscriber_email} as soon as this product is back in stock. You can review the product here: {product_link}.<br/><br/>Thanks for shopping with {shopname}."
 msgstr ""
 
@@ -2442,7 +2479,7 @@ msgstr ""
 #: includes/emails/class-wc-email-bis-instock.php:384
 #: includes/emails/class-wc-email-bis-subscription.php:357
 #: includes/emails/class-wc-email-bis-subscription.php:401
-#: includes/functions.php:202
+#: includes/functions.php:206
 msgid "Sample Product"
 msgstr ""
 
@@ -2464,6 +2501,7 @@ msgid "Doe"
 msgstr ""
 
 #. translators: %s: comma separated list of shortcodes.
+#. translators: %s: list of shortcodes
 #: includes/emails/class-wc-email-bis-instock.php:466
 #: includes/emails/class-wc-email-bis-subscription.php:475
 #, php-format
@@ -2527,94 +2565,94 @@ msgstr ""
 msgid "Hello {subscriber_name},<br/><br/>Thank you for subscribing to {product_name} (#{product_id}). We will send an update to {subscriber_email} as soon as this item is back in stock. You can review the product here: {product_link}.<br/><br/>Thanks for shopping with {shopname}."
 msgstr ""
 
-#: includes/functions.php:92
+#: includes/functions.php:96
 msgid "Default (classic)"
 msgstr ""
 
-#: includes/functions.php:93
+#: includes/functions.php:97
 msgid "Card"
 msgstr ""
 
-#: includes/functions.php:94
+#: includes/functions.php:98
 msgid "Minimal"
 msgstr ""
 
-#: includes/functions.php:95
+#: includes/functions.php:99
 msgid "Compact (single row)"
 msgstr ""
 
-#: includes/functions.php:96
+#: includes/functions.php:100
 msgid "Bold"
 msgstr ""
 
-#: includes/functions.php:97
+#: includes/functions.php:101
 msgid "Outline"
 msgstr ""
 
-#: includes/functions.php:140
+#: includes/functions.php:144
 msgid "SweetAlert (default)"
 msgstr ""
 
-#: includes/functions.php:141
+#: includes/functions.php:145
 msgid "Centered Modal"
 msgstr ""
 
-#: includes/functions.php:142
+#: includes/functions.php:146
 msgid "Slide Up (mobile friendly)"
 msgstr ""
 
-#: includes/functions.php:143
+#: includes/functions.php:147
 msgid "Side Drawer"
 msgstr ""
 
-#: includes/functions.php:144
+#: includes/functions.php:148
 msgid "Minimal Modal"
 msgstr ""
 
-#: includes/functions.php:145
+#: includes/functions.php:149
 msgid "Card Modal"
 msgstr ""
 
-#: includes/functions.php:240
+#: includes/functions.php:244
 msgid "Price"
 msgstr ""
 
 #. translators: %s: product sku
-#: includes/functions.php:258
+#: includes/functions.php:262
 #, php-format
 msgid "SKU: %s"
 msgstr ""
 
 #. translators: %s: discount amount, for example 10% or $10.
-#: includes/functions.php:499
+#: includes/functions.php:503
 #, php-format
 msgid "Here is %s off your order"
 msgstr ""
 
 #. translators: %s: discount amount, for example 10% or $10.
-#: includes/functions.php:499
+#: includes/functions.php:503
 msgid "Here is a discount for your order"
 msgstr ""
 
 #. translators: %s: expiry date.
-#: includes/functions.php:502
+#: includes/functions.php:506
 #, php-format
 msgid "Valid until %s"
 msgstr ""
 
-#: templates/default-form.php:42
+#: templates/default-form.php:55
 msgid "Back in stock subscription form"
 msgstr ""
 
-#: templates/default-form.php:57
+#: templates/default-form.php:70
 msgid "Your name"
 msgstr ""
 
-#: templates/default-form.php:73
+#: templates/default-form.php:86
 msgid "Email address"
 msgstr ""
 
-#: templates/default-form.php:94
+#: templates/default-form.php:107
 msgid "Phone number"
 msgstr ""
 

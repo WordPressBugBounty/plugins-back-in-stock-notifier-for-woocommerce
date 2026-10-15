@@ -101,8 +101,12 @@ if ( ! class_exists( 'CWG_Instock_Auto_Delete' ) ) {
 			if ( $post && 'cwginstocknotifier' === $post->post_type ) {
 
 				$user       = wp_get_current_user();
-				$request_ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( $_SERVER['REMOTE_ADDR'] ) : '';
-				$backtrace  = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+				$request_ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+				// Which code path deleted the record: a compact list of callers.
+				// Deletion audit log, not debug output: records the calling code.
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_wp_debug_backtrace_summary
+				$callers = wp_debug_backtrace_summary( null, 0, false );
+				$callers = is_array( $callers ) ? array_slice( $callers, 0, 10 ) : array();
 
 				// Save log
 				$log_data = array(
@@ -112,10 +116,10 @@ if ( ! class_exists( 'CWG_Instock_Auto_Delete' ) ) {
 					'user_id' => $user->ID ?? 0,
 					'user_ip' => $request_ip,
 					'time' => current_time( 'mysql' ),
-					'trace' => print_r( $backtrace, true ),
+					'trace' => $callers,
 				);
 
-				$log_info = '[DELETION LOG] ' . print_r( $log_data, true );
+				$log_info = '[DELETION LOG] ' . wp_json_encode( $log_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
 				$logger   = new CWG_Instock_Logger( 'success', $log_info );
 				$logger->record_log();
 			}

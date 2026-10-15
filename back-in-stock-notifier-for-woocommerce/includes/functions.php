@@ -3,6 +3,10 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+// Public function, class, hook and template variable names below are part of the
+// plugin's published API (themes and add-ons use them), so they keep their names.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+
 function cwg_bis_remove_villa_header_override() {
 
 	global $wp_filter;
@@ -655,4 +659,30 @@ function cwg_instock_apply_request_language( $language = '' ) {
 	do_action( 'cwginstock_switch_language', $language, $switched );
 
 	return $language;
+}
+
+if ( ! function_exists( 'cwg_instock_add_inline_css' ) ) {
+	/**
+	 * Attach a block of CSS through the style queue instead of printing a
+	 * style tag. Works before and after the head is printed: a style enqueued
+	 * late is printed by WordPress in the footer. Each handle is added once
+	 * per request.
+	 *
+	 * @since 7.5.0
+	 * @param string $handle Style handle, prefixed.
+	 * @param string $css    CSS rules.
+	 * @return void
+	 */
+	function cwg_instock_add_inline_css( $handle, $css ) {
+		static $added = array();
+		if ( isset( $added[ $handle ] ) || '' === trim( (string) $css ) ) {
+			return;
+		}
+		$added[ $handle ] = true;
+		if ( ! wp_style_is( $handle, 'registered' ) ) {
+			wp_register_style( $handle, false, array(), defined( 'CWGINSTOCK_VERSION' ) ? CWGINSTOCK_VERSION : false );
+		}
+		wp_enqueue_style( $handle );
+		wp_add_inline_style( $handle, $css );
+	}
 }

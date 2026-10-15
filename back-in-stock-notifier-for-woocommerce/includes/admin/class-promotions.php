@@ -35,7 +35,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'add_menu' ), 1000 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-			add_action( 'admin_head', array( $this, 'menu_highlight_css' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'menu_highlight_css' ) );
 		}
 
 		/**
@@ -55,18 +55,12 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 		 * @since 7.4.0
 		 */
 		public function menu_highlight_css() {
-			?>
-			<style>
-				#adminmenu .wp-submenu a .cwg-extensions-menu {
-					color: #00a32a;
-					font-weight: 600;
-				}
+			cwg_instock_add_inline_css(
+				'cwginstock-admin-menu',
+				'#adminmenu .wp-submenu a .cwg-extensions-menu { color: #00a32a; font-weight: 600; }
 				#adminmenu .wp-submenu a:hover .cwg-extensions-menu,
-				#adminmenu .wp-submenu li.current a .cwg-extensions-menu {
-					color: #00ba37;
-				}
-			</style>
-			<?php
+				#adminmenu .wp-submenu li.current a .cwg-extensions-menu { color: #00ba37; }'
+			);
 		}
 
 		public function add_menu() {
@@ -382,11 +376,8 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 
 				<div class="cwg-promo-card-body">
 					<div class="cwg-promo-card-icon">
-						<?php if ( ! empty( $product['icon_url'] ) ) : ?>
-						<img src="<?php echo esc_url( $product['icon_url'] ); ?>" alt="<?php echo esc_attr( $product['name'] ); ?>" width="48" height="48" loading="lazy">
-						<?php else : ?>
+						<?php // Icons are bundled dashicons; no image is loaded from another host. ?>
 						<span class="dashicons <?php echo esc_attr( $this->category_icon( $category ) ); ?>"></span>
-						<?php endif; ?>
 					</div>
 
 					<div class="cwg-promo-card-content">
@@ -891,7 +882,7 @@ if ( ! class_exists( 'CWG_Instock_Promotions' ) ) {
 						<?php if ( empty( $feed_url ) ) : ?>
 							<?php esc_html_e( 'The remote feed URL is not configured. Please set it in Settings, or browse extensions on our website.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<?php else : ?>
-							<?php esc_html_e( 'Products will be loaded automatically via daily sync. Click "Refresh" above to load now, or visit our website.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+							<?php esc_html_e( 'Click "Refresh" above to load the list from propluginslab.io, or visit our website. A daily automatic refresh can be turned on in Settings > Troubleshoot Settings.', 'back-in-stock-notifier-for-woocommerce' ); ?>
 						<?php endif; ?>
 					</p>
 					<a href="<?php echo esc_url( $this->add_utm_params( 'https://propluginslab.io/', 'empty-state' ) ); ?>" target="_blank" class="button button-primary button-hero">

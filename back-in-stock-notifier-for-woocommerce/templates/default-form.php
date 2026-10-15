@@ -1,3 +1,16 @@
+<?php
+/**
+ * Subscribe form template.
+ *
+ * @package back-in-stock-notifier-for-woocommerce
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+// Template variables and hooks keep their published names for theme overrides.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+?>
 <section
 	class="cwginstock-subscribe-form <?php echo esc_attr( $variation_class ); ?> <?php echo esc_attr( $dynamic_wrapper_class ); ?>">
 	<div class="panel panel-primary cwginstock-panel-primary">

@@ -91,7 +91,7 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 					} else {
 						$site_key = $this->get_site_key();
 						// phpcs:ignore
-						wp_enqueue_script( 'recaptcha', "https://www.google.com/recaptcha/api.js?render=$site_key", array(), CWGINSTOCK_VERSION, array() );
+						wp_enqueue_script( 'recaptcha', add_query_arg( 'render', rawurlencode( (string) $site_key ), 'https://www.google.com/recaptcha/api.js' ), array(), CWGINSTOCK_VERSION, array() );
 					}
 				}
 			} else {
@@ -101,7 +101,10 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 					// loaded with async or defer, so it is loaded as a plain footer script,
 					// which still does not block rendering. No version is appended so the
 					// URL stays exactly as Cloudflare publishes it.
-					// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+					// Cloudflare Turnstile is an optional third party service, off by
+					// default, loaded only when the admin turns it on and documented in
+					// the readme External services section.
+					// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion, PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent
 					wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true );
 				}
 			}
@@ -143,6 +146,8 @@ if ( ! class_exists( 'CWG_Instock_Bot_Protection' ) ) {
 		}
 
 		public function bot_protection_settings_heading() {
+			// Links to the providers' own pages, shown as text in the settings; nothing is loaded from them.
+			// phpcs:ignore PluginCheck.CodeAnalysis.Offloading.OffloadedContent
 			$url             = __( 'Add Google reCAPTCHA to the Subscribe Form - Check this link for more information: https://www.google.com/recaptcha/ about Google reCAPTCHA. Or add Cloudflare Turnstile Captcha to the Subscribe Form - check this link for more information: https://www.cloudflare.com/products/turnstile/', 'back-in-stock-notifier-for-woocommerce' );
 			$additional_info = __( 'Additionally, enabling Bot Protection via either "Google reCAPTCHA" or "Turnstile" will resolve the "Something went wrong, please try again after some time" error.<br><i>Note: Server-side validation is required for Google reCAPTCHA v2 and Turnstile to ensure proper functionality and security of the Bot Protection mechanism.</i>', 'back-in-stock-notifier-for-woocommerce' );
 			echo '<p>' . wp_kses_post( $url ) . '</p>';

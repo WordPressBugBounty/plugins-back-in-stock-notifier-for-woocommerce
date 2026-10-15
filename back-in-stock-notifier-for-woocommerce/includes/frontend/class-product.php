@@ -4,6 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Public function, class, hook and template variable names below are part of the
+// plugin's published API (themes and add-ons use them), so they keep their names.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+
 if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 
 	class CWG_Instock_Notifier_Product {
@@ -500,13 +504,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier_Product' ) ) {
 		public function display_subscribe_form_in_pvttable( $cart_button, $product_id, $cart_url, $product_url, $variant_id, $stock_info ) {
 			$parent_product = wc_get_product( $product_id );
 			$child          = wc_get_product( $variant_id );
-			?>
-			<style type='text/css'>
-				button.pvtfw_variant_table_cart_btn.button.alt:disabled {
-					display: none !important;
-				}
-			</style>
-			<?php
+			cwg_instock_add_inline_css( 'cwginstock-pvt-table', 'button.pvtfw_variant_table_cart_btn.button.alt:disabled { display: none !important; }' );
 			/**
 			 * Action Hook for popup submit button
 			 * 

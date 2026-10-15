@@ -189,6 +189,8 @@ if ( ! class_exists( 'CWG_Instock_Queue_Recovery' ) ) {
 			 */
 			$batch = max( 1, (int) apply_filters( 'cwginstock_queue_recovery_batch', 50 ) );
 
+			// Background job that must see the current queue, so no cache.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$ids = $wpdb->get_col(
 				$wpdb->prepare(
 					"SELECT ID FROM {$wpdb->posts}

@@ -5,14 +5,16 @@
  * Plugin Name: Back In Stock Notifier for WooCommerce | WooCommerce Waitlist Pro
  * Plugin URI: https://propluginslab.io/shop/plugins/free-plugins/back-in-stock-notifier-for-woocommerce/
  * Description: Notify subscribed users when products back in stock
- * Version: 7.4.5
+ * Version: 7.5.0
  * Author: ProPluginsLab by CodeWooGeek
+ * Requires at least: 5.3
+ * Requires PHP: 7.4
  * Requires Plugins: woocommerce
  * Author URI: https://propluginslab.io
  * Text Domain: back-in-stock-notifier-for-woocommerce
  * Domain Path: /languages
  * WC requires at least: 2.2.0
- * WC tested up to: 11.1.1
+ * WC tested up to: 11.2.1
  * @package     back-in-stock-notifier-for-woocommerce
  * @author      propluginslab
  * @copyright   2026 CodeWooGeek, LLC (USA) and CodeWooGeek Softwares Private Limited (India). All rights reserved.
@@ -26,9 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // avoid direct access to the file
 }
 
+// Public function, class, hook and template variable names below are part of the
+// plugin's published API (themes and add-ons use them), so they keep their names.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
+// Only decides whether to load the notices library on this plugin's screens.
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-if ( isset( $_GET['post_type'] ) && ( ( 'cwginstocknotifier' == $_GET['post_type'] ) || ( 'cwginstock_arrival' == $_GET['post_type'] ) ) ) {
+if ( isset( $_GET['post_type'] ) && is_string( $_GET['post_type'] ) && in_array( sanitize_key( wp_unslash( $_GET['post_type'] ) ), array( 'cwginstocknotifier', 'cwginstock_arrival' ), true ) ) {
 	require 'includes/vendor/WP_Persistent_Notices.php';
 }
 
@@ -55,7 +62,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 *
 		 * @var string Version
 		 */
-		public $version = '7.4.5';
+		public $version = '7.5.0';
 
 		/**
 		 * Instance variable
@@ -166,6 +173,7 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 			include 'includes/class-auto-coupon.php';
 			include 'includes/class-dashboard-widget.php';
 			include 'includes/class-cache-control.php';
+			include 'includes/admin/class-product-waitlist-box.php';
 		}
 
 		/**
@@ -200,6 +208,8 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 		 */
 		private function define( $name, $value ) {
 			if ( ! defined( $name ) ) {
+				// Only called with the CWGINSTOCK constants listed in define_constant().
+				// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.VariableConstantNameFound
 				define( $name, $value );
 			}
 		}
@@ -385,6 +395,9 @@ if ( ! class_exists( 'CWG_Instock_Notifier' ) ) {
 				 *
 				 * @since 1.0.0
 				 */
+				// The plugin ships translations in its own languages folder, which
+				// only load_plugin_textdomain() registers.
+				// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
 				load_plugin_textdomain( $domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 			}
 		}

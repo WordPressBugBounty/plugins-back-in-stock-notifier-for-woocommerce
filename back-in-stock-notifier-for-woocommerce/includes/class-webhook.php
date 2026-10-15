@@ -77,8 +77,7 @@ if ( ! class_exists( 'CWG_Instock_Webhook' ) ) {
 				 * @since 1.0.0
 				 */
 				$subscriber_data = apply_filters(
-					''
-					. '',
+					'cwginstock_payload_data',
 					array(
 						'name' => $subscriber_name,
 						'email' => $subscriber_email,

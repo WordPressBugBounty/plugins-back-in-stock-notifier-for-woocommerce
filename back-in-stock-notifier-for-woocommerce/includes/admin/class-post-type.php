@@ -7,6 +7,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Public function, class, hook and template variable names below are part of the
+// plugin's published API (themes and add-ons use them), so they keep their names.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
+
 if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 
 	class CWG_Instock_Post_Type {
@@ -39,7 +43,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			// manage sortable columns
 			add_filter( 'manage_edit-cwginstocknotifier_sortable_columns', array( $this, 'sortable_columns' ) );
 			// custom css
-			add_action( 'admin_head', array( $this, 'custom_css' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'custom_css' ) );
 			add_filter( 'post_row_actions', array( $this, 'manage_row_actions' ), 10, 2 );
 			// perform admin action
 			add_action( 'admin_action_cwginstock-sendmail', array( $this, 'send_manual_mail' ) );
@@ -266,15 +270,15 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			// reads $_GET to detect the current screen (a boolean gate); the value
 			// is never used in a query, so no nonce is required. is_string() guards
 			// against array input (e.g. post_type[]=) that would break sanitize_key.
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$on_list = ( 'edit.php' === $pagenow
-				&& isset( $_GET['post_type'] ) && is_string( $_GET['post_type'] )
-				&& 'cwginstocknotifier' === sanitize_key( wp_unslash( $_GET['post_type'] ) )
-				&& ! isset( $_GET['page'] ) );
+			$screen_post_type = isset( $_GET['post_type'] ) && is_string( $_GET['post_type'] ) ? sanitize_key( wp_unslash( $_GET['post_type'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$screen_has_page  = isset( $_GET['page'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$on_list          = ( 'edit.php' === $pagenow && 'cwginstocknotifier' === $screen_post_type && ! $screen_has_page );
 
 			if ( $on_list ) {
 				// Capture how many are new since the previous visit (for the notice),
 				// then mark everything as seen.
+				// Live count for the admin menu badge; caching would show a stale number.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$this->new_since_last_visit = (int) $wpdb->get_var(
 					$wpdb->prepare(
 						"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'cwginstocknotifier' AND post_status = 'cwg_subscribed' AND post_date_gmt > %s",
@@ -287,6 +291,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			}
 
 			// Count new subscribers created since the list was last opened.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$count = (int) $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'cwginstocknotifier' AND post_status = 'cwg_subscribed' AND post_date_gmt > %s",
@@ -627,7 +632,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 			if ( isset( $_REQUEST['nonce'] ) && isset( $_REQUEST['post_id'] ) && isset( $_SERVER['HTTP_REFERER'] ) ) {
 				$post_id = intval( $_REQUEST['post_id'] );
 				$nonce   = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
-				if ( wp_verify_nonce( $nonce, 'cwginstock_sendmail-' . $post_id ) ) {
+				if ( wp_verify_nonce( $nonce, 'cwginstock_sendmail-' . $post_id ) && current_user_can( 'edit_post', $post_id ) && 'cwginstocknotifier' === get_post_type( $post_id ) ) {
 					// send mail
 					$get_email      = get_post_meta( $post_id, 'cwginstock_subscriber_email', true );
 					$option         = get_option( 'cwginstocksettings' );
@@ -702,43 +707,46 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 						)
 					);
 				}
-				wp_redirect( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+				$redirect = wp_get_referer();
+				wp_safe_redirect( $redirect ? $redirect : admin_url( 'edit.php?post_type=cwginstocknotifier' ) );
 				exit();
 			}
 		}
 
 		public function custom_css() {
-			?>
-			<style type="text/css">
-				#cwgimage {
-					width: 32px;
-					text-align: center;
-				}
+			cwg_instock_add_inline_css(
+				'cwginstock-admin-list',
+				'
+			#cwgimage {
+				width: 32px;
+				text-align: center;
+			}
 
-				table.wp-list-table .column-total_subscribers {
-					width: 10%;
-				}
+			table.wp-list-table .column-total_subscribers {
+				width: 10%;
+			}
 
-				table.wp-list-table th.column-status,
-				table.wp-list-table td.column-status {
-					white-space: nowrap;
-					width: 120px;
-				}
+			table.wp-list-table th.column-status,
+			table.wp-list-table td.column-status {
+				white-space: nowrap;
+				width: 120px;
+			}
 
-				table.wp-list-table td.column-status .cwgmark {
-					display: inline-block;
-					white-space: nowrap;
-				}
+			table.wp-list-table td.column-status .cwgmark {
+				display: inline-block;
+				white-space: nowrap;
+			}
 
-				#cwgimage p {
-					display: none;
-				}
+			#cwgimage p {
+				display: none;
+			}
 
-				.column-cwgimage p {
-					display: none;
-				}
-			</style>
-			<?php
+			.column-cwgimage p {
+				display: none;
+			}
+		
+			'
+			);
 		}
 
 		public function remove_from_bulk_actions( $actions ) {
@@ -899,7 +907,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 
 			// $placeholders is built only from %d tokens counted off $term_ids, and every
 			// id is bound through prepare(), so no user value reaches the SQL directly.
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 			$clauses['where']  .= $wpdb->prepare( " AND cwgcattt.term_id IN ($placeholders) ", $term_ids );
 			$clauses['groupby'] = "{$wpdb->posts}.ID";
 

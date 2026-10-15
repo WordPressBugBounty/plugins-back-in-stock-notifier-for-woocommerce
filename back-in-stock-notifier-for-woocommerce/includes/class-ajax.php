@@ -85,7 +85,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 							}
 						} else {
 							$gresponse_body   = json_decode( wp_remote_retrieve_body( $verify_gresponse ) );
-							$gresponse_status = $gresponse_body->success;
+							$gresponse_status = is_object( $gresponse_body ) && ! empty( $gresponse_body->success );
 							if ( ! $gresponse_status ) {
 								if ( ! $rest_api ) {
 									wp_send_json( $array_error, 403 );
@@ -114,7 +114,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 							}
 						} else {
 							$tresponse_body   = json_decode( wp_remote_retrieve_body( $verify_tresponse ) );
-							$tresponse_status = $tresponse_body->success;
+							$tresponse_status = is_object( $tresponse_body ) && ! empty( $tresponse_body->success );
 							if ( ! $tresponse_status ) {
 								if ( ! $rest_api ) {
 									wp_send_json( $array_error, 403 );
@@ -283,6 +283,8 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 		}
 
 		private function verify_turnstile_client_response( $post, $options ) {
+			// Server side check of the Turnstile token (opt in service, see readme).
+			// phpcs:ignore PluginCheck.CodeAnalysis.Offloading.OffloadedContent
 			$verify_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 			$secret_key = CWG_Instock_Bot_Protection::get_turnstile_secret_key();
 			$tresponse  = $post['security'];
@@ -335,6 +337,8 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 			 *
 			 * @since 1.0.0
 			 */
+			// Same filter name as the WooCommerce tag search this handler mirrors.
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			wp_send_json( apply_filters( 'woocommerce_json_search_found_tags', $found_tags ) );
 		}
 
@@ -378,7 +382,7 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 						esc_html_e( 'Unable to verify details, please try again after some time', 'back-in-stock-notifier-for-woocommerce' );
 					} else {
 						$gresponse_body   = json_decode( wp_remote_retrieve_body( $verify_gresponse ) );
-						$gresponse_status = $gresponse_body->success;
+						$gresponse_status = is_object( $gresponse_body ) && ! empty( $gresponse_body->success );
 						if ( ! $gresponse_status ) {
 							esc_html_e( 'Unable to verify details, please try again after some time', 'back-in-stock-notifier-for-woocommerce' );
 						} else {

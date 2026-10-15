@@ -18,8 +18,6 @@ if (typeof wc_bulk_variations_params !== 'undefined') {
 		'click',
 		function (event) {
 			if (event.target.matches('.cwg_popup_submit')) {
-				console.log(event.target.dataset.product_id);
-				console.log('Captured click before stopPropagation!');
 				var e = event.target;
 				jQuery.blockUI({ message: null });
 				var product_id = e.dataset.product_id;
@@ -84,7 +82,6 @@ var popup_notifier = {
 				function () {
 					grecaptcha.execute(recaptcha_site_key, { action: 'popup_form' }).then(
 						function (token) {
-							console.log(token);
 
 							var current = jQuery(currentel);
 							var product_id = current.attr('data-product_id');
