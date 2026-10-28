@@ -398,7 +398,7 @@ if ( ! class_exists( 'CWG_Instock_Auto_Coupon' ) ) {
 				$link = '';
 				if ( class_exists( 'CWG_Instock_API' ) ) {
 					$api  = new CWG_Instock_API();
-					$link = (string) $api->display_product_link( $subscriber_id );
+					$link = cwg_instock_add_utm_params( (string) $api->display_product_link( $subscriber_id ), 'coupon_button' );
 				}
 				$placeholders['{coupon_box}'] = cwg_instock_get_coupon_box_html(
 					$code,
@@ -427,6 +427,20 @@ if ( ! class_exists( 'CWG_Instock_Auto_Coupon' ) ) {
 				}
 			}
 
+			// WooCommerce's block based email editor keeps the body in a post of its
+			// own rather than in the additional content setting, so a placeholder
+			// added there would otherwise go unnoticed.
+			$posts_manager = '\\Automattic\\WooCommerce\\Internal\\EmailEditor\\WCTransactionalEmails\\WCTransactionalEmailPostsManager';
+			if ( is_object( $email ) && ! empty( $email->id ) && class_exists( $posts_manager ) ) {
+				$manager = call_user_func( array( $posts_manager, 'get_instance' ) );
+				if ( is_object( $manager ) && method_exists( $manager, 'get_email_post' ) ) {
+					$email_post = $manager->get_email_post( $email->id );
+					if ( $email_post instanceof WP_Post ) {
+						$haystack .= (string) $email_post->post_content;
+					}
+				}
+			}
+
 			// Legacy settings are still honoured for stores that never migrated.
 			$options   = get_option( 'cwginstocksettings', array() );
 			$haystack .= isset( $options['instock_mail_message'] ) ? (string) $options['instock_mail_message'] : '';
@@ -436,6 +450,12 @@ if ( ! class_exists( 'CWG_Instock_Auto_Coupon' ) ) {
 				if ( false !== strpos( $haystack, $token ) ) {
 					return true;
 				}
+			}
+
+			// Custom email templates cannot be scanned, so stores using one can ask
+			// for the coupon to be created regardless.
+			if ( '1' === (string) self::opt( 'coupon_always_create', '0' ) ) {
+				return true;
 			}
 
 			/**

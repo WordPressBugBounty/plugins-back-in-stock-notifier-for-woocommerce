@@ -226,7 +226,7 @@ function cwg_instock_get_product_table_html( $subscriber_id, $preview = false ) 
 		}
 
 		$name     = wp_strip_all_tags( $api->display_product_name( $subscriber_id ) );
-		$link     = $api->display_product_link( $subscriber_id );
+		$link     = cwg_instock_add_utm_params( $api->display_product_link( $subscriber_id ), 'product_table' );
 		$image    = $api->get_product_image( $subscriber_id, array( 48, 48 ) );
 		$price    = $api->get_product_price( $subscriber_id );
 		$sku      = $api->get_product_sku( $subscriber_id );
@@ -685,4 +685,94 @@ if ( ! function_exists( 'cwg_instock_add_inline_css' ) ) {
 		wp_enqueue_style( $handle );
 		wp_add_inline_style( $handle, $css );
 	}
+}
+
+/**
+ * UTM settings for the notification emails.
+ *
+ * @since 7.5.1
+ * @return array Empty when tracking is switched off.
+ */
+function cwg_instock_get_utm_settings() {
+	$options = get_option( 'cwginstocksettings', array() );
+
+	if ( ! isset( $options['enable_utm_tracking'] ) || '1' !== (string) $options['enable_utm_tracking'] ) {
+		return array();
+	}
+
+	$defaults = array(
+		'utm_source'   => 'back-in-stock',
+		'utm_medium'   => 'email',
+		'utm_campaign' => 'back-in-stock-notification',
+		'utm_term'     => '',
+		'utm_content'  => '',
+	);
+
+	$values = array();
+	foreach ( $defaults as $key => $default ) {
+		$stored        = isset( $options[ $key ] ) ? trim( (string) $options[ $key ] ) : '';
+		$values[ $key ] = '' !== $stored ? sanitize_text_field( $stored ) : $default;
+	}
+
+	return array_filter( $values, 'strlen' );
+}
+
+/**
+ * Add the configured UTM parameters to a link used in an email.
+ *
+ * Parameters already present on the link are left alone, so a link that was
+ * tagged by hand keeps its own values.
+ *
+ * @since 7.5.1
+ * @param string $url     Link to tag.
+ * @param string $context Where the link appears, for the filter below.
+ * @return string
+ */
+function cwg_instock_add_utm_params( $url, $context = '' ) {
+	if ( ! is_string( $url ) || '' === trim( $url ) ) {
+		return $url;
+	}
+
+	// Leave anything that is not a web address alone, such as mailto links.
+	if ( 0 !== stripos( $url, 'http://' ) && 0 !== stripos( $url, 'https://' ) ) {
+		return $url;
+	}
+
+	$params = cwg_instock_get_utm_settings();
+	if ( empty( $params ) ) {
+		return $url;
+	}
+
+	// Optionally label each link so a click on the product, the cart, the table
+	// or the coupon button can be told apart in reporting. A content value set
+	// by hand always wins.
+	$options = get_option( 'cwginstocksettings', array() );
+	if ( '' !== (string) $context && empty( $params['utm_content'] )
+		&& isset( $options['utm_distinguish_links'] ) && '1' === (string) $options['utm_distinguish_links'] ) {
+		$params['utm_content'] = str_replace( '_', '-', $context );
+	}
+
+	/**
+	 * Filter the UTM parameters before they are added to a link.
+	 *
+	 * @since 7.5.1
+	 */
+	$params = (array) apply_filters( 'cwginstock_utm_parameters', $params, $url, $context );
+
+	$query = (string) wp_parse_url( $url, PHP_URL_QUERY );
+	if ( '' !== $query ) {
+		$existing = array();
+		wp_parse_str( $query, $existing );
+		foreach ( array_keys( $params ) as $key ) {
+			if ( isset( $existing[ $key ] ) && '' !== $existing[ $key ] ) {
+				unset( $params[ $key ] );
+			}
+		}
+	}
+
+	if ( empty( $params ) ) {
+		return $url;
+	}
+
+	return add_query_arg( array_map( 'rawurlencode', $params ), $url );
 }

@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 7.5.0
+Stable tag: 7.5.1
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -157,6 +157,7 @@ Pro plugins at [propluginslab.io](https://propluginslab.io/product-category/pro-
 * [Inputo Pro](https://propluginslab.io/shop/plugins/pro-plugins/inputo-name-your-price-for-woocommerce/)
 * [Mercenza Pro](https://propluginslab.io/shop/plugins/pro-plugins/mercenza-b2b-for-woocommerce/)
 * [Visuaro Pro](https://propluginslab.io/shop/plugins/pro-plugins/visuaro-product-designer-for-woocommerce/)
+* [Divisero Pro](https://propluginslab.io/shop/plugins/pro-plugins/divisero-multicurrency-for-woocommerce/)
 
 == Installation ==
 
@@ -279,6 +280,12 @@ The plugin works without any external service. The services below are used only 
 
 
 == Changelog ==
+= 7.5.1 2026-10-28 =
+* New: UTM tracking for the links in both notification emails, under Instock Notifier > Settings > Email Link Tracking. Set the source, medium and campaign once and they are applied to every link: {product_link}, {cart_link}, the product link inside {product_table}, and the button in {coupon_box}. An optional setting labels each link with its own utm_content so you can tell which one was clicked. Links you tagged by hand keep their own values, and the product image is left alone.
+* Fix: Coupon settings that are on by default could not be turned off. Unticking "Coupon Cannot Be Used on Sale Items", "Cannot Be Combined with Other Coupons" or "Restrict Coupon to Subscriber Email" had no effect, because an unticked checkbox submitted nothing and the default switched the setting back on.
+* Fix: The coupon could come through empty when the email body was written in the WooCommerce block email editor. A coupon is only created when a coupon placeholder is found in the email, and that editor keeps the body in a separate place which was not being checked.
+* New: An "Always Create the Coupon" setting for stores using a customised email template, where the placeholder cannot be detected automatically.
+
 = 7.5.0 - 2026-10-15 =
 * New: Waitlist summary box on the product edit screen. It shows how many people are waiting for the product and for each variation, how many were already notified or converted, and links to those subscribers. Turn it on under Instock Notifier > Settings > Troubleshoot Settings > "Show Waitlist Summary on Product Edit Screen" (off by default).
 * Tweak: The Plugins & Add-ons catalogue is no longer downloaded from propluginslab.io on a daily schedule unless you turn on "Refresh the Plugins & Add-ons catalogue daily" (off by default). Pressing Refresh on that page still loads it. Add-on icons on that page no longer load from another site.

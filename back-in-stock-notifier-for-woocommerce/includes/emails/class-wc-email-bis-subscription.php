@@ -140,11 +140,11 @@ if ( ! class_exists( 'WC_Email_BIS_Subscription' ) ) {
 			$this->placeholders['{product_name}']         = wp_strip_all_tags( $api->display_product_name( $subscriber_id ) );
 			$this->placeholders['{only_product_name}']    = $api->display_only_product_name( $subscriber_id );
 			$this->placeholders['{product_id}']           = $pid;
-			$this->placeholders['{product_link}']         = $api->display_product_link( $subscriber_id );
+			$this->placeholders['{product_link}']         = cwg_instock_add_utm_params( $api->display_product_link( $subscriber_id ), 'product_link' );
 			$this->placeholders['{product_price}']        = $api->get_product_price( $subscriber_id );
 			$this->placeholders['{only_product_sku}']     = $api->get_product_sku( $subscriber_id );
 			$this->placeholders['{product_image}']        = $api->get_product_image( $subscriber_id );
-			$this->placeholders['{cart_link}']            = $api->get_cart_link( $subscriber_id );
+			$this->placeholders['{cart_link}']            = cwg_instock_add_utm_params( $api->get_cart_link( $subscriber_id ), 'cart_link' );
 			$this->placeholders['{subscriber_name}']      = $api->get_subscriber_name( $subscriber_id );
 			$this->placeholders['{subscriber_firstname}'] = $api->get_subscriber_firstname( $subscriber_id );
 			$this->placeholders['{subscriber_lastname}']  = $api->get_subscriber_lastname( $subscriber_id );
