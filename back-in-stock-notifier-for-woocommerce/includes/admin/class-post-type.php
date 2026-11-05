@@ -628,10 +628,27 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 		}
 
 		public function send_manual_mail() {
+			// The notices library is loaded from the main plugin file only when the
+			// request carries post_type in the query string. This handler uses it
+			// either way, so make sure it is there rather than fataling on a request
+			// that arrived without it.
+			if ( ! function_exists( 'add_persistent_notice' ) && file_exists( CWGINSTOCK_PLUGINDIR . 'includes/vendor/WP_Persistent_Notices.php' ) ) {
+				require_once CWGINSTOCK_PLUGINDIR . 'includes/vendor/WP_Persistent_Notices.php';
+			}
 
-			if ( isset( $_REQUEST['nonce'] ) && isset( $_REQUEST['post_id'] ) && isset( $_SERVER['HTTP_REFERER'] ) ) {
-				$post_id = intval( $_REQUEST['post_id'] );
-				$nonce   = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
+
+			// This request has to end in a redirect. Returning early leaves the
+			// request to edit.php, which treats any "action" as a bulk action and
+			// answers with "The link you followed has expired" instead of anything
+			// useful. The referer is deliberately not required: the nonce is what
+			// makes this safe, and browsers, proxies and privacy settings strip the
+			// referer often enough to break the link for real customers.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$nonce   = isset( $_REQUEST['nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ) : '';
+
+			if ( $post_id > 0 ) {
 				if ( wp_verify_nonce( $nonce, 'cwginstock_sendmail-' . $post_id ) && current_user_can( 'edit_post', $post_id ) && 'cwginstocknotifier' === get_post_type( $post_id ) ) {
 					// send mail
 					$get_email      = get_post_meta( $post_id, 'cwginstock_subscriber_email', true );
@@ -703,7 +720,7 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 					add_persistent_notice(
 						array(
 							'type' => 'error',
-							'message' => __( 'Security Check Failed, Please try later', 'back-in-stock-notifier-for-woocommerce' ),
+							'message' => __( 'Security check failed. The link may have expired, please reload the Subscribers page and try again.', 'back-in-stock-notifier-for-woocommerce' ),
 						)
 					);
 				}
@@ -711,6 +728,10 @@ if ( ! class_exists( 'CWG_Instock_Post_Type' ) ) {
 				wp_safe_redirect( $redirect ? $redirect : admin_url( 'edit.php?post_type=cwginstocknotifier' ) );
 				exit();
 			}
+
+			// Nothing usable in the request, still redirect rather than fall through.
+			wp_safe_redirect( admin_url( 'edit.php?post_type=cwginstocknotifier' ) );
+			exit();
 		}
 
 		public function custom_css() {

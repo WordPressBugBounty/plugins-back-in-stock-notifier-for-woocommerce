@@ -776,3 +776,35 @@ function cwg_instock_add_utm_params( $url, $context = '' ) {
 
 	return add_query_arg( array_map( 'rawurlencode', $params ), $url );
 }
+
+/**
+ * Is the Unsubscribe add-on available, either on its own or through the bundle?
+ *
+ * @since 7.5.2
+ * @return bool
+ */
+function cwg_instock_unsubscribe_addon_active() {
+	return class_exists( 'PPL_BIS_Unsubscribe_Addon' );
+}
+
+/**
+ * Note shown beside the unsubscribe placeholders when the add-on that resolves
+ * them is not installed. Returns an empty string when it is, so a store that
+ * already has it is not told about something it does not need.
+ *
+ * @since 7.5.2
+ * @return string
+ */
+function cwg_instock_unsubscribe_placeholder_note() {
+	if ( cwg_instock_unsubscribe_addon_active() ) {
+		return '';
+	}
+
+	// A bundle owner already has the add-on, it is simply switched off, so point
+	// them at the switch rather than at the shop.
+	if ( defined( 'PPL_BIS_BUNDLE_PATH' ) ) {
+		return ' ' . __( '<strong>{cwginstock_unsubscribe}</strong> and <strong>{cwginstock_unsubscribe_all}</strong> need the Unsubscribe add-on, which is part of your Bundle but currently switched off. Turn it on under Instock Notifier &gt; Add-ons. Until then these placeholders are left blank, so customers never see the tag itself.', 'back-in-stock-notifier-for-woocommerce' );
+	}
+
+	return ' ' . __( '<strong>{cwginstock_unsubscribe}</strong> and <strong>{cwginstock_unsubscribe_all}</strong> need the Unsubscribe add-on, which is available on our website. Without it they are left blank, so customers never see the tag itself.', 'back-in-stock-notifier-for-woocommerce' );
+}

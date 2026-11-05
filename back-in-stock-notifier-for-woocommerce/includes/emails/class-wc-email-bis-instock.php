@@ -80,6 +80,8 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 				'{subscriber_phone}'     => '',
 				'{shopname}'             => $this->get_blogname(),
 				'{product_table}'        => '',
+				'{cwginstock_unsubscribe}' => '',
+				'{cwginstock_unsubscribe_all}' => '',
 				'{coupon_box}'           => '',
 			);
 
@@ -174,7 +176,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 			 */
 			$tokens = apply_filters(
 				'cwginstock_legacy_shortcode_tokens',
-				array( '{cwginstock_unsubscribe}' ),
+				array( '{cwginstock_unsubscribe}', '{cwginstock_unsubscribe_all}' ),
 				$this
 			);
 
@@ -464,7 +466,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 			$placeholder_text = sprintf(
 				/* translators: %s: comma separated list of shortcodes. */
 				__( 'Available shortcodes: %s', 'back-in-stock-notifier-for-woocommerce' ),
-				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>, <code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>, <code>{coupon_box}</code>'
+				'<code>{product_name}</code>, <code>{product_id}</code>, <code>{product_link}</code>, <code>{shopname}</code>, <code>{email_id}</code>, <code>{subscriber_email}</code>, <code>{cart_link}</code>, <code>{only_product_name}</code>, <code>{only_product_sku}</code>, <code>{product_price}</code>, <code>{product_image}</code>, <code>{subscriber_name}</code>, <code>{subscriber_phone}</code>, <code>{subscriber_firstname}</code>, <code>{subscriber_lastname}</code>, <code>{product_table}</code>, <code>{coupon_code}</code>, <code>{coupon_amount}</code>, <code>{coupon_expiry}</code>, <code>{coupon_box}</code>, <code>{cwginstock_unsubscribe}</code>, <code>{cwginstock_unsubscribe_all}</code>' . ( function_exists( 'cwg_instock_unsubscribe_placeholder_note' ) ? cwg_instock_unsubscribe_placeholder_note() : '' )
 			);
 
 			$this->form_fields = array(

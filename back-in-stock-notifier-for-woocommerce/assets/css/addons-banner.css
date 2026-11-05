@@ -21,19 +21,32 @@
 .cwg-addons-banner-list { margin: 6px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px 18px; }
 .cwg-addons-banner-list li { margin: 0; font-size: 12px; color: #c9c6d6; }
 .cwg-addons-banner-list .dashicons { font-size: 16px; width: 16px; height: 16px; color: #46b450; vertical-align: text-bottom; }
-.cwg-addons-banner-list a { color: #fff; font-weight: 600; text-decoration: none; }
-.cwg-addons-banner-list a:hover { color: #ffd166; }
+div.notice.cwg-addons-banner .cwg-addons-banner-list a { color: #fff; font-weight: 600; text-decoration: none; }
+div.notice.cwg-addons-banner .cwg-addons-banner-list a:hover,
+div.notice.cwg-addons-banner .cwg-addons-banner-list a:focus { color: #ffd166; text-decoration: underline; }
 .cwg-addons-banner-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .cwg-addons-banner-btn {
 	background: #ffd166; color: #1e1e2e; padding: 9px 18px; border-radius: 5px;
 	font-weight: 700; font-size: 13px; text-decoration: none; white-space: nowrap;
 }
-.cwg-addons-banner-btn:hover, .cwg-addons-banner-btn:focus { background: #ffc233; color: #1e1e2e; }
-.cwg-addons-banner-link { color: #c9c6d6; font-size: 12px; }
-.cwg-addons-banner-link:hover, .cwg-addons-banner-link:focus { color: #fff; }
-.cwg-addons-banner-dismiss { position: absolute; top: 8px; right: 8px; color: #c9c6d6; text-decoration: none; }
-.cwg-addons-banner-dismiss:hover, .cwg-addons-banner-dismiss:focus { color: #fff; }
+div.notice.cwg-addons-banner .cwg-addons-banner-btn { text-decoration: none; }
+div.notice.cwg-addons-banner .cwg-addons-banner-btn:hover,
+div.notice.cwg-addons-banner .cwg-addons-banner-btn:focus { background: #ffc233; color: #1e1e2e; text-decoration: none; }
+div.notice.cwg-addons-banner .cwg-addons-banner-link { color: #c9c6d6; font-size: 12px; text-decoration: underline; }
+div.notice.cwg-addons-banner .cwg-addons-banner-link:hover,
+div.notice.cwg-addons-banner .cwg-addons-banner-link:focus { color: #fff; }
+div.notice.cwg-addons-banner .cwg-addons-banner-dismiss { position: absolute; top: 6px; right: 6px; padding: 6px; line-height: 1; color: #c9c6d6; text-decoration: none; }
+div.notice.cwg-addons-banner .cwg-addons-banner-dismiss:hover,
+div.notice.cwg-addons-banner .cwg-addons-banner-dismiss:focus { color: #fff; }
 @media screen and (max-width: 782px) {
 	.notice.cwg-addons-banner { flex-direction: column; align-items: flex-start; }
 	.cwg-addons-banner-actions { align-items: flex-start; }
 }
+
+/* Compact form, used on the subscriber and arrival lists so the banner does not
+   push the actual list down the page. */
+div.notice.cwg-addons-banner.is-compact { padding: 10px 14px; }
+div.notice.cwg-addons-banner.is-compact .cwg-addons-banner-main { align-items: center; }
+div.notice.cwg-addons-banner.is-compact .cwg-addons-banner-text { flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+div.notice.cwg-addons-banner.is-compact .cwg-addons-banner-text > span { font-size: 13px; }
+div.notice.cwg-addons-banner.is-compact .cwg-addons-banner-btn { padding: 7px 14px; font-size: 13px; }

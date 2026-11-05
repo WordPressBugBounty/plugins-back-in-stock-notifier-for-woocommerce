@@ -59,6 +59,20 @@ if ( ! class_exists( 'CWG_Instock_Addons_Banner' ) ) {
 		}
 
 		/**
+		 * Is this one of the list screens where the banner should stay out of the way?
+		 *
+		 * @return bool
+		 */
+		private function is_list_screen() {
+			if ( ! function_exists( 'get_current_screen' ) ) {
+				return false;
+			}
+			$screen = get_current_screen();
+
+			return $screen && in_array( $screen->id, array( 'edit-cwginstocknotifier', 'edit-cwginstock_arrival' ), true );
+		}
+
+		/**
 		 * Whether the banner should be shown to the current user.
 		 *
 		 * @return bool
@@ -156,10 +170,15 @@ if ( ! class_exists( 'CWG_Instock_Addons_Banner' ) ) {
 				return;
 			}
 
+			// The subscriber and arrival lists are working screens, so the banner is
+			// reduced to a single line there and shown in full only on the plugin's
+			// own pages.
+			$compact = $this->is_list_screen();
+
 			$dismiss_url = wp_nonce_url( admin_url( 'admin-post.php?action=' . self::DISMISS_ACTION ), self::DISMISS_ACTION );
 			$addons_page = admin_url( 'edit.php?post_type=cwginstocknotifier&page=' . CWG_Instock_Promotions::PAGE_SLUG );
 			?>
-			<div class="notice cwg-addons-banner">
+			<div class="notice cwg-addons-banner<?php echo $compact ? ' is-compact' : ''; ?>">
 				<a class="cwg-addons-banner-dismiss" href="<?php echo esc_url( $dismiss_url ); ?>" title="<?php esc_attr_e( 'Dismiss for 30 days', 'back-in-stock-notifier-for-woocommerce' ); ?>">
 					<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>
 					<span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice for 30 days', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
@@ -169,6 +188,7 @@ if ( ! class_exists( 'CWG_Instock_Addons_Banner' ) ) {
 					<div class="cwg-addons-banner-text">
 						<strong><?php esc_html_e( 'Do more with your waitlist', 'back-in-stock-notifier-for-woocommerce' ); ?></strong>
 						<span><?php esc_html_e( 'Get every Back In Stock Notifier add-on in one plugin with one licence key, including future add-ons, for a one-time $49.', 'back-in-stock-notifier-for-woocommerce' ); ?></span>
+						<?php if ( ! $compact ) : ?>
 						<ul class="cwg-addons-banner-list">
 							<?php foreach ( $this->featured_addons() as $slug => $addon ) : ?>
 								<li>
@@ -178,6 +198,7 @@ if ( ! class_exists( 'CWG_Instock_Addons_Banner' ) ) {
 								</li>
 							<?php endforeach; ?>
 						</ul>
+						<?php endif; ?>
 					</div>
 				</div>
 				<div class="cwg-addons-banner-actions">

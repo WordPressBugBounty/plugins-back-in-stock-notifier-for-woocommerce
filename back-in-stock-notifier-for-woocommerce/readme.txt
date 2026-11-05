@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 7.5.1
+Stable tag: 7.5.2
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -144,20 +144,22 @@ Free on WordPress.org:
 * [Visuaro - Product Designer for WooCommerce](https://wordpress.org/plugins/visuaro-product-designer-for-woocommerce/) - Let customers design custom products in the browser.
 * [Christmas Snow - Festive Snowfall Effect](https://wordpress.org/plugins/christmas-snow-festive-snowfall-effect/) - Add a lightweight snowfall effect to any site.
 
-Pro plugins at [propluginslab.io](https://propluginslab.io/product-category/pro-plugins/):
+Pro plugins at [propluginslab.io](https://propluginslab.io/product-category/plugins/pro-plugins/):
 
-* [Recovero Pro](https://propluginslab.io/shop/plugins/pro-plugins/recovero-cart-recovery-for-woocommerce/)
-* [Anticipo Pro](https://propluginslab.io/shop/plugins/pro-plugins/anticipo-pre-orders-for-woocommerce/)
-* [Affireo Pro](https://propluginslab.io/shop/plugins/pro-plugins/affireo-affiliates-for-woocommerce/)
-* [Storefold Pro](https://propluginslab.io/shop/plugins/pro-plugins/storefold-multivendor-for-woocommerce/)
-* [Dispatchio Pro](https://propluginslab.io/shop/plugins/pro-plugins/dispatchio-advanced-shipment-tracking-for-woocommerce/)
-* [Presentero Pro](https://propluginslab.io/shop/plugins/pro-plugins/presentero-gift-cards-for-woocommerce/)
-* [Kitero Pro](https://propluginslab.io/shop/plugins/pro-plugins/kitero-product-configurator-for-woocommerce/)
-* [Plusero Pro](https://propluginslab.io/shop/plugins/pro-plugins/plusero-extra-fees-for-woocommerce/)
-* [Inputo Pro](https://propluginslab.io/shop/plugins/pro-plugins/inputo-name-your-price-for-woocommerce/)
-* [Mercenza Pro](https://propluginslab.io/shop/plugins/pro-plugins/mercenza-b2b-for-woocommerce/)
-* [Visuaro Pro](https://propluginslab.io/shop/plugins/pro-plugins/visuaro-product-designer-for-woocommerce/)
-* [Divisero Pro](https://propluginslab.io/shop/plugins/pro-plugins/divisero-multicurrency-for-woocommerce/)
+* [Recovero - Cart Abandonment Recovery](https://propluginslab.io/shop/plugins/pro-plugins/recovero-cart-recovery-for-woocommerce/) - Recover abandoned carts with email, SMS and WhatsApp reminders.
+* [Anticipo - Pre-Orders](https://propluginslab.io/shop/plugins/pro-plugins/anticipo-pre-orders-for-woocommerce/) - Sell before release with deposits, pay on release and allocation limits.
+* [Affireo - Affiliates](https://propluginslab.io/shop/plugins/pro-plugins/affireo-affiliates-for-woocommerce/) - Run an affiliate program with tiered commissions and scheduled payouts.
+* [Storefold - Multivendor Marketplace](https://propluginslab.io/shop/plugins/pro-plugins/storefold-multivendor-for-woocommerce/) - Split orders between sellers with correct tax, shipping and payouts.
+* [Dispatchio - Advanced Shipment Tracking](https://propluginslab.io/shop/plugins/pro-plugins/dispatchio-advanced-shipment-tracking-for-woocommerce/) - Tracking for 285 carriers with Shipped and Delivered statuses.
+* [Presentero - Gift Cards](https://propluginslab.io/shop/plugins/pro-plugins/presentero-gift-cards-for-woocommerce/) - Sell and redeem gift cards online or in store, with PDF cards and QR codes.
+* [Kitero - Composite Products](https://propluginslab.io/shop/plugins/pro-plugins/kitero-product-configurator-for-woocommerce/) - Let shoppers build kits and bundles with live pricing and logic rules.
+* [Plusero - Extra Fees](https://propluginslab.io/shop/plugins/pro-plugins/plusero-extra-fees-for-woocommerce/) - Conditional fees on products, cart, checkout, shipping and payment.
+* [Inputo - Name Your Price](https://propluginslab.io/shop/plugins/pro-plugins/inputo-name-your-price-for-woocommerce/) - Let customers choose what they pay, within your limits.
+* [Mercenza - B2B](https://propluginslab.io/shop/plugins/pro-plugins/mercenza-b2b-for-woocommerce/) - Wholesale with group prices, company accounts, quotes and payment on account.
+* [Visuaro - Product Designer](https://propluginslab.io/shop/plugins/pro-plugins/visuaro-product-designer-for-woocommerce/) - Customers design products and you get print ready files.
+* [Divisero - Multicurrency](https://propluginslab.io/shop/plugins/pro-plugins/divisero-multicurrency-for-woocommerce/) - Fixed prices per currency, live rates and checkout in every currency.
+* [Fedelto - Points and Rewards](https://propluginslab.io/shop/plugins/pro-plugins/fedelto-points-and-rewards-for-woocommerce/) - Loyalty points, referrals, rewards catalog, missions and badges.
+* [Scontero - Dynamic Pricing](https://propluginslab.io/shop/plugins/pro-plugins/scontero-dynamic-pricing-for-woocommerce/) - Bulk pricing, BOGO, gifts, bundles and cart level discounts.
 
 == Installation ==
 
@@ -280,6 +282,18 @@ The plugin works without any external service. The services below are used only 
 
 
 == Changelog ==
+Older entries are in changelog.txt, included with the plugin.
+
+= 7.5.2 2026-11-05 =
+* Fix: The {cwginstock_unsubscribe} placeholder could appear in customer emails as raw text. The token is now always registered, so it is never shown to a customer even when the Unsubscribe add-on is inactive or cannot build a link.
+* Fix: {cwginstock_unsubscribe_all} was never replaced, because it was not offered to the add-on that resolves it. Both unsubscribe tokens are now offered.
+* Fix: "Send Instock Mail" could answer with "The link you followed has expired". The handler required a referer header, which browsers, proxies and privacy settings often strip; the request was then left to edit.php, which treated it as a bulk action. The referer is no longer required, the nonce still is, and the request always ends with a clear message.
+* Fix: Sending an instock mail manually could fail with a fatal error when the request did not carry post_type in the query string, because the notices library was only loaded in that case.
+* Fix: Links in the add-ons notice were shown in the WordPress admin link colour against the notice's dark background, a contrast ratio of 2.4 to 1, which made the add-on names hard to read. They now use the intended colours and meet WCAG AA.
+* Tweak: The email settings now list the {cwginstock_unsubscribe} and {cwginstock_unsubscribe_all} placeholders, with a note that they need the Unsubscribe add-on. The note is shown only when the add-on is missing, and tells Bundle owners to switch the module on rather than pointing them at the shop.
+* Tweak: On the Subscribers and Stock Arrival lists the add-ons notice is now a single line, so the list is not pushed down the page. The full notice is still shown on the plugin's own pages.
+* Tweak: The dismiss control on that notice has a larger click area.
+
 = 7.5.1 2026-10-28 =
 * New: UTM tracking for the links in both notification emails, under Instock Notifier > Settings > Email Link Tracking. Set the source, medium and campaign once and they are applied to every link: {product_link}, {cart_link}, the product link inside {product_table}, and the button in {coupon_box}. An optional setting labels each link with its own utm_content so you can tell which one was clicked. Links you tagged by hand keep their own values, and the product image is left alone.
 * Fix: Coupon settings that are on by default could not be turned off. Unticking "Coupon Cannot Be Used on Sale Items", "Cannot Be Combined with Other Coupons" or "Restrict Coupon to Subscriber Email" had no effect, because an unticked checkbox submitted nothing and the default switched the setting back on.
@@ -343,338 +357,3 @@ The plugin works without any external service. The services below are used only 
 
 = 7.3.3 - 2026-07-28 =
 * New: Setting to choose what the Instock Notifier admin menu counter shows - "New subscribers since your last visit" (default) or "Total number of subscribers". Available under Settings > Troubleshoot. Choose "Total" to restore the classic running-total badge.
-
-= 7.3.2 - 2026-07-23 =
-* Fix: On variable products, the Add to Cart button now correctly disables again when switching back to an out-of-stock variation (for example after viewing an in-stock one). Previously it could remain clickable, most noticeable with Turnstile or reCAPTCHA enabled.
-* Fix: With Cloudflare Turnstile enabled, the captcha now re-renders correctly each time you switch variations on a variable product. Previously it could go blank after switching, leaving the Subscribe button permanently disabled so visitors could not subscribe.
-
-= 7.3.1 - 2026-07-22 =
-* New: Auto-retry for stuck emails. When a restock email is queued but its background task fails or never runs, an optional recovery task resends it. Configurable under Settings > Background Process Engine with a retry frequency (minimum 1 hour), maximum attempts, and the status to apply once attempts are exhausted. Off by default, no background task is scheduled until you enable it.
-* New: New-subscriber indicator. The Instock Notifier menu shows a badge counting subscribers added since you last opened the list, and the subscriber list shows how many arrived since your previous visit. The badge clears when you view the list. Respects the existing Hide Subscriber Count setting.
-* Fix: Prevented fatal errors when a stock change is triggered externally (by another plugin or theme) for a product that has been deleted. The product is now verified before subscribers are scanned.
-* Fix: Prevented a possible fatal in the W3TC cache auto-purge when the stock hook was fired with an empty product object.
-* Tweak: The subscribe button and the variation "notify me" button now use a button element instead of an input. Long labels and translations wrap correctly on mobile and can be styled with CSS. The button class, data attributes, reCAPTCHA/Turnstile handling and the submit behaviour are unchanged.
-* Tweak: Frontend and admin stylesheets are now cache-busted by file modification time, so style updates reach visitors without a manual version change.
-* Tweak: Dismissible Pro Plugins banner on the plugin admin screens, highlighting our other WooCommerce plugins. Each plugin links to its product page, it appears only on this plugin's pages (never site-wide), and dismissing it hides it for 30 days per user.
-* Note: If you targeted the subscribe button with element-qualified custom CSS such as "input.cwgstock_button" or "input[type=submit]", update it to the class selector ".cwgstock_button". Plain class selectors were unaffected.
-
-= 7.3.0 - 2026-07-20 =
-* New: Fair Sending (First-Come-First-Served) option. On a limited restock, notify only as many subscribers as units in stock, the remaining subscribers stay on the waitlist and are notified on the next restock.
-* New: Email speed limit option to send automatic instock emails gradually, matching your hosting or SMTP provider limits.
-* New: Status page now shows which email address the test email is sent to, and the test result includes the recipient.
-* New: SMTP plugin detection with admin guidance when emails are sent through the server PHP mail() function.
-* Fix: Subscription confirmation email reported success even when sending failed.
-* Fix: Disabling an email notification under WooCommerce > Settings > Emails no longer marks subscribers as "Mail Not Sent", they stay subscribed until the email is re-enabled.
-* Fix: Improved delivery result detection. Sends through SMTP/queueing plugins that return no value are no longer reported as failed, and blocked sends (for example "Do Not Send" mode) are no longer reported as sent.
-* Fix: Placeholder values (for example unsubscribe links) no longer leak between subscribers during batch sending.
-* Fix: "Mail Sent on" column stored a timezone-shifted time for automatic emails.
-* Fix: Stale subscriber statuses on sites with persistent object caching (Redis/Memcached).
-* Fix: Email settings migration re-applied default values over fields that were cleared on purpose.
-* Fix: Button display issue in mobile view
-* Tweak: Renamed the Extensions page to Marketplace.
-* Tweak: Fixed the Refresh button icon alignment on the Marketplace page, admin assets are now cache-busted automatically on update.
-* Tweak: Improved readme and default email texts.
-* Tweak: Tested up to WooCommerce v10.9.4.
-* Tweak: Tested up to WordPress v7.0.2.
-
-= 7.2.2 - 2026-06-19 =
-* Tweak: Resolved a conflict in the Background Process library by downgrading the library version.
-* Tweak: Removed code that caused duplicate subscription forms to be displayed.
-
-= 7.2.0 - 2026-06-10 =
-* New: Added compatibility with Elementor.
-* New: Added an Accessibility Compliance option under Troubleshoot Settings.
-* Fix: Resolved the Mobile Detect library error.
-* Fix: Resolved the Undefined Array Key error.
-* Fix: Resolved the default value issue affecting the Subscription Success Email and Back In Stock Email subject and message.
-* Fix: Updated the background processing library to the latest version to resolve issues with the default background process not functioning properly.
-* Fix: Resolved an issue where the Status column was breaking in the list table.
-* Tweak: Tested with WordPress 7.0.
-* Tweak: Tested with WooCommerce 10.8.1.
-* Tweak: Updated POT files.
-
-= 7.1.0 - 2026-04-15 =
-* New: Chunked data handling added to auto-delete functionality
-* Tweak: Status page enhanced
-* Tweak: Email shortcode placeholders now display properly in the email template
-* Fix: Resolved conflict with Villa Theme WooCommerce Email Template Customizer
-* Tweak: Tested up to WooCommerce v10.7.0
-
-
-= 7.0.1 - 2026-03-04 =
-* Tweak: Fixed a false positive reported by an anti-malware scanner for the REST API example email address.
-
-= 7.0.0 - 2026-03-03 =
-* New: Introduced our own WooCommerce email templates for Subscription Confirmation (Successful Subscription) and Back in Stock - Product Available emails.
-* Tweak: Enhanced Extensions page.
-* Tweak: POT File updated
-* Tweak: Tested with WooCommerce v10.5.3.
-
-= 6.3.3 - 2026-02-09 =
-* Tweak: Added Sortable Columns for Mail Sent on and Required Quantity Columns in List Table
-* Tweak: Tested with WooCommerce v10.5.0
-
-= 6.3.2 - 2026-02-04 =
-* New: Delete Subscribers Cron Schedule can be customized in the Troubleshoot settings.
-
-= 6.3.1 - 2026-01-21 =
-* New: Added custom From Name, From Email, and Reply-To Email settings
-* Tweak: POT File updated
-
-= 6.3.0 - 2026-01-09 =
-* New: Dashboard Report Widget enhanced
-* Tweak: Added option to check variable level stock when "Trigger mail to variable product subscribers when any other variation of that product is back in stock" option enabled
-* Tweak: Tested with WooCommerce v10.4.3
-* Tweak: POT File updated
-
-= 6.2.4 - 2025-12-09 =
-* Fix: Webhook not firing after queued status integration.
-* Tweak: Code enhanced for variable product subscribers with transient set to 180 seconds.
-
-= 6.2.3 - 2025-12-04 =
-* Tweak: Tested with WooCommerce v10.3.6
-* Tweak: Tested with WordPress v6.9
-
-= 6.2.2 - 2025-11-13 =
-* Fix: View Subscribers Count showing 0 in Product display
-* Tweak: Removed unwanted code
-* Tweak: Tested with WooCommerce v10.3.5
-
-= 6.2.1 - 2025-10-30 =
-* Fix: Deprecated notice for jQuery BlockUI
-* Tweak: Tested with WooCommerce v10.3.3
-
-= 6.2.0 - 2025-10-24 =
-* Fix: Prevented custom post statuses from being injected into WooCommerce product queries, which previously caused SQL errors in MariaDB
-* Tweak: Tested with WooCommerce v10.3.0
-* Tweak: Tested with WordPress v6.8.3
-
-= 6.1.2 - 2025-09-25 =
-* Fix: Egulias EmailValidator library PHP Dependency.
-
-= 6.1.1 - 2025-09-25 =
-* New: Added email validation using the Egulias EmailValidator library.
-  - Syntax validation (RFC compliance)
-  - DNS-level validation (MX/A record check)
-* Tweak: Improved security and reliability of email input handling.
-* Tweak: Removed unused JavaScript files.
-* Tweak: Tested up to WooCommerce v10.2.1.
-* Tweak: Updated POT file.
-
-= 6.0.9.2 - 2025-09-09 =
-* Fix: Invalid Email Address not displayed
-* Tweak: Priority set to 999 for the upgrader_process_complete hook
-
-= 6.0.9.1 - 2025-08-27 =
-* Tweak: Added Checkbox option to Turn Auto Purge Cache for W3Total Cache when Product Stock Status Change in Troubleshoot Settings
-* Tweak: POT file updated.
-
-= 6.0.9 - 2025-08-25 =
-* New: Built-in support to automatically purge the corresponding product cache in W3 Total Cache when stock status changes.
-* Tweak: Third-party cron recurrence is now customizable.
-* Tweak: POT file updated.
-
-= 6.0.8 - 2025-08-21 =
-* Tweak: Added e.stopPropagation() in the subscribe button click handler to prevent event bubbling into the WooCommerce cart form.
-
-= 6.0.7 - 2025-08-15 =
-* Tweak: URL updated
-* Tweak: Tested upto WooCommerce v10.1.0
-
-= 6.0.6 - 2025-08-07 =
-* Tweak: Added logging for deleted subscription entries.
-* Fix: Resolved issue where REST API status updates triggered subscription success emails for all statuses.
-
-= 6.0.5 - 2025-07-23 =
-* Fix: Fatal error related to Bulk Variations Grid compatibility
-* Tweak: Displayed "Product Deleted" info in list table instead of leaving it blank
-* Tweak: Enhanced dashboard report
-* Tweak: Updated POT file
-
-= 6.0.4 - 2025-07-16 =
-* New: Added "Delete Subscribers Data" option on the Status page with confirmation prompt
-* Tweak: Removed unwanted HTML tags in Dashboard Widget report
-* Tweak: Updated POT file
-
-= 6.0.2 - 2025-07-14 =
-* Fix: "Subscribe" button remained disabled when bot protection was turned off
-* Tweak: Added fallback option when Turnstile fails to load implicitly
-
-= 6.0.1 - 2025-07-13 =
-* Fix: Issue with "Keep Subscribed" status option when using the new "Queued" status
-* Fix: Conflict between Turnstile and Contact Form 7 Turnstile Integration
-* Tweak: Compatibility tested with WooCommerce 10.0.0
-
-= 6.0.0 - 2025-07-09 =
-* New: Added Queued status
-* New: Reports Dashboard Widget
-* Tweak: Map variable product name when the option "Trigger mail to variable product subscribers when any other variation of that product is back in stock" is enabled
-* Tweak: Enhanced status color code
-* Tweak: Tested with WooCommerce 9.9.5
-* Tweak: POT File updated
-
-= 5.9.0 - 2025-06-23 =
-* New : Hide Subscribe Form on Free or Zero Price Out of Stock Products
-* Tweak: JS variable appended with proper prefix
-* Tweak: Required Quantity Shortcode {cwginstock_quantity} added for Email
-* Tweak: Translation missing for reCAPTCHA copyright notice
-* Tweak: Tested with WooCommerce 9.9.4
-* Tweak: Tested with WordPress 6.8.1
-* Tweak: POT File updated
-
-= 5.8.2 - 2025-03-24 =
-* Fix: Turnstile Secret Key localized to the JS variable
-
-= 5.8.1 - 2025-03-03 =
-* Fix : Google reCAPTCHA breaks with v5.8.0
-* Tweak : Phone library updated and code enhanced
-
-= 5.8.0 - 2025-02-26 =
-* New : {total_subscribers} count to display in Frontend Subscribe Form using Estimate Stock Arrival Settings
-* Tweak: Code enhanced as per WordPress Coding Standards - Plugin Check (PCP) by WordPress
-* Tweak: Removed WooCommerce Waitlist Pro from Plugin Name due to Copyright Notice by Plugin Check (PCP)
-* Tweak: Tested with WooCommerce 9.7.0
-* Tweak: POT File updated
-
-= 5.7.9 - 2025-02-11 =
-* Tweak : Optimized Subscribers Count Display in Admin Menu
-* Tweak : Tested with WooCommerce 9.6.1
-* Tweak : Tested with WordPress 6.7.2
-
-= 5.7.8 - 2025-01-22 =
-* Tweak : Enhanced code to increase ajax variation threshold
-* Tweak : Tested with WooCommerce 9.6.0
-* Tweak : POT File updated
-
-= 5.7.7 - 2025-01-20 =
-* New : Compatibility with the Plugin "WooCommerce Bulk Variations by Barn2Plugins"
-* New : Added a new setting "Trash Subscribers upon Product Deletion"
-* Tweak : Tested with WooCommerce 9.5.2
-
-= 5.7.6 - 2025-01-03 =
-* New : Compatibility with the Plugin "PVT - Product Variation Table for WooCommerce"
-* Fix : Depreceted error:CWG_Detection\MobileDetect::__construct(): Implicitly marking parameter $headers as nullable is deprecated, the explicit nullable
-* Tweak : Improved the test email functionality on the Status Page by integrating the as_schedule_single_action event to verify the proper functionality of scheduled actions, particularly for automatic emails
-* Tweak : Tested with WooCommerce 9.5.1
-
-= 5.7.5 - 2024-12-11 =
-* Fix : Product titles extend into other columns when they are too long in the 'Product(s)' column under the Instock Notifier > Estimate Stock Arrival > Estimate Stock Arrival List table
-* Tweak : Enhanced Mobile view for "All Subscribers" List table
-
-= 5.7.4 - 2024-12-06 =
-* Tweak : Added the display of the 'Backorder' status in the 'Current Stock Status' of the product in the Product column (Admin Dashboard > Instock Notifier > All Subscribers > Subscribers List Table > 'Product' column > Current Stock Status)
-* Tweak : Repositioned the 'Copy Subscription Mail Subject' and 'Copy Subscription Mail Message' options next to the 'Enter Email Ids separated by commas that you want to receive subscription copy mail' in the 'Mail Settings' section
-* Fix :  Estimated stock arrival remaining days are displayed as negative when the stock date is earlier than the current date
-* Tweak : Tested with WooCommerce 9.4.3
-* Tweak : Tested with WordPress 6.7.1
-
-= 5.7.3 - 2024-11-20 =
-* Fix : Code enhanced to display the button only on the JetProduct table
-
-= 5.7.2 - 2024-11-19 =
-* Fix : An error of type E_ERROR due to JetProductTables Plugin Compatibility
-
-= 5.7.1 - 2024-11-18 =
-* Fix : Duplicate emails to the variable product subscribers when restock variations
-
-= 5.7.0 - 2024-11-18 =
-* New : JetProductTables Compatibility
-* Fix : Duplicate emails to the variable product subscribers when restock variations
-* Fix : Create variations triggers instock email
-* Fix : Added clear scheduled event "cwg_schedule_third_party_support" upon plugin deactivation
-* Tweak : Tested with WooCommerce 9.4.1
-* Tweak : Minimum version of PHP is 7.4
-
-= 5.6.2 - 2024-11-12 =
-* Tweak : Renamed the option "Enable Stop Sending Email from staging site environment" to "Disable sending emails on staging environments" in the "Troubleshoot Settings (Experimental)" settings section
-* Tweak : Added a confirmation alert when clicking the "Send Instock Mail" in the "Subscribers" List table (Admin Dashboard > Instock Notifier > All Subscribers)
-* Tweak : Enhanced email masking in the log file
-
-= 5.6.1 - 2024-10-28 =
-* New : Register Deactivation Hook to clear scheduled events
-* Tweak : Code Enhanced
-* Tweak : Tested with WordPress 6.7
-
-= 5.6.0 - 2024-10-25 =
-* New : Added a new setting "Estimate Stock Arrival"
-* New : Added a new setting "Disable Prefilled Data for Logged-in Users"
-* Tweak : Keep Subscribed Status option info in Status Page
-* Tweak : Requires Plugins WooCommerce added
-* Tweak : POT File Updated
-
-= 5.5.3 - 2024-10-10 =
-* New : Added a new setting "Enable Stop Sending Email from staging site environment"
-
-= 5.5.2 - 2024-09-30 =
-* Tweak : Added support for HTML/Markdown in the "Hide Subscribe Form for Guests message" option.
-* Tweak : Tested with WooCommerce 9.3.3
-
-= 5.5.1 - 2024-09-25 =
-* New : Added a new setting "Hide Subscribe Form for Guests message" 
-* Tweak : Added dynamic class wrapper for subscriber form
-* Tweak : POT File updated
-* Tweak : Tested with WooCommerce 9.3.2
-* Tweak: Tested with WordPress 6.6.2
-
-= 5.5.0 - 2024-09-10 =
-* Tweak : Updated Webhook payload (only_product_name, product_link , product_image)
-* Tweak : Tested with WooCommerce 9.2.3
-
-= 5.4.2 - 2024-08-22 =
-* Tweak : Tested with WooCommerce 9.2.1
-
-= 5.4.1 - 2024-08-21 =
-* Fix: Fatal error - Cannot access offset of type string on string in the file "class-copy-mailer.php"
-* Tweak: Tested with WooCommerce 9.1.4
-* Tweak: Tested with WordPress 6.6.1
-
-= 5.4.0 - 2024-06-03 =
-* New: Added a new setting "Keep Subscription Entry to Subscribed Status even Instock Email Sent (Unless it is Unsubscribed)".
-* Tweak:Tested with WooCommerce 8.9.1
-
-= 5.3.2 - 2024-05-03 =
-* Fix: Vulnerability Unauthenticated Arbitrary Shortcode Execution reported by WordFence
-* Tweak: Tested with WooCommerce 8.8.3
-
-= 5.3.1 - 2024-04-04 =
-* Fix: Critical error on access Bot Protection Section in Default UI Settings
-* Tweak: POT file updated
-
-= 5.3.0 - 2024-04-03 =
-* New: Added New Bot Protection Settings and moved Google reCAPTCHA under Bot Protection
-* New: Added Cloudflare Turnstile Captcha(Supported Visible Captcha)
-* New: Added {subscriber_firstname} and {subscriber_lastname} shortcode in Mail Settings
-* Tweak: POT file updated
-* Tweak: Tested with WooCommerce 8.7.0
-* Tweak: Tested with WordPress 6.5
-
-= 5.2.2 - 2024-02-27 =
-* New: Added new webhook topic "Subscriber upon Mailsent Status (Back In Stock)"
-* Tweak: Enhanced subscriber name retrieval
-
-= 5.2.1 - 2024-02-23 =
-* New: Display "Current Stock Status" of the product in the Product column (Admin Dashboard > Instock Notifier > All Subscribers > Subscribers List Table > "Product" column > Current Stock Status)
-* New: Display the "Available Quantity" of the product in the Product column if it is in stock and managed by quantity (Admin Dashboard > Instock Notifier > All Subscribers > Subscribers List Table > "Product" column > Available Quantity).
-* New: Added Slovak translation files(Thanks to Vlado Laco) 
-* Tweak: Modified "Quantity" column to "Required Quantity"
-* Tweak: Tested with WooCommerce 8.6.1
-
-= 5.2.0 - 2024-02-15 =
-* Fix: PHP Deprecated: str_contains(): Passing null to parameter #1 ($haystack) of type string is deprecated
-* Fix: PHP Deprecated: Creation of dynamic property CWG_Instock_Mail::$get_message is deprecated
-* Tweak: Updated REST API support for fields 'subscriber_phone' and 'custom_quantity' in subscriber endpoints
-* Tweak: Updated Webhook support for fields 'subscriber_phone' and 'quantity'
-* Tweak: Updated minimum PHP version requirement to 7.0 or greater
-* Tweak: Tested with WooCommerce 8.5.2 and WordPress 6.4.3
-
-= 5.1.0 - 2023-11-30 =
-* New: Show Subscribers Count for Product List Table option added in Troubleshoot Settings
-* New: WooCommerce Composite Products Compatibility(From WooCommerce)
-* Fix: In Log file email not masking properly when email contain .(dot)
-* Fix: Instock Emails trigger in Ascending Order
-* Tweak: Revoked display of subscribers count column in product list table(It can be enable it in Troubleshoot settings)
-* Tweak: Code Enhanced
-* Tweak: POT File Updated
-* Tweak: Tested with WooCommerce 8.3.0
-
-[See changelog for all versions](https://docs.google.com/document/d/1U8aLomiLPpQ16qfqvnPwC0w1jRQAkLyCA87vToTPqkI/edit?usp=sharing).
