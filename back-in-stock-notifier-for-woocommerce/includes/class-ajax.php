@@ -355,8 +355,19 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 		}
 
 		public function permission_callback( $request ) {
-			if ( ! $request->get_header( 'x_wp_nonce' ) ) {
+			$nonce = $request->get_header( 'x_wp_nonce' );
+			if ( empty( $nonce ) ) {
 				return false;
+			}
+			// The route runs the subscribe handler with its own nonce check turned
+			// off, so the REST nonce is verified here instead of merely being
+			// present. The frontend sends a 'wp_rest' nonce in this header.
+			if ( ! wp_verify_nonce( sanitize_text_field( $nonce ), 'wp_rest' ) ) {
+				return new WP_Error(
+					'cwg_nonce_verify_failed',
+					__( 'Something went wrong, please try after sometime', 'back-in-stock-notifier-for-woocommerce' ),
+					array( 'status' => 403 )
+				);
 			}
 			return true;
 		}

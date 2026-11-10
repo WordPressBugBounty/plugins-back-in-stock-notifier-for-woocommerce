@@ -71,21 +71,26 @@ abstract class CWG_Instock_Mailer {
 	}
 
 	public function get_subject() {
+		// do_shortcode() runs on the admin authored template only. Placeholder
+		// values are merged in afterwards so that subscriber supplied text can
+		// never be executed as shortcode markup.
 		/**
 		 * Replace shortcode in subject
 		 *
 		 * @since 1.0.0
 		 */
-		return apply_filters( 'cwg' . $this->slug . '_subject', $this->format_data( do_shortcode( $this->replace_shortcode( $this->get_subject ) ) ), $this->subscriber_id );
+		return apply_filters( 'cwg' . $this->slug . '_subject', $this->format_data( $this->replace_shortcode( do_shortcode( $this->get_subject ) ) ), $this->subscriber_id );
 	}
 
 	public function get_message() {
+		// do_shortcode() runs on the admin authored template only, before the
+		// placeholder values are merged in. See get_subject().
 		/**
 		 * Replace shortcode in message
 		 *
 		 * @since 1.0.0
 		 */
-		return apply_filters( 'cwg' . $this->slug . '_message', do_shortcode( $this->replace_shortcode( $this->get_message ) ), $this->subscriber_id );
+		return apply_filters( 'cwg' . $this->slug . '_message', $this->replace_shortcode( do_shortcode( $this->get_message ) ), $this->subscriber_id );
 	}
 
 	private function replace_shortcode( $content ) {
@@ -101,14 +106,17 @@ abstract class CWG_Instock_Mailer {
 		$only_product_sku     = $obj->get_product_sku( $this->subscriber_id );
 		$product_price        = $obj->get_product_price( $this->subscriber_id );
 		$product_image        = $obj->get_product_image( $this->subscriber_id );
-		$subscriber_name      = $obj->get_subscriber_name( $this->subscriber_id );
-		$subscriber_firstname = $obj->get_subscriber_firstname( $this->subscriber_id );
-		$subscriber_lastname  = $obj->get_subscriber_lastname( $this->subscriber_id );
-		$subscriber_phone     = $obj->get_subscriber_phone( $this->subscriber_id );
+		// Subscriber supplied values are encoded so square brackets cannot form
+		// shortcode markup, including for rows stored before this was fixed.
+		$subscriber_name      = self::escape_shortcode_delimiters( $obj->get_subscriber_name( $this->subscriber_id ) );
+		$subscriber_firstname = self::escape_shortcode_delimiters( $obj->get_subscriber_firstname( $this->subscriber_id ) );
+		$subscriber_lastname  = self::escape_shortcode_delimiters( $obj->get_subscriber_lastname( $this->subscriber_id ) );
+		$subscriber_phone     = self::escape_shortcode_delimiters( $obj->get_subscriber_phone( $this->subscriber_id ) );
 		$cart_url             = $obj->get_cart_link( $this->subscriber_id ); // esc_url_raw(add_query_arg('add-to-cart', $pid, get_permalink(wc_get_page_id('cart'))));
 		$blogname             = get_bloginfo( 'name' );
+		$subscriber_email     = self::escape_shortcode_delimiters( $this->email );
 		$find_array           = array( '{product_name}', '{product_id}', '{product_link}', '{shopname}', '{email_id}', '{subscriber_email}', '{cart_link}', '{only_product_name}', '{only_product_sku}', '{product_price}', '{product_image}', '{subscriber_name}', '{subscriber_phone}', '{subscriber_firstname}', '{subscriber_lastname}' );
-		$replace_array        = array( wp_strip_all_tags( $product_name ), $pid, $product_link, $blogname, $this->email, $this->email, $cart_url, $only_product_name, $only_product_sku, $product_price, $product_image, $subscriber_name, $subscriber_phone, $subscriber_firstname, $subscriber_lastname );
+		$replace_array        = array( wp_strip_all_tags( $product_name ), $pid, $product_link, $blogname, $subscriber_email, $subscriber_email, $cart_url, $only_product_name, $only_product_sku, $product_price, $product_image, $subscriber_name, $subscriber_phone, $subscriber_firstname, $subscriber_lastname );
 		$formatted_content    = str_replace( $find_array, $replace_array, $content );
 		/**
 		 * Replace shortcode
@@ -116,6 +124,25 @@ abstract class CWG_Instock_Mailer {
 		 * @since 1.0.0
 		 */
 		return apply_filters( 'cwginstock_replace_shortcode', $formatted_content, $this->subscriber_id );
+	}
+
+	/**
+	 * Encode shortcode delimiters in a value merged into a mail template.
+	 *
+	 * Placeholder values carry subscriber supplied text, so the square brackets
+	 * are turned into their HTML entities. They still read as brackets in the
+	 * delivered mail but can no longer form shortcode markup, whatever runs over
+	 * the merged content later.
+	 *
+	 * @since 7.5.3
+	 * @param mixed $value Value to encode.
+	 * @return mixed
+	 */
+	protected static function escape_shortcode_delimiters( $value ) {
+		if ( ! is_string( $value ) ) {
+			return $value;
+		}
+		return str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), $value );
 	}
 
 	public function format_html_message() {
@@ -128,7 +155,8 @@ abstract class CWG_Instock_Mailer {
 			 * @since 1.0.0
 			 */
 			do_action( 'woocommerce_email_header', $this->get_subject(), null );
-			echo do_shortcode( $this->get_message() );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- mail body, already rendered by get_message().
+			echo $this->get_message();
 			/**
 			 * Customize the footer text
 			 *
@@ -138,7 +166,8 @@ abstract class CWG_Instock_Mailer {
 			// wc_get_template('emails/email-footer.php');
 		} else {
 			woocommerce_get_template( 'emails/email-header.php', array( 'email_heading' => $this->get_subject() ) );
-			echo do_shortcode( $this->get_message() );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- mail body, already rendered by get_message().
+			echo $this->get_message();
 			woocommerce_get_template( 'emails/email-footer.php' );
 		}
 		return ob_get_clean();

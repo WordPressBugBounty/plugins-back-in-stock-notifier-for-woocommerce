@@ -86,12 +86,47 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 
 		public function insert_custom_data( $id, $post_data, $custom_datas ) {
 			if ( is_array( $custom_datas ) && ! empty( $custom_datas ) ) {
+				/**
+				 * Submitted fields whose value is merged into a mail template and
+				 * therefore must not be able to carry shortcode syntax.
+				 *
+				 * @since 7.5.3
+				 */
+				$shortcode_unsafe_fields = apply_filters(
+					'cwginstock_shortcode_unsafe_fields',
+					array( 'subscriber_name', 'subscriber_phone' )
+				);
 				foreach ( $custom_datas as $each_data_key ) {
 					if ( isset( $post_data[ $each_data_key ] ) && ! empty( $post_data[ $each_data_key ] ) ) {
-						update_post_meta( $id, 'cwginstock_' . $each_data_key, wc_clean( $post_data[ $each_data_key ] ) );
+						$clean_value = wc_clean( $post_data[ $each_data_key ] );
+						if ( in_array( $each_data_key, $shortcode_unsafe_fields, true ) ) {
+							$clean_value = self::remove_shortcode_syntax( $clean_value );
+						}
+						update_post_meta( $id, 'cwginstock_' . $each_data_key, $clean_value );
 					}
 				}
 			}
+		}
+
+		/**
+		 * Remove shortcode delimiters from a submitted value.
+		 *
+		 * Subscriber supplied text is merged into mail templates, so the square
+		 * brackets that make up shortcode markup are dropped before the value is
+		 * stored. Only the delimiters go; the rest of the text is left alone.
+		 *
+		 * @since 7.5.3
+		 * @param mixed $value Value to clean. Arrays are cleaned element by element.
+		 * @return mixed
+		 */
+		public static function remove_shortcode_syntax( $value ) {
+			if ( is_array( $value ) ) {
+				return array_map( array( __CLASS__, 'remove_shortcode_syntax' ), $value );
+			}
+			if ( ! is_string( $value ) ) {
+				return $value;
+			}
+			return str_replace( array( '[', ']' ), '', $value );
 		}
 
 		public function is_already_subscribed( $status = array( 'cwg_subscribed' ) ) {
@@ -440,6 +475,9 @@ if ( ! class_exists( 'CWG_Instock_API' ) ) {
 				'variation_id' => intval( sanitize_text_field( $value ) ),
 				'user_id' => intval( sanitize_text_field( $value ) ),
 				'user_email' => sanitize_email( $value ),
+				// These two end up in mail templates, so shortcode syntax is dropped here.
+				'subscriber_name' => self::remove_shortcode_syntax( sanitize_text_field( $value ) ),
+				'subscriber_phone' => self::remove_shortcode_syntax( sanitize_text_field( $value ) ),
 			);
 			if ( isset( $list_of_fields[ $key ] ) ) {
 				return $list_of_fields[ $key ];

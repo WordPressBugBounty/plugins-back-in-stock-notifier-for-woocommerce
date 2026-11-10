@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 7.5.2
+Stable tag: 7.5.3
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -283,6 +283,10 @@ The plugin works without any external service. The services below are used only 
 
 == Changelog ==
 Older entries are in changelog.txt, included with the plugin.
+
+= 7.5.3 2026-11-10 =
+* Security: A value entered in the subscribe form, such as the name, could contain WordPress shortcode markup that was then run on the server while the subscription email was being prepared, even for store owners who never turned the admin copy email on. Submitted values now have shortcode brackets removed before they are saved, and any subscriber detail placed into an email is encoded so it can only appear as text. Shortcodes you write yourself in the email templates are unaffected and still work. Reported by Patchstack.
+* Security: The REST subscribe route, used when "Submit via WordPress REST API route" is selected, now verifies the security token on the request instead of only checking that one was sent.
 
 = 7.5.2 2026-11-05 =
 * Fix: The {cwginstock_unsubscribe} placeholder could appear in customer emails as raw text. The token is now always registered, so it is never shown to a customer even when the Unsubscribe add-on is inactive or cannot build a link.
