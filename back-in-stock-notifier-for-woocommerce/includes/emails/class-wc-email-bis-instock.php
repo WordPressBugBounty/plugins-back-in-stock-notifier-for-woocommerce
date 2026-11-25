@@ -343,7 +343,7 @@ if ( ! class_exists( 'WC_Email_BIS_Instock' ) ) {
 				'{product_price}'        => function_exists( 'wc_price' ) ? wp_strip_all_tags( wc_price( 29 ) ) : '29',
 				'{only_product_sku}'     => 'SKU-1234',
 				'{cart_link}'            => home_url( '/' ),
-				'{product_image}'        => '',
+				'{product_image}'        => function_exists( 'wc_placeholder_img' ) ? wc_placeholder_img( 'woocommerce_thumbnail' ) : '',
 				'{subscriber_name}'      => __( 'Jane Doe', 'back-in-stock-notifier-for-woocommerce' ),
 				'{subscriber_firstname}' => __( 'Jane', 'back-in-stock-notifier-for-woocommerce' ),
 				'{subscriber_lastname}'  => __( 'Doe', 'back-in-stock-notifier-for-woocommerce' ),

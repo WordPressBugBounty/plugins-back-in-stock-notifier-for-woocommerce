@@ -448,3 +448,27 @@ var instock_notifier = {
 };
 
 instock_notifier.init();
+
+// Re-initialise Cloudflare Turnstile when the subscribe form is shown inside a
+// dynamically opened container such as an Elementor Pro popup. Turnstile cannot
+// render while its container is hidden, so (re)render it when the popup opens.
+jQuery(document).on('elementor/popup/show', function () {
+	if ('turnstile' != cwginstock_get_bot_type || '1' != cwginstock_turnstile_enabled) {
+		return;
+	}
+	if (typeof instock_notifier === 'undefined' || !instock_notifier.turnstilecallback) {
+		return;
+	}
+	var holder = document.getElementById('cwg-turnstile-captcha');
+	if (!holder) {
+		var cf = document.querySelector('.cf-turnstile');
+		if (cf) {
+			holder = document.createElement('div');
+			holder.id = 'cwg-turnstile-captcha';
+			cf.replaceWith(holder);
+		}
+	}
+	if (holder) {
+		instock_notifier.turnstilecallback();
+	}
+});

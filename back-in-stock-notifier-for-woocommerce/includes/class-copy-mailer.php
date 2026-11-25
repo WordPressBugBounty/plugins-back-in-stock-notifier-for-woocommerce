@@ -22,6 +22,7 @@ if ( ! class_exists( 'CWG_Copy_Mailer' ) ) {
 			register_setting( 'cwginstocknotifier_settings', 'cwginstock_imail_settings', array( $this, 'sanitize_data' ) );
 			add_settings_field( 'cwg_instock_copy_subscription_subject', __( 'Copy Subscription Mail Subject', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'copy_subscription_mail_subject' ), 'cwginstocknotifier_settings', 'cwginstock_section_mail' );
 			add_settings_field( 'cwg_instock_copy_subscription_message', __( 'Copy Subscription Mail Message', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'copy_subscription_mail_message' ), 'cwginstocknotifier_settings', 'cwginstock_section_mail' );
+			add_settings_field( 'cwg_instock_copy_subscription_reply_to', __( 'Copy Subscription Mail Reply-To', 'back-in-stock-notifier-for-woocommerce' ), array( $this, 'copy_subscription_mail_reply_to' ), 'cwginstocknotifier_settings', 'cwginstock_section_mail' );
 		}
 
 		public function copy_subscription_mail_subject() {
@@ -39,6 +40,18 @@ if ( ! class_exists( 'CWG_Copy_Mailer' ) ) {
 			?>
 			<textarea rows="5" cols="50"
 				name="cwginstock_imail_settings[copy_sub_message]"><?php echo esc_textarea( $this->api->sanitize_textarea_field( $copy_sub_message ) ); ?></textarea>
+			<?php
+		}
+
+		public function copy_subscription_mail_reply_to() {
+			$options       = get_option( 'cwginstock_imail_settings' );
+			$copy_reply_to = isset( $options['copy_sub_reply_to'] ) ? $options['copy_sub_reply_to'] : '';
+			?>
+			<input type='text' style='width: 400px;' name='cwginstock_imail_settings[copy_sub_reply_to]'
+				value="<?php echo esc_attr( $this->api->sanitize_text_field( $copy_reply_to ) ); ?>" placeholder="{subscriber_email}" />
+			<p class="description">
+				<?php echo esc_html__( 'Optional. Reply-To address for the admin copy email. Enter {subscriber_email} to have your replies go to the subscriber. Leave blank to keep the default Reply-To.', 'back-in-stock-notifier-for-woocommerce' ); ?>
+			</p>
 			<?php
 		}
 

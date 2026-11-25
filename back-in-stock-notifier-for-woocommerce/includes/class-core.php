@@ -250,11 +250,23 @@ if ( ! class_exists( 'CWG_Instock_Core' ) ) {
 			if ( $check_copy_enabled ) {
 				$get_recipients = isset( $get_option['subscription_copy_recipients'] ) && ! empty( $get_option['subscription_copy_recipients'] ) ? $get_option['subscription_copy_recipients'] : false;
 				if ( $get_recipients ) {
+					$headers       = "Content-Type: text/html\r\n";
+					$imail_options = get_option( 'cwginstock_imail_settings' );
+					$copy_reply_to = isset( $imail_options['copy_sub_reply_to'] ) ? trim( (string) $imail_options['copy_sub_reply_to'] ) : '';
+					if ( '' !== $copy_reply_to ) {
+						// {subscriber_email}/{email_id} resolve to the subscriber's address so a
+						// reply to the admin copy email reaches the customer directly.
+						$copy_reply_to = str_replace( array( '{subscriber_email}', '{email_id}' ), $to, $copy_reply_to );
+						$copy_reply_to = sanitize_email( $copy_reply_to );
+						if ( is_email( $copy_reply_to ) ) {
+							$headers .= 'Reply-To: ' . $copy_reply_to . "\r\n";
+						}
+					}
 					$explode_data = explode( ',', $get_recipients );
 					if ( is_array( $explode_data ) && ! empty( $explode_data ) ) {
 						foreach ( $explode_data as $each_mail ) {
 							$mailer   = WC()->mailer();
-							$sendmail = $mailer->send( $each_mail, $subject, $message );
+							$sendmail = $mailer->send( $each_mail, $subject, $message, $headers );
 						}
 					}
 				}
