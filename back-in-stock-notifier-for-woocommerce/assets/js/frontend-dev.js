@@ -232,6 +232,7 @@ var instock_notifier = {
 				}
 			}
 			var security = jQuery(this).closest('.cwginstock-subscribe-form').find('.cwg-security').val();
+			var marketing_consent = jQuery(this).closest('.cwginstock-subscribe-form').find('.cwg_marketing_consent_input').is(':checked') ? '1' : '0';
 			var data = {
 				action: 'cwginstock_product_subscribe',
 				product_id: product_id,
@@ -244,7 +245,8 @@ var instock_notifier = {
 				security: security,
 				dataobj: cwginstock,
 				cwg_lang: cwginstock.current_lang || cwginstock.wpml_current_lang || cwginstock.polylang_current_lang || '',
-				custom_quantity: quantity
+				custom_quantity: quantity,
+				marketing_consent: marketing_consent
 			};
 
 			// jQuery.blockUI({message: null});

@@ -2,6 +2,9 @@
 
 Full history. The most recent releases are also listed in readme.txt.
 
+= 7.5.5 2026-11-25 =
+* New: An optional, unchecked marketing consent checkbox for the subscribe form. When a visitor ticks it, the choice is recorded against the subscriber as the shared ppl_bis_marketing_consent meta, so the marketing platform add-ons can enrol only people who agreed to marketing, kept separate from the stock alert itself. It never blocks the stock alert. Turn it on under Instock Notifier settings.
+
 = 7.5.4 2026-11-24 =
 * New: The admin copy of the subscription email now has its own Reply-To option that supports the {subscriber_email} placeholder, so replying to the notification can reach the subscriber directly. Set it in the "Copy Subscription Mail Reply-To" field under the plugin's mail settings.
 * Fix: Cloudflare Turnstile now initialises when the inline subscribe form is opened inside an Elementor Pro popup, so the widget renders and the submit button is enabled.
