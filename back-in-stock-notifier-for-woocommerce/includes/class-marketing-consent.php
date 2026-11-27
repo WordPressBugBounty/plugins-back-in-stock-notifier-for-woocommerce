@@ -27,6 +27,11 @@ if ( ! class_exists( 'CWG_Instock_Marketing_Consent' ) ) {
 		const META_KEY = 'ppl_bis_marketing_consent';
 
 		/**
+		 * Meta holding the consent evidence: time, wording, version and source.
+		 */
+		const EVIDENCE_KEY = 'ppl_bis_marketing_consent_evidence';
+
+		/**
 		 * API helper.
 		 *
 		 * @var CWG_Instock_API
@@ -43,6 +48,7 @@ if ( ! class_exists( 'CWG_Instock_Marketing_Consent' ) ) {
 			// Record the choice on every insert. Guarded by the setting inside,
 			// so nothing is written while the feature is off.
 			add_action( 'cwginstock_after_insert_subscriber', array( $this, 'store_consent' ), 10, 2 );
+			add_action( 'cwginstock_already_subscribed', array( $this, 'update_existing_consent' ), 10, 1 );
 
 			if ( $is_enable ) {
 				add_action( 'cwg_instock_after_email_field', array( $this, 'show_consent_frontend' ), 25, 2 );
@@ -109,6 +115,72 @@ if ( ! class_exists( 'CWG_Instock_Marketing_Consent' ) ) {
 		 * @return void
 		 */
 		public function store_consent( $id, $post_data ) {
+			$this->record_consent( (int) $id, $post_data, 'subscribe_form' );
+		}
+
+		/**
+		 * Record a marketing-consent decision with auditable evidence.
+		 *
+		 * Stores the decision bit the add-ons read, plus when it was given, the
+		 * exact wording and a version of it, and the submission source. On a
+		 * transition into consent it signals the marketing add-ons so a held row
+		 * is retried.
+		 *
+		 * @param int    $id        Subscriber post ID.
+		 * @param array  $post_data Submitted data.
+		 * @param string $source    Where the decision came from.
+		 * @return void
+		 */
+		private function record_consent( $id, $post_data, $source ) {
+			$options   = get_option( 'cwginstock_marketing_consent_settings' );
+			$is_enable = isset( $options['enable_consent'] ) ? $options['enable_consent'] : false;
+
+			if ( ! $is_enable || (int) $id <= 0 ) {
+				return;
+			}
+
+			$raw     = isset( $post_data['marketing_consent'] ) ? $post_data['marketing_consent'] : '';
+			$granted = in_array( (string) $raw, array( '1', 'true', 'yes', 'on' ), true );
+			$was     = (string) get_post_meta( (int) $id, self::META_KEY, true );
+
+			update_post_meta( (int) $id, self::META_KEY, $granted ? '1' : '0' );
+
+			$wording = isset( $options['consent_text'] ) ? (string) $options['consent_text'] : '';
+
+			update_post_meta(
+				(int) $id,
+				self::EVIDENCE_KEY,
+				array(
+					'granted'      => $granted ? 1 : 0,
+					'time_gmt'     => gmdate( 'Y-m-d H:i:s' ),
+					'text'         => $wording,
+					'text_version' => md5( $wording ),
+					'source'       => (string) $source,
+				)
+			);
+
+			// Only on a transition into consent, so add-ons are not nudged on
+			// every save.
+			if ( $granted && '1' !== $was ) {
+				/**
+				 * Marketing consent became affirmative for a subscriber.
+				 *
+				 * @since 7.5.6
+				 * @param int $id Subscriber post ID.
+				 */
+				do_action( 'ppl_bis_marketing_consent_granted', (int) $id );
+			}
+		}
+
+		/**
+		 * Record consent for an existing subscriber who re-submitted the form, so
+		 * an already-subscribed person can grant the new consent without creating
+		 * a duplicate waitlist row.
+		 *
+		 * @param array $post_data Submitted data.
+		 * @return void
+		 */
+		public function update_existing_consent( $post_data ) {
 			$options   = get_option( 'cwginstock_marketing_consent_settings' );
 			$is_enable = isset( $options['enable_consent'] ) ? $options['enable_consent'] : false;
 
@@ -116,10 +188,36 @@ if ( ! class_exists( 'CWG_Instock_Marketing_Consent' ) ) {
 				return;
 			}
 
-			$raw     = isset( $post_data['marketing_consent'] ) ? $post_data['marketing_consent'] : '';
-			$granted = in_array( (string) $raw, array( '1', 'true', 'yes', 'on' ), true ) ? '1' : '0';
+			$email = isset( $post_data['user_email'] ) ? sanitize_email( (string) $post_data['user_email'] ) : '';
+			$pid   = isset( $post_data['product_id'] ) ? (int) $post_data['product_id'] : 0;
 
-			update_post_meta( (int) $id, self::META_KEY, $granted );
+			if ( '' === $email || $pid <= 0 ) {
+				return;
+			}
+
+			$rows = get_posts(
+				array(
+					'post_type'      => 'cwginstocknotifier',
+					'post_status'    => array( 'cwg_subscribed', 'cwg_mailnotsent', 'cwg_mailsent', 'cwg_queued' ),
+					'posts_per_page' => 20,
+					'fields'         => 'ids',
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					'meta_query'     => array(
+						array(
+							'key'   => 'cwginstock_subscriber_email',
+							'value' => $email,
+						),
+						array(
+							'key'   => 'cwginstock_pid',
+							'value' => $pid,
+						),
+					),
+				)
+			);
+
+			foreach ( $rows as $row_id ) {
+				$this->record_consent( (int) $row_id, $post_data, 'subscribe_form_resubmit' );
+			}
 		}
 
 		public function default_values() {

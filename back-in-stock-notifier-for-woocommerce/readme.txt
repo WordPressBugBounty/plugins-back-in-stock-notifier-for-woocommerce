@@ -5,7 +5,7 @@ Donate link: https://donate.stripe.com/cNi28r1PXfcY1kQawmaMU00
 Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 7.5.5
+Stable tag: 7.5.6
 License: GPL-3.0+
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -283,6 +283,9 @@ The plugin works without any external service. The services below are used only 
 
 == Changelog ==
 Older entries are in changelog.txt, included with the plugin.
+
+= 7.5.6 2026-11-27 =
+* New: Marketing consent is now stored with its evidence, the time it was given, the exact wording and a version of it, and the submission source, so the record is auditable. An existing subscriber can also grant consent on a later submission without creating a duplicate waitlist entry.
 
 = 7.5.5 2026-11-25 =
 * New: An optional, unchecked marketing consent checkbox for the subscribe form. When a visitor ticks it, the choice is recorded against the subscriber as the shared ppl_bis_marketing_consent meta, so the marketing platform add-ons can enrol only people who agreed to marketing, kept separate from the stock alert itself. It never blocks the stock alert. Turn it on under Instock Notifier settings.

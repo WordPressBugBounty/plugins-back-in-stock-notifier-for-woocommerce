@@ -221,6 +221,15 @@ if ( ! class_exists( 'CWG_Instock_Ajax' ) ) {
 					do_action( 'cwginstocknotifier_double_optin', $post_data );
 				}
 			} else {
+				/**
+				 * A resubmission for an email already on this product's waitlist.
+				 * Lets an existing subscriber update an optional choice such as
+				 * marketing consent, without creating a duplicate waitlist row.
+				 *
+				 * @since 7.5.6
+				 */
+				do_action( 'cwginstock_already_subscribed', $post_data );
+
 				$get_option      = get_option( 'cwginstocksettings' );
 				$already_sub_msg = __( 'Seems like you have already subscribed to this product', 'back-in-stock-notifier-for-woocommerce' );
 				$error           = isset( $get_option['already_subscribed'] ) && $get_option['already_subscribed'] ? $get_option['already_subscribed'] : $already_sub_msg;
